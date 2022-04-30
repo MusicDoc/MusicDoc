@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>io.github.musicdoc</groupId>
+    <artifactId>musicdoc-root</artifactId>
+    <version>1-SNAPSHOT</version>
+  </parent>
+  <artifactId>musicdoc-parent</artifactId>
+  <version>${revision}</version>
+  <packaging>pom</packaging>
+  <name>${project.artifactId}</name>
+  <description>Java library for MusicDoc.</description>
+
+  <properties>
+    <github.repository>MusicDoc</github.repository>
+    <revision>0-SNAPSHOT</revision>
+  </properties>
+
+  <modules>
+    <module>core</module>
+  </modules>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.github.m-m-m</groupId>
+        <artifactId>mmm-base-parent</artifactId>
+        <version>0.2.0</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <!-- own modules -->
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>musicdoc</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  <repositories>
+    <repository>
+      <id>google</id>
+      <name>google repository</name>
+      <url>https://maven.google.com</url>
+    </repository>
+  </repositories>
+</project>
