@@ -15,7 +15,7 @@ This repository provides a Java library (artifactId `musicdoc-core`) with suppor
 It offers the following features:
 
 * model for musical partitures and all its elements such as `TonePitch`,`Rest`,`Tone`,`Interval`,`Chord`,`Clef`,`MusicalKey`,`Beat`,`Stave`,`Bar`,`TonalSystem`,`Partiture`,etc.
-* reading (parsing) a partiture in https://musicdoc.github.io[MusicDoc] and other formats such as https://www.chordpro.org/[ChordPro], https://abcnotation.com/[ABC] and others.
+* reading (parsing) a partiture in https://musicdoc.github.io[MusicDoc] and formats such as https://www.chordpro.org/[ChordPro], https://abcnotation.com/[ABC] and others.
 * writing a partiture to https://musicdoc.github.io[MusicDoc] format.
 * various musical operations including tansposing (both chromatic and diatonic), normalization, computing intervals, etc.
 
