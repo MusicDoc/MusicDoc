@@ -13,16 +13,22 @@ import io.github.musicdoc.music.transpose.TransposeContext;
  */
 public class Rest extends ValuedItem<Rest> {
 
+  /** {@link Rest} lasting a {@link MusicalValue#_1_1 full bar}. */
   public static final Rest _1_1 = new Rest(MusicalValue._1_1);
 
+  /** {@link Rest} lasting a {@link MusicalValue#_1_2 half note}. */
   public static final Rest _1_2 = new Rest(MusicalValue._1_2);
 
+  /** {@link Rest} lasting a {@link MusicalValue#_1_4 quarter note}. */
   public static final Rest _1_4 = new Rest(MusicalValue._1_4);
 
+  /** {@link Rest} lasting a {@link MusicalValue#_1_8 eighth note} (quaver). */
   public static final Rest _1_8 = new Rest(MusicalValue._1_8);
 
+  /** {@link Rest} lasting a {@link MusicalValue#_1_16 sixteenth note} (semiquaver). */
   public static final Rest _1_16 = new Rest(MusicalValue._1_16);
 
+  /** {@link Rest} lasting a {@link MusicalValue#_1_32 twenty-secondth note} (quaver). */
   public static final Rest _1_32 = new Rest(MusicalValue._1_32);
 
   private final boolean invisible;
@@ -63,10 +69,12 @@ public class Rest extends ValuedItem<Rest> {
 
   @Override
   public Rest transpose(int steps, boolean diatonic, TransposeContext context) {
+
     return this;
   }
 
   char getSymbol() {
+
     if (this.invisible) {
       return FormatConstants.REST_INVISIBLE;
     } else {
@@ -76,6 +84,7 @@ public class Rest extends ValuedItem<Rest> {
 
   @Override
   public String toString() {
+
     return "" + getSymbol() + getValue();
   }
 }

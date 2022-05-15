@@ -6,8 +6,6 @@ import io.github.musicdoc.music.tone.TonePitch;
 
 /**
  * Interface for an {@link Interval} that defines the distance from one {@link TonePitch} to another.
- *
- * @author hohwille
  */
 public interface Interval {
 
@@ -18,11 +16,12 @@ public interface Interval {
    * {@code 5}.
    *
    * @param system the underlying {@link TonalSystem}. May be {@code null}.
-   * @return the number of semitone steps relative to the initial {@link TonePitch} (tonika) or {@link Integer#MIN_VALUE} if
-   *         undefined (e.g. for {@link Solmization} if {@link TonalSystem} is {@code null} or in case of a
-   *         {@link DiatonicInterval}). The modulo of twelve ({@code %12}) of the result is the {@link java.util.List#get(int)
-   *         index} of the {@link TonePitch} from the {@link MusicalKey#getChromaticScale() chromatic scale} of the
-   *         {@link MusicalKey} with the initial {@link TonePitch} as {@link MusicalKey#getTonika() tonika}.
+   * @return the number of semitone steps relative to the initial {@link TonePitch} (tonika) or
+   *         {@link Integer#MIN_VALUE} if undefined (e.g. for {@link Solmization} if {@link TonalSystem} is {@code null}
+   *         or in case of a {@link DiatonicInterval}). The modulo of twelve ({@code %12}) of the result is the
+   *         {@link java.util.List#get(int) index} of the {@link TonePitch} from the
+   *         {@link MusicalKey#getChromaticScale() chromatic scale} of the {@link MusicalKey} with the initial
+   *         {@link TonePitch} as {@link MusicalKey#getTonika() tonika}.
    */
   int getChromaticSteps(TonalSystem system);
 
@@ -33,11 +32,11 @@ public interface Interval {
    * {@code 3}) and for {@link DiatonicInterval#OCTAVE} it will return {@code 7} (NOT {@code 8}).
    *
    * @param system the underlying {@link TonalSystem}. May be {@code null}.
-   * @return the number of diatonic steps relative to the initial {@link TonePitch} (tonika) or {@link Integer#MIN_VALUE} if
-   *         undefined (e.g. for {@link Solmization} if {@link TonalSystem} is {@code null}). The modulo of seven ({@code %7})
-   *         of the result is the {@link java.util.List#get(int) index} of the {@link TonePitch} from the
-   *         {@link MusicalKey#getDiatonicScale() diatonic scale} of the {@link MusicalKey} with the initial
-   *         {@link TonePitch} as {@link MusicalKey#getTonika() tonika}.
+   * @return the number of diatonic steps relative to the initial {@link TonePitch} (tonika) or
+   *         {@link Integer#MIN_VALUE} if undefined (e.g. for {@link Solmization} if {@link TonalSystem} is
+   *         {@code null}). The modulo of seven ({@code %7}) of the result is the {@link java.util.List#get(int) index}
+   *         of the {@link TonePitch} from the {@link MusicalKey#getDiatonicScale() diatonic scale} of the
+   *         {@link MusicalKey} with the initial {@link TonePitch} as {@link MusicalKey#getTonika() tonika}.
    */
   int getDiatonicSteps(TonalSystem system);
 

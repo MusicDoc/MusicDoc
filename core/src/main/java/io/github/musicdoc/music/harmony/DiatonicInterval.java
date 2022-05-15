@@ -4,8 +4,6 @@ package io.github.musicdoc.music.harmony;
 
 /**
  * Enum with the {@link #getDiatonicSteps() diatonic} {@link Interval}s.
- *
- * @author hohwille
  */
 public enum DiatonicInterval implements Interval {
 
@@ -87,11 +85,10 @@ public enum DiatonicInterval implements Interval {
     return this.diatonicSteps;
   }
 
-
   /**
    * @param diatonicSteps the number of {@link #getDiatonicSteps() diatonic steps}.
-   * @return the corresponding {@link DiatonicInterval} or <code>null</code> if no such {@link DiatonicInterval}
-   * exists (given value is negative or too high).
+   * @return the corresponding {@link DiatonicInterval} or <code>null</code> if no such {@link DiatonicInterval} exists
+   *         (given value is negative or too high).
    */
   public static DiatonicInterval ofDiatonicSteps(int diatonicSteps) {
 

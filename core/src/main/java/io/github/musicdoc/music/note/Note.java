@@ -14,50 +14,52 @@ import io.github.musicdoc.music.transpose.TransposeContext;
 
 /**
  * A {@link Note} is a musical object that has a {@link #getTone() tone} and a {@link #getValue() value}.
- *
- * @author hohwille
  */
 public class Note extends ValuedItem<Note> {
 
-    private final Tone tone;
+  private final Tone tone;
 
-    /**
-     * The constructor.
-     *
-     * @param tone  - the {@link #getTone() tone}.
-     * @param value - the {@link #getValue() value}.
-     */
-    public Note(Tone tone, MusicalValue value) {
-        this(tone, value, new ArrayList<ValuedItemDecoration>());
-    }
+  /**
+   * The constructor.
+   *
+   * @param tone - the {@link #getTone() tone}.
+   * @param value - the {@link #getValue() value}.
+   */
+  public Note(Tone tone, MusicalValue value) {
 
-    /**
-     * The constructor.
-     *
-     * @param tone        - the {@link #getTone() tone}.
-     * @param value       - the {@link #getValue() value}.
-     * @param decorations - the {@link #getDecorations() decorations}.
-     */
-    public Note(Tone tone, MusicalValue value, List<ValuedItemDecoration> decorations) {
-        super(value, decorations);
-        ObjectHelper.requireNonNull(tone, "tone");
-        this.tone = tone;
-    }
+    this(tone, value, new ArrayList<ValuedItemDecoration>());
+  }
 
-    @Override
-    public Tone getTone() {
-        return this.tone;
-    }
+  /**
+   * The constructor.
+   *
+   * @param tone - the {@link #getTone() tone}.
+   * @param value - the {@link #getValue() value}.
+   * @param decorations - the {@link #getDecorations() decorations}.
+   */
+  public Note(Tone tone, MusicalValue value, List<ValuedItemDecoration> decorations) {
 
-    @Override
-    public Note transpose(int steps, boolean diatonic, TransposeContext context) {
+    super(value, decorations);
+    ObjectHelper.requireNonNull(tone, "tone");
+    this.tone = tone;
+  }
 
-        Tone newTone = this.tone.transpose(steps, diatonic, context);
-        return new Note(newTone, getValue(), new ArrayList<>(getDecorations()));
-    }
+  @Override
+  public Tone getTone() {
 
-    @Override
-    public String toString() {
-        return this.tone.toString() + this.value;
-    }
+    return this.tone;
+  }
+
+  @Override
+  public Note transpose(int steps, boolean diatonic, TransposeContext context) {
+
+    Tone newTone = this.tone.transpose(steps, diatonic, context);
+    return new Note(newTone, getValue(), new ArrayList<>(getDecorations()));
+  }
+
+  @Override
+  public String toString() {
+
+    return this.tone.toString() + this.value;
+  }
 }

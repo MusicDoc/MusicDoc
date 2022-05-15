@@ -11,14 +11,14 @@ import io.github.musicdoc.music.tone.TonePitchEnglish;
  * syllables and is therefore independent of a {@link MusicalKey}.<br/>
  * So for a {@link TonalSystem#MAJOR major} {@link MusicalKey#getDiatonicScale() scale} the {@link Solmization} order is
  * {@link #DO}, {@link #RE}, {@link #MI}, {@link #FA}, {@link #SOL}, {@link #LA}, {@link #TI}. In
- * {@link MusicalKey#C_MAJOR C-major} this would be equivalent to {@link TonePitchEnglish#C C}, {@link TonePitchEnglish#D D},
- * {@link TonePitchEnglish#E E}, {@link TonePitchEnglish#F F}, {@link TonePitchEnglish#G G}, {@link TonePitchEnglish#A A}, {@link TonePitchEnglish#B B}.<br/>
+ * {@link MusicalKey#C_MAJOR C-major} this would be equivalent to {@link TonePitchEnglish#C C},
+ * {@link TonePitchEnglish#D D}, {@link TonePitchEnglish#E E}, {@link TonePitchEnglish#F F}, {@link TonePitchEnglish#G
+ * G}, {@link TonePitchEnglish#A A}, {@link TonePitchEnglish#B B}.<br/>
  * For a {@link TonalSystem#MINOR minor} {@link MusicalKey#getDiatonicScale() scale} the {@link Solmization} order is
  * {@link #LA}, {@link #TI}, {@link #DO}, {@link #RE}, {@link #MI}, {@link #FA}, {@link #SOL}. In
- * {@link MusicalKey#A_MINOR A-minor} this would be equivalent to {@link TonePitchEnglish#A A}, {@link TonePitchEnglish#B_SHARP B},
- * {@link TonePitchEnglish#C C}, {@link TonePitchEnglish#D D}, {@link TonePitchEnglish#E E}, {@link TonePitchEnglish#F F}, {@link TonePitchEnglish#G G}.<br/>
- *
- * @author hohwille
+ * {@link MusicalKey#A_MINOR A-minor} this would be equivalent to {@link TonePitchEnglish#A A},
+ * {@link TonePitchEnglish#B_SHARP B}, {@link TonePitchEnglish#C C}, {@link TonePitchEnglish#D D},
+ * {@link TonePitchEnglish#E E}, {@link TonePitchEnglish#F F}, {@link TonePitchEnglish#G G}.<br/>
  */
 public enum Solmization implements Interval {
 

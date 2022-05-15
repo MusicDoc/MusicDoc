@@ -19,7 +19,7 @@ public class MusicalKeyTest extends Assertions {
   public void testCMajor() {
 
     assertThat(MusicalKey.C_MAJOR.getName()).isEqualTo("C");
-    assertThat(MusicalKey.C_MAJOR.getTonalSystem()).isSameAs(TonalSystem.MAJOR);
+    assertThat(MusicalKey.C_MAJOR.getSystem()).isSameAs(TonalSystem.MAJOR);
     assertThat(MusicalKey.C_MAJOR.getTonika()).isSameAs(TonePitchEnglish.C);
     assertThat(MusicalKey.C_MAJOR.getEnharmonicStyle()).isSameAs(EnharmonicStyle.NORMAL);
     assertThat(MusicalKey.C_MAJOR.getDiatonicScale()).containsExactly(TonePitchEnglish.C, TonePitchEnglish.D,
@@ -37,7 +37,7 @@ public class MusicalKeyTest extends Assertions {
   public void testCSharpMajor() {
 
     assertThat(MusicalKey.C_SHARP_MAJOR.getName()).isEqualTo("C#");
-    assertThat(MusicalKey.C_SHARP_MAJOR.getTonalSystem()).isSameAs(TonalSystem.MAJOR);
+    assertThat(MusicalKey.C_SHARP_MAJOR.getSystem()).isSameAs(TonalSystem.MAJOR);
     assertThat(MusicalKey.C_SHARP_MAJOR.getTonika()).isSameAs(TonePitchEnglish.C_SHARP);
     assertThat(MusicalKey.C_SHARP_MAJOR.getEnharmonicStyle()).isSameAs(EnharmonicStyle.SHARP);
     assertThat(MusicalKey.C_SHARP_MAJOR.getDiatonicScale()).containsExactly(TonePitchEnglish.C_SHARP,
@@ -59,7 +59,7 @@ public class MusicalKeyTest extends Assertions {
   public void testDFlatMajor() {
 
     assertThat(MusicalKey.D_FLAT_MAJOR.getName()).isEqualTo("Db");
-    assertThat(MusicalKey.D_FLAT_MAJOR.getTonalSystem()).isSameAs(TonalSystem.MAJOR);
+    assertThat(MusicalKey.D_FLAT_MAJOR.getSystem()).isSameAs(TonalSystem.MAJOR);
     assertThat(MusicalKey.D_FLAT_MAJOR.getTonika()).isSameAs(TonePitchEnglish.D_FLAT);
     assertThat(MusicalKey.D_FLAT_MAJOR.getEnharmonicStyle()).isSameAs(EnharmonicStyle.FLAT);
     assertThat(MusicalKey.D_FLAT_MAJOR.getDiatonicScale()).containsExactly(TonePitchEnglish.D_FLAT,
@@ -79,7 +79,7 @@ public class MusicalKeyTest extends Assertions {
   public void testDMajor() {
 
     assertThat(MusicalKey.D_MAJOR.getName()).isEqualTo("D");
-    assertThat(MusicalKey.D_MAJOR.getTonalSystem()).isSameAs(TonalSystem.MAJOR);
+    assertThat(MusicalKey.D_MAJOR.getSystem()).isSameAs(TonalSystem.MAJOR);
     assertThat(MusicalKey.D_MAJOR.getTonika()).isSameAs(TonePitchEnglish.D);
     assertThat(MusicalKey.D_MAJOR.getEnharmonicStyle()).isSameAs(EnharmonicStyle.SHARP);
     assertThat(MusicalKey.D_MAJOR.getDiatonicScale()).containsExactly(TonePitchEnglish.D, TonePitchEnglish.E,
@@ -98,7 +98,7 @@ public class MusicalKeyTest extends Assertions {
   public void testEFlatMajor() {
 
     assertThat(MusicalKey.E_FLAT_MAJOR.getName()).isEqualTo("Eb");
-    assertThat(MusicalKey.E_FLAT_MAJOR.getTonalSystem()).isSameAs(TonalSystem.MAJOR);
+    assertThat(MusicalKey.E_FLAT_MAJOR.getSystem()).isSameAs(TonalSystem.MAJOR);
     assertThat(MusicalKey.E_FLAT_MAJOR.getTonika()).isSameAs(TonePitchEnglish.E_FLAT);
     assertThat(MusicalKey.E_FLAT_MAJOR.getEnharmonicStyle()).isSameAs(EnharmonicStyle.FLAT);
     assertThat(MusicalKey.E_FLAT_MAJOR.getDiatonicScale()).containsExactly(TonePitchEnglish.E_FLAT, TonePitchEnglish.F,
@@ -117,7 +117,7 @@ public class MusicalKeyTest extends Assertions {
   public void testEMajor() {
 
     assertThat(MusicalKey.E_MAJOR.getName()).isEqualTo("E");
-    assertThat(MusicalKey.E_MAJOR.getTonalSystem()).isSameAs(TonalSystem.MAJOR);
+    assertThat(MusicalKey.E_MAJOR.getSystem()).isSameAs(TonalSystem.MAJOR);
     assertThat(MusicalKey.E_MAJOR.getTonika()).isSameAs(TonePitchEnglish.E);
     assertThat(MusicalKey.E_MAJOR.getEnharmonicStyle()).isSameAs(EnharmonicStyle.SHARP);
     assertThat(MusicalKey.E_MAJOR.getDiatonicScale()).containsExactly(TonePitchEnglish.E, TonePitchEnglish.F_SHARP,
@@ -138,7 +138,7 @@ public class MusicalKeyTest extends Assertions {
   public void testFMajor() {
 
     assertThat(MusicalKey.F_MAJOR.getName()).isEqualTo("F");
-    assertThat(MusicalKey.F_MAJOR.getTonalSystem()).isSameAs(TonalSystem.MAJOR);
+    assertThat(MusicalKey.F_MAJOR.getSystem()).isSameAs(TonalSystem.MAJOR);
     assertThat(MusicalKey.F_MAJOR.getTonika()).isSameAs(TonePitchEnglish.F);
     assertThat(MusicalKey.F_MAJOR.getEnharmonicStyle()).isSameAs(EnharmonicStyle.FLAT);
     assertThat(MusicalKey.F_MAJOR.getDiatonicScale()).containsExactly(TonePitchEnglish.F, TonePitchEnglish.G,
@@ -156,7 +156,7 @@ public class MusicalKeyTest extends Assertions {
   public void testFSharpMajor() {
 
     assertThat(MusicalKey.F_SHARP_MAJOR.getName()).isEqualTo("F#");
-    assertThat(MusicalKey.F_SHARP_MAJOR.getTonalSystem()).isSameAs(TonalSystem.MAJOR);
+    assertThat(MusicalKey.F_SHARP_MAJOR.getSystem()).isSameAs(TonalSystem.MAJOR);
     assertThat(MusicalKey.F_SHARP_MAJOR.getTonika()).isSameAs(TonePitchEnglish.F_SHARP);
     assertThat(MusicalKey.F_SHARP_MAJOR.getEnharmonicStyle()).isSameAs(EnharmonicStyle.SHARP);
     assertThat(MusicalKey.F_SHARP_MAJOR.getDiatonicScale()).containsExactly(TonePitchEnglish.F_SHARP,
@@ -178,7 +178,7 @@ public class MusicalKeyTest extends Assertions {
   public void testGFlatMajor() {
 
     assertThat(MusicalKey.G_FLAT_MAJOR.getName()).isEqualTo("Gb");
-    assertThat(MusicalKey.G_FLAT_MAJOR.getTonalSystem()).isSameAs(TonalSystem.MAJOR);
+    assertThat(MusicalKey.G_FLAT_MAJOR.getSystem()).isSameAs(TonalSystem.MAJOR);
     assertThat(MusicalKey.G_FLAT_MAJOR.getTonika()).isSameAs(TonePitchEnglish.G_FLAT);
     assertThat(MusicalKey.G_FLAT_MAJOR.getEnharmonicStyle()).isSameAs(EnharmonicStyle.FLAT);
     assertThat(MusicalKey.G_FLAT_MAJOR.getDiatonicScale()).containsExactly(TonePitchEnglish.G_FLAT,
@@ -200,7 +200,7 @@ public class MusicalKeyTest extends Assertions {
   public void testGMajor() {
 
     assertThat(MusicalKey.G_MAJOR.getName()).isEqualTo("G");
-    assertThat(MusicalKey.G_MAJOR.getTonalSystem()).isSameAs(TonalSystem.MAJOR);
+    assertThat(MusicalKey.G_MAJOR.getSystem()).isSameAs(TonalSystem.MAJOR);
     assertThat(MusicalKey.G_MAJOR.getTonika()).isSameAs(TonePitchEnglish.G);
     assertThat(MusicalKey.G_MAJOR.getEnharmonicStyle()).isSameAs(EnharmonicStyle.SHARP);
     assertThat(MusicalKey.G_MAJOR.getDiatonicScale()).containsExactly(TonePitchEnglish.G, TonePitchEnglish.A,
@@ -218,7 +218,7 @@ public class MusicalKeyTest extends Assertions {
   public void testAFlatMajor() {
 
     assertThat(MusicalKey.A_FLAT_MAJOR.getName()).isEqualTo("Ab");
-    assertThat(MusicalKey.A_FLAT_MAJOR.getTonalSystem()).isSameAs(TonalSystem.MAJOR);
+    assertThat(MusicalKey.A_FLAT_MAJOR.getSystem()).isSameAs(TonalSystem.MAJOR);
     assertThat(MusicalKey.A_FLAT_MAJOR.getTonika()).isSameAs(TonePitchEnglish.A_FLAT);
     assertThat(MusicalKey.A_FLAT_MAJOR.getEnharmonicStyle()).isSameAs(EnharmonicStyle.FLAT);
     assertThat(MusicalKey.A_FLAT_MAJOR.getDiatonicScale()).containsExactly(TonePitchEnglish.A_FLAT,
@@ -238,7 +238,7 @@ public class MusicalKeyTest extends Assertions {
   public void testAMajor() {
 
     assertThat(MusicalKey.A_MAJOR.getName()).isEqualTo("A");
-    assertThat(MusicalKey.A_MAJOR.getTonalSystem()).isSameAs(TonalSystem.MAJOR);
+    assertThat(MusicalKey.A_MAJOR.getSystem()).isSameAs(TonalSystem.MAJOR);
     assertThat(MusicalKey.A_MAJOR.getTonika()).isSameAs(TonePitchEnglish.A);
     assertThat(MusicalKey.A_MAJOR.getEnharmonicStyle()).isSameAs(EnharmonicStyle.SHARP);
     assertThat(MusicalKey.A_MAJOR.getDiatonicScale()).containsExactly(TonePitchEnglish.A, TonePitchEnglish.B,
@@ -258,7 +258,7 @@ public class MusicalKeyTest extends Assertions {
   public void testBFlatMajor() {
 
     assertThat(MusicalKey.B_FLAT_MAJOR.getName()).isEqualTo("Bb");
-    assertThat(MusicalKey.B_FLAT_MAJOR.getTonalSystem()).isSameAs(TonalSystem.MAJOR);
+    assertThat(MusicalKey.B_FLAT_MAJOR.getSystem()).isSameAs(TonalSystem.MAJOR);
     assertThat(MusicalKey.B_FLAT_MAJOR.getTonika()).isSameAs(TonePitchEnglish.B_FLAT);
     assertThat(MusicalKey.B_FLAT_MAJOR.getEnharmonicStyle()).isSameAs(EnharmonicStyle.FLAT);
     assertThat(MusicalKey.B_FLAT_MAJOR.getDiatonicScale()).containsExactly(TonePitchEnglish.B_FLAT, TonePitchEnglish.C,
@@ -277,7 +277,7 @@ public class MusicalKeyTest extends Assertions {
   public void testBMajor() {
 
     assertThat(MusicalKey.B_MAJOR.getName()).isEqualTo("B");
-    assertThat(MusicalKey.B_MAJOR.getTonalSystem()).isSameAs(TonalSystem.MAJOR);
+    assertThat(MusicalKey.B_MAJOR.getSystem()).isSameAs(TonalSystem.MAJOR);
     assertThat(MusicalKey.B_MAJOR.getTonika()).isSameAs(TonePitchEnglish.B);
     assertThat(MusicalKey.B_MAJOR.getEnharmonicStyle()).isSameAs(EnharmonicStyle.SHARP);
     assertThat(MusicalKey.B_MAJOR.getDiatonicScale()).containsExactly(TonePitchEnglish.B, TonePitchEnglish.C_SHARP,
@@ -298,7 +298,7 @@ public class MusicalKeyTest extends Assertions {
   public void testCMinor() {
 
     assertThat(MusicalKey.C_MINOR.getName()).isEqualTo("c");
-    assertThat(MusicalKey.C_MINOR.getTonalSystem()).isSameAs(TonalSystem.MINOR);
+    assertThat(MusicalKey.C_MINOR.getSystem()).isSameAs(TonalSystem.MINOR);
     assertThat(MusicalKey.C_MINOR.getTonika()).isSameAs(TonePitchEnglish.C);
     assertThat(MusicalKey.C_MINOR.getEnharmonicStyle()).isSameAs(EnharmonicStyle.FLAT);
     assertThat(MusicalKey.C_MINOR.getDiatonicScale()).containsExactly(TonePitchEnglish.C, TonePitchEnglish.D,
@@ -318,7 +318,7 @@ public class MusicalKeyTest extends Assertions {
   public void testCSharpMinor() {
 
     assertThat(MusicalKey.C_SHARP_MINOR.getName()).isEqualTo("c#");
-    assertThat(MusicalKey.C_SHARP_MINOR.getTonalSystem()).isSameAs(TonalSystem.MINOR);
+    assertThat(MusicalKey.C_SHARP_MINOR.getSystem()).isSameAs(TonalSystem.MINOR);
     assertThat(MusicalKey.C_SHARP_MINOR.getTonika()).isSameAs(TonePitchEnglish.C_SHARP);
     assertThat(MusicalKey.C_SHARP_MINOR.getEnharmonicStyle()).isSameAs(EnharmonicStyle.SHARP);
     assertThat(MusicalKey.C_SHARP_MINOR.getDiatonicScale()).containsExactly(TonePitchEnglish.C_SHARP,
@@ -339,7 +339,7 @@ public class MusicalKeyTest extends Assertions {
   public void testDMinor() {
 
     assertThat(MusicalKey.D_MINOR.getName()).isEqualTo("d");
-    assertThat(MusicalKey.D_MINOR.getTonalSystem()).isSameAs(TonalSystem.MINOR);
+    assertThat(MusicalKey.D_MINOR.getSystem()).isSameAs(TonalSystem.MINOR);
     assertThat(MusicalKey.D_MINOR.getTonika()).isSameAs(TonePitchEnglish.D);
     assertThat(MusicalKey.D_MINOR.getEnharmonicStyle()).isSameAs(EnharmonicStyle.FLAT);
     assertThat(MusicalKey.D_MINOR.getDiatonicScale()).containsExactly(TonePitchEnglish.D, TonePitchEnglish.E,
@@ -357,7 +357,7 @@ public class MusicalKeyTest extends Assertions {
   public void testDSharpMinor() {
 
     assertThat(MusicalKey.D_SHARP_MINOR.getName()).isEqualTo("d#");
-    assertThat(MusicalKey.D_SHARP_MINOR.getTonalSystem()).isSameAs(TonalSystem.MINOR);
+    assertThat(MusicalKey.D_SHARP_MINOR.getSystem()).isSameAs(TonalSystem.MINOR);
     assertThat(MusicalKey.D_SHARP_MINOR.getTonika()).isSameAs(TonePitchEnglish.D_SHARP);
     assertThat(MusicalKey.D_SHARP_MINOR.getEnharmonicStyle()).isSameAs(EnharmonicStyle.SHARP);
     assertThat(MusicalKey.D_SHARP_MINOR.getDiatonicScale()).containsExactly(TonePitchEnglish.D_SHARP,
@@ -379,7 +379,7 @@ public class MusicalKeyTest extends Assertions {
   public void testEFlatMinor() {
 
     assertThat(MusicalKey.E_FLAT_MINOR.getName()).isEqualTo("eb");
-    assertThat(MusicalKey.E_FLAT_MINOR.getTonalSystem()).isSameAs(TonalSystem.MINOR);
+    assertThat(MusicalKey.E_FLAT_MINOR.getSystem()).isSameAs(TonalSystem.MINOR);
     assertThat(MusicalKey.E_FLAT_MINOR.getTonika()).isSameAs(TonePitchEnglish.E_FLAT);
     assertThat(MusicalKey.E_FLAT_MINOR.getEnharmonicStyle()).isSameAs(EnharmonicStyle.FLAT);
     assertThat(MusicalKey.E_FLAT_MINOR.getDiatonicScale()).containsExactly(TonePitchEnglish.E_FLAT, TonePitchEnglish.F,
@@ -401,7 +401,7 @@ public class MusicalKeyTest extends Assertions {
   public void testEMinor() {
 
     assertThat(MusicalKey.E_MINOR.getName()).isEqualTo("e");
-    assertThat(MusicalKey.E_MINOR.getTonalSystem()).isSameAs(TonalSystem.MINOR);
+    assertThat(MusicalKey.E_MINOR.getSystem()).isSameAs(TonalSystem.MINOR);
     assertThat(MusicalKey.E_MINOR.getTonika()).isSameAs(TonePitchEnglish.E);
     assertThat(MusicalKey.E_MINOR.getEnharmonicStyle()).isSameAs(EnharmonicStyle.SHARP);
     assertThat(MusicalKey.E_MINOR.getDiatonicScale()).containsExactly(TonePitchEnglish.E, TonePitchEnglish.F_SHARP,
@@ -420,7 +420,7 @@ public class MusicalKeyTest extends Assertions {
   public void testFMinor() {
 
     assertThat(MusicalKey.F_MINOR.getName()).isEqualTo("f");
-    assertThat(MusicalKey.F_MINOR.getTonalSystem()).isSameAs(TonalSystem.MINOR);
+    assertThat(MusicalKey.F_MINOR.getSystem()).isSameAs(TonalSystem.MINOR);
     assertThat(MusicalKey.F_MINOR.getTonika()).isSameAs(TonePitchEnglish.F);
     assertThat(MusicalKey.F_MINOR.getEnharmonicStyle()).isSameAs(EnharmonicStyle.FLAT);
     assertThat(MusicalKey.F_MINOR.getDiatonicScale()).containsExactly(TonePitchEnglish.F, TonePitchEnglish.G,
@@ -440,7 +440,7 @@ public class MusicalKeyTest extends Assertions {
   public void testFSharpMinor() {
 
     assertThat(MusicalKey.F_SHARP_MINOR.getName()).isEqualTo("f#");
-    assertThat(MusicalKey.F_SHARP_MINOR.getTonalSystem()).isSameAs(TonalSystem.MINOR);
+    assertThat(MusicalKey.F_SHARP_MINOR.getSystem()).isSameAs(TonalSystem.MINOR);
     assertThat(MusicalKey.F_SHARP_MINOR.getTonika()).isSameAs(TonePitchEnglish.F_SHARP);
     assertThat(MusicalKey.F_SHARP_MINOR.getEnharmonicStyle()).isSameAs(EnharmonicStyle.SHARP);
     assertThat(MusicalKey.F_SHARP_MINOR.getDiatonicScale()).containsExactly(TonePitchEnglish.F_SHARP,
@@ -461,7 +461,7 @@ public class MusicalKeyTest extends Assertions {
   public void testGMinor() {
 
     assertThat(MusicalKey.G_MINOR.getName()).isEqualTo("g");
-    assertThat(MusicalKey.G_MINOR.getTonalSystem()).isSameAs(TonalSystem.MINOR);
+    assertThat(MusicalKey.G_MINOR.getSystem()).isSameAs(TonalSystem.MINOR);
     assertThat(MusicalKey.G_MINOR.getTonika()).isSameAs(TonePitchEnglish.G);
     assertThat(MusicalKey.G_MINOR.getEnharmonicStyle()).isSameAs(EnharmonicStyle.FLAT);
     assertThat(MusicalKey.G_MINOR.getDiatonicScale()).containsExactly(TonePitchEnglish.G, TonePitchEnglish.A,
@@ -480,7 +480,7 @@ public class MusicalKeyTest extends Assertions {
   public void testGSharpMinor() {
 
     assertThat(MusicalKey.G_SHARP_MINOR.getName()).isEqualTo("g#");
-    assertThat(MusicalKey.G_SHARP_MINOR.getTonalSystem()).isSameAs(TonalSystem.MINOR);
+    assertThat(MusicalKey.G_SHARP_MINOR.getSystem()).isSameAs(TonalSystem.MINOR);
     assertThat(MusicalKey.G_SHARP_MINOR.getTonika()).isSameAs(TonePitchEnglish.G_SHARP);
     assertThat(MusicalKey.G_SHARP_MINOR.getEnharmonicStyle()).isSameAs(EnharmonicStyle.SHARP);
     assertThat(MusicalKey.G_SHARP_MINOR.getDiatonicScale()).containsExactly(TonePitchEnglish.G_SHARP,
@@ -501,7 +501,7 @@ public class MusicalKeyTest extends Assertions {
   public void testAFlatMinor() {
 
     assertThat(MusicalKey.A_FLAT_MINOR.getName()).isEqualTo("ab");
-    assertThat(MusicalKey.A_FLAT_MINOR.getTonalSystem()).isSameAs(TonalSystem.MINOR);
+    assertThat(MusicalKey.A_FLAT_MINOR.getSystem()).isSameAs(TonalSystem.MINOR);
     assertThat(MusicalKey.A_FLAT_MINOR.getTonika()).isSameAs(TonePitchEnglish.A_FLAT);
     assertThat(MusicalKey.A_FLAT_MINOR.getEnharmonicStyle()).isSameAs(EnharmonicStyle.FLAT);
     assertThat(MusicalKey.A_FLAT_MINOR.getDiatonicScale()).containsExactly(TonePitchEnglish.A_FLAT,
@@ -523,7 +523,7 @@ public class MusicalKeyTest extends Assertions {
   public void testAMinor() {
 
     assertThat(MusicalKey.A_MINOR.getName()).isEqualTo("a");
-    assertThat(MusicalKey.A_MINOR.getTonalSystem()).isSameAs(TonalSystem.MINOR);
+    assertThat(MusicalKey.A_MINOR.getSystem()).isSameAs(TonalSystem.MINOR);
     assertThat(MusicalKey.A_MINOR.getTonika()).isSameAs(TonePitchEnglish.A);
     assertThat(MusicalKey.A_MINOR.getEnharmonicStyle()).isSameAs(EnharmonicStyle.NORMAL);
     assertThat(MusicalKey.A_MINOR.getDiatonicScale()).containsExactly(TonePitchEnglish.A, TonePitchEnglish.B,
@@ -541,7 +541,7 @@ public class MusicalKeyTest extends Assertions {
   public void testASharpMinor() {
 
     assertThat(MusicalKey.A_SHARP_MINOR.getName()).isEqualTo("a#");
-    assertThat(MusicalKey.A_SHARP_MINOR.getTonalSystem()).isSameAs(TonalSystem.MINOR);
+    assertThat(MusicalKey.A_SHARP_MINOR.getSystem()).isSameAs(TonalSystem.MINOR);
     assertThat(MusicalKey.A_SHARP_MINOR.getTonika()).isSameAs(TonePitchEnglish.A_SHARP);
     assertThat(MusicalKey.A_SHARP_MINOR.getEnharmonicStyle()).isSameAs(EnharmonicStyle.SHARP);
     assertThat(MusicalKey.A_SHARP_MINOR.getDiatonicScale()).containsExactly(TonePitchEnglish.A_SHARP,
@@ -564,7 +564,7 @@ public class MusicalKeyTest extends Assertions {
 
     for (MusicalKey key : MusicalKey.values()) {
       String name = key.getName();
-      assertThat(key.toString()).isEqualTo(name + "-" + key.getTonalSystem());
+      assertThat(key.toString()).isEqualTo(name + "-" + key.getSystem());
       assertThat(MusicalKey.fromName(name)).isSameAs(key);
     }
   }

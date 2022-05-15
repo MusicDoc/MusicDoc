@@ -5,16 +5,14 @@ package io.github.musicdoc.music.stave;
 import io.github.musicdoc.music.tone.TonePitch;
 
 /**
- * The clef is the initial symbol of a {@link Stave} that
- * indicates which line is identifying which {@link TonePitch tone}.
- *
- * @author hohwille
+ * The clef is the initial symbol of a {@link Stave} that indicates which line is identifying which {@link TonePitch
+ * tone}.
  */
 public enum Clef {
 
   /**
-   * The G-clef which is also called treble or violin clef. This is the most common clef used in modern music. If
-   * you have proper unicode support you can see it here: &#119070;
+   * The G-clef which is also called treble or violin clef. This is the most common clef used in modern music. If you
+   * have proper unicode support you can see it here: &#119070;
    */
   G,
 

@@ -6,8 +6,6 @@ import io.github.musicdoc.music.stave.StaveBracket;
 
 /**
  * Collection of musical constants (e.g. Unicode characters and strings for musical symbols).
- *
- * @author hohwille
  */
 public interface MusicalUnicodeConstants {
 

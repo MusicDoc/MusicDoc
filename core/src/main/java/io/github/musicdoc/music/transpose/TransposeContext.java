@@ -70,7 +70,7 @@ public class TransposeContext {
   public TonalSystem getTonalSystem() {
 
     if (this.key != null) {
-      return this.key.getTonalSystem();
+      return this.key.getSystem();
     }
     return null;
   }

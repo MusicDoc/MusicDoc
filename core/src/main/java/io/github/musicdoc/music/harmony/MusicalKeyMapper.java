@@ -44,6 +44,6 @@ public class MusicalKeyMapper extends AbstractMapper<MusicalKey> {
             tonika = tonika.with(options.getToneNameStyle());
         }
         TonePitchMapper.INSTANCE.format(tonika, buffer, options);
-        TonalSystemMapper.INSTANCE.format(key.getTonalSystem(), buffer, options);
+        TonalSystemMapper.INSTANCE.format(key.getSystem(), buffer, options);
     }
 }

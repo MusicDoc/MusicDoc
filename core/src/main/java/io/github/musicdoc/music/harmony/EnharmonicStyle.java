@@ -6,8 +6,6 @@ import io.github.musicdoc.music.tone.TonePitch;
 
 /**
  * The style of an enharmonic change.
- *
- * @author hohwille
  */
 public enum EnharmonicStyle {
 
@@ -21,14 +19,17 @@ public enum EnharmonicStyle {
   NORMAL;
 
   public boolean isFlat() {
+
     return (this == FLAT);
   }
 
   public boolean isSharp() {
+
     return (this == SHARP);
   }
 
   public boolean isNormal() {
+
     return (this == NORMAL);
   }
 

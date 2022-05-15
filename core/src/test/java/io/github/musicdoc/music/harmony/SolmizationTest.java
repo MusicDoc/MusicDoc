@@ -7,8 +7,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test of {@link Solmization}.
- *
- * @author hohwille
  */
 public class SolmizationTest extends Assertions {
 

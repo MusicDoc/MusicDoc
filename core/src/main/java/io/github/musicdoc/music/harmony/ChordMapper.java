@@ -82,7 +82,7 @@ public class ChordMapper extends AbstractMapper<Chord> {
             return;
         }
         if (options.isNormalizeChords()) {
-            TonePitch fundamental = chord.getFundamentalTone().getNormalForm();
+            TonePitch fundamental = chord.getFundamental().getNormalForm();
             TonalSystem tonalSystem = chord.getTonalSystem();
             ToneNameStyle toneNameStyle = options.getToneNameStyle();
             if (tonalSystem.isMinor()) {
@@ -99,7 +99,7 @@ public class ChordMapper extends AbstractMapper<Chord> {
             for (ChordExtension ext : chord.getExtensions()) {
                 ChordExtensionMapper.INSTANCE.format(ext, buffer, options);
             }
-            TonePitch base = chord.getBaseTone();
+            TonePitch base = chord.getBase();
             if (base.getStep() != fundamental.getStep()) {
                 buffer.append(BASE_TONE_SEPARATOR);
                 base = base.with(toneNameStyle);

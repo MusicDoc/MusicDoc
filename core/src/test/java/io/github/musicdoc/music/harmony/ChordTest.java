@@ -15,8 +15,6 @@ import io.github.musicdoc.parser.CharStream;
 
 /**
  * Test of {@link Chord}.
- *
- * @author hohwille
  */
 public class ChordTest extends AbstractTest {
 
@@ -38,10 +36,10 @@ public class ChordTest extends AbstractTest {
     Chord AsSus4Add9OverFeses = ChordMapper.INSTANCE.parse("a\u266Dsus4add9/F\uD834\uDD2B");
     assertThat(AsSus4Add9OverFeses).isEqualTo(new Chord(TonePitchInternational.A_FLAT.with(ToneNameCase.LOWER_CASE),
         null, TonePitchInternational.F_DOUBLE_FLAT, ChordExtension.SUS_4, ChordExtension.ADD_9));
-    assertThat(AsSus4Add9OverFeses.getFundamentalTone())
+    assertThat(AsSus4Add9OverFeses.getFundamental())
         .isSameAs(TonePitchInternational.A_FLAT.with(ToneNameCase.LOWER_CASE));
     assertThat(AsSus4Add9OverFeses.getTonalSystem()).isNull();
-    assertThat(AsSus4Add9OverFeses.getBaseTone()).isSameAs(TonePitchInternational.F_DOUBLE_FLAT);
+    assertThat(AsSus4Add9OverFeses.getBase()).isSameAs(TonePitchInternational.F_DOUBLE_FLAT);
     assertThat(AsSus4Add9OverFeses.getExtensions()).containsExactly(ChordExtension.SUS_4, ChordExtension.ADD_9);
     assertThat(ChordMapper.INSTANCE.parse("Bb")).isEqualTo(new Chord(TonePitchEnglish.B_FLAT, TonalSystem.MAJOR_EMPTY));
     assertThat(ChordMapper.INSTANCE.parse("B")).isEqualTo(new Chord(TonePitchEnglish.B, TonalSystem.MAJOR_EMPTY));
@@ -105,11 +103,12 @@ public class ChordTest extends AbstractTest {
 
     // diatonic
     TransposeContext context = new TransposeContext(MusicalKey.C_SHARP_MAJOR);
+
     assertThat(ChordMapper.INSTANCE.parse("C\u266F7/B\u266D").transpose(DiatonicInterval.THIRD, context))
-        .isEqualTo(ChordMapper.INSTANCE.parse("E\u266F7/B\u266F"));
+        .isEqualTo(ChordMapper.INSTANCE.parse("E\u266F7/D")); // MuseScore3 is buggy and transposes to E#/D# instead
     context.setNormalizeChords(true);
     assertThat(ChordMapper.INSTANCE.parse("C\u266F7/Bb").transpose(DiatonicInterval.THIRD, context))
-        .isEqualTo(ChordMapper.INSTANCE.parse("E\u266F7/C"));
+        .isEqualTo(ChordMapper.INSTANCE.parse("E\u266F7/D"));
   }
 
 }

@@ -4,8 +4,6 @@ package io.github.musicdoc.music.rythm;
 
 /**
  * Common interface for Beat and {@link MusicalValue}.
- *
- * @author hohwille
  */
 public interface Fraction {
 

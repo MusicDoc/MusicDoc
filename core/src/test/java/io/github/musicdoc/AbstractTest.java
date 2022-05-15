@@ -6,8 +6,6 @@ import org.assertj.core.api.Assertions;
 
 /**
  * Abstract base class for tests.
- *
- * @author hohwille
  */
 public class AbstractTest extends Assertions {
 
@@ -16,8 +14,8 @@ public class AbstractTest extends Assertions {
     checkNegative(lambda, error, false, null, true);
   }
 
-  public static void checkNegative(Runnable lambda, Class<? extends Throwable> error, boolean rootCause,
-      String message, boolean substring) {
+  public static void checkNegative(Runnable lambda, Class<? extends Throwable> error, boolean rootCause, String message,
+      boolean substring) {
 
     try {
       lambda.run();
