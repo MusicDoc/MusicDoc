@@ -9,6 +9,7 @@ import io.github.musicdoc.format.AppendableAdapter;
 import io.github.musicdoc.format.FormatConstants;
 import io.github.musicdoc.format.Formatter;
 import io.github.musicdoc.format.SongFormatOptions;
+import io.github.musicdoc.music.clef.ClefMapper;
 import io.github.musicdoc.music.harmony.MusicalKey;
 import io.github.musicdoc.music.harmony.MusicalKeyMapper;
 import io.github.musicdoc.music.rythm.Beat;

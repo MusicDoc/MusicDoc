@@ -5,6 +5,7 @@ package io.github.musicdoc.music.rythm;
 import java.util.List;
 
 import io.github.musicdoc.ObjectHelper;
+import io.github.musicdoc.music.glyphs.MusicalGlyphs;
 import io.github.musicdoc.music.note.Note;
 import io.github.musicdoc.music.tone.Tone;
 import io.github.musicdoc.music.transpose.AbstractTransposable;
@@ -15,7 +16,8 @@ import io.github.musicdoc.music.transpose.AbstractTransposable;
  *
  * @param <SELF> type of the class itself.
  */
-public abstract class ValuedItem<SELF extends ValuedItem<SELF>> extends AbstractTransposable<SELF> {
+public abstract class ValuedItem<SELF extends ValuedItem<SELF>> extends AbstractTransposable<SELF>
+    implements MusicalGlyphs {
 
   /** @see #getValue() */
   protected final MusicalValue value;

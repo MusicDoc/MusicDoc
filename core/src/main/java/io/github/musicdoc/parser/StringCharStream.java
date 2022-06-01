@@ -19,16 +19,35 @@ public class StringCharStream implements CharStream {
 
   private List<Warning> warnings;
 
+  /**
+   * The constructor.
+   *
+   * @param string the {@link #getString() string to parse}.
+   */
   public StringCharStream(String string) {
 
     this(string, 0);
   }
 
+  /**
+   * The constructor.
+   *
+   * @param string the {@link #getString() string to parse}.
+   * @param index the offset where to start parsing. Typically {@code 0} to start from the beginning.
+   */
   public StringCharStream(String string, int index) {
 
     this(string, index, string.length() - 1);
   }
 
+  /**
+   * The constructor.
+   *
+   * @param string the {@link #getString() string to parse}.
+   * @param index the offset where to start parsing. Typically {@code 0} to start from the beginning.
+   * @param end the end position where to stop parsing. Typically the index of the last character in the
+   *        {@link #getString() string to parse}.
+   */
   public StringCharStream(String string, int index, int end) {
 
     super();
@@ -380,6 +399,9 @@ public class StringCharStream implements CharStream {
     return true;
   }
 
+  /**
+   * @return the {@link List} of warnings.
+   */
   public List<Warning> getWarnings() {
 
     if (this.warnings == null) {
@@ -388,6 +410,9 @@ public class StringCharStream implements CharStream {
     return this.warnings;
   }
 
+  /**
+   * @return the entire {@link String} to parse.
+   */
   public String getString() {
 
     return this.string;
@@ -402,6 +427,9 @@ public class StringCharStream implements CharStream {
     return this.string.substring(this.index);
   }
 
+  /**
+   * A warning message during parsing.
+   */
   public static class Warning {
 
     private final int startIndex;
@@ -410,6 +438,12 @@ public class StringCharStream implements CharStream {
 
     private final String expected;
 
+    /**
+     * The constructor.
+     *
+     * @param index the index where the warning occurred.
+     * @param expected the expected text.
+     */
     public Warning(int index, String expected) {
 
       super();
@@ -418,16 +452,25 @@ public class StringCharStream implements CharStream {
       this.expected = expected;
     }
 
+    /**
+     * @return the start index of this waring,
+     */
     public int getStartIndex() {
 
       return this.startIndex;
     }
 
+    /**
+     * @return the end index of this waring,
+     */
     public int getEndIndex() {
 
       return this.endIndex;
     }
 
+    /**
+     * @return the expected text.
+     */
     public String getExpected() {
 
       return this.expected;

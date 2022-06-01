@@ -48,7 +48,7 @@ public class MusicalValueMapper extends AbstractMapper<MusicalValue> {
             buffer.append(Integer.toString(beats));
             buffer.append(BEAT_SEPARATOR);
         }
-        buffer.append(Integer.toString(value.getFaction()));
+        buffer.append(Integer.toString(value.getFraction()));
         MusicalValueVariationMapper.INSTANCE.format(value.getVariation(), buffer, options);
     }
 }

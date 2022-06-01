@@ -1,10 +1,10 @@
 package io.github.musicdoc.music.partiture.voice;
 
+import io.github.musicdoc.music.bar.Bar;
 import io.github.musicdoc.music.harmony.Chord;
 import io.github.musicdoc.music.harmony.ChordContainer;
 import io.github.musicdoc.music.partiture.PartitureCell;
 import io.github.musicdoc.music.rythm.ValuedItem;
-import io.github.musicdoc.music.stave.Bar;
 import io.github.musicdoc.music.stave.Stave;
 import io.github.musicdoc.music.transpose.TransposeContext;
 

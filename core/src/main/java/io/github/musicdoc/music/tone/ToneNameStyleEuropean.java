@@ -2,38 +2,49 @@ package io.github.musicdoc.music.tone;
 
 import java.util.Map;
 
+/**
+ * Abstract base class for European {@link ToneNameStyle}s.
+ *
+ * @param <P> type of the owning {@link TonePitch}.
+ */
 public abstract class ToneNameStyleEuropean<P extends TonePitch> extends ToneNameStyle<P> {
 
-    @Override
-    public String getSingleSharpSign() {
-        return "is";
-    }
+  @Override
+  public String getSingleSharpSign() {
 
-    @Override
-    public String getDoubleSharpSign() {
-        return "isis";
-    }
+    return "is";
+  }
 
-    @Override
-    public String getSingleFlatSign() {
-        return "es";
-    }
+  @Override
+  public String getDoubleSharpSign() {
 
-    @Override
-    public String getDoubleFlatSign() {
-        return "eses";
-    }
+    return "isis";
+  }
 
-    @Override
-    public String getNeutralSign() {
-        return "";
-    }
+  @Override
+  public String getSingleFlatSign() {
 
-    @Override
-    protected Map<String, EnharmonicType> createSignsMap() {
-        Map<String, EnharmonicType> map = super.createSignsMap();
-        map.put("s", EnharmonicType.SINGLE_FLAT);
-        map.put("ses", EnharmonicType.DOUBLE_FLAT);
-        return map;
-    }
+    return "es";
+  }
+
+  @Override
+  public String getDoubleFlatSign() {
+
+    return "eses";
+  }
+
+  @Override
+  public String getNeutralSign() {
+
+    return "";
+  }
+
+  @Override
+  protected Map<String, EnharmonicType> createSignsMap() {
+
+    Map<String, EnharmonicType> map = super.createSignsMap();
+    map.put("s", EnharmonicType.SINGLE_FLAT);
+    map.put("ses", EnharmonicType.DOUBLE_FLAT);
+    return map;
+  }
 }

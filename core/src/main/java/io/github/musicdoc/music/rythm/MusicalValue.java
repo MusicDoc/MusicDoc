@@ -61,7 +61,7 @@ public class MusicalValue implements Fraction {
    * The constructor.
    *
    * @param beats - see {@link #getBeats()}.
-   * @param fraction - see {@link #getFaction()}.
+   * @param fraction - see {@link #getFraction()}.
    */
   public MusicalValue(int beats, int fraction) {
 
@@ -72,7 +72,7 @@ public class MusicalValue implements Fraction {
    * The constructor.
    *
    * @param beats - see {@link #getBeats()}.
-   * @param fraction - see {@link #getFaction()}.
+   * @param fraction - see {@link #getFraction()}.
    * @param variation - see {@link #getVariation()}.
    */
   public MusicalValue(int beats, int fraction, MusicalValueVariation variation) {
@@ -91,7 +91,7 @@ public class MusicalValue implements Fraction {
   }
 
   @Override
-  public int getFaction() {
+  public int getFraction() {
 
     return this.fraction;
   }
@@ -104,11 +104,32 @@ public class MusicalValue implements Fraction {
     return this.variation;
   }
 
+  @Override
+  public double getValue() {
+
+    return getValue(true);
+  }
+
   /**
-   * Determines if this value is relative. E.g. a {@link #_4_4} (whole value, 1/1) is often consider to be equivalent to
-   * 4/4 as 4 times a {@link #_1_4}, what is actually wrong.
+   * @param withVariation {@code true} to include {@link #getVariation() variation}, {@code false} otherwise (to exclude
+   *        it).
+   * @return the value as {@link #getBeats() beats} / {@link #getFraction() fraction}.
+   * @see #getValue()
+   */
+  public double getValue(boolean withVariation) {
+
+    double value = Fraction.super.getValue();
+    if (withVariation) {
+      value = value * this.variation.getValue();
+    }
+    return value;
+  }
+
+  /**
+   * Determines if this value is relative. E.g. a {@link #_4_4} (whole value, 1/1) is often considered to be equivalent
+   * to 4/4 as 4 times a {@link #_1_4}, what is actually wrong.
    *
-   * @return {@code true} if {@link #getFaction() fraction} is {@code 1} and the value is relative to the {@link Beat},
+   * @return {@code true} if {@link #getFraction() fraction} is {@code 1} and the value is relative to the {@link Beat},
    *         {@code false} otherwise.
    */
   public boolean isRelative() {
@@ -141,7 +162,7 @@ public class MusicalValue implements Fraction {
   public MusicalValue toAbsoluteValue(Beat beat) {
 
     if (this.fraction == 1) {
-      return new MusicalValue(beat.getBeats() * this.beats, beat.getFaction(), this.variation);
+      return new MusicalValue(beat.getBeats() * this.beats, beat.getFraction(), this.variation);
     }
     return this;
   }
@@ -156,7 +177,7 @@ public class MusicalValue implements Fraction {
     if (this.variation == MusicalValueVariation.NONE) {
       return this;
     }
-    return new MusicalValue(this.variation.getBeats() * this.beats, this.variation.getFaction() * this.fraction);
+    return new MusicalValue(this.variation.getBeats() * this.beats, this.variation.getFraction() * this.fraction);
   }
 
   @Override

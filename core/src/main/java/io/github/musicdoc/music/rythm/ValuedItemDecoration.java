@@ -6,8 +6,8 @@ import java.util.Map;
 
 import io.github.musicdoc.ObjectHelper;
 import io.github.musicdoc.format.FormatConstants;
-import io.github.musicdoc.music.MusicalUnicodeConstants;
 import io.github.musicdoc.music.PeriodType;
+import io.github.musicdoc.music.glyphs.UnicodeGlyphs;
 
 /**
  * Decoration of a {@link ValuedItem}.
@@ -18,23 +18,23 @@ public abstract class ValuedItemDecoration {
 
     private static final Map<String, ValuedItemDecoration> NAME_MAP = new HashMap<>();
 
-    public static final MarkerDecoration CODA = MarkerDecoration.create("O", MusicalUnicodeConstants.CODA, "coda");
+    public static final MarkerDecoration CODA = MarkerDecoration.create("O", UnicodeGlyphs.CODA, "coda");
 
-    public static final MarkerDecoration SEGNO = MarkerDecoration.create("S", MusicalUnicodeConstants.SEGNO,"segno");
+    public static final MarkerDecoration SEGNO = MarkerDecoration.create("S", UnicodeGlyphs.SEGNO,"segno");
 
-    public static final MarkerDecoration DA_CAPO = MarkerDecoration.create("D.C.", MusicalUnicodeConstants.DA_CAPO,"dacapo");
+    public static final MarkerDecoration DA_CAPO = MarkerDecoration.create("D.C.", UnicodeGlyphs.DA_CAPO,"dacapo");
 
-    public static final MarkerDecoration DAL_SEGNO = MarkerDecoration.create("D.S.", MusicalUnicodeConstants.DAL_SEGNO,"dalsegno");
+    public static final MarkerDecoration DAL_SEGNO = MarkerDecoration.create("D.S.", UnicodeGlyphs.DAL_SEGNO,"dalsegno");
 
-    public static final MarkerDecoration DA_CODA = MarkerDecoration.create("dacoda", "Da " + MusicalUnicodeConstants.CODA);
+    public static final MarkerDecoration DA_CODA = MarkerDecoration.create("dacoda", "Da " + UnicodeGlyphs.CODA);
 
-    public static final MarkerDecoration UP_BOW = MarkerDecoration.create("u", MusicalUnicodeConstants.COMBINING_UP_BOW, "upbow");
+    public static final MarkerDecoration UP_BOW = MarkerDecoration.create("u", UnicodeGlyphs.COMBINING_UP_BOW, "upbow");
 
-    public static final MarkerDecoration DOWN_BOW = MarkerDecoration.create("v", MusicalUnicodeConstants.COMBINING_DOWN_BOW, "downbow" );
+    public static final MarkerDecoration DOWN_BOW = MarkerDecoration.create("v", UnicodeGlyphs.COMBINING_DOWN_BOW, "downbow" );
 
     public static final MarkerDecoration FINE = MarkerDecoration.create("fine", "FINE");
 
-    public static final AccentDecoration WEDGE = AccentDecoration.create("wedge", MusicalUnicodeConstants.ORNAMENT_STROKE_5);
+    public static final AccentDecoration WEDGE = AccentDecoration.create("wedge", UnicodeGlyphs.ORNAMENT_STROKE_5);
 
     /** Left-hand pizzicato, or rasp for French horns. */
     public static final AccentDecoration PLUS = AccentDecoration.create("+", "+", "plus");
@@ -42,25 +42,25 @@ public abstract class ValuedItemDecoration {
     /** cello thumb symbol. */
     public static final AccentDecoration THUMB = AccentDecoration.create("thumb", null);
 
-    public static final AccentDecoration SNAP = AccentDecoration.create("snap", MusicalUnicodeConstants.COMBINING_SNAP_PIZZICATO);
+    public static final AccentDecoration SNAP = AccentDecoration.create("snap", UnicodeGlyphs.COMBINING_SNAP_PIZZICATO);
 
-    public static final AccentDecoration OPEN = AccentDecoration.create("open", MusicalUnicodeConstants.COMBINING_HARMONIC);
+    public static final AccentDecoration OPEN = AccentDecoration.create("open", UnicodeGlyphs.COMBINING_HARMONIC);
 
-    public static final AccentDecoration BREATH = AccentDecoration.create("'", MusicalUnicodeConstants.BREATH_MARK, "breath");
+    public static final AccentDecoration BREATH = AccentDecoration.create("'", UnicodeGlyphs.BREATH_MARK, "breath");
 
     public static final AccentDecoration ROLL = AccentDecoration.create("~", "", "roll");
 
-    public static final AccentDecoration ACCENT = AccentDecoration.create(">", MusicalUnicodeConstants.COMBINING_ACCENT, "accent", "emphasis", "L");
+    public static final AccentDecoration ACCENT = AccentDecoration.create(">", UnicodeGlyphs.COMBINING_ACCENT, "accent", "emphasis", "L");
 
-    public static final AccentDecoration FERMATA = AccentDecoration.create("H", MusicalUnicodeConstants.FERMATA, "fermata");
+    public static final AccentDecoration FERMATA = AccentDecoration.create("H", UnicodeGlyphs.FERMATA, "fermata");
 
-    public static final AccentDecoration INVERTED_FERMATA = AccentDecoration.create("invertedfermata", MusicalUnicodeConstants.FERMATA_BELOW);
+    public static final AccentDecoration INVERTED_FERMATA = AccentDecoration.create("invertedfermata", UnicodeGlyphs.FERMATA_BELOW);
 
-    public static final AccentDecoration TENUTO = AccentDecoration.create("tenuto", MusicalUnicodeConstants.COMBINING_TENUTO);
+    public static final AccentDecoration TENUTO = AccentDecoration.create("tenuto", UnicodeGlyphs.COMBINING_TENUTO);
 
-    public static final AccentDecoration STACCATO = AccentDecoration.create(".", MusicalUnicodeConstants.COMBINING_STACCATO, "staccato");
+    public static final AccentDecoration STACCATO = AccentDecoration.create(".", UnicodeGlyphs.COMBINING_STACCATO, "staccato");
 
-    public static final TrillDecoration TRILL = TrillDecoration.create("T", null, MusicalUnicodeConstants.TR, "trill", "tr");
+    public static final TrillDecoration TRILL = TrillDecoration.create("T", null, UnicodeGlyphs.TR, "trill", "tr");
 
     public static final TrillDecoration TRILL_START = TrillDecoration.create("tr(", PeriodType.START, "", "trill(");
 
@@ -70,48 +70,48 @@ public abstract class ValuedItemDecoration {
 
     public static final TrillDecoration UPPER_MORDENT = TrillDecoration.create("P", null, "","pralltriller", "uppermordent");
 
-    public static final TrillDecoration TURN = TrillDecoration.create("turn", null, MusicalUnicodeConstants.TURN);
+    public static final TrillDecoration TURN = TrillDecoration.create("turn", null, UnicodeGlyphs.TURN);
 
-    public static final TrillDecoration TURN_SLASH = TrillDecoration.create("turnx", null, MusicalUnicodeConstants.TURN_SLASH);
+    public static final TrillDecoration TURN_SLASH = TrillDecoration.create("turnx", null, UnicodeGlyphs.TURN_SLASH);
 
-    public static final TrillDecoration INVERTED_TURN = TrillDecoration.create("invertedturn", null, MusicalUnicodeConstants.INVERTED_TURN);
+    public static final TrillDecoration INVERTED_TURN = TrillDecoration.create("invertedturn", null, UnicodeGlyphs.INVERTED_TURN);
 
     public static final TrillDecoration INVERTED_TURN_SLASH = TrillDecoration.create("invertedturnx", null, "");
 
-    public static final DynamicDecoration CRESCENDO_START = DynamicDecoration.create("<(", PeriodType.START, MusicalUnicodeConstants.CRESCENDO, "crescendo(");
+    public static final DynamicDecoration CRESCENDO_START = DynamicDecoration.create("<(", PeriodType.START, UnicodeGlyphs.CRESCENDO, "crescendo(");
 
-    public static final DynamicDecoration CRESCENDO_END = DynamicDecoration.create("<)", PeriodType.END, MusicalUnicodeConstants.CRESCENDO,"crescendo)");
+    public static final DynamicDecoration CRESCENDO_END = DynamicDecoration.create("<)", PeriodType.END, UnicodeGlyphs.CRESCENDO,"crescendo)");
 
-    public static final DynamicDecoration DECRESCENDO_START = DynamicDecoration.create(">(", PeriodType.START, MusicalUnicodeConstants.DECRESCENDO, "decrescendo(", "diminuendo(");
+    public static final DynamicDecoration DECRESCENDO_START = DynamicDecoration.create(">(", PeriodType.START, UnicodeGlyphs.DECRESCENDO, "decrescendo(", "diminuendo(");
 
-    public static final DynamicDecoration DECRESCENDO_END = DynamicDecoration.create(">)", PeriodType.END, MusicalUnicodeConstants.DECRESCENDO, "decrescendo)", "diminuendo)");
+    public static final DynamicDecoration DECRESCENDO_END = DynamicDecoration.create(">)", PeriodType.END, UnicodeGlyphs.DECRESCENDO, "decrescendo)", "diminuendo)");
 
-    public static final VolumeDecoration PIANO_1 = new VolumeDecoration("p", MusicalUnicodeConstants.PIANO);
+    public static final VolumeDecoration PIANO_1 = new VolumeDecoration("p", UnicodeGlyphs.PIANO);
 
-    public static final VolumeDecoration PIANO_2 = new VolumeDecoration("pp", MusicalUnicodeConstants.PIANO + MusicalUnicodeConstants.PIANO);
+    public static final VolumeDecoration PIANO_2 = new VolumeDecoration("pp", UnicodeGlyphs.PIANO + UnicodeGlyphs.PIANO);
 
-    public static final VolumeDecoration PIANO_3 = new VolumeDecoration("ppp", MusicalUnicodeConstants.PIANO + MusicalUnicodeConstants.PIANO + MusicalUnicodeConstants.PIANO);
+    public static final VolumeDecoration PIANO_3 = new VolumeDecoration("ppp", UnicodeGlyphs.PIANO + UnicodeGlyphs.PIANO + UnicodeGlyphs.PIANO);
 
-    public static final VolumeDecoration PIANO_4 = new VolumeDecoration("pppp", MusicalUnicodeConstants.PIANO + MusicalUnicodeConstants.PIANO + MusicalUnicodeConstants.PIANO + MusicalUnicodeConstants.PIANO);
+    public static final VolumeDecoration PIANO_4 = new VolumeDecoration("pppp", UnicodeGlyphs.PIANO + UnicodeGlyphs.PIANO + UnicodeGlyphs.PIANO + UnicodeGlyphs.PIANO);
 
-    public static final VolumeDecoration MEZZO_PIANO = new VolumeDecoration("mp", MusicalUnicodeConstants.MEZZO + MusicalUnicodeConstants.PIANO);
+    public static final VolumeDecoration MEZZO_PIANO = new VolumeDecoration("mp", UnicodeGlyphs.MEZZO + UnicodeGlyphs.PIANO);
 
-    public static final VolumeDecoration MEZZO_FORTE = new VolumeDecoration("mf", MusicalUnicodeConstants.MEZZO + MusicalUnicodeConstants.FORTE);
+    public static final VolumeDecoration MEZZO_FORTE = new VolumeDecoration("mf", UnicodeGlyphs.MEZZO + UnicodeGlyphs.FORTE);
 
-    public static final VolumeDecoration FORTE_1 = new VolumeDecoration("f", MusicalUnicodeConstants.FORTE);
+    public static final VolumeDecoration FORTE_1 = new VolumeDecoration("f", UnicodeGlyphs.FORTE);
 
-    public static final VolumeDecoration FORTE_2 = new VolumeDecoration("ff", MusicalUnicodeConstants.FORTE + MusicalUnicodeConstants.FORTE);
+    public static final VolumeDecoration FORTE_2 = new VolumeDecoration("ff", UnicodeGlyphs.FORTE + UnicodeGlyphs.FORTE);
 
-    public static final VolumeDecoration FORTE_3 = new VolumeDecoration("fff", MusicalUnicodeConstants.FORTE + MusicalUnicodeConstants.FORTE + MusicalUnicodeConstants.FORTE);
+    public static final VolumeDecoration FORTE_3 = new VolumeDecoration("fff", UnicodeGlyphs.FORTE + UnicodeGlyphs.FORTE + UnicodeGlyphs.FORTE);
 
     /** Sforzando (suddenly with force). */
-    public static final VolumeDecoration SFORZANDO = new VolumeDecoration("sfz", MusicalUnicodeConstants.SUBITO + MusicalUnicodeConstants.FORTE + MusicalUnicodeConstants.Z);
+    public static final VolumeDecoration SFORZANDO = new VolumeDecoration("sfz", UnicodeGlyphs.SUBITO + UnicodeGlyphs.FORTE + UnicodeGlyphs.Z);
 
-    public static final PedalDecoration PEDAL_DOWN = PedalDecoration.create("ped,", PeriodType.START, MusicalUnicodeConstants.PEDAL_MARK, "pedal", "pedal(");
+    public static final PedalDecoration PEDAL_DOWN = PedalDecoration.create("ped,", PeriodType.START, UnicodeGlyphs.PEDAL_MARK, "pedal", "pedal(");
 
-    public static final PedalDecoration PEDAL_UP = PedalDecoration.create("*", PeriodType.END, MusicalUnicodeConstants.PEDAL_UP_MARK, "pedal)");
+    public static final PedalDecoration PEDAL_UP = PedalDecoration.create("*", PeriodType.END, UnicodeGlyphs.PEDAL_UP_MARK, "pedal)");
 
-    public static final PedalDecoration PEDAL_HALF_DOWN = PedalDecoration.create("pedalhalf", PeriodType.START, MusicalUnicodeConstants.HALF_PEDAL_MARK, "pedalhalf)");
+    public static final PedalDecoration PEDAL_HALF_DOWN = PedalDecoration.create("pedalhalf", PeriodType.START, UnicodeGlyphs.HALF_PEDAL_MARK, "pedalhalf)");
 
     public static final SlurDecoration SLUR_START = SlurDecoration.create("(", PeriodType.START, "");
 

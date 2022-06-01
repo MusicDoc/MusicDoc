@@ -3,12 +3,12 @@ package io.github.musicdoc.music.partiture.voice;
 import java.io.IOException;
 
 import io.github.musicdoc.format.SongFormatOptions;
+import io.github.musicdoc.music.bar.Bar;
+import io.github.musicdoc.music.bar.BarMapper;
 import io.github.musicdoc.music.harmony.ChordContainer;
 import io.github.musicdoc.music.harmony.ChordContainerMapperChordPro;
 import io.github.musicdoc.music.rythm.ValuedItem;
 import io.github.musicdoc.music.rythm.ValuedItemMapperChordPro;
-import io.github.musicdoc.music.stave.Bar;
-import io.github.musicdoc.music.stave.BarMapper;
 import io.github.musicdoc.music.stave.Stave;
 import io.github.musicdoc.music.stave.StaveMapperChordPro;
 import io.github.musicdoc.parser.CharStream;

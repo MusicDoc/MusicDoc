@@ -6,6 +6,9 @@ import io.github.musicdoc.music.harmony.TonalSystem;
 import io.github.musicdoc.music.tab.Tab;
 import io.github.musicdoc.music.tone.Tone;
 
+/**
+ * Context for {@link Transposable#transpose(int, boolean, TransposeContext) transposing}.
+ */
 public class TransposeContext {
 
   private boolean keepKey;
@@ -20,18 +23,31 @@ public class TransposeContext {
 
   private boolean normalizeChords;
 
+  /**
+   * The constructor.
+   */
   public TransposeContext() {
 
     super();
     this.keepKey = true;
   }
 
+  /**
+   * The constructor.
+   *
+   * @param key the {@link #getKey() key}.
+   */
   public TransposeContext(MusicalKey key) {
 
     this();
     this.key = key;
   }
 
+  /**
+   * The constructor.
+   *
+   * @param enharmonicStyle the {@link #getEnharmonicStyle() enharmonic style}.
+   */
   public TransposeContext(EnharmonicStyle enharmonicStyle) {
 
     this();
@@ -47,6 +63,9 @@ public class TransposeContext {
     return this.keepKey;
   }
 
+  /**
+   * @param keepKey the new value of {@link #isKeepKey()}.
+   */
   public void setKeepKey(boolean keepKey) {
 
     this.keepKey = keepKey;
@@ -62,11 +81,17 @@ public class TransposeContext {
     return this.key;
   }
 
+  /**
+   * @param key the new value of {@link #getKey()}.
+   */
   public void setKey(MusicalKey key) {
 
     this.key = key;
   }
 
+  /**
+   * @return the {@link TonalSystem} to use.
+   */
   public TonalSystem getTonalSystem() {
 
     if (this.key != null) {
@@ -90,6 +115,9 @@ public class TransposeContext {
     return this.enharmonicStyle;
   }
 
+  /**
+   * @param enharmonicStyle the new value of {@link #getEnharmonicStyle()}.
+   */
   public void setEnharmonicStyle(EnharmonicStyle enharmonicStyle) {
 
     this.enharmonicStyle = enharmonicStyle;
@@ -103,6 +131,9 @@ public class TransposeContext {
     return this.tab;
   }
 
+  /**
+   * @param tab the new value of {@link #getTab()}.
+   */
   public void setTab(Tab tab) {
 
     this.tab = tab;
@@ -118,16 +149,26 @@ public class TransposeContext {
     return this.changeTab;
   }
 
+  /**
+   * @param changeTab the new value of {@link #isChangeTab()}.
+   */
   public void setChangeTab(boolean changeTab) {
 
     this.changeTab = changeTab;
   }
 
+  /**
+   * @return {@code true} to {@link io.github.musicdoc.music.harmony.Chord#normalize() normalize}
+   *         {@link io.github.musicdoc.music.harmony.Chord}s, {@code false} otherwise.
+   */
   public boolean isNormalizeChords() {
 
     return this.normalizeChords;
   }
 
+  /**
+   * @param normalizeChords the new value of {@link #isNormalizeChords()}.
+   */
   public void setNormalizeChords(boolean normalizeChords) {
 
     this.normalizeChords = normalizeChords;

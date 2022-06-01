@@ -4,8 +4,10 @@ package io.github.musicdoc.music.tone;
 
 import java.util.Locale;
 
+import io.github.musicdoc.music.clef.Clef;
+import io.github.musicdoc.music.harmony.ChromaticInterval;
+import io.github.musicdoc.music.harmony.Interval;
 import io.github.musicdoc.music.harmony.MusicalKey;
-import io.github.musicdoc.music.stave.Clef;
 import io.github.musicdoc.music.transpose.AbstractTransposable;
 import io.github.musicdoc.music.transpose.TransposeContext;
 
@@ -16,224 +18,334 @@ import io.github.musicdoc.music.transpose.TransposeContext;
  */
 public class Tone extends AbstractTransposable<Tone> implements Comparable<Tone> {
 
+  /** Character to transpose one octave up. */
   public static final char OCTAVE_UP = '\'';
 
+  /** Character to transpose one octave down. */
   public static final char OCTAVE_DOWN = ',';
 
+  /** {@link TonePitchEnglish#C} with {@link #getOctave() octave} {@code 0}. */
   public static final Tone C0 = new Tone(TonePitchEnglish.C, 0);
 
+  /** {@link TonePitchEnglish#C_SHARP} with {@link #getOctave() octave} {@code 0}. */
   public static final Tone CS0 = new Tone(TonePitchEnglish.C_SHARP, 0);
 
+  /** {@link TonePitchEnglish#D} with {@link #getOctave() octave} {@code 0}. */
   public static final Tone D0 = new Tone(TonePitchEnglish.D, 0);
 
+  /** {@link TonePitchEnglish#D_SHARP} with {@link #getOctave() octave} {@code 0}. */
   public static final Tone DS0 = new Tone(TonePitchEnglish.D_SHARP, 0);
 
+  /** {@link TonePitchEnglish#E} with {@link #getOctave() octave} {@code 0}. */
   public static final Tone E0 = new Tone(TonePitchEnglish.E, 0);
 
+  /** {@link TonePitchEnglish#F} with {@link #getOctave() octave} {@code 0}. */
   public static final Tone F0 = new Tone(TonePitchEnglish.F, 0);
 
+  /** {@link TonePitchEnglish#F_SHARP} with {@link #getOctave() octave} {@code 0}. */
   public static final Tone FS0 = new Tone(TonePitchEnglish.F_SHARP, 0);
 
+  /** {@link TonePitchEnglish#G} with {@link #getOctave() octave} {@code 0}. */
   public static final Tone G0 = new Tone(TonePitchEnglish.G, 0);
 
+  /** {@link TonePitchEnglish#G_SHARP} with {@link #getOctave() octave} {@code 0}. */
   public static final Tone GS0 = new Tone(TonePitchEnglish.G_SHARP, 0);
 
+  /** {@link TonePitchEnglish#A} with {@link #getOctave() octave} {@code 0}. */
   public static final Tone A0 = new Tone(TonePitchEnglish.A, 0);
 
+  /** {@link TonePitchEnglish#B_FLAT} with {@link #getOctave() octave} {@code 0}. */
   public static final Tone BF0 = new Tone(TonePitchEnglish.B_FLAT, 0);
 
+  /** {@link TonePitchEnglish#B} with {@link #getOctave() octave} {@code 0}. */
   public static final Tone B0 = new Tone(TonePitchEnglish.B, 0);
 
+  /** {@link TonePitchEnglish#C} with {@link #getOctave() octave} {@code 1}. */
   public static final Tone C1 = new Tone(TonePitchEnglish.C, 1);
 
+  /** {@link TonePitchEnglish#C_SHARP} with {@link #getOctave() octave} {@code 1}. */
   public static final Tone CS1 = new Tone(TonePitchEnglish.C_SHARP, 1);
 
+  /** {@link TonePitchEnglish#D} with {@link #getOctave() octave} {@code 1}. */
   public static final Tone D1 = new Tone(TonePitchEnglish.D, 1);
 
+  /** {@link TonePitchEnglish#D_SHARP} with {@link #getOctave() octave} {@code 1}. */
   public static final Tone DS1 = new Tone(TonePitchEnglish.D_SHARP, 1);
 
+  /** {@link TonePitchEnglish#E} with {@link #getOctave() octave} {@code 1}. */
   public static final Tone E1 = new Tone(TonePitchEnglish.E, 1);
 
+  /** {@link TonePitchEnglish#F} with {@link #getOctave() octave} {@code 1}. */
   public static final Tone F1 = new Tone(TonePitchEnglish.F, 1);
 
+  /** {@link TonePitchEnglish#F_SHARP} with {@link #getOctave() octave} {@code 1}. */
   public static final Tone FS1 = new Tone(TonePitchEnglish.F_SHARP, 1);
 
+  /** {@link TonePitchEnglish#G} with {@link #getOctave() octave} {@code 1}. */
   public static final Tone G1 = new Tone(TonePitchEnglish.G, 1);
 
+  /** {@link TonePitchEnglish#G_SHARP} with {@link #getOctave() octave} {@code 1}. */
   public static final Tone GS1 = new Tone(TonePitchEnglish.G_SHARP, 1);
 
+  /** {@link TonePitchEnglish#A} with {@link #getOctave() octave} {@code 1}. */
   public static final Tone A1 = new Tone(TonePitchEnglish.A, 1);
 
+  /** {@link TonePitchEnglish#B_FLAT} with {@link #getOctave() octave} {@code 1}. */
   public static final Tone BF1 = new Tone(TonePitchEnglish.B_FLAT, 1);
 
+  /** {@link TonePitchEnglish#B} with {@link #getOctave() octave} {@code 1}. */
   public static final Tone B1 = new Tone(TonePitchEnglish.B, 1);
 
+  /** {@link TonePitchEnglish#C} with {@link #getOctave() octave} {@code 2}. */
   public static final Tone C2 = new Tone(TonePitchEnglish.C, 2);
 
+  /** {@link TonePitchEnglish#C_SHARP} with {@link #getOctave() octave} {@code 2}. */
   public static final Tone CS2 = new Tone(TonePitchEnglish.C_SHARP, 2);
 
+  /** {@link TonePitchEnglish#D} with {@link #getOctave() octave} {@code 2}. */
   public static final Tone D2 = new Tone(TonePitchEnglish.D, 2);
 
+  /** {@link TonePitchEnglish#D_SHARP} with {@link #getOctave() octave} {@code 2}. */
   public static final Tone DS2 = new Tone(TonePitchEnglish.D_SHARP, 2);
 
+  /** {@link TonePitchEnglish#E} with {@link #getOctave() octave} {@code 2}. */
   public static final Tone E2 = new Tone(TonePitchEnglish.E, 2);
 
+  /** {@link TonePitchEnglish#F} with {@link #getOctave() octave} {@code 2}. */
   public static final Tone F2 = new Tone(TonePitchEnglish.F, 2);
 
+  /** {@link TonePitchEnglish#F_SHARP} with {@link #getOctave() octave} {@code 2}. */
   public static final Tone FS2 = new Tone(TonePitchEnglish.F_SHARP, 2);
 
+  /** {@link TonePitchEnglish#G} with {@link #getOctave() octave} {@code 2}. */
   public static final Tone G2 = new Tone(TonePitchEnglish.G, 2);
 
+  /** {@link TonePitchEnglish#G_SHARP} with {@link #getOctave() octave} {@code 2}. */
   public static final Tone GS2 = new Tone(TonePitchEnglish.G_SHARP, 2);
 
+  /** {@link TonePitchEnglish#A} with {@link #getOctave() octave} {@code 2}. */
   public static final Tone A2 = new Tone(TonePitchEnglish.A, 2);
 
+  /** {@link TonePitchEnglish#B_FLAT} with {@link #getOctave() octave} {@code 2}. */
   public static final Tone BF2 = new Tone(TonePitchEnglish.B_FLAT, 2);
 
+  /** {@link TonePitchEnglish#B} with {@link #getOctave() octave} {@code 2}. */
   public static final Tone B2 = new Tone(TonePitchEnglish.B, 2);
 
+  /** {@link TonePitchEnglish#C} with {@link #getOctave() octave} {@code 3}. */
   public static final Tone C3 = new Tone(TonePitchEnglish.C, 3);
 
+  /** {@link TonePitchEnglish#C_SHARP} with {@link #getOctave() octave} {@code 3}. */
   public static final Tone CS3 = new Tone(TonePitchEnglish.C_SHARP, 3);
 
+  /** {@link TonePitchEnglish#D} with {@link #getOctave() octave} {@code 3}. */
   public static final Tone D3 = new Tone(TonePitchEnglish.D, 3);
 
+  /** {@link TonePitchEnglish#D_SHARP} with {@link #getOctave() octave} {@code 3}. */
   public static final Tone DS3 = new Tone(TonePitchEnglish.D_SHARP, 3);
 
+  /** {@link TonePitchEnglish#E} with {@link #getOctave() octave} {@code 3}. */
   public static final Tone E3 = new Tone(TonePitchEnglish.E, 3);
 
+  /** {@link TonePitchEnglish#F} with {@link #getOctave() octave} {@code 3}. */
   public static final Tone F3 = new Tone(TonePitchEnglish.F, 3);
 
+  /** {@link TonePitchEnglish#F_SHARP} with {@link #getOctave() octave} {@code 3}. */
   public static final Tone FS3 = new Tone(TonePitchEnglish.F_SHARP, 3);
 
+  /** {@link TonePitchEnglish#G} with {@link #getOctave() octave} {@code 3}. */
   public static final Tone G3 = new Tone(TonePitchEnglish.G, 3);
 
+  /** {@link TonePitchEnglish#G_SHARP} with {@link #getOctave() octave} {@code 3}. */
   public static final Tone GS3 = new Tone(TonePitchEnglish.G_SHARP, 3);
 
+  /** {@link TonePitchEnglish#A} with {@link #getOctave() octave} {@code 3}. */
   public static final Tone A3 = new Tone(TonePitchEnglish.A, 3);
 
+  /** {@link TonePitchEnglish#B_FLAT} with {@link #getOctave() octave} {@code 3}. */
   public static final Tone BF3 = new Tone(TonePitchEnglish.B_FLAT, 3);
 
+  /** {@link TonePitchEnglish#B} with {@link #getOctave() octave} {@code 3}. */
   public static final Tone B3 = new Tone(TonePitchEnglish.B, 3);
 
+  /** {@link TonePitchEnglish#C} with {@link #getOctave() octave} {@code 4}. */
   public static final Tone C4 = new Tone(TonePitchEnglish.C, 4);
 
+  /** {@link TonePitchEnglish#C_SHARP} with {@link #getOctave() octave} {@code 4}. */
   public static final Tone CS4 = new Tone(TonePitchEnglish.C_SHARP, 4);
 
+  /** {@link TonePitchEnglish#D} with {@link #getOctave() octave} {@code 4}. */
   public static final Tone D4 = new Tone(TonePitchEnglish.D, 4);
 
+  /** {@link TonePitchEnglish#D_SHARP} with {@link #getOctave() octave} {@code 4}. */
   public static final Tone DS4 = new Tone(TonePitchEnglish.D_SHARP, 4);
 
+  /** {@link TonePitchEnglish#E} with {@link #getOctave() octave} {@code 4}. */
   public static final Tone E4 = new Tone(TonePitchEnglish.E, 4);
 
+  /** {@link TonePitchEnglish#F} with {@link #getOctave() octave} {@code 4}. */
   public static final Tone F4 = new Tone(TonePitchEnglish.F, 4);
 
+  /** {@link TonePitchEnglish#F_SHARP} with {@link #getOctave() octave} {@code 4}. */
   public static final Tone FS4 = new Tone(TonePitchEnglish.F_SHARP, 4);
 
+  /** {@link TonePitchEnglish#G} with {@link #getOctave() octave} {@code 4}. */
   public static final Tone G4 = new Tone(TonePitchEnglish.G, 4);
 
+  /** {@link TonePitchEnglish#G_SHARP} with {@link #getOctave() octave} {@code 4}. */
   public static final Tone GS4 = new Tone(TonePitchEnglish.G_SHARP, 4);
 
+  /** {@link TonePitchEnglish#A} with {@link #getOctave() octave} {@code 4}. */
   public static final Tone A4 = new Tone(TonePitchEnglish.A, 4);
 
+  /** {@link TonePitchEnglish#B_FLAT} with {@link #getOctave() octave} {@code 4}. */
   public static final Tone BF4 = new Tone(TonePitchEnglish.B_FLAT, 4);
 
+  /** {@link TonePitchEnglish#B} with {@link #getOctave() octave} {@code 4}. */
   public static final Tone B4 = new Tone(TonePitchEnglish.B, 4);
 
+  /** {@link TonePitchEnglish#C} with {@link #getOctave() octave} {@code 5}. */
   public static final Tone C5 = new Tone(TonePitchEnglish.C, 5);
 
+  /** {@link TonePitchEnglish#C_SHARP} with {@link #getOctave() octave} {@code 5}. */
   public static final Tone CS5 = new Tone(TonePitchEnglish.C_SHARP, 5);
 
+  /** {@link TonePitchEnglish#D} with {@link #getOctave() octave} {@code 5}. */
   public static final Tone D5 = new Tone(TonePitchEnglish.D, 5);
 
+  /** {@link TonePitchEnglish#D_SHARP} with {@link #getOctave() octave} {@code 5}. */
   public static final Tone DS5 = new Tone(TonePitchEnglish.D_SHARP, 5);
 
+  /** {@link TonePitchEnglish#E} with {@link #getOctave() octave} {@code 5}. */
   public static final Tone E5 = new Tone(TonePitchEnglish.E, 5);
 
+  /** {@link TonePitchEnglish#F} with {@link #getOctave() octave} {@code 5}. */
   public static final Tone F5 = new Tone(TonePitchEnglish.F, 5);
 
+  /** {@link TonePitchEnglish#F_SHARP} with {@link #getOctave() octave} {@code 5}. */
   public static final Tone FS5 = new Tone(TonePitchEnglish.F_SHARP, 5);
 
+  /** {@link TonePitchEnglish#G} with {@link #getOctave() octave} {@code 5}. */
   public static final Tone G5 = new Tone(TonePitchEnglish.G, 5);
 
+  /** {@link TonePitchEnglish#G_SHARP} with {@link #getOctave() octave} {@code 5}. */
   public static final Tone GS5 = new Tone(TonePitchEnglish.G_SHARP, 5);
 
+  /** {@link TonePitchEnglish#A} with {@link #getOctave() octave} {@code 5}. */
   public static final Tone A5 = new Tone(TonePitchEnglish.A, 5);
 
+  /** {@link TonePitchEnglish#B_FLAT} with {@link #getOctave() octave} {@code 5}. */
   public static final Tone BF5 = new Tone(TonePitchEnglish.B_FLAT, 5);
 
+  /** {@link TonePitchEnglish#B} with {@link #getOctave() octave} {@code 5}. */
   public static final Tone B5 = new Tone(TonePitchEnglish.B, 5);
 
+  /** {@link TonePitchEnglish#C} with {@link #getOctave() octave} {@code 6}. */
   public static final Tone C6 = new Tone(TonePitchEnglish.C, 6);
 
+  /** {@link TonePitchEnglish#C_SHARP} with {@link #getOctave() octave} {@code 6}. */
   public static final Tone CS6 = new Tone(TonePitchEnglish.C_SHARP, 6);
 
+  /** {@link TonePitchEnglish#D} with {@link #getOctave() octave} {@code 6}. */
   public static final Tone D6 = new Tone(TonePitchEnglish.D, 6);
 
+  /** {@link TonePitchEnglish#D_SHARP} with {@link #getOctave() octave} {@code 6}. */
   public static final Tone DS6 = new Tone(TonePitchEnglish.D_SHARP, 6);
 
+  /** {@link TonePitchEnglish#E} with {@link #getOctave() octave} {@code 6}. */
   public static final Tone E6 = new Tone(TonePitchEnglish.E, 6);
 
+  /** {@link TonePitchEnglish#F} with {@link #getOctave() octave} {@code 6}. */
   public static final Tone F6 = new Tone(TonePitchEnglish.F, 6);
 
+  /** {@link TonePitchEnglish#F_SHARP} with {@link #getOctave() octave} {@code 6}. */
   public static final Tone FS6 = new Tone(TonePitchEnglish.F_SHARP, 6);
 
+  /** {@link TonePitchEnglish#G} with {@link #getOctave() octave} {@code 6}. */
   public static final Tone G6 = new Tone(TonePitchEnglish.G, 6);
 
+  /** {@link TonePitchEnglish#G_SHARP} with {@link #getOctave() octave} {@code 6}. */
   public static final Tone GS6 = new Tone(TonePitchEnglish.G_SHARP, 6);
 
+  /** {@link TonePitchEnglish#A} with {@link #getOctave() octave} {@code 6}. */
   public static final Tone A6 = new Tone(TonePitchEnglish.A, 6);
 
+  /** {@link TonePitchEnglish#B_FLAT} with {@link #getOctave() octave} {@code 6}. */
   public static final Tone BF6 = new Tone(TonePitchEnglish.B_FLAT, 6);
 
+  /** {@link TonePitchEnglish#B} with {@link #getOctave() octave} {@code 6}. */
   public static final Tone B6 = new Tone(TonePitchEnglish.B, 6);
 
+  /** {@link TonePitchEnglish#C} with {@link #getOctave() octave} {@code 7}. */
   public static final Tone C7 = new Tone(TonePitchEnglish.C, 7);
 
+  /** {@link TonePitchEnglish#C_SHARP} with {@link #getOctave() octave} {@code 7}. */
   public static final Tone CS7 = new Tone(TonePitchEnglish.C_SHARP, 7);
 
+  /** {@link TonePitchEnglish#D} with {@link #getOctave() octave} {@code 7}. */
   public static final Tone D7 = new Tone(TonePitchEnglish.D, 7);
 
+  /** {@link TonePitchEnglish#D_SHARP} with {@link #getOctave() octave} {@code 7}. */
   public static final Tone DS7 = new Tone(TonePitchEnglish.D_SHARP, 7);
 
+  /** {@link TonePitchEnglish#E} with {@link #getOctave() octave} {@code 7}. */
   public static final Tone E7 = new Tone(TonePitchEnglish.E, 7);
 
+  /** {@link TonePitchEnglish#F} with {@link #getOctave() octave} {@code 7}. */
   public static final Tone F7 = new Tone(TonePitchEnglish.F, 7);
 
+  /** {@link TonePitchEnglish#F_SHARP} with {@link #getOctave() octave} {@code 7}. */
   public static final Tone FS7 = new Tone(TonePitchEnglish.F_SHARP, 7);
 
+  /** {@link TonePitchEnglish#G} with {@link #getOctave() octave} {@code 7}. */
   public static final Tone G7 = new Tone(TonePitchEnglish.G, 7);
 
+  /** {@link TonePitchEnglish#G_SHARP} with {@link #getOctave() octave} {@code 7}. */
   public static final Tone GS7 = new Tone(TonePitchEnglish.G_SHARP, 7);
 
+  /** {@link TonePitchEnglish#A} with {@link #getOctave() octave} {@code 7}. */
   public static final Tone A7 = new Tone(TonePitchEnglish.A, 7);
 
+  /** {@link TonePitchEnglish#B_FLAT} with {@link #getOctave() octave} {@code 7}. */
   public static final Tone BF7 = new Tone(TonePitchEnglish.B_FLAT, 7);
 
+  /** {@link TonePitchEnglish#B} with {@link #getOctave() octave} {@code 7}. */
   public static final Tone B7 = new Tone(TonePitchEnglish.B, 7);
 
+  /** {@link TonePitchEnglish#C} with {@link #getOctave() octave} {@code 8}. */
   public static final Tone C8 = new Tone(TonePitchEnglish.C, 8);
 
+  /** {@link TonePitchEnglish#C_SHARP} with {@link #getOctave() octave} {@code 8}. */
   public static final Tone CS8 = new Tone(TonePitchEnglish.C_SHARP, 8);
 
+  /** {@link TonePitchEnglish#D} with {@link #getOctave() octave} {@code 8}. */
   public static final Tone D8 = new Tone(TonePitchEnglish.D, 8);
 
+  /** {@link TonePitchEnglish#D_SHARP} with {@link #getOctave() octave} {@code 8}. */
   public static final Tone DS8 = new Tone(TonePitchEnglish.D_SHARP, 8);
 
+  /** {@link TonePitchEnglish#E} with {@link #getOctave() octave} {@code 8}. */
   public static final Tone E8 = new Tone(TonePitchEnglish.E, 8);
 
+  /** {@link TonePitchEnglish#F} with {@link #getOctave() octave} {@code 8}. */
   public static final Tone F8 = new Tone(TonePitchEnglish.F, 8);
 
+  /** {@link TonePitchEnglish#F_SHARP} with {@link #getOctave() octave} {@code 8}. */
   public static final Tone FS8 = new Tone(TonePitchEnglish.F_SHARP, 8);
 
+  /** {@link TonePitchEnglish#G} with {@link #getOctave() octave} {@code 8}. */
   public static final Tone G8 = new Tone(TonePitchEnglish.G, 8);
 
+  /** {@link TonePitchEnglish#G_SHARP} with {@link #getOctave() octave} {@code 8}. */
   public static final Tone GS8 = new Tone(TonePitchEnglish.G_SHARP, 8);
 
+  /** {@link TonePitchEnglish#A} with {@link #getOctave() octave} {@code 8}. */
   public static final Tone A8 = new Tone(TonePitchEnglish.A, 8);
 
+  /** {@link TonePitchEnglish#B_FLAT} with {@link #getOctave() octave} {@code 8}. */
   public static final Tone BF8 = new Tone(TonePitchEnglish.B_FLAT, 8);
 
+  /** {@link TonePitchEnglish#B} with {@link #getOctave() octave} {@code 8}. */
   public static final Tone B8 = new Tone(TonePitchEnglish.B, 8);
 
   private static final Tone[] TONES = new Tone[] { C0, CS0, D0, DS0, E0, F0, FS0, G0, GS0, A0, BF0, B0, C1, CS1, D1,
@@ -272,10 +384,10 @@ public class Tone extends AbstractTransposable<Tone> implements Comparable<Tone>
 
   /**
    * @return the octave the {@link #getPitch() pitch} is located. A value of {@code 0} is the lowest octave on a piano
-   *         (starting with {@link #A0}). The regular octave in {@link Clef#G violin-clef} is {@code 2} starting with
-   *         the {@link #C2 low C} (below the scale) and ending with {@link #B2 B♯2} in the middle of the scale. A
-   *         higher value is used to go up an octave to higher pitches and a lower value is used to go down (e.g.
-   *         {@code 1} and {@code 0} for {@link Clef#F bass-clef}).
+   *         (starting with {@link #A0}). The regular octave in {@link Clef#TREBLE treble-clef} is {@code 4} starting
+   *         with the {@link #C4 low C} (below the scale) and ending with {@link #B4 B♯4} in the middle of the scale. A
+   *         higher value is used to go up an octave and a lower value is used to go down (e.g. {@code 3} and {@code 2}
+   *         for {@link Clef#BASS bass-clef}).
    */
   public int getOctave() {
 
@@ -357,6 +469,22 @@ public class Tone extends AbstractTransposable<Tone> implements Comparable<Tone>
     }
   }
 
+  /**
+   * Computes the {@link ChromaticInterval} from this {@link Tone} to the given {@link Tone} ({@code targetTpne}. Unlike
+   * {@link TonePitch#getInterval(TonePitch)} this method will return a directional {@link ChromaticInterval} that will
+   * be negative in case this {@link Tone} {@link #isHigher(Tone) is higher} than the given {@link Tone}. Also, it will
+   * cover all steps and can exceed one or multiple octaves.
+   *
+   * @param targetTone is the target {@link TonePitch}.
+   * @return the {@link ChromaticInterval} to {@link #transpose(Interval, TransposeContext) get} from this
+   *         {@link TonePitch} to the given {@code targetTone}.
+   */
+  public ChromaticInterval getInterval(Tone targetTone) {
+
+    int chromaticSteps = targetTone.getStep() - getStep();
+    return ChromaticInterval.of(chromaticSteps);
+  }
+
   @Override
   public Tone transpose(int steps, boolean diatonic, TransposeContext context) {
 
@@ -399,7 +527,11 @@ public class Tone extends AbstractTransposable<Tone> implements Comparable<Tone>
     return new Tone(resultPitch, resultOctave);
   }
 
-  public String getName(ToneNameStyle style) {
+  /**
+   * @param style the {@link ToneNameStyle}.
+   * @return the name of this {@link Tone} using the given {@link ToneNameStyle}.
+   */
+  public String getName(ToneNameStyle<?> style) {
 
     String result = this.pitch.with(style).getName();
     if (this.octave > 2) {
@@ -415,6 +547,9 @@ public class Tone extends AbstractTransposable<Tone> implements Comparable<Tone>
     return result;
   }
 
+  /**
+   * @return the regular display name of this {@link Tone}.
+   */
   public String getName() {
 
     return this.name;
@@ -430,6 +565,11 @@ public class Tone extends AbstractTransposable<Tone> implements Comparable<Tone>
     return result;
   }
 
+  /**
+   * @param other the other {@link Tone} to compare.
+   * @return {@code true} if this {@link Tone} and the given {@link Tone} are equal (have the same {@link #getStep()
+   *         step}).
+   */
   public boolean isEqualTo(Tone other) {
 
     if (other == null) {
@@ -468,6 +608,11 @@ public class Tone extends AbstractTransposable<Tone> implements Comparable<Tone>
     return this.name;
   }
 
+  /**
+   * @param pitch the {@link #getPitch() pitch}.
+   * @param octave the {@link #getOctave() octave}.
+   * @return the specified {@link Tone}.
+   */
   public static Tone of(TonePitch pitch, int octave) {
 
     if ((octave >= 0) && (octave <= 8) && pitch.isNormal()) {

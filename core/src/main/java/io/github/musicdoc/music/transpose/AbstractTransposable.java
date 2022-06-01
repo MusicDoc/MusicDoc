@@ -4,6 +4,11 @@ import io.github.musicdoc.music.harmony.Interval;
 import io.github.musicdoc.music.harmony.TonalSystem;
 import io.github.musicdoc.music.tone.TonePitch;
 
+/**
+ * Abstract base implementation of {@link Transposable}.
+ *
+ * @param <SELF> this type itself.
+ */
 public abstract class AbstractTransposable<SELF extends AbstractTransposable<SELF>> implements Transposable<SELF> {
 
   @Override
@@ -34,6 +39,12 @@ public abstract class AbstractTransposable<SELF extends AbstractTransposable<SEL
     }
   }
 
+  /**
+   * @param original the original {@link TonePitch}.
+   * @param transposed the transposed {@link TonePitch}.
+   * @param diatonicSteps the number diatonic steps for tranposing.
+   * @return the number of chromatic steps from {@code original} to {@code transposed}.
+   */
   protected int getChromaticSteps(TonePitch original, TonePitch transposed, int diatonicSteps) {
 
     int chromaticSteps = transposed.getStep().get() - original.getStep().get();

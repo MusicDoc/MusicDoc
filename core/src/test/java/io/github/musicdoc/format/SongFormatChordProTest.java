@@ -2,7 +2,7 @@ package io.github.musicdoc.format;
 
 import org.junit.jupiter.api.Test;
 
-import io.github.musicdoc.format.SongFormatChordPro;
+import io.github.musicdoc.music.clef.Clef;
 import io.github.musicdoc.music.harmony.Chord;
 import io.github.musicdoc.music.harmony.ChordExtension;
 import io.github.musicdoc.music.harmony.ChordMapper;
@@ -21,7 +21,6 @@ import io.github.musicdoc.music.partiture.voice.PartitureVoiceLineContinuation;
 import io.github.musicdoc.music.rythm.Beat;
 import io.github.musicdoc.music.rythm.MusicalValue;
 import io.github.musicdoc.music.rythm.Rest;
-import io.github.musicdoc.music.stave.Clef;
 import io.github.musicdoc.music.stave.Stave;
 import io.github.musicdoc.music.stave.StaveBracket;
 import io.github.musicdoc.music.stave.StaveVoice;
@@ -155,7 +154,7 @@ public class SongFormatChordProTest extends SongFormatTest {
     PartitureVoiceLine voiceLine = (PartitureVoiceLine) line;
     assertThat(voiceLine.getCells()).hasSize(8);
     assertThat(voiceLine.getContinuation()).isNull();
-    Stave stave = new Stave(Clef.G, MusicalKey.C_MAJOR, Beat._4_4);
+    Stave stave = new Stave(Clef.TREBLE, MusicalKey.C_MAJOR, Beat._4_4);
     stave.addVoice(StaveVoice.SOPRANO);
     stave.addVoice(StaveVoice.ALTO);
     stave.setBracket(StaveBracket.SQUARE);
@@ -196,7 +195,7 @@ public class SongFormatChordProTest extends SongFormatTest {
     voiceLine = (PartitureVoiceLine) line;
     assertThat(voiceLine.getCells()).hasSize(8);
     assertThat(voiceLine.getContinuation()).isSameAs(PartitureVoiceLineContinuation.LINE);
-    stave = new Stave(Clef.F, MusicalKey.C_MAJOR, Beat._4_4);
+    stave = new Stave(Clef.BASS, MusicalKey.C_MAJOR, Beat._4_4);
     stave.addVoice(StaveVoice.TENOR);
     stave.addVoice(StaveVoice.BASS);
     stave.setBracket(StaveBracket.SQUARE);

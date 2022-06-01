@@ -13,7 +13,7 @@ import java.util.Set;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import io.github.musicdoc.music.MusicalUnicodeConstants;
+import io.github.musicdoc.music.glyphs.UnicodeGlyphsAccidental;
 import io.github.musicdoc.music.harmony.EnharmonicStyle;
 import io.github.musicdoc.music.harmony.MusicalKey;
 
@@ -28,9 +28,9 @@ public class TonePitchTest extends Assertions {
   @Test
   public void testNormal() {
 
-    Set<TonePitchEnglish> normalPitches = new HashSet<>(
-        Arrays.asList(TonePitchEnglish.C, TonePitchEnglish.C_SHARP, TonePitchEnglish.D, TonePitchEnglish.D_SHARP, TonePitchEnglish.E, TonePitchEnglish.F,
-            TonePitchEnglish.F_SHARP, TonePitchEnglish.G, TonePitchEnglish.G_SHARP, TonePitchEnglish.A, TonePitchEnglish.B_FLAT, TonePitchEnglish.B));
+    Set<TonePitchEnglish> normalPitches = new HashSet<>(Arrays.asList(TonePitchEnglish.C, TonePitchEnglish.C_SHARP,
+        TonePitchEnglish.D, TonePitchEnglish.D_SHARP, TonePitchEnglish.E, TonePitchEnglish.F, TonePitchEnglish.F_SHARP,
+        TonePitchEnglish.G, TonePitchEnglish.G_SHARP, TonePitchEnglish.A, TonePitchEnglish.B_FLAT, TonePitchEnglish.B));
     for (int i = 0; i < 12; i++) {
       TonePitch pitch = TonePitchEnglish.STYLE.pitch(ChromaticStep.of(i));
       if (normalPitches.contains(pitch)) {
@@ -89,10 +89,11 @@ public class TonePitchTest extends Assertions {
     assertThat(TonePitches.of("b\u266D")).isSameAs(TonePitchInternational.B_FLAT.with(ToneNameCase.LOWER_CASE));
     assertThat(TonePitches.of("h")).isSameAs(TonePitchGerman.H.with(ToneNameCase.LOWER_CASE));
     assertThat(TonePitches.of("b\u266E")).isSameAs(TonePitchInternational.B_NEUTRAL.with(ToneNameCase.LOWER_CASE));
-    assertThat(TonePitches.of("f" + MusicalUnicodeConstants.DOUBLE_FLAT)).isSameAs(TonePitchInternational.F_DOUBLE_FLAT.with(ToneNameCase.LOWER_CASE));
+    assertThat(TonePitches.of("f" + UnicodeGlyphsAccidental.FLAT_2))
+        .isSameAs(TonePitchInternational.F_DOUBLE_FLAT.with(ToneNameCase.LOWER_CASE));
     assertThat(TonePitches.of("fbb")).isSameAs(TonePitchEnglish.F_DOUBLE_FLAT.with(ToneNameCase.LOWER_CASE));
     assertThat(TonePitches.of("fEseS")).isSameAs(TonePitchGerman.FESES.with(ToneNameCase.LOWER_CASE));
-    assertThat(TonePitches.of("B" + MusicalUnicodeConstants.DOUBLE_FLAT)).isSameAs(TonePitchInternational.B_DOUBLE_FLAT);
+    assertThat(TonePitches.of("B" + UnicodeGlyphsAccidental.FLAT_2)).isSameAs(TonePitchInternational.B_DOUBLE_FLAT);
     assertThat(TonePitches.of("B##")).isSameAs(TonePitchEnglish.B_DOUBLE_SHARP);
     assertThat(TonePitches.of("hISis")).isSameAs(TonePitchGerman.HISIS.with(ToneNameCase.LOWER_CASE));
     assertThat(TonePitches.of("BISis")).isSameAs(TonePitchDutch.BISIS);
@@ -110,23 +111,24 @@ public class TonePitchTest extends Assertions {
     assertThat(TonePitchMapper.INSTANCE.parse("cbe").getName()).isEqualTo("cb");
     assertThat(TonePitchMapper.INSTANCE.parse("c#9").getName()).isEqualTo("c#");
     assertThat(TonePitchMapper.INSTANCE.parse("hesesisas").getName()).isEqualTo("heses");
-    assertThat(TonePitchMapper.INSTANCE.parse("B" + MusicalUnicodeConstants.DOUBLE_FLAT).getName()).isEqualTo("B" + MusicalUnicodeConstants.DOUBLE_FLAT);
+    assertThat(TonePitchMapper.INSTANCE.parse("B" + UnicodeGlyphsAccidental.FLAT_2).getName())
+        .isEqualTo("B" + UnicodeGlyphsAccidental.FLAT_2);
     assertThat(TonePitchMapper.INSTANCE.parse("Bbb").getName()).isEqualTo("Bbb");
     assertThat(TonePitchMapper.INSTANCE.parse("Bub").getName()).isEqualTo("B");
   }
 
   /**
-   * Test of {@link TonePitch#getUnicode()}.
+   * Test of {@link TonePitch#getName()} with {@link TonePitchInternational}.
    */
   @Test
   public void testUnicode() {
 
     Map<String, String> unicode2asciiMap = new HashMap<>();
-    unicode2asciiMap.put(MusicalUnicodeConstants.SINGLE_SHARP, "#");
-    unicode2asciiMap.put(MusicalUnicodeConstants.SINGLE_FLAT, "b");
-    unicode2asciiMap.put(MusicalUnicodeConstants.DOUBLE_SHARP, "##");
-    unicode2asciiMap.put(MusicalUnicodeConstants.DOUBLE_FLAT, "bb");
-    unicode2asciiMap.put(MusicalUnicodeConstants.NEUTRAL, "");
+    unicode2asciiMap.put(UnicodeGlyphsAccidental.SHARP_1, "#");
+    unicode2asciiMap.put(UnicodeGlyphsAccidental.FLAT_1, "b");
+    unicode2asciiMap.put(UnicodeGlyphsAccidental.SHARP_2, "##");
+    unicode2asciiMap.put(UnicodeGlyphsAccidental.FLAT_2, "bb");
+    unicode2asciiMap.put(UnicodeGlyphsAccidental.NEUTRAL, "");
     for (TonePitch pitch : getEnglishValues()) {
       String unicode = pitch.with(TonePitchInternational.STYLE).getName();
       String ascii = unicode;

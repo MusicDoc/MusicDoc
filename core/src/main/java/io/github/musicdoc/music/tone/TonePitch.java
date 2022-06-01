@@ -17,14 +17,26 @@ import io.github.musicdoc.music.transpose.TransposeContext;
  */
 public abstract class TonePitch extends AbstractTransposable<TonePitch> {
 
+  /** @see #getName() */
   protected final String name;
 
+  /** @see #getStep() */
   protected final ChromaticStep step;
 
+  /** @see #getEnharmonicStyle() */
   protected final EnharmonicType enharmonicType;
 
+  /** @see #getCase() */
   protected final ToneNameCase nameCase;
 
+  /**
+   * The constructor.
+   *
+   * @param name the {@link #getName() name}.
+   * @param step the {@link #getStep() step}.
+   * @param nameCase the {@link ToneNameCase}.
+   * @param enharmonicType the {@link EnharmonicType}.
+   */
   protected TonePitch(String name, ChromaticStep step, ToneNameCase nameCase, EnharmonicType enharmonicType) {
 
     super();
@@ -59,7 +71,7 @@ public abstract class TonePitch extends AbstractTransposable<TonePitch> {
   /**
    * @return the {@link ToneNameStyle} of this pitch.
    */
-  public abstract ToneNameStyle getNameStyle();
+  public abstract ToneNameStyle<?> getNameStyle();
 
   /**
    * @return the {@link EnharmonicStyle} of this pitch.
@@ -72,6 +84,9 @@ public abstract class TonePitch extends AbstractTransposable<TonePitch> {
     return this.enharmonicType.getStyle();
   }
 
+  /**
+   * @return the {@link EnharmonicType} of this pitch.
+   */
   public EnharmonicType getEnharmonicType() {
 
     return this.enharmonicType;
@@ -87,6 +102,9 @@ public abstract class TonePitch extends AbstractTransposable<TonePitch> {
    */
   public abstract TonePitch getReference();
 
+  /**
+   * @return the number of accidental signs of this pitch (like 'b' to flatten or '#' to sharpen).
+   */
   public int getSignCount() {
 
     return this.enharmonicType.getSignCount();
@@ -108,6 +126,10 @@ public abstract class TonePitch extends AbstractTransposable<TonePitch> {
     return EnharmonicStyle.FLAT.equals(this.enharmonicType.getStyle());
   }
 
+  /**
+   * @return the sharpened {@link TonePitch} or {@code null} if no such pitch exists.
+   * @see EnharmonicType#sharpen()
+   */
   public TonePitch sharpen() {
 
     EnharmonicType newType = this.enharmonicType.sharpen();
@@ -117,6 +139,10 @@ public abstract class TonePitch extends AbstractTransposable<TonePitch> {
     return getNameStyle().pitch(this.step.next(), newType, this.nameCase);
   }
 
+  /**
+   * @return the flattened {@link TonePitch} or {@code null} if no such pitch exists.
+   * @see EnharmonicType#flatten()
+   */
   public TonePitch flatten() {
 
     EnharmonicType newType = this.enharmonicType.flatten();
@@ -130,6 +156,7 @@ public abstract class TonePitch extends AbstractTransposable<TonePitch> {
    * @param nameStyle the {@link ToneNameStyle} of the requested pitch.
    * @return a {@link TonePitch} with the same {@link #getReference() reference} and {@link #getCase() case} as this
    *         pitch but with the given {@link ToneNameStyle}.
+   * @param <P> type of the {@link TonePitch}.
    */
   public <P extends TonePitch> P with(ToneNameStyle<P> nameStyle) {
 
@@ -138,53 +165,55 @@ public abstract class TonePitch extends AbstractTransposable<TonePitch> {
 
   /**
    * @param nameStyle the {@link ToneNameStyle} of the requested pitch.
-   * @param nameCase the {@link #getCase() case} of the requested pitch.
+   * @param newCase the {@link #getCase() case} of the requested pitch.
    * @return a {@link TonePitch} with the same {@link #getReference() reference} and {@link #getStep() step} as this
    *         pitch but with the given {@link #getCase() case} and {@link #getNameStyle() name style}.
+   * @param <P> type of the {@link TonePitch}.
    */
-  public <P extends TonePitch> P with(ToneNameStyle<P> nameStyle, ToneNameCase nameCase) {
+  public <P extends TonePitch> P with(ToneNameStyle<P> nameStyle, ToneNameCase newCase) {
 
-    return nameStyle.pitch(this.step, this.enharmonicType, nameCase);
+    return nameStyle.pitch(this.step, this.enharmonicType, newCase);
   }
 
   /**
-   * @param nameCase the {@link #getCase() case} of the requested pitch.
+   * @param newCase the {@link #getCase() case} of the requested pitch.
    * @return a {@link TonePitch} with the same {@link #getReference() reference} and {@link #getStep() step} as this
    *         pitch but with the given {@link #getCase() case}.
    */
-  public abstract TonePitch with(ToneNameCase nameCase);
+  public abstract TonePitch with(ToneNameCase newCase);
 
   /**
-   * @param enharmonicType the {@link #getEnharmonicType() enharmonic type} of the requested pitch.
+   * @param newType the {@link #getEnharmonicType() enharmonic type} of the requested pitch.
    * @return a {@link TonePitch} with the same {@link #getStep() step} and {@link #getCase() case} as this pitch but
    *         with the given {@link EnharmonicType}.
    */
-  public TonePitch with(EnharmonicType enharmonicType) {
+  public TonePitch with(EnharmonicType newType) {
 
-    return with(enharmonicType, this.nameCase);
+    return with(newType, this.nameCase);
   }
 
   /**
-   * @param enharmonicType the {@link #getEnharmonicType() enharmonic type} of the requested pitch.
-   * @param nameCase the {@link #getCase() case} of the requested pitch.
+   * @param newType the {@link #getEnharmonicType() enharmonic type} of the requested pitch.
+   * @param newCase the {@link #getCase() case} of the requested pitch.
    * @return a {@link TonePitch} with the same {@link #getStep() step} as this pitch but with the given
    *         {@link #getCase() case} and (if possible) the given {@link EnharmonicType}.
    */
-  public TonePitch with(EnharmonicType enharmonicType, ToneNameCase nameCase) {
+  public TonePitch with(EnharmonicType newType, ToneNameCase newCase) {
 
-    return with(getNameStyle(), enharmonicType, nameCase);
+    return with(getNameStyle(), newType, newCase);
   }
 
   /**
-   * @param enharmonicType the {@link #getEnharmonicType() enharmonic type} of the requested pitch.
-   * @param nameCase the {@link #getCase() case} of the requested pitch.
+   * @param newStyle the new {@link #getEnharmonicStyle() enharmonic style} of the requested pitch.
+   * @param newType the {@link #getEnharmonicType() enharmonic type} of the requested pitch.
+   * @param newCase the {@link #getCase() case} of the requested pitch.
    * @return a {@link TonePitch} with the same {@link #getStep() step} as this pitch but with the given
    *         {@link #getCase() case} and (if possible) the given {@link EnharmonicType}.
+   * @param <P> type of the {@link TonePitch}.
    */
-  public <P extends TonePitch> P with(ToneNameStyle<P> nameStyle, EnharmonicType enharmonicType,
-      ToneNameCase nameCase) {
+  public <P extends TonePitch> P with(ToneNameStyle<P> newStyle, EnharmonicType newType, ToneNameCase newCase) {
 
-    return nameStyle.pitch(this.step, enharmonicType, nameCase);
+    return newStyle.pitch(this.step, newType, newCase);
   }
 
   /**
@@ -268,11 +297,23 @@ public abstract class TonePitch extends AbstractTransposable<TonePitch> {
     }
   }
 
+  /**
+   * @param semitoneSteps the number of semitones to transpose upwards. Use negative value to transpose down.
+   * @param style the {@link EnharmonicStyle} to use.
+   * @return the transposed {@link TonePitch}.
+   */
   public TonePitch transposeChromatic(int semitoneSteps, EnharmonicStyle style) {
 
     return transposeChromatic(semitoneSteps, style, true);
   }
 
+  /**
+   * @param semitoneSteps the number of semitones to transpose upwards. Use negative value to transpose down.
+   * @param style the {@link EnharmonicStyle} to use.
+   * @param strict - {@code true} for strict transposing (e.g. prevent {@link TonePitchEnglish#B_FLAT} for
+   *        {@link EnharmonicStyle#SHARP}), {@code false} otherwise.
+   * @return the transposed {@link TonePitch}.
+   */
   public TonePitch transposeChromatic(int semitoneSteps, EnharmonicStyle style, boolean strict) {
 
     ChromaticStep targetStep = this.step.add(semitoneSteps);
@@ -290,20 +331,35 @@ public abstract class TonePitch extends AbstractTransposable<TonePitch> {
     return result;
   }
 
+  /**
+   * @param semitoneSteps the number of semitones to transpose upwards. Use negative value to transpose down.
+   * @param key the {@link MusicalKey} to use for diatonic transposing.
+   * @return the transposed {@link TonePitch}.
+   */
   public TonePitch transposeChromatic(int semitoneSteps, MusicalKey key) {
 
     ChromaticStep targetStep = this.step.add(semitoneSteps - key.getTonika().getStep().get());
     return key.getChromaticScale().get(targetStep.get()).with(getNameStyle(), this.nameCase);
   }
 
+  /**
+   * @param diatonicSteps the number of diatonic steps to transpose upwards. Use negative value to transpose down.
+   * @param key the {@link MusicalKey} to use for diatonic transposing.
+   * @return the transposed {@link TonePitch}.
+   */
   public TonePitch transposeDiatonic(int diatonicSteps, MusicalKey key) {
 
     ChromaticStep chromaticTonikaOffset = this.step.add(-key.getTonika().getStep().get());
-    int step = key.getSystem().getDiatonicSteps(chromaticTonikaOffset.get(), false);
-    DiatonicStep targetStep = DiatonicStep.of(step).add(diatonicSteps);
+    int keySteps = key.getSystem().getDiatonicSteps(chromaticTonikaOffset.get(), false);
+    DiatonicStep targetStep = DiatonicStep.of(keySteps).add(diatonicSteps);
     return key.getDiatonicScale().get(targetStep.get()).with(getNameStyle(), this.nameCase);
   }
 
+  /**
+   * @param pitch the {@link TonePitch} to compare.
+   * @return {@code true} if this {@link TonePitch} and the given {@link TonePitch} are equal (have the same
+   *         {@link #getStep() step}), {@code false} otherwise.
+   */
   public boolean isEqualTo(TonePitch pitch) {
 
     if (pitch == null) {

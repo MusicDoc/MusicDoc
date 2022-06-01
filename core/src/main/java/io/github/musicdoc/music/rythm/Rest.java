@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.github.musicdoc.format.FormatConstants;
+import io.github.musicdoc.music.glyphs.MusicSymbolContext;
+import io.github.musicdoc.music.glyphs.SmuflGlyphsRest;
+import io.github.musicdoc.music.glyphs.UnicodeGlyphsRest;
 import io.github.musicdoc.music.transpose.TransposeContext;
 
 /**
@@ -71,6 +74,30 @@ public class Rest extends ValuedItem<Rest> {
   public Rest transpose(int steps, boolean diatonic, TransposeContext context) {
 
     return this;
+  }
+
+  @Override
+  public String getGlyphs(MusicSymbolContext context) {
+
+    if (this.invisible) {
+      return "";
+    }
+    String glyphs = null;
+    if (context.isEnforceUnicode()) {
+      glyphs = UnicodeGlyphsRest.get(this.value);
+    } else {
+      glyphs = SmuflGlyphsRest.get(this.value);
+    }
+    if (glyphs == null) {
+      throw new IllegalStateException("Not implemented/supported");
+    }
+    String vGlyphs = this.value.getVariation().getGlyphs(context);
+    if (vGlyphs == null) {
+      throw new IllegalStateException("Not implemented/supported");
+    } else if (!vGlyphs.isEmpty()) {
+      glyphs = glyphs + vGlyphs;
+    }
+    return glyphs;
   }
 
   char getSymbol() {

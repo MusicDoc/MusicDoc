@@ -1,15 +1,15 @@
 package io.github.musicdoc.music.stave;
 
-import io.github.musicdoc.music.MusicalUnicodeConstants;
+import io.github.musicdoc.music.glyphs.UnicodeGlyphs;
 
 /**
  * The bracket (type) of one or multiple {@link Stave}s.
  */
 public enum StaveBracket {
 
-    SQUARE('[', ']', MusicalUnicodeConstants.BRACKET),
+    SQUARE('[', ']', UnicodeGlyphs.BRACKET),
 
-    CURLY('{', '}', MusicalUnicodeConstants.BRACE);
+    CURLY('{', '}', UnicodeGlyphs.BRACE);
 
     private final char start;
 

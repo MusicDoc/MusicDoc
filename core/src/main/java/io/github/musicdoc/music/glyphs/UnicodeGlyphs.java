@@ -1,49 +1,14 @@
 /* Copyright (c) The m-m-m Team, Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0 */
-package io.github.musicdoc.music;
+package io.github.musicdoc.music.glyphs;
 
 import io.github.musicdoc.music.stave.StaveBracket;
 
 /**
- * Collection of musical constants (e.g. Unicode characters and strings for musical symbols).
+ * Marker interface for collections of musical constants based on
+ * <a href="https://w3c.github.io/smufl/latest/index.html">Unicode</a>.
  */
-public interface MusicalUnicodeConstants {
-
-  /** The single flat symbol: {@value}. */
-  char SINGLE_FLAT_CHAR = '\u266D';
-
-  /** The single flat symbol: {@value}. */
-  String SINGLE_FLAT = Character.toString(SINGLE_FLAT_CHAR);
-
-  /** The neutral symbol: {@value}. */
-  char NEUTRAL_CHAR = '\u266E';
-
-  /** The neutral symbol: {@value}. */
-  String NEUTRAL = Character.toString(NEUTRAL_CHAR);
-
-  /** The single sharp symbol: {@value} . */
-  char SINGLE_SHARP_CHAR = '\u266F';
-
-  /** The single sharp symbol: {@value}. */
-  String SINGLE_SHARP = Character.toString(SINGLE_SHARP_CHAR);
-
-  /** The single barline symbol: {@value}. */
-  String SINGLE_BARLINE = "\uD834\uDD00";
-
-  /** The double barline symbol: {@value}. */
-  String DOUBLE_BARLINE = "\uD834\uDD01";
-
-  /** The finale barline symbol: {@value}. */
-  String FINAL_BARLINE = "\uD834\uDD02";
-
-  /** The reverse finale barline symbol: {@value}. */
-  String REVERSE_FINAL_BARLINE = "\uD834\uDD03";
-
-  /** The left repeat symbol: {@value}. */
-  String LEFT_REPEAT = "\uD834\uDD06";
-
-  /** The right repeat symbol: {@value}. */
-  String RIGHT_REPEAT = "\uD834\uDD07";
+public interface UnicodeGlyphs {
 
   /** The dal segno symbol: {@value}. */
   String DAL_SEGNO = "\uD834\uDD09";
@@ -106,55 +71,8 @@ public interface MusicalUnicodeConstants {
    */
   String FOUR_STRING_FRETBOARD = "\uD834\uDD1D";
 
-  /**
-   * The G clef symbol: {@value}.
-   *
-   * @see io.github.musicdoc.music.stave.Clef#G
-   */
-  String G_CLEV = "\uD834\uDD1E";
-
-  /**
-   * The C clef symbol: {@value}.
-   *
-   * @see io.github.musicdoc.music.stave.Clef#C
-   */
-  String C_CLEV = "\uD834\uDD21";
-
-  /**
-   * The F clef symbol: {@value}.
-   *
-   * @see io.github.musicdoc.music.stave.Clef#F
-   */
-  String F_CLEV = "\uD834\uDD22";
-
-  /**
-   * The drum clef 1 symbol: {@value}.
-   *
-   * @see io.github.musicdoc.music.stave.Clef
-   */
-  String DRUM_CLEV_1 = "\uD834\uDD25";
-
-  /**
-   * The drum clef 2 symbol: {@value}.
-   *
-   * @see io.github.musicdoc.music.stave.Clef
-   */
-  String DRUM_CLEV_2 = "\uD834\uDD26";
-
   /** The multiple measure rest symbol: {@value}. */
   String MULTI_MEASURE_REST = "\uD834\uDD29";
-
-  char DOUBLE_SIGN_CHAR1 = '\uD834';
-
-  char DOUBLE_SHARP_CHAR2 = '\uDD2A';
-
-  char DOUBLE_FLAT_CHAR2 = '\uDD2B';
-
-  /** The double sharp symbol: {@value}. */
-  String DOUBLE_SHARP = "" + DOUBLE_SIGN_CHAR1 + DOUBLE_SHARP_CHAR2;
-
-  /** The double flat symbol: {@value}. */
-  String DOUBLE_FLAT = "" + DOUBLE_SIGN_CHAR1 + DOUBLE_FLAT_CHAR2;
 
   /** The common time symbol: {@value}. */
   String COMMON_TIME = "\uD834\uDD34";
@@ -171,56 +89,8 @@ public interface MusicalUnicodeConstants {
   /** The multi rest symbol: {@value}. */
   String MULTI_REST = "\uD834\uDD3A";
 
-  /** The whole (1/1) rest symbol: {@value}. */
-  String WHOLE_REST = "\uD834\uDD3B";
-
-  /** The half (1/2) rest symbol: {@value}. */
-  String HALF_REST = "\uD834\uDD3C";
-
-  /** The quarter (1/4) rest symbol: {@value}. */
-  String QUARTER_REST = "\uD834\uDD3D";
-
-  /** The eighth (1/8) rest symbol: {@value}. */
-  String EIGHTH_REST = "\uD834\uDD3E";
-
-  /** The sixteenth (1/16) rest symbol: {@value}. */
-  String SIXTEENTH_REST = "\uD834\uDD3F";
-
-  /** The thirty-second (1/32) rest symbol: {@value}. */
-  String THIRTY_SECOND_REST = "\uD834\uDD40";
-
-  /** The sixty-fourth (1/64) rest symbol: {@value}. */
-  String SIXTY_FOURTH_REST = "\uD834\uDD41";
-
-  /** The one-hundred-twenty-eighth (1/128) rest symbol: {@value}. */
-  String ONE_HUNDRED_TWENTY_EIGHTH_REST = "\uD834\uDD42";
-
   /** The breve (note) symbol: {@value}. */
   String BREVE = "\uD834\uDD5C";
-
-  /** The whole (4/4) note symbol: {@value}. */
-  String WHOLE_NOTE = "\uD834\uDD5D";
-
-  /** The half (1/2) note symbol: {@value}. */
-  String HALF_NOTE = "\uD834\uDD5E";
-
-  /** The quarter (1/4) note symbol: {@value}. */
-  String QUARTER_NOTE = "\uD834\uDD5F";
-
-  /** The eighth (1/8) note symbol: {@value}. */
-  String EIGHTH_NOTE = "\uD834\uDD60";
-
-  /** The sixteenth (1/16) note symbol: {@value}. */
-  String SIXTEENTH_NOTE = "\uD834\uDD61";
-
-  /** The thirty-second (1/32) note symbol: {@value}. */
-  String THIRTY_SECOND_NOTE = "\uD834\uDD62";
-
-  /** The sixty-fourth (1/64) note symbol: {@value}. */
-  String SIXTY_FOURTH_NOTE = "\uD834\uDD63";
-
-  /** The one-hundred-twenty-eighth (1/128) note symbol: {@value}. */
-  String ONE_HUNDRED_TWENTY_EIGHTH_NOTE = "\uD834\uDD64";
 
   /** The combining accent symbol: {@value}. */
   String COMBINING_ACCENT = "\uD834\uDD7B";

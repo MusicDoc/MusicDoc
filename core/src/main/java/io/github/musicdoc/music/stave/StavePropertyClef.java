@@ -1,5 +1,7 @@
 package io.github.musicdoc.music.stave;
 
+import io.github.musicdoc.music.clef.Clef;
+
 class StavePropertyClef extends StaveProperty<Clef> {
 
     public static final StavePropertyClef INSTANCE = new StavePropertyClef();

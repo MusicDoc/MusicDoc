@@ -36,7 +36,7 @@ public class BeatMapper extends AbstractMapper<Beat> {
         }
         int beats = beat.getBeats();
         buffer.append(Integer.toString(beats));
-        int fraction = beat.getFaction();
+        int fraction = beat.getFraction();
         if (fraction != 4) {
             buffer.append(BEAT_SEPARATOR);
             buffer.append(Integer.toString(fraction));

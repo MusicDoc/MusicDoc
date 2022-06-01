@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.github.musicdoc.ObjectHelper;
+import io.github.musicdoc.music.clef.Clef;
+import io.github.musicdoc.music.glyphs.MusicSymbolContext;
+import io.github.musicdoc.music.glyphs.SmuflGlyphsNote;
+import io.github.musicdoc.music.glyphs.UnicodeGlyphsNote;
 import io.github.musicdoc.music.rythm.MusicalValue;
 import io.github.musicdoc.music.rythm.ValuedItem;
 import io.github.musicdoc.music.rythm.ValuedItemDecoration;
@@ -55,6 +59,35 @@ public class Note extends ValuedItem<Note> {
 
     Tone newTone = this.tone.transpose(steps, diatonic, context);
     return new Note(newTone, getValue(), new ArrayList<>(getDecorations()));
+  }
+
+  @Override
+  public String getGlyphs(MusicSymbolContext context) {
+
+    String glyphs = null;
+    StemDirection stemDirection = context.getStemDirection();
+    if ((stemDirection == null) || (stemDirection == StemDirection.AUTO)) {
+      Clef clef = context.getClef();
+      Tone lowTone = clef.getLowTone();
+      // TODO compute stem direction from clef low tone
+    }
+    boolean down = StemDirection.DOWN == stemDirection;
+    // lowTone.get
+    if (context.isEnforceUnicode()) {
+      glyphs = UnicodeGlyphsNote.get(this.value, down);
+    } else {
+      glyphs = SmuflGlyphsNote.get(this.value, down);
+    }
+    if (glyphs == null) {
+      throw new IllegalStateException("Not implemented/supported");
+    }
+    String vGlyphs = this.value.getVariation().getGlyphs(context);
+    if (vGlyphs == null) {
+      throw new IllegalStateException("Not implemented/supported");
+    } else if (!vGlyphs.isEmpty()) {
+      glyphs = glyphs + vGlyphs;
+    }
+    return glyphs;
   }
 
   @Override

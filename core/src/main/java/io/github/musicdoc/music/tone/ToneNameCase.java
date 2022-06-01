@@ -2,22 +2,35 @@ package io.github.musicdoc.music.tone;
 
 import java.util.Locale;
 
+/**
+ * Case-style of a {@link TonePitch#getName() tone name}.
+ */
 public enum ToneNameCase {
 
-    LOWER_CASE,
+  /** All characters in {@link Character#isLowerCase(char) lower case}. */
+  LOWER_CASE,
 
-    CAPITAL_CASE;
+  /**
+   * First character in {@link Character#isUpperCase(char) upper case}, rest {@link Character#isLowerCase(char) lower
+   * case}.
+   */
+  CAPITAL_CASE;
 
-    public String convert(String name) {
-        if ((name == null) || name.isEmpty())  {
-            return name;
-        }
-        switch (this) {
-            case LOWER_CASE:
-                return name.toLowerCase(Locale.US);
-            case CAPITAL_CASE:
-                return Character.toUpperCase(name.charAt(0)) + name.substring(1).toLowerCase(Locale.US);
-        }
-        return name;
+  /**
+   * @param name the name to convert to this {@link ToneNameCase}.
+   * @return the converted name.
+   */
+  public String convert(String name) {
+
+    if ((name == null) || name.isEmpty()) {
+      return name;
     }
+    switch (this) {
+      case LOWER_CASE:
+        return name.toLowerCase(Locale.US);
+      case CAPITAL_CASE:
+        return Character.toUpperCase(name.charAt(0)) + name.substring(1).toLowerCase(Locale.US);
+    }
+    return name;
+  }
 }

@@ -5,7 +5,7 @@ import io.github.musicdoc.music.stave.Stave;
 /**
  * A {@link Beat} indicates the {@link MusicalValue} of a single bar in a {@link Stave}. E.g. a {@link #_4_4 4/4} beat
  * allows to fit 4 {@link MusicalValue#_1_4 quarters} into one bar.<br/>
- * The {@link #getFaction() fraction} indicates the unit of a regular beat. Therefore a {@link #_4_4 4/4} beat is not
+ * The {@link #getFraction() fraction} indicates the unit of a regular beat. Therefore a {@link #_4_4 4/4} beat is not
  * the same as a {@link #_2_2 2/2} beat even though they can cover the same {@link MusicalValue}s per bar.
  */
 public class Beat implements Fraction {
@@ -39,7 +39,7 @@ public class Beat implements Fraction {
   }
 
   @Override
-  public int getFaction() {
+  public int getFraction() {
 
     return this.fraction;
   }
