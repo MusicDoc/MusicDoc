@@ -88,7 +88,7 @@ public class ChordTest extends AbstractTest {
         .isEqualTo("C4add9no5/Gis");
   }
 
-  /** Test of {@link Chord#transpose(Interval, TransposeContext)}. */
+  /** Test of {@link Chord#transpose(io.github.musicdoc.music.interval.Interval, TransposeContext)}. */
   @Test
   public void testTransposeInterval() {
 

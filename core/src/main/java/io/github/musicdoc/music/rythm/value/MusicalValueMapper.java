@@ -36,11 +36,14 @@ public class MusicalValueMapper extends AbstractMapper<MusicalValue> {
         beats = 1;
         fraction = 2;
       } else if (beats == 4) {
-        beats = 1;
-        fraction = 1;
+        beats = 4;
+        fraction = 4;
       }
     } else {
       fraction = fractionInt.intValue();
+      if (beatsInt == null) {
+        fraction = fraction * 4;
+      }
     }
     MusicalValueVariation variation = MusicalValueVariationMapper.INSTANCE.parse(chars);
     return new MusicalValue(beats, fraction, variation);
