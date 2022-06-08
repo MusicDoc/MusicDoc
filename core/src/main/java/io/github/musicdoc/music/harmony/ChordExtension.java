@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import io.github.musicdoc.music.interval.ChromaticInterval;
+import io.github.musicdoc.music.interval.DiatonicInterval;
+
 /**
  * A {@link ChordExtension} extends a {@link Chord} with additional {@link ChromaticInterval intervals} or may also
  * {@link #isRemoveThird() replace} existing intervals. These are typically numbers, specific strings or symbols added

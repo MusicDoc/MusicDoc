@@ -1,6 +1,6 @@
 package io.github.musicdoc.music.stave;
 
-import io.github.musicdoc.music.rythm.Beat;
+import io.github.musicdoc.music.rythm.beat.Beat;
 
 class StavePropertyBeat extends StaveProperty<Beat> {
 

@@ -18,9 +18,9 @@ import io.github.musicdoc.music.partiture.section.PartitureSectionType;
 import io.github.musicdoc.music.partiture.voice.PartitureVoiceCell;
 import io.github.musicdoc.music.partiture.voice.PartitureVoiceLine;
 import io.github.musicdoc.music.partiture.voice.PartitureVoiceLineContinuation;
-import io.github.musicdoc.music.rythm.Beat;
-import io.github.musicdoc.music.rythm.MusicalValue;
-import io.github.musicdoc.music.rythm.Rest;
+import io.github.musicdoc.music.rythm.beat.Beat;
+import io.github.musicdoc.music.rythm.rest.Rest;
+import io.github.musicdoc.music.rythm.value.MusicalValue;
 import io.github.musicdoc.music.stave.Stave;
 import io.github.musicdoc.music.stave.StaveBracket;
 import io.github.musicdoc.music.stave.StaveVoice;
@@ -39,9 +39,9 @@ public class SongFormatChordProTest extends SongFormatTest {
   private static final String LYRICS_WITH_CHORDS = "#[Chorus 1]\n" + "[A]a [Bm7]b [Cadd9]c the caT is [D] dead.\n";
 
   private static final String LYRICS_WITH_PARTITURE = "#[C1]\n"
-      + "<[]K:C,B:4/4,C:G,V:Soprano;S>{A2}[A]a [Bm7]{B2}b [Cadd9]{c4}c {d4}the {c4}caT {B4}is [D]{A2} dead.{z2}\n"
-      + "+<V:Alto;A>{F2}{G2}{A4}{B4}{A4}{G4}{F2}{z2}\n" + "-<[]C:F,V:Tenor;T>{C2}{D2}{E4}{F4}{E4}{D4}{C2}{z2}\n"
-      + "+<V:Bass;B>{A,2}{B,2}{C4}{D4}{C4}{B,4}{A,2}{z2}";
+      + "<[]K:C,B:4/4,C:G,V:Soprano;S>{A2}[A]a [Bm7]{B2}b [Cadd9]{c}c {d}the {c}caT {B}is [D]{A2} dead.{z2}\n"
+      + "+<V:Alto;A>{F2}{G2}{A}{B}{A}{G}{F2}{z2}\n" + "-<[]C:F,V:Tenor;T>{C2}{D2}{E}{F}{E}{D}{C2}{z2}\n"
+      + "+<V:Bass;B>{A,2}{B,2}{C}{D}{C}{B,}{A,2}{z2}";
 
   /** Test of {@link SongFormatChordPro#parse(String)}. */
   @Test
@@ -160,18 +160,18 @@ public class SongFormatChordProTest extends SongFormatTest {
     stave.setBracket(StaveBracket.SQUARE);
     int cellIndex = 0;
     checkCell(voiceLine.getCell(cellIndex++), "a ", new Chord(TonePitchEnglish.A, TonalSystem.MAJOR_EMPTY),
-        new Note(Tone.of(TonePitchEnglish.A, 2), MusicalValue._1_2), stave);
+        new Note(Tone.of(TonePitchEnglish.A, 4), MusicalValue._1_2), stave);
     checkCell(voiceLine.getCell(cellIndex++), "b ",
         new Chord(TonePitchEnglish.B, TonalSystem.of("m"), ChordExtension._7),
-        new Note(Tone.of(TonePitchEnglish.B, 2), MusicalValue._1_2));
+        new Note(Tone.of(TonePitchEnglish.B, 4), MusicalValue._1_2));
     checkCell(voiceLine.getCell(cellIndex++), "c ",
         new Chord(TonePitchEnglish.C, TonalSystem.MAJOR_EMPTY, ChordExtension.ADD_9),
-        new Note(Tone.of(TonePitchEnglish.C, 3), MusicalValue._1_4));
-    checkCell(voiceLine.getCell(cellIndex++), "the ", new Note(Tone.of(TonePitchEnglish.D, 3), MusicalValue._1_4));
-    checkCell(voiceLine.getCell(cellIndex++), "caT ", new Note(Tone.of(TonePitchEnglish.C, 3), MusicalValue._1_4));
-    checkCell(voiceLine.getCell(cellIndex++), "is ", new Note(Tone.of(TonePitchEnglish.B, 2), MusicalValue._1_4));
+        new Note(Tone.of(TonePitchEnglish.C, 5), MusicalValue._1_4));
+    checkCell(voiceLine.getCell(cellIndex++), "the ", new Note(Tone.of(TonePitchEnglish.D, 5), MusicalValue._1_4));
+    checkCell(voiceLine.getCell(cellIndex++), "caT ", new Note(Tone.of(TonePitchEnglish.C, 5), MusicalValue._1_4));
+    checkCell(voiceLine.getCell(cellIndex++), "is ", new Note(Tone.of(TonePitchEnglish.B, 4), MusicalValue._1_4));
     checkCell(voiceLine.getCell(cellIndex++), " dead.", new Chord(TonePitchEnglish.D, TonalSystem.MAJOR_EMPTY),
-        new Note(Tone.of(TonePitchEnglish.A, 2), MusicalValue._1_2));
+        new Note(Tone.of(TonePitchEnglish.A, 4), MusicalValue._1_2));
     checkCell(voiceLine.getCell(cellIndex++), Rest._1_2);
     // second line
     line = row.getLine(lineIndex++);
@@ -180,14 +180,14 @@ public class SongFormatChordProTest extends SongFormatTest {
     assertThat(voiceLine.getCells()).hasSize(8);
     assertThat(voiceLine.getContinuation()).isSameAs(PartitureVoiceLineContinuation.STAVE);
     cellIndex = 0;
-    checkCell(voiceLine.getCell(cellIndex++), "", null, new Note(Tone.of(TonePitchEnglish.F, 2), MusicalValue._1_2),
+    checkCell(voiceLine.getCell(cellIndex++), "", null, new Note(Tone.of(TonePitchEnglish.F, 4), MusicalValue._1_2),
         stave);
-    checkCell(voiceLine.getCell(cellIndex++), new Note(Tone.of(TonePitchEnglish.G, 2), MusicalValue._1_2));
-    checkCell(voiceLine.getCell(cellIndex++), new Note(Tone.of(TonePitchEnglish.A, 2), MusicalValue._1_4));
-    checkCell(voiceLine.getCell(cellIndex++), new Note(Tone.of(TonePitchEnglish.B, 2), MusicalValue._1_4));
-    checkCell(voiceLine.getCell(cellIndex++), new Note(Tone.of(TonePitchEnglish.A, 2), MusicalValue._1_4));
-    checkCell(voiceLine.getCell(cellIndex++), new Note(Tone.of(TonePitchEnglish.G, 2), MusicalValue._1_4));
-    checkCell(voiceLine.getCell(cellIndex++), new Note(Tone.of(TonePitchEnglish.F, 2), MusicalValue._1_2));
+    checkCell(voiceLine.getCell(cellIndex++), new Note(Tone.of(TonePitchEnglish.G, 4), MusicalValue._1_2));
+    checkCell(voiceLine.getCell(cellIndex++), new Note(Tone.of(TonePitchEnglish.A, 4), MusicalValue._1_4));
+    checkCell(voiceLine.getCell(cellIndex++), new Note(Tone.of(TonePitchEnglish.B, 4), MusicalValue._1_4));
+    checkCell(voiceLine.getCell(cellIndex++), new Note(Tone.of(TonePitchEnglish.A, 4), MusicalValue._1_4));
+    checkCell(voiceLine.getCell(cellIndex++), new Note(Tone.of(TonePitchEnglish.G, 4), MusicalValue._1_4));
+    checkCell(voiceLine.getCell(cellIndex++), new Note(Tone.of(TonePitchEnglish.F, 4), MusicalValue._1_2));
     checkCell(voiceLine.getCell(cellIndex++), Rest._1_2);
     // third line
     line = row.getLine(lineIndex++);
@@ -200,14 +200,14 @@ public class SongFormatChordProTest extends SongFormatTest {
     stave.addVoice(StaveVoice.BASS);
     stave.setBracket(StaveBracket.SQUARE);
     cellIndex = 0;
-    checkCell(voiceLine.getCell(cellIndex++), "", null, new Note(Tone.of(TonePitchEnglish.C, 2), MusicalValue._1_2),
+    checkCell(voiceLine.getCell(cellIndex++), "", null, new Note(Tone.of(TonePitchEnglish.C, 4), MusicalValue._1_2),
         stave);
-    checkCell(voiceLine.getCell(cellIndex++), new Note(Tone.of(TonePitchEnglish.D, 2), MusicalValue._1_2));
-    checkCell(voiceLine.getCell(cellIndex++), new Note(Tone.of(TonePitchEnglish.E, 2), MusicalValue._1_4));
-    checkCell(voiceLine.getCell(cellIndex++), new Note(Tone.of(TonePitchEnglish.F, 2), MusicalValue._1_4));
-    checkCell(voiceLine.getCell(cellIndex++), new Note(Tone.of(TonePitchEnglish.E, 2), MusicalValue._1_4));
-    checkCell(voiceLine.getCell(cellIndex++), new Note(Tone.of(TonePitchEnglish.D, 2), MusicalValue._1_4));
-    checkCell(voiceLine.getCell(cellIndex++), new Note(Tone.of(TonePitchEnglish.C, 2), MusicalValue._1_2));
+    checkCell(voiceLine.getCell(cellIndex++), new Note(Tone.of(TonePitchEnglish.D, 4), MusicalValue._1_2));
+    checkCell(voiceLine.getCell(cellIndex++), new Note(Tone.of(TonePitchEnglish.E, 4), MusicalValue._1_4));
+    checkCell(voiceLine.getCell(cellIndex++), new Note(Tone.of(TonePitchEnglish.F, 4), MusicalValue._1_4));
+    checkCell(voiceLine.getCell(cellIndex++), new Note(Tone.of(TonePitchEnglish.E, 4), MusicalValue._1_4));
+    checkCell(voiceLine.getCell(cellIndex++), new Note(Tone.of(TonePitchEnglish.D, 4), MusicalValue._1_4));
+    checkCell(voiceLine.getCell(cellIndex++), new Note(Tone.of(TonePitchEnglish.C, 4), MusicalValue._1_2));
     checkCell(voiceLine.getCell(cellIndex++), Rest._1_2);
     // fourth line
     line = row.getLine(lineIndex++);
@@ -216,14 +216,14 @@ public class SongFormatChordProTest extends SongFormatTest {
     assertThat(voiceLine.getCells()).hasSize(8);
     assertThat(voiceLine.getContinuation()).isSameAs(PartitureVoiceLineContinuation.STAVE);
     cellIndex = 0;
-    checkCell(voiceLine.getCell(cellIndex++), "", null, new Note(Tone.of(TonePitchEnglish.A, 1), MusicalValue._1_2),
+    checkCell(voiceLine.getCell(cellIndex++), "", null, new Note(Tone.of(TonePitchEnglish.A, 3), MusicalValue._1_2),
         stave);
-    checkCell(voiceLine.getCell(cellIndex++), new Note(Tone.of(TonePitchEnglish.B, 1), MusicalValue._1_2));
-    checkCell(voiceLine.getCell(cellIndex++), new Note(Tone.of(TonePitchEnglish.C, 2), MusicalValue._1_4));
-    checkCell(voiceLine.getCell(cellIndex++), new Note(Tone.of(TonePitchEnglish.D, 2), MusicalValue._1_4));
-    checkCell(voiceLine.getCell(cellIndex++), new Note(Tone.of(TonePitchEnglish.C, 2), MusicalValue._1_4));
-    checkCell(voiceLine.getCell(cellIndex++), new Note(Tone.of(TonePitchEnglish.B, 1), MusicalValue._1_4));
-    checkCell(voiceLine.getCell(cellIndex++), new Note(Tone.of(TonePitchEnglish.A, 1), MusicalValue._1_2));
+    checkCell(voiceLine.getCell(cellIndex++), new Note(Tone.of(TonePitchEnglish.B, 3), MusicalValue._1_2));
+    checkCell(voiceLine.getCell(cellIndex++), new Note(Tone.of(TonePitchEnglish.C, 4), MusicalValue._1_4));
+    checkCell(voiceLine.getCell(cellIndex++), new Note(Tone.of(TonePitchEnglish.D, 4), MusicalValue._1_4));
+    checkCell(voiceLine.getCell(cellIndex++), new Note(Tone.of(TonePitchEnglish.C, 4), MusicalValue._1_4));
+    checkCell(voiceLine.getCell(cellIndex++), new Note(Tone.of(TonePitchEnglish.B, 3), MusicalValue._1_4));
+    checkCell(voiceLine.getCell(cellIndex++), new Note(Tone.of(TonePitchEnglish.A, 3), MusicalValue._1_2));
     checkCell(voiceLine.getCell(cellIndex++), Rest._1_2);
   }
 }

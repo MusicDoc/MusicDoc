@@ -5,6 +5,8 @@ import io.github.musicdoc.property.Property;
 
 /**
  * Implementation of {@link PropertyChangeListenerAdapter} for a single registered {@link PropertyChangeListener}.
+ *
+ * @param <V> type of the property value.
  */
 public class PropertyChangeListenerAdapterSingle<V> extends PropertyChangeListenerAdapter<V> {
 
@@ -14,6 +16,12 @@ public class PropertyChangeListenerAdapterSingle<V> extends PropertyChangeListen
 
   private V value;
 
+  /**
+   * The constructor.
+   *
+   * @param listener the single {@link PropertyChangeListener}.
+   * @param property the {@link Property} to manage.
+   */
   public PropertyChangeListenerAdapterSingle(PropertyChangeListener<? super V> listener, Property<V> property) {
 
     super();
@@ -23,16 +31,15 @@ public class PropertyChangeListenerAdapterSingle<V> extends PropertyChangeListen
   }
 
   @Override
-  public PropertyChangeListenerAdapter<V> addListener(PropertyChangeListener<? super V> listener,
-      Property<V> property) {
+  public PropertyChangeListenerAdapter<V> addListener(PropertyChangeListener<? super V> l, Property<V> p) {
 
-    return new PropertyChangeListenerAdapterMultiple<>(this.listener, listener, this.property);
+    return new PropertyChangeListenerAdapterMultiple<>(this.listener, l, this.property);
   }
 
   @Override
-  public PropertyChangeListenerAdapter<V> removeListener(PropertyChangeListener<? super V> listener) {
+  public PropertyChangeListenerAdapter<V> removeListener(PropertyChangeListener<? super V> l) {
 
-    if (listener.equals(this.listener)) {
+    if (l.equals(this.listener)) {
       return PropertyChangeListenerAdapterEmpty.get();
     }
     return this;

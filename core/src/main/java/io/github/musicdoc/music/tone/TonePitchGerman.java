@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import io.github.musicdoc.music.interval.ChromaticStep;
+
 /**
  * {@link TonePitch} with German {@link ToneNameStyle}. This style is used in the countries with these codes: AT, CZ,
  * DE, SE, DK, EE, FI, HU, LV, NO, PL, RS, SK. It uses {@link #H} for {@link TonePitchEnglish#B} and {@link #B} for

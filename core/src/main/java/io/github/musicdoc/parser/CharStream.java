@@ -167,7 +167,7 @@ public interface CharStream {
 
   /**
    * @param expected the {@link String} to expect as next characters in this stream.
-   * @param ignoreCase {@code true} if the {@link String#equalsIgnoreCase(String)} case shall be ignored}, {@code false}
+   * @param ignoreCase {@code true} if the {@link String#equalsIgnoreCase(String) case shall be ignored}, {@code false}
    *        otherwise.
    * @return {@code true} if the expected {@link String} was found and consumed, {@code false} otherwise (and this
    *         stream remains unchanged).

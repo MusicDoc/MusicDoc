@@ -5,6 +5,8 @@ package io.github.musicdoc.music.harmony;
 import org.junit.jupiter.api.Test;
 
 import io.github.musicdoc.AbstractTest;
+import io.github.musicdoc.music.interval.ChromaticInterval;
+import io.github.musicdoc.music.interval.DiatonicInterval;
 import io.github.musicdoc.music.tone.ToneNameCase;
 import io.github.musicdoc.music.tone.TonePitch;
 import io.github.musicdoc.music.tone.TonePitchEnglish;

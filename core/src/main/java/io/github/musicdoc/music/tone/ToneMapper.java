@@ -17,13 +17,24 @@ public class ToneMapper extends AbstractMapper<Tone> {
   @Override
   public Tone parse(CharStream chars) {
 
+    return parse(chars, 4);
+  }
+
+  /**
+   * @param chars the {@link CharStream} to parse.
+   * @param clefOctave the clef octave - see {@link Tone#getNameAbc(ToneNameStyle, int)}.
+   * @return the parsed {@link Tone}
+   * @see #parse(CharStream)
+   */
+  public Tone parse(CharStream chars, int clefOctave) {
+
     TonePitch pitch = TonePitchMapper.INSTANCE.parse(chars);
     if (pitch == null) {
       return null;
     }
-    int octave = 2;
+    int octave = clefOctave;
     if (pitch.isLowercase()) {
-      octave = 3;
+      octave++;
     }
     while (true) {
       char c = chars.peek();

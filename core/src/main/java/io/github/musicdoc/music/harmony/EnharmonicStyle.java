@@ -18,16 +18,25 @@ public enum EnharmonicStyle {
   /** The {@link TonePitch#isNormal() normal} form of a {@link TonePitch}. */
   NORMAL;
 
+  /**
+   * @return {@code true} if {@link #FLAT}, {@code false} otherwise.
+   */
   public boolean isFlat() {
 
     return (this == FLAT);
   }
 
+  /**
+   * @return {@code true} if {@link #SHARP}, {@code false} otherwise.
+   */
   public boolean isSharp() {
 
     return (this == SHARP);
   }
 
+  /**
+   * @return {@code true} if {@link #NORMAL}, {@code false} otherwise.
+   */
   public boolean isNormal() {
 
     return (this == NORMAL);

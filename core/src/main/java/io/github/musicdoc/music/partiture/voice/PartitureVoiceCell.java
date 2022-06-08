@@ -4,7 +4,7 @@ import io.github.musicdoc.music.bar.Bar;
 import io.github.musicdoc.music.harmony.Chord;
 import io.github.musicdoc.music.harmony.ChordContainer;
 import io.github.musicdoc.music.partiture.PartitureCell;
-import io.github.musicdoc.music.rythm.ValuedItem;
+import io.github.musicdoc.music.rythm.value.ValuedItem;
 import io.github.musicdoc.music.stave.Stave;
 import io.github.musicdoc.music.transpose.TransposeContext;
 
@@ -74,7 +74,7 @@ public class PartitureVoiceCell extends PartitureCell<PartitureVoiceCell> {
 
     /**
      * @return the {@link ValuedItem} of this cell that is the {@link io.github.musicdoc.music.tone.Tone}
-     * or {@link io.github.musicdoc.music.rythm.Rest} to be played at this cell. May be {@code null} for none.
+     * or {@link io.github.musicdoc.music.rythm.rest.Rest} to be played at this cell. May be {@code null} for none.
      */
     public ValuedItem<?> getItem() {
         return this.item;

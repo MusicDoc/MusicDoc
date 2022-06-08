@@ -1,16 +1,18 @@
 package io.github.musicdoc.bean;
 
-public class BeanMapper {
+public abstract class BeanMapper {
 
-    private final Bean bean;
+  private final Bean bean;
 
-    public BeanMapper(Bean bean) {
-        super();
-        this.bean = bean;
-    }
+  public BeanMapper(Bean bean) {
 
-    public Bean getBean() {
-        return this.bean;
-    }
+    super();
+    this.bean = bean;
+  }
+
+  public Bean getBean() {
+
+    return this.bean;
+  }
 
 }

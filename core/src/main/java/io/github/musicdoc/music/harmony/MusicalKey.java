@@ -9,6 +9,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.github.musicdoc.music.interval.ChromaticInterval;
+import io.github.musicdoc.music.interval.DiatonicInterval;
+import io.github.musicdoc.music.interval.Interval;
+import io.github.musicdoc.music.interval.Solmization;
 import io.github.musicdoc.music.tone.ToneNameCase;
 import io.github.musicdoc.music.tone.ToneNameStyle;
 import io.github.musicdoc.music.tone.TonePitch;
@@ -209,7 +213,7 @@ public final class MusicalKey extends AbstractTransposable<MusicalKey> {
     EnharmonicStyle style;
     List<TonePitch> chromaticSigns = new ArrayList<>(7);
     int enharmonicSigns = tonalSystem.getEnharmonicSigns(tonika);
-    ToneNameStyle nameStyle = tonika.getNameStyle();
+    ToneNameStyle<?> nameStyle = tonika.getNameStyle();
     if (enharmonicSigns > 0) {
       style = EnharmonicStyle.SHARP;
       for (int i = 1; i <= enharmonicSigns; i++) {
@@ -366,12 +370,12 @@ public final class MusicalKey extends AbstractTransposable<MusicalKey> {
   @Override
   public MusicalKey transpose(Interval interval, TransposeContext context) {
 
-    Integer steps = interval.getChromaticSteps(getSystem());
+    Integer steps = interval.getChromaticSteps();
     if (steps != null) {
       return transposeChromatic(steps.intValue());
     } else {
-      steps = interval.getDiatonicSteps(getSystem());
-      if (steps == null) {
+      steps = interval.getDiatonicSteps(this.system);
+      if (steps == Integer.MIN_VALUE) {
         throw new IllegalStateException("Can not transpose by " + interval);
       }
       return transposeDiatonic(steps.intValue());
@@ -387,17 +391,17 @@ public final class MusicalKey extends AbstractTransposable<MusicalKey> {
    */
   public TonePitch getTone(Interval interval) {
 
-    Integer chromaticSteps = interval.getChromaticSteps(this.system);
+    Integer chromaticSteps = interval.getChromaticSteps();
     if (chromaticSteps != null) {
-      int index = chromaticSteps.intValue() % 12;
+      int index = chromaticSteps % 12;
       if (index < 0) {
         index = index + 12;
       }
       return this.tonesChromatic.get(index);
     }
-    Integer diatonicSteps = interval.getDiatonicSteps(this.system);
-    if (diatonicSteps != null) {
-      int index = diatonicSteps.intValue() % 8;
+    int diatonicSteps = interval.getDiatonicSteps(this.system);
+    if (diatonicSteps != Integer.MIN_VALUE) {
+      int index = diatonicSteps % 8;
       if (index < 0) {
         index = index + 8;
       }
@@ -452,6 +456,9 @@ public final class MusicalKey extends AbstractTransposable<MusicalKey> {
     return null;
   }
 
+  /**
+   * @return an unmodifiable {@link Collections} with all available instances of {@link MusicalKey}.
+   */
   public static Collection<MusicalKey> values() {
 
     return VALUES;

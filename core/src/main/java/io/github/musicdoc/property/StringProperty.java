@@ -1,14 +1,28 @@
 package io.github.musicdoc.property;
 
+/**
+ * Implementation of {@link Property} with {@link #getValue() value} of type {@link String}.
+ */
 public class StringProperty extends AbstractProperty<String> {
 
   private String value;
 
+  /**
+   * The constructor.
+   *
+   * @param name the {@link #getName() property name}.
+   */
   public StringProperty(String name) {
 
     this(name, "");
   }
 
+  /**
+   * The constructor.
+   *
+   * @param name the {@link #getName() property name}.
+   * @param value the {@link #getValue() property value}.
+   */
   public StringProperty(String name, String value) {
 
     super(name);
@@ -43,8 +57,8 @@ public class StringProperty extends AbstractProperty<String> {
   }
 
   @Override
-  protected String parseValue(String value) {
+  protected String parseValue(String valueAsString) {
 
-    return value;
+    return valueAsString;
   }
 }

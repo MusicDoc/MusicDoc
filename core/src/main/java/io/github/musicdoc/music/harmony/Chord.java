@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 import io.github.musicdoc.ObjectHelper;
+import io.github.musicdoc.music.interval.ChromaticInterval;
 import io.github.musicdoc.music.tone.ToneNameCase;
 import io.github.musicdoc.music.tone.TonePitch;
 import io.github.musicdoc.music.transpose.AbstractTransposable;

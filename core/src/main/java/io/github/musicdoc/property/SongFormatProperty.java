@@ -3,15 +3,29 @@ package io.github.musicdoc.property;
 import io.github.musicdoc.format.SongFormat;
 import io.github.musicdoc.format.SongFormatChordPro;
 
+/**
+ * Implementation of {@link Property} with {@link #getValue() value} of type {@link String}.
+ */
 public class SongFormatProperty extends AbstractProperty<SongFormat> {
 
   private SongFormat value;
 
+  /**
+   * The constructor.
+   *
+   * @param name the {@link #getName() property name}.
+   */
   public SongFormatProperty(String name) {
 
     this(name, SongFormatChordPro.INSTANCE);
   }
 
+  /**
+   * The constructor.
+   *
+   * @param name the {@link #getName() property name}.
+   * @param value the {@link #getValue() property value}.
+   */
   public SongFormatProperty(String name, SongFormat value) {
 
     super(name);
@@ -37,8 +51,8 @@ public class SongFormatProperty extends AbstractProperty<SongFormat> {
   }
 
   @Override
-  protected SongFormat parseValue(String value) {
+  protected SongFormat parseValue(String valueAsString) {
 
-    return SongFormat.get(value);
+    return SongFormat.get(valueAsString);
   }
 }

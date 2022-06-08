@@ -1,14 +1,28 @@
 package io.github.musicdoc.property;
 
+/**
+ * Implementation of {@link Property} with {@link #getValue() value} of type {@link Boolean}.
+ */
 public class BooleanProperty extends AbstractProperty<Boolean> {
 
   private Boolean value;
 
+  /**
+   * The constructor.
+   *
+   * @param name the {@link #getName() property name}.
+   */
   public BooleanProperty(String name) {
 
     this(name, null);
   }
 
+  /**
+   * The constructor.
+   *
+   * @param name the {@link #getName() property name}.
+   * @param value the {@link #getValue() property value}.
+   */
   public BooleanProperty(String name, Boolean value) {
 
     super(name);
@@ -36,6 +50,10 @@ public class BooleanProperty extends AbstractProperty<Boolean> {
     return this.value;
   }
 
+  /**
+   * @return the primitive {@link #getValue() value}. Will be {@code false} if {@link #getValue() value} is
+   *         {@code null}.
+   */
   public boolean get() {
 
     if (this.value == null) {
@@ -45,6 +63,9 @@ public class BooleanProperty extends AbstractProperty<Boolean> {
     }
   }
 
+  /**
+   * @param value the new {@link #get() value}.
+   */
   public void set(boolean value) {
 
     setValue(Boolean.valueOf(value));
@@ -56,15 +77,18 @@ public class BooleanProperty extends AbstractProperty<Boolean> {
     this.value = newValue;
   }
 
-  public void toggle() {
+  /**
+   * Negates the {@link #get() value}.
+   */
+  public void negate() {
 
     set(!get());
   }
 
   @Override
-  protected Boolean parseValue(String value) {
+  protected Boolean parseValue(String valueAsString) {
 
-    return Boolean.parseBoolean(value);
+    return Boolean.parseBoolean(valueAsString);
   }
 
 }

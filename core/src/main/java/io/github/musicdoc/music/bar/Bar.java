@@ -4,8 +4,8 @@ import io.github.musicdoc.filter.ListCharFilter;
 
 /**
  * A {@link Bar} is a border in a stave as vertical bar(s). It terminates a couple of
- * {@link io.github.musicdoc.music.note.Note}s or {@link io.github.musicdoc.music.rythm.Rest}s that complete a full
- * {@link io.github.musicdoc.music.rythm.Beat}.
+ * {@link io.github.musicdoc.music.note.Note}s or {@link io.github.musicdoc.music.rythm.rest.Rest}s that complete a full
+ * {@link io.github.musicdoc.music.rythm.beat.Beat}.
  *
  * @see BarType
  */

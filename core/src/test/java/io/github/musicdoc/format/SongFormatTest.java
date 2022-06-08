@@ -2,8 +2,8 @@ package io.github.musicdoc.format;
 
 import io.github.musicdoc.music.harmony.Chord;
 import io.github.musicdoc.music.partiture.voice.PartitureVoiceCell;
-import io.github.musicdoc.music.rythm.MusicalValue;
-import io.github.musicdoc.music.rythm.ValuedItem;
+import io.github.musicdoc.music.rythm.value.MusicalValue;
+import io.github.musicdoc.music.rythm.value.ValuedItem;
 import io.github.musicdoc.music.stave.Stave;
 
 import org.assertj.core.api.Assertions;

@@ -3,70 +3,128 @@ package io.github.musicdoc.format;
 import io.github.musicdoc.music.tone.ToneNameStyle;
 import io.github.musicdoc.music.tone.TonePitchEnglish;
 
+/**
+ * Bean to configure the options when parsing songs.
+ */
 public class SongFormatOptions {
 
-    private boolean normalizeChords;
+  private boolean normalizeChords;
 
-    private boolean normalizeChordExtensions;
+  private boolean normalizeChordExtensions;
 
-    private boolean normalizeItemDecorations;
+  private boolean normalizeItemDecorations;
 
-    private boolean normalizeMusicalKeys;
+  private boolean normalizeMusicalKeys;
 
-    private boolean normalizeSections;
+  private boolean normalizeSections;
 
-    private ToneNameStyle toneNameStyle;
+  private ToneNameStyle<?> toneNameStyle;
 
-    public SongFormatOptions() {
-        super();
-        this.toneNameStyle = TonePitchEnglish.STYLE;
-    }
+  /**
+   * The constructor.
+   */
+  public SongFormatOptions() {
 
-    public ToneNameStyle getToneNameStyle() {
-        return this.toneNameStyle;
-    }
+    super();
+    this.toneNameStyle = TonePitchEnglish.STYLE;
+  }
 
-    public void setToneNameStyle(ToneNameStyle toneNameStyle) {
-        this.toneNameStyle = toneNameStyle;
-    }
+  /**
+   * @return the {@link ToneNameStyle}.
+   */
+  public ToneNameStyle<?> getToneNameStyle() {
 
-    public boolean isNormalizeChords() {
-        return this.normalizeChords;
-    }
+    return this.toneNameStyle;
+  }
 
-    public void setNormalizeChords(boolean normalizeChords) {
-        this.normalizeChords = normalizeChords;
-    }
+  /**
+   * @param toneNameStyle the new value of {@link #getToneNameStyle()}.
+   */
+  public void setToneNameStyle(ToneNameStyle<?> toneNameStyle) {
 
-    public boolean isNormalizeChordExtensions() {
-        return this.normalizeChordExtensions;
-    }
+    this.toneNameStyle = toneNameStyle;
+  }
 
-    public void setNormalizeChordExtensions(boolean normalizeChordExtensions) {
-        this.normalizeChordExtensions = normalizeChordExtensions;
-    }
+  /**
+   * @return {@code true} to normalize {@link io.github.musicdoc.music.harmony.Chord}s, {@code false} otherwise.
+   */
+  public boolean isNormalizeChords() {
 
-    public boolean isNormalizeItemDecorations() {
-        return this.normalizeItemDecorations;
-    }
+    return this.normalizeChords;
+  }
 
-    public void setNormalizeItemDecorations(boolean normalizeItemDecorations) {
-        this.normalizeItemDecorations = normalizeItemDecorations;
-    }
+  /**
+   * @param normalizeChords the new value of {@link #isNormalizeChords()}.
+   */
+  public void setNormalizeChords(boolean normalizeChords) {
 
-    public boolean isNormalizeSections() {
-        return this.normalizeSections;
-    }
+    this.normalizeChords = normalizeChords;
+  }
 
-    public void setNormalizeSections(boolean normalizeSections) {
-        this.normalizeSections = normalizeSections;
-    }
+  /**
+   * @return {@code true} to normalize {@link io.github.musicdoc.music.harmony.Chord#getExtensions() chord extensions},
+   *         {@code false} otherwise.
+   */
+  public boolean isNormalizeChordExtensions() {
 
-    public boolean isNormalizeMusicalKeys() {
-        return this.normalizeMusicalKeys;
-    }
+    return this.normalizeChordExtensions;
+  }
 
-    public void setNormalizeMusicalKeys(boolean normalizeMusicalKeys) {
-        this.normalizeMusicalKeys = normalizeMusicalKeys;
-    }
+  /**
+   * @param normalizeChordExtensions the new value of {@link #isNormalizeChordExtensions()}.
+   */
+  public void setNormalizeChordExtensions(boolean normalizeChordExtensions) {
+
+    this.normalizeChordExtensions = normalizeChordExtensions;
+  }
+
+  /**
+   * @return {@code true} to normalize {@link io.github.musicdoc.music.decoration.MusicalDecoration}s, {@code false}
+   *         otherwise.
+   */
+  public boolean isNormalizeItemDecorations() {
+
+    return this.normalizeItemDecorations;
+  }
+
+  /**
+   * @param normalizeItemDecorations the new value of {@link #isNormalizeItemDecorations()}.
+   */
+  public void setNormalizeItemDecorations(boolean normalizeItemDecorations) {
+
+    this.normalizeItemDecorations = normalizeItemDecorations;
+  }
+
+  /**
+   * @return {@code true} to normalize {@link io.github.musicdoc.music.partiture.section.PartitureSection}s,
+   *         {@code false} otherwise.
+   */
+  public boolean isNormalizeSections() {
+
+    return this.normalizeSections;
+  }
+
+  /**
+   * @param normalizeSections the new value of {@link #isNormalizeSections()}, {@code false} otherwise.
+   */
+  public void setNormalizeSections(boolean normalizeSections) {
+
+    this.normalizeSections = normalizeSections;
+  }
+
+  /**
+   * @return {@code true} to normalize {@link io.github.musicdoc.music.harmony.MusicalKey}s, {@code false} otherwise.
+   */
+  public boolean isNormalizeMusicalKeys() {
+
+    return this.normalizeMusicalKeys;
+  }
+
+  /**
+   * @param normalizeMusicalKeys the new value of {@link #isNormalizeMusicalKeys()}.
+   */
+  public void setNormalizeMusicalKeys(boolean normalizeMusicalKeys) {
+
+    this.normalizeMusicalKeys = normalizeMusicalKeys;
+  }
 }

@@ -10,7 +10,7 @@ import io.github.musicdoc.ObjectHelper;
 import io.github.musicdoc.format.FormatConstants;
 import io.github.musicdoc.music.clef.Clef;
 import io.github.musicdoc.music.harmony.MusicalKey;
-import io.github.musicdoc.music.rythm.Beat;
+import io.github.musicdoc.music.rythm.beat.Beat;
 import io.github.musicdoc.music.transpose.AbstractTransposable;
 import io.github.musicdoc.music.transpose.TransposeContext;
 

@@ -7,12 +7,12 @@ import java.util.List;
 
 import io.github.musicdoc.ObjectHelper;
 import io.github.musicdoc.music.clef.Clef;
-import io.github.musicdoc.music.glyphs.MusicSymbolContext;
-import io.github.musicdoc.music.glyphs.SmuflGlyphsNote;
-import io.github.musicdoc.music.glyphs.UnicodeGlyphsNote;
-import io.github.musicdoc.music.rythm.MusicalValue;
-import io.github.musicdoc.music.rythm.ValuedItem;
-import io.github.musicdoc.music.rythm.ValuedItemDecoration;
+import io.github.musicdoc.music.decoration.MusicalDecoration;
+import io.github.musicdoc.music.glyphs.MusicalGlyphsContext;
+import io.github.musicdoc.music.glyphs.smufl.SmuflGlyphsNote;
+import io.github.musicdoc.music.glyphs.unicode.UnicodeGlyphsNotes;
+import io.github.musicdoc.music.rythm.value.MusicalValue;
+import io.github.musicdoc.music.rythm.value.ValuedItem;
 import io.github.musicdoc.music.tone.Tone;
 import io.github.musicdoc.music.transpose.TransposeContext;
 
@@ -31,7 +31,7 @@ public class Note extends ValuedItem<Note> {
    */
   public Note(Tone tone, MusicalValue value) {
 
-    this(tone, value, new ArrayList<ValuedItemDecoration>());
+    this(tone, value, new ArrayList<MusicalDecoration>());
   }
 
   /**
@@ -41,7 +41,7 @@ public class Note extends ValuedItem<Note> {
    * @param value - the {@link #getValue() value}.
    * @param decorations - the {@link #getDecorations() decorations}.
    */
-  public Note(Tone tone, MusicalValue value, List<ValuedItemDecoration> decorations) {
+  public Note(Tone tone, MusicalValue value, List<MusicalDecoration> decorations) {
 
     super(value, decorations);
     ObjectHelper.requireNonNull(tone, "tone");
@@ -62,7 +62,7 @@ public class Note extends ValuedItem<Note> {
   }
 
   @Override
-  public String getGlyphs(MusicSymbolContext context) {
+  public String getGlyphs(MusicalGlyphsContext context) {
 
     String glyphs = null;
     StemDirection stemDirection = context.getStemDirection();
@@ -74,7 +74,7 @@ public class Note extends ValuedItem<Note> {
     boolean down = StemDirection.DOWN == stemDirection;
     // lowTone.get
     if (context.isEnforceUnicode()) {
-      glyphs = UnicodeGlyphsNote.get(this.value, down);
+      glyphs = UnicodeGlyphsNotes.get(this.value, down);
     } else {
       glyphs = SmuflGlyphsNote.get(this.value, down);
     }
@@ -93,6 +93,6 @@ public class Note extends ValuedItem<Note> {
   @Override
   public String toString() {
 
-    return this.tone.toString() + this.value;
+    return this.tone.toString() + ":" + this.value;
   }
 }

@@ -11,14 +11,14 @@ public interface MusicalGlyphs {
    */
   default String getGlyphs() {
 
-    return getGlyphs(MusicalSymbolContextOptions.DEFAULT);
+    return getGlyphs(MusicalGlyphsContext.DEFAULT);
   }
 
   /**
-   * @param context the {@link MusicSymbolContext} to customize the result.
+   * @param context the {@link MusicalGlyphsContext} to customize the result.
    * @return the unicode symbol(s) to render this musical element using a
    *         <a href="https://w3c.github.io/smufl/latest/index.html">SMuFL</a> font.
    */
-  String getGlyphs(MusicSymbolContext context);
+  String getGlyphs(MusicalGlyphsContext context);
 
 }

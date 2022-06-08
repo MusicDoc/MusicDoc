@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import io.github.musicdoc.music.interval.ChromaticStep;
+
 /**
  * {@link TonePitch} with Dutch {@link ToneNameStyle}. This style is used in the Netherlands and Indonesia as well as
  * sometimes in scandinavia. It uses {@link #BES} for {@link TonePitchEnglish#B_FLAT}. Enharmonic signs are represented

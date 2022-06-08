@@ -2,11 +2,13 @@
  * http://www.apache.org/licenses/LICENSE-2.0 */
 package io.github.musicdoc.music.tone;
 
-import io.github.musicdoc.music.harmony.ChromaticInterval;
 import io.github.musicdoc.music.harmony.EnharmonicStyle;
-import io.github.musicdoc.music.harmony.Interval;
 import io.github.musicdoc.music.harmony.MusicalKey;
 import io.github.musicdoc.music.harmony.TonalSystem;
+import io.github.musicdoc.music.interval.ChromaticInterval;
+import io.github.musicdoc.music.interval.ChromaticStep;
+import io.github.musicdoc.music.interval.DiatonicStep;
+import io.github.musicdoc.music.interval.Interval;
 import io.github.musicdoc.music.transpose.AbstractTransposable;
 import io.github.musicdoc.music.transpose.TransposeContext;
 

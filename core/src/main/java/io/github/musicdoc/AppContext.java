@@ -9,38 +9,43 @@ import io.github.musicdoc.song.SongWithContext;
  */
 public class AppContext {
 
-    private static final AppContext INSTANCE = new AppContext();
+  private static final AppContext INSTANCE = new AppContext();
 
-    private final AppConfig appConfig;
+  private final AppConfig appConfig;
 
-    private SongWithContext currentSong;
+  private SongWithContext currentSong;
 
-    public AppContext() {
-        super();
-        this.appConfig = new AppConfig();
-        this.currentSong = new SongWithContext(this);
-        this.currentSong.author.setValue("Gareth Evans");
-    }
+  public AppContext() {
 
-    public static AppContext get() {
+    super();
+    this.appConfig = new AppConfig();
+    this.currentSong = new SongWithContext(this);
+    this.currentSong.author.setValue("Gareth Evans");
+  }
 
-        return INSTANCE;
-    }
+  public static AppContext get() {
 
-    public AppConfig getConfig() {
-        return this.appConfig;
-    }
+    return INSTANCE;
+  }
 
-    public SongWithContext getCurrentSong() {
-        return this.currentSong;
-    }
+  public AppConfig getConfig() {
 
-    public void setCurrentSong(SongWithContext currentSong) {
-        assert (currentSong.getContext() == this);
-        this.currentSong = currentSong;
-    }
+    return this.appConfig;
+  }
 
-    public void setCurrentSong(Song currentSong) {
-        this.currentSong = new SongWithContext(this, currentSong);
-    }
+  public SongWithContext getCurrentSong() {
+
+    return this.currentSong;
+  }
+
+  public void setCurrentSong(SongWithContext currentSong) {
+
+    assert (currentSong.getContext() == this);
+    this.currentSong = currentSong;
+  }
+
+  public void setCurrentSong(Song currentSong) {
+
+    this.currentSong = new SongWithContext(this, currentSong);
+  }
 }

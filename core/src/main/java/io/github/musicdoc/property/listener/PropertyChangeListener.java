@@ -2,6 +2,12 @@ package io.github.musicdoc.property.listener;
 
 import io.github.musicdoc.property.Property;
 
+/**
+ * Interface for an even listener that gets notified {@link #onChange(Property, Object, Object) on changes} of a
+ * {@link Property}.
+ *
+ * @param <V> type of the property value.
+ */
 public interface PropertyChangeListener<V> {
 
   /**

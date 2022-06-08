@@ -5,6 +5,7 @@ import java.util.Locale;
 import org.assertj.core.api.Assertions;
 
 import io.github.musicdoc.music.harmony.EnharmonicStyle;
+import io.github.musicdoc.music.interval.ChromaticStep;
 
 public abstract class AbstractTonePitchTest extends Assertions {
 

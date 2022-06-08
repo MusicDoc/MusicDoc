@@ -1,7 +1,7 @@
 package io.github.musicdoc.music.instrument;
 
 import io.github.musicdoc.music.harmony.Chord;
-import io.github.musicdoc.music.harmony.ChromaticInterval;
+import io.github.musicdoc.music.interval.ChromaticInterval;
 import io.github.musicdoc.music.tone.Tone;
 
 public abstract class Instrument {

@@ -2,6 +2,8 @@ package io.github.musicdoc.music.tone;
 
 import org.junit.jupiter.api.Test;
 
+import io.github.musicdoc.music.interval.ChromaticStep;
+
 /**
  * Test of {@link TonePitchGerman}.
  */

@@ -2,6 +2,8 @@
  * http://www.apache.org/licenses/LICENSE-2.0 */
 package io.github.musicdoc.music.rythm;
 
+import io.github.musicdoc.music.rythm.value.MusicalValue;
+
 /**
  * Common interface for Beat and {@link MusicalValue}.
  */

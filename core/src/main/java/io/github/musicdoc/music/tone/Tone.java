@@ -5,9 +5,9 @@ package io.github.musicdoc.music.tone;
 import java.util.Locale;
 
 import io.github.musicdoc.music.clef.Clef;
-import io.github.musicdoc.music.harmony.ChromaticInterval;
-import io.github.musicdoc.music.harmony.Interval;
 import io.github.musicdoc.music.harmony.MusicalKey;
+import io.github.musicdoc.music.interval.ChromaticInterval;
+import io.github.musicdoc.music.interval.Interval;
 import io.github.musicdoc.music.transpose.AbstractTransposable;
 import io.github.musicdoc.music.transpose.TransposeContext;
 
@@ -533,14 +533,45 @@ public class Tone extends AbstractTransposable<Tone> implements Comparable<Tone>
    */
   public String getName(ToneNameStyle<?> style) {
 
+    return this.pitch.with(style).getName() + this.octave;
+  }
+
+  /**
+   * @param style the {@link ToneNameStyle}.
+   * @return the name of this {@link Tone} using the given {@link ToneNameStyle}.
+   */
+  public String getNameAbc(ToneNameStyle<?> style) {
+
+    return getNameAbc(style, 4);
+  }
+
+  /**
+   * @param style the {@link ToneNameStyle}.
+   * @param clef the {@link Clef} the name should be relative to.
+   * @return the name of this {@link Tone} using the given {@link ToneNameStyle} and {@link Clef}.
+   */
+  public String getNameAbc(ToneNameStyle<?> style, Clef clef) {
+
+    return getNameAbc(style, clef.getLowTone().octave);
+  }
+
+  /**
+   * @param style the {@link ToneNameStyle}.
+   * @param clefOctave the octave of the stave {@link io.github.musicdoc.music.clef.Clef}. After this octave the
+   *        {@link Tone} case changes ("B" -> "c"). For {@link Clef#TREBLE treble clef} this value is {@code 4} ( C" =
+   *        "C4" and "c" = "C5").
+   * @return the name of this {@link Tone} using the given {@link ToneNameStyle} and {@code clefOctave}
+   */
+  public String getNameAbc(ToneNameStyle<?> style, int clefOctave) {
+
     String result = this.pitch.with(style).getName();
-    if (this.octave > 2) {
+    if (this.octave > clefOctave) {
       result = result.toLowerCase(Locale.US);
-      for (int i = this.octave; i > 3; i--) {
+      for (int i = clefOctave + 1; i < this.octave; i++) {
         result = result + OCTAVE_UP;
       }
     } else {
-      for (int i = this.octave; i < 2; i++) {
+      for (int i = this.octave; i < clefOctave; i++) {
         result = result + OCTAVE_DOWN;
       }
     }

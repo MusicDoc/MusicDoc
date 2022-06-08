@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import io.github.musicdoc.music.interval.ChromaticStep;
+
 /**
  * {@link TonePitch} with neo-latin {@link ToneNameStyle}. It is originated from
  * <a href="https://en.wikipedia.org/wiki/Solf%C3%A8ge">Solfège</a> that evolved in romance languages and especially

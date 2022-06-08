@@ -6,7 +6,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import io.github.musicdoc.music.glyphs.UnicodeGlyphsAccidental;
+import io.github.musicdoc.music.glyphs.unicode.UnicodeGlyphsAccidentals;
+import io.github.musicdoc.music.interval.ChromaticStep;
 
 /**
  * {@link TonePitch} with like {@link TonePitchNeoLatin} but with compact unicode symbols for enharmonic signs (&#9839;,
@@ -19,13 +20,13 @@ public class TonePitchNeoLatinUnicodeSigns extends TonePitch {
    */
   public static final ToneNameStyleNeoLatinUnicodeSigns STYLE = new ToneNameStyleNeoLatinUnicodeSigns();
 
-  private static final String SINGLE_SHARP = UnicodeGlyphsAccidental.SHARP_1;
+  private static final String SINGLE_SHARP = UnicodeGlyphsAccidentals.SHARP_1;
 
-  private static final String DOUBLE_SHARP = UnicodeGlyphsAccidental.SHARP_2;
+  private static final String DOUBLE_SHARP = UnicodeGlyphsAccidentals.SHARP_2;
 
-  private static final String SINGLE_FLAT = UnicodeGlyphsAccidental.FLAT_1;
+  private static final String SINGLE_FLAT = UnicodeGlyphsAccidentals.FLAT_1;
 
-  private static final String DOUBLE_FLAT = UnicodeGlyphsAccidental.FLAT_2;
+  private static final String DOUBLE_FLAT = UnicodeGlyphsAccidentals.FLAT_2;
 
   private static final Map<String, TonePitchNeoLatinUnicodeSigns> NAME2PITCH_MAP = new HashMap<>();
 
@@ -49,7 +50,7 @@ public class TonePitchNeoLatinUnicodeSigns extends TonePitch {
    *
    * @see TonePitchEnglish#C_SHARP
    */
-  public static final TonePitchNeoLatinUnicodeSigns DO_SHARP = create("Do" + UnicodeGlyphsAccidental.SHARP_1, 1);
+  public static final TonePitchNeoLatinUnicodeSigns DO_SHARP = create("Do" + UnicodeGlyphsAccidentals.SHARP_1, 1);
 
   /**
    * {@code Re} is two semitones higher than the pitch {@link #DO}.
@@ -63,7 +64,7 @@ public class TonePitchNeoLatinUnicodeSigns extends TonePitch {
    *
    * @see TonePitchEnglish#D_SHARP
    */
-  public static final TonePitchNeoLatinUnicodeSigns RE_SHARP = create("Re" + UnicodeGlyphsAccidental.SHARP_1, 3);
+  public static final TonePitchNeoLatinUnicodeSigns RE_SHARP = create("Re" + UnicodeGlyphsAccidentals.SHARP_1, 3);
 
   /**
    * {@code Mi} is four semitones higher than the pitch {@link #DO}.
@@ -84,7 +85,7 @@ public class TonePitchNeoLatinUnicodeSigns extends TonePitch {
    *
    * @see TonePitchEnglish#F_SHARP
    */
-  public static final TonePitchNeoLatinUnicodeSigns FA_SHARP = create("Fa" + UnicodeGlyphsAccidental.SHARP_1, 6);
+  public static final TonePitchNeoLatinUnicodeSigns FA_SHARP = create("Fa" + UnicodeGlyphsAccidentals.SHARP_1, 6);
 
   /**
    * {@code Sol} is seven semitones higher than the pitch {@link #DO}.
@@ -98,7 +99,7 @@ public class TonePitchNeoLatinUnicodeSigns extends TonePitch {
    *
    * @see TonePitchEnglish#G_SHARP
    */
-  public static final TonePitchNeoLatinUnicodeSigns SOL_SHARP = create("Sol" + UnicodeGlyphsAccidental.SHARP_1, 8);
+  public static final TonePitchNeoLatinUnicodeSigns SOL_SHARP = create("Sol" + UnicodeGlyphsAccidentals.SHARP_1, 8);
 
   /**
    * {@code La} is nine semitones higher than the pitch {@link #DO}.
@@ -112,7 +113,7 @@ public class TonePitchNeoLatinUnicodeSigns extends TonePitch {
    *
    * @see TonePitchEnglish#B_FLAT
    */
-  public static final TonePitchNeoLatinUnicodeSigns LA_SHARP = create("La" + UnicodeGlyphsAccidental.SHARP_1, 10);
+  public static final TonePitchNeoLatinUnicodeSigns LA_SHARP = create("La" + UnicodeGlyphsAccidentals.SHARP_1, 10);
 
   /**
    * {@code Si} is eleven semitones higher than the pitch {@link #DO}.
@@ -128,14 +129,14 @@ public class TonePitchNeoLatinUnicodeSigns extends TonePitch {
    *
    * @see TonePitchEnglish#E_SHARP
    */
-  public static final TonePitchNeoLatinUnicodeSigns MI_SHARP = create("Mi" + UnicodeGlyphsAccidental.SHARP_1, FA);
+  public static final TonePitchNeoLatinUnicodeSigns MI_SHARP = create("Mi" + UnicodeGlyphsAccidentals.SHARP_1, FA);
 
   /**
    * {@code His} is an enharmonic change of {@link #DO}.
    *
    * @see TonePitchEnglish#B_SHARP
    */
-  public static final TonePitchNeoLatinUnicodeSigns SI_SHARP = create("Si" + UnicodeGlyphsAccidental.SHARP_1, DO);
+  public static final TonePitchNeoLatinUnicodeSigns SI_SHARP = create("Si" + UnicodeGlyphsAccidentals.SHARP_1, DO);
 
   // ------------------------------ enharmonic changes (single flat) ------------------------------
 
@@ -144,49 +145,49 @@ public class TonePitchNeoLatinUnicodeSigns extends TonePitch {
    *
    * @see TonePitchEnglish#C_FLAT
    */
-  public static final TonePitchNeoLatinUnicodeSigns DO_FLAT = create("Do" + UnicodeGlyphsAccidental.FLAT_1, SI);
+  public static final TonePitchNeoLatinUnicodeSigns DO_FLAT = create("Do" + UnicodeGlyphsAccidentals.FLAT_1, SI);
 
   /**
    * {@code Re&#9837;} is an enharmonic change of {@link #DO_SHARP}.
    *
    * @see TonePitchEnglish#D_FLAT
    */
-  public static final TonePitchNeoLatinUnicodeSigns RE_FLAT = create("Re" + UnicodeGlyphsAccidental.FLAT_1, DO_SHARP);
+  public static final TonePitchNeoLatinUnicodeSigns RE_FLAT = create("Re" + UnicodeGlyphsAccidentals.FLAT_1, DO_SHARP);
 
   /**
    * {@code Mi&#9837;} is an enharmonic change of {@link #RE_SHARP}.
    *
    * @see TonePitchEnglish#E_FLAT
    */
-  public static final TonePitchNeoLatinUnicodeSigns MI_FLAT = create("Mi" + UnicodeGlyphsAccidental.FLAT_1, RE_SHARP);
+  public static final TonePitchNeoLatinUnicodeSigns MI_FLAT = create("Mi" + UnicodeGlyphsAccidentals.FLAT_1, RE_SHARP);
 
   /**
    * {@code Fa&#9837;} is an enharmonic change of {@link #MI}.
    *
    * @see TonePitchEnglish#F_FLAT
    */
-  public static final TonePitchNeoLatinUnicodeSigns FA_FLAT = create("Fa" + UnicodeGlyphsAccidental.FLAT_1, MI);
+  public static final TonePitchNeoLatinUnicodeSigns FA_FLAT = create("Fa" + UnicodeGlyphsAccidentals.FLAT_1, MI);
 
   /**
    * {@code Sol&#9837;} is an enharmonic change of {@link #FA_SHARP}.
    *
    * @see TonePitchEnglish#G_FLAT
    */
-  public static final TonePitchNeoLatinUnicodeSigns SOL_FLAT = create("Sol" + UnicodeGlyphsAccidental.FLAT_1, FA_SHARP);
+  public static final TonePitchNeoLatinUnicodeSigns SOL_FLAT = create("Sol" + UnicodeGlyphsAccidentals.FLAT_1, FA_SHARP);
 
   /**
    * {@code La&#9837;} is an enharmonic change of {@link #SOL_SHARP}.
    *
    * @see TonePitchEnglish#A_FLAT
    */
-  public static final TonePitchNeoLatinUnicodeSigns LA_FLAT = create("La" + UnicodeGlyphsAccidental.FLAT_1, SOL_SHARP);
+  public static final TonePitchNeoLatinUnicodeSigns LA_FLAT = create("La" + UnicodeGlyphsAccidentals.FLAT_1, SOL_SHARP);
 
   /**
    * {@code Si&#9837;} is an enharmonic change of {@link #LA_SHARP}.
    *
    * @see TonePitchEnglish#A_FLAT
    */
-  public static final TonePitchNeoLatinUnicodeSigns SI_FLAT = create("Si" + UnicodeGlyphsAccidental.FLAT_1, LA_SHARP);
+  public static final TonePitchNeoLatinUnicodeSigns SI_FLAT = create("Si" + UnicodeGlyphsAccidentals.FLAT_1, LA_SHARP);
 
   // ------------------------------ enharmonic changes (double flat) ------------------------------
 
@@ -195,7 +196,7 @@ public class TonePitchNeoLatinUnicodeSigns extends TonePitch {
    *
    * @see TonePitchEnglish#C_DOUBLE_FLAT
    */
-  public static final TonePitchNeoLatinUnicodeSigns DO_DOUBLE_FLAT = create("Do" + UnicodeGlyphsAccidental.FLAT_2,
+  public static final TonePitchNeoLatinUnicodeSigns DO_DOUBLE_FLAT = create("Do" + UnicodeGlyphsAccidentals.FLAT_2,
       SI_FLAT);
 
   /**
@@ -203,21 +204,21 @@ public class TonePitchNeoLatinUnicodeSigns extends TonePitch {
    *
    * @see TonePitchEnglish#D_DOUBLE_FLAT
    */
-  public static final TonePitchNeoLatinUnicodeSigns RE_DOUBLE_FLAT = create("Re" + UnicodeGlyphsAccidental.FLAT_2, DO);
+  public static final TonePitchNeoLatinUnicodeSigns RE_DOUBLE_FLAT = create("Re" + UnicodeGlyphsAccidentals.FLAT_2, DO);
 
   /**
    * {@code Mi&#119083;} is an enharmonic change of {@link #RE}.
    *
    * @see TonePitchEnglish#E_DOUBLE_FLAT
    */
-  public static final TonePitchNeoLatinUnicodeSigns MI_DOUBLE_FLAT = create("Mi" + UnicodeGlyphsAccidental.FLAT_2, RE);
+  public static final TonePitchNeoLatinUnicodeSigns MI_DOUBLE_FLAT = create("Mi" + UnicodeGlyphsAccidentals.FLAT_2, RE);
 
   /**
    * {@code Fa&#119083;} is an enharmonic change of {@link #RE_SHARP}.
    *
    * @see TonePitchEnglish#F_DOUBLE_FLAT
    */
-  public static final TonePitchNeoLatinUnicodeSigns FA_DOUBLE_FLAT = create("Fa" + UnicodeGlyphsAccidental.FLAT_2,
+  public static final TonePitchNeoLatinUnicodeSigns FA_DOUBLE_FLAT = create("Fa" + UnicodeGlyphsAccidentals.FLAT_2,
       RE_SHARP);
 
   /**
@@ -225,7 +226,7 @@ public class TonePitchNeoLatinUnicodeSigns extends TonePitch {
    *
    * @see TonePitchEnglish#G_DOUBLE_FLAT
    */
-  public static final TonePitchNeoLatinUnicodeSigns SOL_DOUBLE_FLAT = create("Sol" + UnicodeGlyphsAccidental.FLAT_2,
+  public static final TonePitchNeoLatinUnicodeSigns SOL_DOUBLE_FLAT = create("Sol" + UnicodeGlyphsAccidentals.FLAT_2,
       FA);
 
   /**
@@ -233,14 +234,14 @@ public class TonePitchNeoLatinUnicodeSigns extends TonePitch {
    *
    * @see TonePitchEnglish#A_DOUBLE_FLAT
    */
-  public static final TonePitchNeoLatinUnicodeSigns LA_DOUBLE_FLAT = create("La" + UnicodeGlyphsAccidental.FLAT_2, SOL);
+  public static final TonePitchNeoLatinUnicodeSigns LA_DOUBLE_FLAT = create("La" + UnicodeGlyphsAccidentals.FLAT_2, SOL);
 
   /**
    * {@code Si&#119083;} is an enharmonic change of {@link #LA}.
    *
    * @see TonePitchEnglish#B_DOUBLE_FLAT
    */
-  public static final TonePitchNeoLatinUnicodeSigns SI_DOUBLE_FLAT = create("Si" + UnicodeGlyphsAccidental.FLAT_2, LA);
+  public static final TonePitchNeoLatinUnicodeSigns SI_DOUBLE_FLAT = create("Si" + UnicodeGlyphsAccidentals.FLAT_2, LA);
 
   // ------------------------------ enharmonic changes (double sharp) ------------------------------
 
@@ -249,7 +250,7 @@ public class TonePitchNeoLatinUnicodeSigns extends TonePitch {
    *
    * @see TonePitchEnglish#C_DOUBLE_SHARP
    */
-  public static final TonePitchNeoLatinUnicodeSigns DO_DOUBLE_SHARP = create("Do" + UnicodeGlyphsAccidental.SHARP_2,
+  public static final TonePitchNeoLatinUnicodeSigns DO_DOUBLE_SHARP = create("Do" + UnicodeGlyphsAccidentals.SHARP_2,
       RE);
 
   /**
@@ -257,7 +258,7 @@ public class TonePitchNeoLatinUnicodeSigns extends TonePitch {
    *
    * @see TonePitchEnglish#D_DOUBLE_SHARP
    */
-  public static final TonePitchNeoLatinUnicodeSigns RE_DOUBLE_SHARP = create("Re" + UnicodeGlyphsAccidental.SHARP_2,
+  public static final TonePitchNeoLatinUnicodeSigns RE_DOUBLE_SHARP = create("Re" + UnicodeGlyphsAccidentals.SHARP_2,
       MI);
 
   /**
@@ -265,7 +266,7 @@ public class TonePitchNeoLatinUnicodeSigns extends TonePitch {
    *
    * @see TonePitchEnglish#E_DOUBLE_SHARP
    */
-  public static final TonePitchNeoLatinUnicodeSigns MI_DOUBLE_SHARP = create("Mi" + UnicodeGlyphsAccidental.SHARP_2,
+  public static final TonePitchNeoLatinUnicodeSigns MI_DOUBLE_SHARP = create("Mi" + UnicodeGlyphsAccidentals.SHARP_2,
       FA_SHARP);
 
   /**
@@ -273,7 +274,7 @@ public class TonePitchNeoLatinUnicodeSigns extends TonePitch {
    *
    * @see TonePitchEnglish#E_DOUBLE_SHARP
    */
-  public static final TonePitchNeoLatinUnicodeSigns FA_DOUBLE_SHARP = create("Fa" + UnicodeGlyphsAccidental.SHARP_2,
+  public static final TonePitchNeoLatinUnicodeSigns FA_DOUBLE_SHARP = create("Fa" + UnicodeGlyphsAccidentals.SHARP_2,
       SOL);
 
   /**
@@ -281,7 +282,7 @@ public class TonePitchNeoLatinUnicodeSigns extends TonePitch {
    *
    * @see TonePitchEnglish#G_DOUBLE_SHARP
    */
-  public static final TonePitchNeoLatinUnicodeSigns SOL_DOUBLE_SHARP = create("Sol" + UnicodeGlyphsAccidental.SHARP_2,
+  public static final TonePitchNeoLatinUnicodeSigns SOL_DOUBLE_SHARP = create("Sol" + UnicodeGlyphsAccidentals.SHARP_2,
       LA);
 
   /**
@@ -289,7 +290,7 @@ public class TonePitchNeoLatinUnicodeSigns extends TonePitch {
    *
    * @see TonePitchEnglish#A_DOUBLE_SHARP
    */
-  public static final TonePitchNeoLatinUnicodeSigns LA_DOUBLE_SHARP = create("La" + UnicodeGlyphsAccidental.SHARP_2,
+  public static final TonePitchNeoLatinUnicodeSigns LA_DOUBLE_SHARP = create("La" + UnicodeGlyphsAccidentals.SHARP_2,
       SI);
 
   /**
@@ -297,7 +298,7 @@ public class TonePitchNeoLatinUnicodeSigns extends TonePitch {
    *
    * @see TonePitchEnglish#B_DOUBLE_SHARP
    */
-  public static final TonePitchNeoLatinUnicodeSigns SI_DOUBLE_SHARP = create("Si" + UnicodeGlyphsAccidental.SHARP_2,
+  public static final TonePitchNeoLatinUnicodeSigns SI_DOUBLE_SHARP = create("Si" + UnicodeGlyphsAccidentals.SHARP_2,
       DO_SHARP);
 
   private final TonePitchNeoLatinUnicodeSigns otherCase;

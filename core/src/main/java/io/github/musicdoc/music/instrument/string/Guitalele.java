@@ -1,6 +1,6 @@
 package io.github.musicdoc.music.instrument.string;
 
-import io.github.musicdoc.music.harmony.ChromaticInterval;
+import io.github.musicdoc.music.interval.ChromaticInterval;
 import io.github.musicdoc.music.tone.Tone;
 
 public class Guitalele extends Guitar {

@@ -1,7 +1,7 @@
 package io.github.musicdoc.music.transpose;
 
-import io.github.musicdoc.music.harmony.Interval;
 import io.github.musicdoc.music.harmony.TonalSystem;
+import io.github.musicdoc.music.interval.Interval;
 import io.github.musicdoc.music.tone.TonePitch;
 
 /**

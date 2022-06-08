@@ -1,5 +1,11 @@
 package io.github.musicdoc.property;
 
+/**
+ * Interface to access a property from a bean.
+ *
+ * @param <B> type of the bean.
+ * @param <T> type of the property value.
+ */
 public interface PropertyAccessor<B, T> {
 
   /**

@@ -12,8 +12,8 @@ import io.github.musicdoc.format.SongFormatOptions;
 import io.github.musicdoc.music.clef.ClefMapper;
 import io.github.musicdoc.music.harmony.MusicalKey;
 import io.github.musicdoc.music.harmony.MusicalKeyMapper;
-import io.github.musicdoc.music.rythm.Beat;
-import io.github.musicdoc.music.rythm.BeatMapper;
+import io.github.musicdoc.music.rythm.beat.Beat;
+import io.github.musicdoc.music.rythm.beat.BeatMapper;
 import io.github.musicdoc.parser.CharStream;
 
 public class StaveMapper extends AbstractMapper<Stave> {

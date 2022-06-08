@@ -13,37 +13,40 @@ import io.github.musicdoc.parser.CharStream;
  */
 public class MusicalKeyMapper extends AbstractMapper<MusicalKey> {
 
-    public static final MusicalKeyMapper INSTANCE = new MusicalKeyMapper();
+  /** The singleton instance. */
+  public static final MusicalKeyMapper INSTANCE = new MusicalKeyMapper();
 
-    @Override
-    public MusicalKey parse(CharStream chars) {
-        TonePitch tonika = TonePitchMapper.INSTANCE.parse(chars);
-        if (tonika == null) {
-            return null;
-        }
-        chars.skipWhile(' '); // for ABC compatibility
-        // detect tonal system (maj/min)...
-        TonalSystem tonalSystem = TonalSystemMapper.INSTANCE.parse(chars);
-        if (tonalSystem == null) {
-            if (tonika.isLowercase()) {
-                tonalSystem = TonalSystem.MINOR;
-            } else {
-                tonalSystem = TonalSystem.MAJOR;
-            }
-        }
-        return MusicalKey.of(tonika, tonalSystem);
-    }
+  @Override
+  public MusicalKey parse(CharStream chars) {
 
-    @Override
-    public void format(MusicalKey key, Appendable buffer, SongFormatOptions options) throws IOException {
-        if (key == null) {
-            return;
-        }
-        TonePitch tonika = key.getTonika();
-        if (options.isNormalizeMusicalKeys()) {
-            tonika = tonika.with(options.getToneNameStyle());
-        }
-        TonePitchMapper.INSTANCE.format(tonika, buffer, options);
-        TonalSystemMapper.INSTANCE.format(key.getSystem(), buffer, options);
+    TonePitch tonika = TonePitchMapper.INSTANCE.parse(chars);
+    if (tonika == null) {
+      return null;
     }
+    chars.skipWhile(' '); // for ABC compatibility
+    // detect tonal system (maj/min)...
+    TonalSystem tonalSystem = TonalSystemMapper.INSTANCE.parse(chars);
+    if (tonalSystem == null) {
+      if (tonika.isLowercase()) {
+        tonalSystem = TonalSystem.MINOR;
+      } else {
+        tonalSystem = TonalSystem.MAJOR;
+      }
+    }
+    return MusicalKey.of(tonika, tonalSystem);
+  }
+
+  @Override
+  public void format(MusicalKey key, Appendable buffer, SongFormatOptions options) throws IOException {
+
+    if (key == null) {
+      return;
+    }
+    TonePitch tonika = key.getTonika();
+    if (options.isNormalizeMusicalKeys()) {
+      tonika = tonika.with(options.getToneNameStyle());
+    }
+    TonePitchMapper.INSTANCE.format(tonika, buffer, options);
+    TonalSystemMapper.INSTANCE.format(key.getSystem(), buffer, options);
+  }
 }

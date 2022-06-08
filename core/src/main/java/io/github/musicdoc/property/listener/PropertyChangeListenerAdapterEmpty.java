@@ -4,9 +4,12 @@ import io.github.musicdoc.property.Property;
 
 /**
  * Implementation of {@link PropertyChangeListenerAdapter} for no registered {@link PropertyChangeListener}.
+ *
+ * @param <V> type of the property value.
  */
 public class PropertyChangeListenerAdapterEmpty<V> extends PropertyChangeListenerAdapter<V> {
 
+  @SuppressWarnings("rawtypes")
   private static final PropertyChangeListenerAdapterEmpty INSTANCE = new PropertyChangeListenerAdapterEmpty();
 
   @Override

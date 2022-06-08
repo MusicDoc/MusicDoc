@@ -15,6 +15,11 @@ public abstract class AbstractProperty<V> implements Property<V> {
 
   private PropertyChangeListenerAdapter<V> listenerAdapter;
 
+  /**
+   * The constructor.
+   *
+   * @param name the {@link #getName() property name}.
+   */
   public AbstractProperty(String name) {
 
     super();
@@ -84,6 +89,10 @@ public abstract class AbstractProperty<V> implements Property<V> {
     setValue(value);
   }
 
+  /**
+   * @param value the property value as {@link String}.
+   * @return the parsed property value.
+   */
   protected abstract V parseValue(String value);
 
   /**

@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import io.github.musicdoc.format.AbstractMapper;
 import io.github.musicdoc.format.SongFormatOptions;
-import io.github.musicdoc.music.harmony.ChromaticInterval;
+import io.github.musicdoc.music.interval.ChromaticInterval;
 import io.github.musicdoc.parser.CharStream;
 
 /**

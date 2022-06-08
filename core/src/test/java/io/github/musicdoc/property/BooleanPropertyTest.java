@@ -41,9 +41,9 @@ public class BooleanPropertyTest extends Assertions {
 
     // when + then
     assertThat(p.get()).isFalse();
-    p.toggle();
+    p.negate();
     assertThat(p.get()).isTrue();
-    p.toggle();
+    p.negate();
     assertThat(p.get()).isFalse();
   }
 }

@@ -1,14 +1,28 @@
 package io.github.musicdoc.property;
 
+/**
+ * Implementation of {@link Property} with {@link #getValue() value} of type {@link Integer}.
+ */
 public class IntProperty extends AbstractProperty<Integer> {
 
   private Integer value;
 
+  /**
+   * The constructor.
+   *
+   * @param name the {@link #getName() property name}.
+   */
   public IntProperty(String name) {
 
     this(name, null);
   }
 
+  /**
+   * The constructor.
+   *
+   * @param name the {@link #getName() property name}.
+   * @param value the {@link #getValue() property value}.
+   */
   public IntProperty(String name, Integer value) {
 
     super(name);
@@ -57,8 +71,8 @@ public class IntProperty extends AbstractProperty<Integer> {
   }
 
   @Override
-  protected Integer parseValue(String value) {
+  protected Integer parseValue(String valueAsString) {
 
-    return Integer.parseInt(value);
+    return Integer.parseInt(valueAsString);
   }
 }

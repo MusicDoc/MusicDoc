@@ -11,52 +11,57 @@ import io.github.musicdoc.config.Config;
 
 public abstract class BeanXmlMapper extends BeanMapper {
 
-    private String rootTag;
+  private String rootTag;
 
-    private boolean includeGroupTags;
+  private boolean includeGroupTags;
 
-    public BeanXmlMapper(Bean bean) {
-        super(bean);
-        if (bean instanceof Config) {
-            this.rootTag = "myprofile";
-        }
+  public BeanXmlMapper(Bean bean) {
+
+    super(bean);
+    if (bean instanceof Config) {
+      this.rootTag = "myprofile";
     }
+  }
 
-    public String getRootTag() {
-        return this.rootTag;
-    }
+  public String getRootTag() {
 
-    public void setRootTag(String rootTag) {
-        this.rootTag = rootTag;
-    }
+    return this.rootTag;
+  }
 
-    public boolean isIncludeGroupTags() {
-        return this.includeGroupTags;
-    }
+  public void setRootTag(String rootTag) {
 
-    public void setIncludeGroupTags(boolean includeGroupTags) {
-        this.includeGroupTags = includeGroupTags;
-    }
+    this.rootTag = rootTag;
+  }
 
-    public abstract void loadXml(InputStream in);
+  public boolean isIncludeGroupTags() {
 
-    public abstract void loadXml(Reader reader);
+    return this.includeGroupTags;
+  }
 
-    public void loadXmlFromString(String xml) {
+  public void setIncludeGroupTags(boolean includeGroupTags) {
 
-        StringReader reader = new StringReader(xml);
-        loadXml(reader);
-    }
+    this.includeGroupTags = includeGroupTags;
+  }
 
-    public abstract void saveXml(OutputStream out);
+  public abstract void loadXml(InputStream in);
 
-    public abstract void saveXml(Writer writer);
+  public abstract void loadXml(Reader reader);
 
-    public String saveXmlAsString() {
+  public void loadXmlFromString(String xml) {
 
-        StringWriter sw = new StringWriter(1024);
-        saveXml(sw);
-        return sw.toString();
-    }
+    StringReader reader = new StringReader(xml);
+    loadXml(reader);
+  }
+
+  public abstract void saveXml(OutputStream out);
+
+  public abstract void saveXml(Writer writer);
+
+  public String saveXmlAsString() {
+
+    StringWriter sw = new StringWriter(1024);
+    saveXml(sw);
+    return sw.toString();
+  }
 
 }

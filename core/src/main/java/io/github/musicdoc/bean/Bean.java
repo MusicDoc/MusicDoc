@@ -13,6 +13,9 @@ import org.slf4j.LoggerFactory;
 import io.github.musicdoc.property.BeanProperty;
 import io.github.musicdoc.property.Property;
 
+/**
+ * Abstract base class for an advanced Java bean.
+ */
 public abstract class Bean {
 
   private static final Logger LOG = LoggerFactory.getLogger(Bean.class);
@@ -33,10 +36,12 @@ public abstract class Bean {
   /**
    * @param copy the {@link Bean} to copy.
    */
+  @SuppressWarnings("unchecked")
   protected void copy(Bean copy) {
 
     assert (copy.getClass() == getClass());
     for (Property<?> copyProperty : copy.getProperties()) {
+      @SuppressWarnings("rawtypes")
       Property myProperty = this.propertyMap.get(copyProperty.getName());
       assert (copyProperty.getClass() == myProperty.getClass());
       myProperty.setValue(copyProperty.getValue());
@@ -53,7 +58,10 @@ public abstract class Bean {
   }
 
   /**
+   * @param <T>
+   * @param <P>
    * @param property the {@link Property} to register.
+   * @return
    */
   protected <T, P extends Property<T>> P register(P property) {
 

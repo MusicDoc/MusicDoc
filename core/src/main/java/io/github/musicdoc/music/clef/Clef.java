@@ -4,15 +4,15 @@ package io.github.musicdoc.music.clef;
 
 import java.util.Objects;
 
-import io.github.musicdoc.music.glyphs.MusicSymbolContext;
+import io.github.musicdoc.music.glyphs.MusicalGlyphsContext;
+import io.github.musicdoc.music.glyphs.smufl.SmuflGlyphsClefs;
 import io.github.musicdoc.music.glyphs.MusicalGlyphs;
-import io.github.musicdoc.music.glyphs.SmuflGlyphsClef;
-import io.github.musicdoc.music.glyphs.UnicodeGlyphsClef;
-import io.github.musicdoc.music.harmony.ChromaticInterval;
-import io.github.musicdoc.music.harmony.DiatonicInterval;
-import io.github.musicdoc.music.harmony.Interval;
+import io.github.musicdoc.music.glyphs.unicode.UnicodeGlyphsClefs;
 import io.github.musicdoc.music.harmony.MusicalKey;
 import io.github.musicdoc.music.harmony.TonalSystem;
+import io.github.musicdoc.music.interval.ChromaticInterval;
+import io.github.musicdoc.music.interval.DiatonicInterval;
+import io.github.musicdoc.music.interval.Interval;
 import io.github.musicdoc.music.tone.Tone;
 import io.github.musicdoc.music.transpose.TransposeContext;
 
@@ -106,7 +106,7 @@ public class Clef implements MusicalGlyphs, ClefObject {
   }
 
   @Override
-  public String getGlyphs(MusicSymbolContext context) {
+  public String getGlyphs(MusicalGlyphsContext context) {
 
     // should we actually combine the clef with the key to resolve this perfectly?
     int chromaticShift = this.shift.getChromaticSteps(TonalSystem.MAJOR);
@@ -115,9 +115,9 @@ public class Clef implements MusicalGlyphs, ClefObject {
 
     }
     if (context.isEnforceUnicode()) {
-      return UnicodeGlyphsClef.get(this.symbol, chromaticShift);
+      return UnicodeGlyphsClefs.get(this.symbol, chromaticShift);
     } else {
-      return SmuflGlyphsClef.get(this.symbol, chromaticShift);
+      return SmuflGlyphsClefs.get(this.symbol, chromaticShift);
     }
   }
 

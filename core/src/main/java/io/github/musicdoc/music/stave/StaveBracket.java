@@ -1,6 +1,6 @@
 package io.github.musicdoc.music.stave;
 
-import io.github.musicdoc.music.glyphs.UnicodeGlyphs;
+import io.github.musicdoc.music.glyphs.unicode.UnicodeGlyphs;
 
 /**
  * The bracket (type) of one or multiple {@link Stave}s.

@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.github.musicdoc.music.tone.ChromaticStep;
+import io.github.musicdoc.music.interval.ChromaticStep;
 import io.github.musicdoc.music.tone.TonePitch;
 import io.github.musicdoc.music.tone.TonePitchEnglish;
 
@@ -39,8 +39,8 @@ public class TonalSystem {
   // HYPOMIXOLYDIAN("hmix", "hypomixolydian"),
 
   /**
-   * {@link TonalSystem} of a major {@link MusicalKey key}. Its scale sequence has semitone intervals from the 3. to the
-   * 4. tone as well as from the 7. to the 8. tone (1-1-½-1-1-1-½).
+   * {@link TonalSystem} of a major {@link MusicalKey key}. Its scale sequence has semitone steps from the 3. to the 4.
+   * tone as well as from the 7. to the 8. tone (1-1-½-1-1-1-½).
    */
   public static final TonalSystem MAJOR = create(Arrays.asList(TonePitchEnglish.C_FLAT, TonePitchEnglish.G_FLAT,
       TonePitchEnglish.D_FLAT, TonePitchEnglish.A_FLAT, TonePitchEnglish.E_FLAT, TonePitchEnglish.B_FLAT,
@@ -54,8 +54,8 @@ public class TonalSystem {
   public static final TonalSystem MAJOR_EMPTY = MAJOR.empty;
 
   /**
-   * {@link TonalSystem} of a minor {@link MusicalKey key}. Its scale sequence has semitone intervals from the 2. to the
-   * 3. tone as well as from the 5. to the 6. tone (1-½-1-1-½-1-1).
+   * {@link TonalSystem} of a minor {@link MusicalKey key}. Its scale sequence has semitone steps from the 2. to the 3.
+   * tone as well as from the 5. to the 6. tone (1-½-1-1-½-1-1).
    */
   public static final TonalSystem MINOR = create(Arrays.asList(TonePitchEnglish.A_FLAT, TonePitchEnglish.E_FLAT,
       TonePitchEnglish.B_FLAT, TonePitchEnglish.F, TonePitchEnglish.C, TonePitchEnglish.G, TonePitchEnglish.D,
@@ -136,6 +136,11 @@ public class TonalSystem {
     return this.name;
   }
 
+  /**
+   * @return the {@link TonalSystem} acting as official reference. For the same logical {@link TonalSystem} there can be
+   *         multiple instances e.g. with different {@link #getName() names}- This method returns the official one that
+   *         is linked from all these instances.
+   */
   public TonalSystem getReference() {
 
     return this.reference;
@@ -161,7 +166,8 @@ public class TonalSystem {
 
   /**
    * @return the {@link List} of {@link TonePitch}es in the order of their {@link #getEnharmonicSigns(TonePitch)
-   *         enharmonic signs} from {@code -7} to {@code +7}.
+   *         enharmonic signs} from {@code -7} to {@code +7}. These sign pitches represent the <em>circle of
+   *         fifths</em>.
    */
   List<TonePitchEnglish> getSignPitches() {
 
@@ -208,6 +214,14 @@ public class TonalSystem {
     return this.reference == MINOR;
   }
 
+  /**
+   * @param chromaticSteps the number of {@link io.github.musicdoc.music.interval.Interval#getChromaticSteps() chromatic
+   *        steps}.
+   * @param strict - {@code true} to return {@link Integer#MIN_VALUE} if the chromatic steps do not fit properly into
+   *        this {@link TonalSystem}, {@code false} otherwise (to always return the diatonic steps).
+   * @return the according number of {@link io.github.musicdoc.music.interval.Interval#getDiatonicSteps() diatonic
+   *         steps}. May be {@link Integer#MIN_VALUE} if {@code strict} is {@code true}.
+   */
   public int getDiatonicSteps(int chromaticSteps, boolean strict) {
 
     boolean negative = (chromaticSteps < 0);
@@ -236,6 +250,12 @@ public class TonalSystem {
     return diatonicSteps;
   }
 
+  /**
+   * @param diatonicSteps the number of {@link io.github.musicdoc.music.interval.Interval#getDiatonicSteps() diatonic
+   *        steps}.
+   * @return the according the number of {@link io.github.musicdoc.music.interval.Interval#getChromaticSteps() chromatic
+   *         steps} within this {@link TonalSystem} starting from {@link MusicalKey#getTonika() tonika}.
+   */
   public int getChromaticSteps(int diatonicSteps) {
 
     boolean negative = (diatonicSteps < 0);
@@ -258,6 +278,11 @@ public class TonalSystem {
     return chromaticSteps;
   }
 
+  /**
+   * @param system the {@link TonalSystem} to compare with.
+   * @return {@code true} if this {@link TonalSystem} and the given {@link TonalSystem} have the same
+   *         {@link #getReference() reference} and are logically equal, {@code false} otherwise.
+   */
   public boolean isEqualTo(TonalSystem system) {
 
     if (system == null) {

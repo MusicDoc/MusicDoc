@@ -1,56 +1,79 @@
 package io.github.musicdoc.property;
 
+/**
+ * Implementation of {@link Property} with {@link #getValue() value} of type {@link Float}.
+ */
 public class FloatProperty extends AbstractProperty<Float> {
 
-    private Float value;
+  private Float value;
 
-    public FloatProperty(String name) {
-        this(name, null);
-    }
+  /**
+   * The constructor.
+   *
+   * @param name the {@link #getName() property name}.
+   */
+  public FloatProperty(String name) {
 
-    public FloatProperty(String name, Float value) {
-        super(name);
-        this.value = value;
-    }
+    this(name, null);
+  }
 
-    @Override
-    public Class<Float> getType() {
-        return Float.class;
-    }
+  /**
+   * The constructor.
+   *
+   * @param name the {@link #getName() property name}.
+   * @param value the {@link #getValue() property value}.
+   */
+  public FloatProperty(String name, Float value) {
 
-    @Override
-    public Float getValue() {
-        return this.value;
-    }
+    super(name);
+    this.value = value;
+  }
 
-    @Override
-    public Float getValueOrDefault() {
-        if (this.value == null) {
-            return Float.valueOf(0);
-        }
-        return this.value;
-    }
+  @Override
+  public Class<Float> getType() {
 
-    public float get() {
-        if (this.value == null) {
-            return 0;
-        } else {
-            return this.value.floatValue();
-        }
-    }
+    return Float.class;
+  }
 
-    @Override
-    protected void doSetValue(Float newValue) {
-        this.value = newValue;
-    }
+  @Override
+  public Float getValue() {
 
-    public void set(float value) {
-        setValue(Float.valueOf(value));
-    }
+    return this.value;
+  }
 
-    @Override
-    protected Float parseValue(String value) {
-        return Float.parseFloat(value);
+  @Override
+  public Float getValueOrDefault() {
+
+    if (this.value == null) {
+      return Float.valueOf(0);
     }
+    return this.value;
+  }
+
+  public float get() {
+
+    if (this.value == null) {
+      return 0;
+    } else {
+      return this.value.floatValue();
+    }
+  }
+
+  @Override
+  protected void doSetValue(Float newValue) {
+
+    this.value = newValue;
+  }
+
+  public void set(float value) {
+
+    setValue(Float.valueOf(value));
+  }
+
+  @Override
+  protected Float parseValue(String valueAsString) {
+
+    return Float.parseFloat(valueAsString);
+  }
 
 }

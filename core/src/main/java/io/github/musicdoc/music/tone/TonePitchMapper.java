@@ -6,7 +6,7 @@ import io.github.musicdoc.filter.CharFilter;
 import io.github.musicdoc.filter.ListCharFilter;
 import io.github.musicdoc.format.AbstractMapper;
 import io.github.musicdoc.format.SongFormatOptions;
-import io.github.musicdoc.music.glyphs.UnicodeGlyphsAccidental;
+import io.github.musicdoc.music.glyphs.unicode.UnicodeGlyphsAccidentals;
 import io.github.musicdoc.parser.CharStream;
 
 /**
@@ -22,9 +22,9 @@ public class TonePitchMapper extends AbstractMapper<TonePitch> {
 
   /** {@link CharFilter} that {@link CharFilter#accept(char) accepts} start characters of a {@link TonePitch}. */
   public static final ListCharFilter FILTER_TONE = FILTER_TONE_START.join('i', 'I', 's', 'S', '#', 'b',
-      UnicodeGlyphsAccidental.NEUTRAL_CHAR, UnicodeGlyphsAccidental.FLAT_1_CHAR, UnicodeGlyphsAccidental.SHARP_1_CHAR,
-      UnicodeGlyphsAccidental.SIGN_2_CHAR1, UnicodeGlyphsAccidental.FLAT_2_CHAR2,
-      UnicodeGlyphsAccidental.SHARP_2_CHAR2);
+      UnicodeGlyphsAccidentals.NEUTRAL_CHAR, UnicodeGlyphsAccidentals.FLAT_1_CHAR, UnicodeGlyphsAccidentals.SHARP_1_CHAR,
+      UnicodeGlyphsAccidentals.SIGN_2_CHAR1, UnicodeGlyphsAccidentals.FLAT_2_CHAR2,
+      UnicodeGlyphsAccidentals.SHARP_2_CHAR2);
 
   @Override
   public TonePitch parse(CharStream chars) {

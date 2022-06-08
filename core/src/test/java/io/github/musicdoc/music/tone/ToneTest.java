@@ -19,15 +19,15 @@ public class ToneTest extends Assertions {
   @Test
   public void testName() {
 
-    checkToneByAsciiName("c#", TonePitchEnglish.C_SHARP, 3);
-    checkToneByAsciiName("c#'", TonePitchEnglish.C_SHARP, 4);
-    checkToneByAsciiName("c#''", TonePitchEnglish.C_SHARP, 5);
-    checkToneByAsciiName("C#", TonePitchEnglish.C_SHARP, 2);
-    checkToneByAsciiName("C#,", TonePitchEnglish.C_SHARP, 1);
-    checkToneByAsciiName("C#,,", TonePitchEnglish.C_SHARP, 0);
-    checkToneByAsciiName("bb", TonePitchEnglish.B_FLAT, 3);
-    checkToneByAsciiName("Bb", TonePitchEnglish.B_FLAT, 2);
-    checkToneByAsciiName("B", TonePitchEnglish.B, 2);
+    checkToneByAsciiName("c#", TonePitchEnglish.C_SHARP, 5);
+    checkToneByAsciiName("c#'", TonePitchEnglish.C_SHARP, 6);
+    checkToneByAsciiName("c#''", TonePitchEnglish.C_SHARP, 7);
+    checkToneByAsciiName("C#", TonePitchEnglish.C_SHARP, 4);
+    checkToneByAsciiName("C#,", TonePitchEnglish.C_SHARP, 3);
+    checkToneByAsciiName("C#,,", TonePitchEnglish.C_SHARP, 2);
+    checkToneByAsciiName("bb", TonePitchEnglish.B_FLAT, 5);
+    checkToneByAsciiName("Bb", TonePitchEnglish.B_FLAT, 4);
+    checkToneByAsciiName("B", TonePitchEnglish.B, 4);
     assertThat(ToneMapper.INSTANCE.parse("Cis','")).isEqualTo(ToneMapper.INSTANCE.parse("c#"));
     assertThat(ToneMapper.INSTANCE.parse("Deses','").isEqualTo(ToneMapper.INSTANCE.parse("dbb"))).isTrue();
   }
@@ -35,10 +35,9 @@ public class ToneTest extends Assertions {
   private void checkToneByAsciiName(String ascii, TonePitch pitch, int octave) {
 
     Tone tone = ToneMapper.INSTANCE.parse(ascii);
-    assertThat(tone.getName()).isEqualTo(ascii);
+    assertThat(tone.getNameAbc(TonePitchEnglish.STYLE)).isEqualTo(ascii);
     assertThat(tone.getPitch()).isSameAs(pitch);
     assertThat(tone.getOctave()).isEqualTo(octave);
-    assertThat(tone.getName()).isEqualTo(ascii);
   }
 
   /**
@@ -77,7 +76,8 @@ public class ToneTest extends Assertions {
     checkTransposeChromaticNormalStyle(0, pitch, step, newPitch, octaveStep);
   }
 
-  private void checkTransposeChromaticNormalStyle(int octave, TonePitch pitch, int step, TonePitch newPitch, int octaveStep) {
+  private void checkTransposeChromaticNormalStyle(int octave, TonePitch pitch, int step, TonePitch newPitch,
+      int octaveStep) {
 
     // given
     Tone tone = Tone.of(pitch, octave);

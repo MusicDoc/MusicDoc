@@ -4,10 +4,10 @@ package io.github.musicdoc.music.tab;
 
 import java.util.Set;
 
-import io.github.musicdoc.music.harmony.Interval;
 import io.github.musicdoc.music.harmony.TonalSystem;
+import io.github.musicdoc.music.interval.Interval;
 import io.github.musicdoc.music.note.Note;
-import io.github.musicdoc.music.rythm.MusicalValue;
+import io.github.musicdoc.music.rythm.value.MusicalValue;
 import io.github.musicdoc.music.tone.Tone;
 
 /**

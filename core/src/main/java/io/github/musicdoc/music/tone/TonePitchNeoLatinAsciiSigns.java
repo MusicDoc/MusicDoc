@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import io.github.musicdoc.music.interval.ChromaticStep;
+
 /**
  * {@link TonePitch} with like {@link TonePitchNeoLatin} but with compact ascii symbols for enharmonic signs (# and b).
  */

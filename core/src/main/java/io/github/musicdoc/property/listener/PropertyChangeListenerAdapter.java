@@ -2,6 +2,11 @@ package io.github.musicdoc.property.listener;
 
 import io.github.musicdoc.property.Property;
 
+/**
+ * Abstract base class for an adapter to manage {@link PropertyChangeListener}s.
+ *
+ * @param <V> type of the property value.
+ */
 public abstract class PropertyChangeListenerAdapter<V> {
 
   /**

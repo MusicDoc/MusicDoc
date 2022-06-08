@@ -7,6 +7,8 @@ import io.github.musicdoc.property.Property;
 
 /**
  * Implementation of {@link PropertyChangeListenerAdapter} for multiple registered {@link PropertyChangeListener}s.
+ *
+ * @param <V> type of the property value.
  */
 public class PropertyChangeListenerAdapterMultiple<V> extends PropertyChangeListenerAdapter<V> {
 
@@ -20,6 +22,14 @@ public class PropertyChangeListenerAdapterMultiple<V> extends PropertyChangeList
 
   private V value;
 
+  /**
+   * The constructor.
+   *
+   * @param listener1 the first registered {@link PropertyChangeListener}.
+   * @param listener2 the second registered {@link PropertyChangeListener}.
+   * @param property the {@link Property} to manage.
+   */
+  @SuppressWarnings("unchecked")
   public PropertyChangeListenerAdapterMultiple(PropertyChangeListener<? super V> listener1,
       PropertyChangeListener<? super V> listener2, Property<V> property) {
 
@@ -31,15 +41,14 @@ public class PropertyChangeListenerAdapterMultiple<V> extends PropertyChangeList
   }
 
   @Override
-  public PropertyChangeListenerAdapter<V> addListener(PropertyChangeListener<? super V> listener,
-      Property<V> property) {
+  public PropertyChangeListenerAdapter<V> addListener(PropertyChangeListener<? super V> l, Property<V> p) {
 
     final int oldCapacity = this.listeners.length;
     if ((this.locked) || (this.listenerSize == oldCapacity)) {
       final int newCapacity = newCapacity(this.listenerSize, this.listeners.length);
       this.listeners = Arrays.copyOf(this.listeners, newCapacity);
     }
-    this.listeners[this.listenerSize++] = listener;
+    this.listeners[this.listenerSize++] = l;
     return this;
   }
 
@@ -49,16 +58,17 @@ public class PropertyChangeListenerAdapterMultiple<V> extends PropertyChangeList
   }
 
   @Override
-  public PropertyChangeListenerAdapter<V> removeListener(PropertyChangeListener<? super V> listener) {
+  public PropertyChangeListenerAdapter<V> removeListener(PropertyChangeListener<? super V> l) {
 
     for (int i = 0; i < this.listenerSize; i++) {
-      if (listener.equals(this.listeners[i])) {
+      if (l.equals(this.listeners[i])) {
         return removeListener(i);
       }
     }
     return this;
   }
 
+  @SuppressWarnings("unchecked")
   private PropertyChangeListenerAdapter<V> removeListener(int index) {
 
     if (this.listenerSize == 2) {

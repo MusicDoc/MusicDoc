@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import io.github.musicdoc.music.interval.ChromaticStep;
+
 /**
  * {@link TonePitch} with English {@link ToneNameStyle}. This style is used in most countries where English is spoken
  * (e.g. UK and US). It uses ASCII for enharmonic signs (e.g. "C#" or "Cb").
