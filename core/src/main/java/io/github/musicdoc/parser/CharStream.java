@@ -6,7 +6,7 @@ import io.github.musicdoc.filter.CharFilter;
  * A stream of characters with method to consume and of the underlying text. Data may come from any source like a
  * {@link String} or {@link java.io.Reader}.
  */
-public interface CharStream {
+public interface CharStream extends TextPosition {
 
   /**
    * @return the current index in the stream of characters or in other words the number of characters that have been
@@ -189,4 +189,42 @@ public interface CharStream {
    */
   boolean expect(char expected, boolean warning);
 
+  /**
+   * Adds a {@link MusicParserMessageType#HINT hint} {@link MusicParserMessage} for the current {@link TextPosition}.
+   *
+   * @param text the {@link MusicParserMessage#getText() text of the message}.
+   */
+  default void addHint(String text) {
+
+    addMessage(MusicParserMessageType.HINT, text);
+  }
+
+  /**
+   * Adds a {@link MusicParserMessageType#WARNING warning} {@link MusicParserMessage} for the current
+   * {@link TextPosition}.
+   *
+   * @param text the {@link MusicParserMessage#getText() text of the message}.
+   */
+  default void addWarning(String text) {
+
+    addMessage(MusicParserMessageType.WARNING, text);
+  }
+
+  /**
+   * Adds a {@link MusicParserMessageType#ERROR error} {@link MusicParserMessage} for the current {@link TextPosition}.
+   *
+   * @param text the {@link MusicParserMessage#getText() text of the message}.
+   */
+  default void addError(String text) {
+
+    addMessage(MusicParserMessageType.ERROR, text);
+  }
+
+  /**
+   * Adds a {@link MusicParserMessage} for the current {@link TextPosition}.
+   *
+   * @param type the {@link MusicParserMessage#getType() type of the message}.
+   * @param text the {@link MusicParserMessage#getText() text of the message}.
+   */
+  void addMessage(MusicParserMessageType type, String text);
 }

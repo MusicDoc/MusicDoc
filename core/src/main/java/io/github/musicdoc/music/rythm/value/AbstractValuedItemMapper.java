@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.github.musicdoc.format.AbstractMapper;
-import io.github.musicdoc.format.SongFormatOptions;
+import io.github.musicdoc.format.MusicFormatOptions;
 import io.github.musicdoc.music.decoration.MusicalDecoration;
 import io.github.musicdoc.music.decoration.MusicalDecorationMapper;
 import io.github.musicdoc.parser.CharStream;
@@ -49,7 +49,7 @@ public abstract class AbstractValuedItemMapper<I extends ValuedItem<?>> extends 
   protected abstract I parseItem(CharStream chars, List<MusicalDecoration> decorations);
 
   @Override
-  public void format(I item, Appendable buffer, SongFormatOptions options) throws IOException {
+  public void format(I item, Appendable buffer, MusicFormatOptions options) throws IOException {
 
     if (item == null) {
       return;
@@ -82,9 +82,9 @@ public abstract class AbstractValuedItemMapper<I extends ValuedItem<?>> extends 
   /**
    * @param item {@link ValuedItem} to format.
    * @param buffer the {@link Appendable} where to {@link Appendable#append(CharSequence) append} the formatted output.
-   * @param options the {@link SongFormatOptions}.
+   * @param options the {@link MusicFormatOptions}.
    * @throws IOException in case of an input/output error.
    */
-  protected abstract void formatItem(I item, Appendable buffer, SongFormatOptions options) throws IOException;
+  protected abstract void formatItem(I item, Appendable buffer, MusicFormatOptions options) throws IOException;
 
 }

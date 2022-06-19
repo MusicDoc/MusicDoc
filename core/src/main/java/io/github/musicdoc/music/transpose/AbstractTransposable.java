@@ -1,7 +1,7 @@
 package io.github.musicdoc.music.transpose;
 
 import io.github.musicdoc.music.harmony.TonalSystem;
-import io.github.musicdoc.music.interval.Interval;
+import io.github.musicdoc.music.interval.ToneInterval;
 import io.github.musicdoc.music.tone.TonePitch;
 
 /**
@@ -24,7 +24,7 @@ public abstract class AbstractTransposable<SELF extends AbstractTransposable<SEL
   }
 
   @Override
-  public SELF transpose(Interval interval, TransposeContext context) {
+  public SELF transpose(ToneInterval interval, TransposeContext context) {
 
     TonalSystem tonalSystem = context.getTonalSystem();
     int steps = interval.getChromaticSteps(tonalSystem);

@@ -3,7 +3,7 @@ package io.github.musicdoc.music.tone;
 import java.io.IOException;
 
 import io.github.musicdoc.format.AbstractMapper;
-import io.github.musicdoc.format.SongFormatOptions;
+import io.github.musicdoc.format.MusicFormatOptions;
 import io.github.musicdoc.parser.CharStream;
 
 /**
@@ -51,7 +51,7 @@ public class ToneMapper extends AbstractMapper<Tone> {
   }
 
   @Override
-  public void format(Tone tone, Appendable buffer, SongFormatOptions options) throws IOException {
+  public void format(Tone tone, Appendable buffer, MusicFormatOptions options) throws IOException {
 
     buffer.append(tone.getName());
   }

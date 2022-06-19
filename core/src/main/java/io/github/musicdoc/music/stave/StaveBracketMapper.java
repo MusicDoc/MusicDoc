@@ -3,7 +3,7 @@ package io.github.musicdoc.music.stave;
 import java.io.IOException;
 
 import io.github.musicdoc.format.AbstractMapper;
-import io.github.musicdoc.format.SongFormatOptions;
+import io.github.musicdoc.format.MusicFormatOptions;
 import io.github.musicdoc.parser.CharStream;
 
 public class StaveBracketMapper extends AbstractMapper<StaveBracket> {
@@ -21,7 +21,7 @@ public class StaveBracketMapper extends AbstractMapper<StaveBracket> {
     }
 
     @Override
-    public void format(StaveBracket bracket, Appendable buffer, SongFormatOptions options) throws IOException {
+    public void format(StaveBracket bracket, Appendable buffer, MusicFormatOptions options) throws IOException {
         if (bracket == null) {
             return;
         }

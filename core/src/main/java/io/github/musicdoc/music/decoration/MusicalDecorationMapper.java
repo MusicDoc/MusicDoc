@@ -5,7 +5,7 @@ import java.io.IOException;
 import io.github.musicdoc.filter.CharFilter;
 import io.github.musicdoc.filter.ListCharFilter;
 import io.github.musicdoc.format.AbstractMapper;
-import io.github.musicdoc.format.SongFormatOptions;
+import io.github.musicdoc.format.MusicFormatOptions;
 import io.github.musicdoc.parser.CharStream;
 
 /**
@@ -45,7 +45,7 @@ public class MusicalDecorationMapper extends AbstractMapper<MusicalDecoration> {
   }
 
   @Override
-  public void format(MusicalDecoration decoration, Appendable buffer, SongFormatOptions options) throws IOException {
+  public void format(MusicalDecoration decoration, Appendable buffer, MusicFormatOptions options) throws IOException {
 
     if (decoration == null) {
       return;

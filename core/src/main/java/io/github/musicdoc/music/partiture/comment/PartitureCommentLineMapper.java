@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import io.github.musicdoc.filter.ListCharFilter;
 import io.github.musicdoc.format.AbstractMapper;
-import io.github.musicdoc.format.SongFormatOptions;
+import io.github.musicdoc.format.MusicFormatOptions;
 import io.github.musicdoc.parser.CharStream;
 
 /**
@@ -29,7 +29,7 @@ public class PartitureCommentLineMapper extends AbstractMapper<PartitureCommentL
     }
 
     @Override
-    public void format(PartitureCommentLine line, Appendable buffer, SongFormatOptions options) throws IOException {
+    public void format(PartitureCommentLine line, Appendable buffer, MusicFormatOptions options) throws IOException {
         buffer.append(BEGIN_COMMENT);
         buffer.append(line.getComment());
         buffer.append(NEWLINE);

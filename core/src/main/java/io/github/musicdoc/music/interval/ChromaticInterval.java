@@ -2,16 +2,16 @@
  * http://www.apache.org/licenses/LICENSE-2.0 */
 package io.github.musicdoc.music.interval;
 
-import io.github.musicdoc.music.harmony.Chord;
-import io.github.musicdoc.music.harmony.ChordExtension;
 import io.github.musicdoc.music.harmony.MusicalKey;
 import io.github.musicdoc.music.harmony.TonalSystem;
+import io.github.musicdoc.music.harmony.chord.Chord;
+import io.github.musicdoc.music.harmony.chord.ChordExtension;
 import io.github.musicdoc.music.tone.TonePitch;
 
 /**
- * Enum with the {@link #getChromaticSteps() chromatic} {@link Interval}s.
+ * Enum with the {@link #getChromaticSteps() chromatic} {@link ToneInterval}s.
  */
-public class ChromaticInterval implements Interval {
+public class ChromaticInterval implements ToneInterval {
 
   /**
    * The "empty" interval.

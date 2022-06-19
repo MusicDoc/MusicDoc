@@ -22,7 +22,7 @@ import io.github.musicdoc.music.tone.TonePitchEnglish;
  * {@link TonePitchEnglish#B_SHARP B}, {@link TonePitchEnglish#C C}, {@link TonePitchEnglish#D D},
  * {@link TonePitchEnglish#E E}, {@link TonePitchEnglish#F F}, {@link TonePitchEnglish#G G}.<br/>
  */
-public enum Solmization implements Interval {
+public enum Solmization implements ToneInterval {
 
   /**
    * The first tone in case of a {@link TonalSystem#MAJOR major} and the third tone in case of a

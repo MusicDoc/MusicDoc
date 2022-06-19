@@ -9,7 +9,7 @@ import io.github.musicdoc.music.interval.ChromaticStep;
 
 /**
  * Style of the {@link TonePitch#getName() name} of a {@link TonePitch} and its related objects such as {@link Tone},
- * {@link io.github.musicdoc.music.harmony.Chord}, {@link io.github.musicdoc.music.harmony.MusicalKey}, etc.
+ * {@link io.github.musicdoc.music.harmony.chord.Chord}, {@link io.github.musicdoc.music.harmony.MusicalKey}, etc.
  *
  * Instances of this class are found in the {@code STYLE} constants of the {@link TonePitch} classes so as default use
  * {@link TonePitchEnglish#STYLE}.

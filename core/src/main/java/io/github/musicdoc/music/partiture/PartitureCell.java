@@ -1,7 +1,7 @@
 package io.github.musicdoc.music.partiture;
 
-import io.github.musicdoc.music.harmony.Chord;
-import io.github.musicdoc.music.harmony.ChordContainer;
+import io.github.musicdoc.music.harmony.chord.Chord;
+import io.github.musicdoc.music.harmony.chord.ChordContainer;
 import io.github.musicdoc.music.transpose.AbstractTransposable;
 
 public abstract class PartitureCell<SELF extends PartitureCell<SELF>> extends AbstractTransposable<SELF> {

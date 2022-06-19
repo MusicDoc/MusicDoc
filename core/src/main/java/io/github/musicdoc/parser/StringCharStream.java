@@ -17,7 +17,11 @@ public class StringCharStream implements CharStream {
 
   private int index;
 
-  private List<Warning> warnings;
+  private int line;
+
+  private int column;
+
+  private List<MusicParserMessage> messages;
 
   /**
    * The constructor.
@@ -55,12 +59,26 @@ public class StringCharStream implements CharStream {
     this.string = string;
     this.end = end;
     this.index = index;
+    this.line = 1;
+    this.column = 1;
   }
 
   @Override
   public long getIndex() {
 
     return this.index;
+  }
+
+  @Override
+  public int getLine() {
+
+    return this.line;
+  }
+
+  @Override
+  public int getColumn() {
+
+    return this.column;
   }
 
   @Override
@@ -73,9 +91,29 @@ public class StringCharStream implements CharStream {
   public char next() {
 
     if (this.index <= this.end) {
-      return this.string.charAt(this.index++);
+      char c = this.string.charAt(this.index++);
+      if ((c == '\r') && (this.index <= this.end)) {
+        c = this.string.charAt(this.index);
+        if (c == '\n') {
+          this.index++;
+        } else {
+          c = '\r'; // broken file?
+        }
+      }
+      processChar(c);
+      return c;
     }
     return 0;
+  }
+
+  private void processChar(char c) {
+
+    if (c == '\n') {
+      this.line++;
+      this.column = 1;
+    } else {
+      this.column++;
+    }
   }
 
   @Override
@@ -149,11 +187,28 @@ public class StringCharStream implements CharStream {
     if (max > this.end) {
       max = this.end + 1;
     }
+    return readTo(max);
+  }
+
+  private String readTo(int endIndex) {
+
     String result = "";
-    if (this.index < max) {
-      result = this.string.substring(this.index, max);
+    if (this.index < endIndex) {
+      result = this.string.substring(this.index, endIndex);
     }
-    this.index = max;
+    int lastNewline = result.lastIndexOf('\n');
+    if (lastNewline >= 0) {
+      this.line++;
+      this.column = result.length() - lastNewline;
+      int newlineIndex = result.indexOf('\n');
+      while ((newlineIndex >= 0) && (newlineIndex < lastNewline)) {
+        this.line++;
+        newlineIndex = result.indexOf('\n', newlineIndex + 1);
+      }
+    } else {
+      this.column += result.length();
+    }
+    this.index = endIndex;
     return result;
   }
 
@@ -163,17 +218,17 @@ public class StringCharStream implements CharStream {
     if (this.index > this.end) {
       return "";
     }
+    boolean found = false;
     int newIndex = this.index;
     while (newIndex <= this.end) {
       if (this.string.charAt(newIndex) == stop) {
+        found = true;
         break;
       }
       newIndex++;
     }
-    if (acceptEot) {
-      String result = this.string.substring(this.index, newIndex);
-      this.index = newIndex;
-      return result;
+    if (found || acceptEot) {
+      return readTo(newIndex);
     } else {
       return null;
     }
@@ -195,9 +250,7 @@ public class StringCharStream implements CharStream {
       newIndex++;
     }
     if (found || acceptEot) {
-      String result = this.string.substring(this.index, newIndex);
-      this.index = newIndex;
-      return result;
+      return readTo(newIndex);
     } else {
       return null;
     }
@@ -220,9 +273,7 @@ public class StringCharStream implements CharStream {
       }
       newIndex++;
     }
-    String result = this.string.substring(this.index, newIndex);
-    this.index = newIndex;
-    return result;
+    return readTo(newIndex);
   }
 
   @Override
@@ -231,14 +282,14 @@ public class StringCharStream implements CharStream {
     if (this.index > this.end) {
       return "";
     }
-    int start = this.index;
-    while (this.index <= this.end) {
-      if (!filter.accept(this.string.charAt(this.index))) {
+    int newIndex = this.index;
+    while (newIndex <= this.end) {
+      if (!filter.accept(this.string.charAt(newIndex))) {
         break;
       }
-      this.index++;
+      newIndex++;
     }
-    return this.string.substring(start, this.index);
+    return readTo(newIndex);
   }
 
   @Override
@@ -282,6 +333,7 @@ public class StringCharStream implements CharStream {
     }
     String number = this.string.substring(this.index, newIndex);
     this.index = newIndex;
+    this.column += number.length();
     return number;
   }
 
@@ -294,7 +346,10 @@ public class StringCharStream implements CharStream {
       newIndex = this.end + 1;
       skipped = newIndex - this.index;
     }
-    this.index = newIndex;
+    while (this.index < newIndex) {
+      char c = this.string.charAt(this.index++);
+      processChar(c);
+    }
     return skipped;
   }
 
@@ -304,6 +359,7 @@ public class StringCharStream implements CharStream {
     int start = this.index;
     while ((this.index <= this.end) && (this.string.charAt(this.index) == skip)) {
       this.index++;
+      processChar(skip);
     }
     return this.index - start;
   }
@@ -312,7 +368,12 @@ public class StringCharStream implements CharStream {
   public int skipWhile(CharFilter filter) {
 
     int start = this.index;
-    while ((this.index <= this.end) && filter.accept(this.string.charAt(this.index))) {
+    while (this.index <= this.end) {
+      char c = this.string.charAt(this.index);
+      if (!filter.accept(c)) {
+        break;
+      }
+      processChar(c);
       this.index++;
     }
     return this.index - start;
@@ -322,7 +383,12 @@ public class StringCharStream implements CharStream {
   public int skipUntil(CharFilter stopFilter) {
 
     int start = this.index;
-    while ((this.index <= this.end) && !stopFilter.accept(this.string.charAt(this.index))) {
+    while (this.index <= this.end) {
+      char c = this.string.charAt(this.index);
+      if (stopFilter.accept(c)) {
+        break;
+      }
+      processChar(c);
       this.index++;
     }
     return this.index - start;
@@ -340,12 +406,16 @@ public class StringCharStream implements CharStream {
       if ((this.index <= this.end) && (this.string.charAt(this.index) == '\r')) {
         this.index++;
       }
+      this.line++;
+      this.column = 1;
       return true;
     } else if (c == '\r') {
       this.index++;
       if ((this.index <= this.end) && (this.string.charAt(this.index) == '\n')) {
         this.index++;
       }
+      this.line++;
+      this.column = 1;
       return true;
     }
     return false;
@@ -366,12 +436,19 @@ public class StringCharStream implements CharStream {
       if (c == expected) {
         found = true;
         this.index++;
+        processChar(c);
       }
     }
-    if (!found) {
-      getWarnings().add(new Warning(this.index, Character.toString(expected)));
+    if (warning && !found) {
+      addWarning("Expected '" + expected + "'");
     }
     return found;
+  }
+
+  @Override
+  public void addMessage(MusicParserMessageType type, String text) {
+
+    getMessages().add(new MusicParserMessage(this.line, this.column, type, text));
   }
 
   @Override
@@ -382,6 +459,8 @@ public class StringCharStream implements CharStream {
       return false;
     }
     int newIndex = this.index;
+    int lineNew = this.line;
+    int columnNew = this.column;
     for (int expectedIndex = 0; expectedIndex < expectedLength; expectedIndex++) {
       if (newIndex > this.end) {
         return false;
@@ -393,21 +472,29 @@ public class StringCharStream implements CharStream {
           return false;
         }
       }
+      if (c == '\n') {
+        lineNew++;
+        columnNew = 1;
+      } else {
+        columnNew++;
+      }
       newIndex++;
     }
     this.index = newIndex;
+    this.line = lineNew;
+    this.column = columnNew;
     return true;
   }
 
   /**
-   * @return the {@link List} of warnings.
+   * @return the {@link List} of {@link MusicParserMessage}s.
    */
-  public List<Warning> getWarnings() {
+  public List<MusicParserMessage> getMessages() {
 
-    if (this.warnings == null) {
-      this.warnings = new ArrayList<>();
+    if (this.messages == null) {
+      this.messages = new ArrayList<>();
     }
-    return this.warnings;
+    return this.messages;
   }
 
   /**
@@ -425,55 +512,5 @@ public class StringCharStream implements CharStream {
       return "";
     }
     return this.string.substring(this.index);
-  }
-
-  /**
-   * A warning message during parsing.
-   */
-  public static class Warning {
-
-    private final int startIndex;
-
-    private final int endIndex;
-
-    private final String expected;
-
-    /**
-     * The constructor.
-     *
-     * @param index the index where the warning occurred.
-     * @param expected the expected text.
-     */
-    public Warning(int index, String expected) {
-
-      super();
-      this.startIndex = index;
-      this.endIndex = index;
-      this.expected = expected;
-    }
-
-    /**
-     * @return the start index of this waring,
-     */
-    public int getStartIndex() {
-
-      return this.startIndex;
-    }
-
-    /**
-     * @return the end index of this waring,
-     */
-    public int getEndIndex() {
-
-      return this.endIndex;
-    }
-
-    /**
-     * @return the expected text.
-     */
-    public String getExpected() {
-
-      return this.expected;
-    }
   }
 }

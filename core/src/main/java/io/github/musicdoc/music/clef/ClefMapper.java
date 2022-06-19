@@ -3,7 +3,7 @@ package io.github.musicdoc.music.clef;
 import java.io.IOException;
 
 import io.github.musicdoc.format.AbstractMapper;
-import io.github.musicdoc.format.SongFormatOptions;
+import io.github.musicdoc.format.MusicFormatOptions;
 import io.github.musicdoc.music.interval.ChromaticInterval;
 import io.github.musicdoc.parser.CharStream;
 
@@ -40,7 +40,7 @@ public class ClefMapper extends AbstractMapper<Clef> {
   }
 
   @Override
-  public void format(Clef clef, Appendable buffer, SongFormatOptions options) throws IOException {
+  public void format(Clef clef, Appendable buffer, MusicFormatOptions options) throws IOException {
 
     if (clef == null) {
       return;

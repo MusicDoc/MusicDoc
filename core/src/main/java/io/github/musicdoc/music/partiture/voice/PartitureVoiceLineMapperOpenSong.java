@@ -5,9 +5,9 @@ import java.util.List;
 
 import io.github.musicdoc.StringHelper;
 import io.github.musicdoc.filter.ListCharFilter;
-import io.github.musicdoc.format.SongFormatOptions;
-import io.github.musicdoc.music.harmony.ChordContainer;
-import io.github.musicdoc.music.harmony.ChordContainerMapper;
+import io.github.musicdoc.format.MusicFormatOptions;
+import io.github.musicdoc.music.harmony.chord.ChordContainer;
+import io.github.musicdoc.music.harmony.chord.ChordContainerMapper;
 import io.github.musicdoc.music.partiture.comment.PartitureCommentLineMapper;
 import io.github.musicdoc.parser.CharStream;
 
@@ -76,7 +76,7 @@ public class PartitureVoiceLineMapperOpenSong extends PartitureVoiceLineMapper {
     }
 
     @Override
-    public void format(PartitureVoiceLine line, Appendable buffer, SongFormatOptions options) throws IOException {
+    public void format(PartitureVoiceLine line, Appendable buffer, MusicFormatOptions options) throws IOException {
         if (line == null) {
             return;
         }

@@ -1,6 +1,6 @@
 package io.github.musicdoc.format;
 
-import io.github.musicdoc.music.harmony.Chord;
+import io.github.musicdoc.music.harmony.chord.Chord;
 import io.github.musicdoc.music.partiture.voice.PartitureVoiceCell;
 import io.github.musicdoc.music.rythm.value.MusicalValue;
 import io.github.musicdoc.music.rythm.value.ValuedItem;

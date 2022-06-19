@@ -4,8 +4,8 @@ package io.github.musicdoc.music.note;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-import io.github.musicdoc.ObjectHelper;
 import io.github.musicdoc.music.clef.Clef;
 import io.github.musicdoc.music.decoration.MusicalDecoration;
 import io.github.musicdoc.music.glyphs.MusicalGlyphsContext;
@@ -44,7 +44,7 @@ public class Note extends ValuedItem<Note> {
   public Note(Tone tone, MusicalValue value, List<MusicalDecoration> decorations) {
 
     super(value, decorations);
-    ObjectHelper.requireNonNull(tone, "tone");
+    Objects.requireNonNull(tone, "tone");
     this.tone = tone;
   }
 

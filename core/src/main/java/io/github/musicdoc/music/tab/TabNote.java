@@ -5,7 +5,7 @@ package io.github.musicdoc.music.tab;
 import java.util.Set;
 
 import io.github.musicdoc.music.harmony.TonalSystem;
-import io.github.musicdoc.music.interval.Interval;
+import io.github.musicdoc.music.interval.ToneInterval;
 import io.github.musicdoc.music.note.Note;
 import io.github.musicdoc.music.rythm.value.MusicalValue;
 import io.github.musicdoc.music.tone.Tone;
@@ -59,7 +59,7 @@ public class TabNote {
     }
 
     /**
-     * @return the fret which represents the {@link Interval#getChromaticSteps(TonalSystem) chromatic
+     * @return the fret which represents the {@link ToneInterval#getChromaticSteps(TonalSystem) chromatic
      *         interval} of the {@link Tone} relative
      *         to the {@link TabString#getTone() base tone} of the {@link TabString string}. Should
      *         not be negative.

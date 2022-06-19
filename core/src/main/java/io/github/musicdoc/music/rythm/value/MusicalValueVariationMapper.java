@@ -3,7 +3,7 @@ package io.github.musicdoc.music.rythm.value;
 import java.io.IOException;
 
 import io.github.musicdoc.format.AbstractMapper;
-import io.github.musicdoc.format.SongFormatOptions;
+import io.github.musicdoc.format.MusicFormatOptions;
 import io.github.musicdoc.parser.CharStream;
 
 /**
@@ -28,7 +28,7 @@ public class MusicalValueVariationMapper extends AbstractMapper<MusicalValueVari
   }
 
   @Override
-  public void format(MusicalValueVariation variation, Appendable buffer, SongFormatOptions options) throws IOException {
+  public void format(MusicalValueVariation variation, Appendable buffer, MusicFormatOptions options) throws IOException {
 
     if (variation == null) {
       return;

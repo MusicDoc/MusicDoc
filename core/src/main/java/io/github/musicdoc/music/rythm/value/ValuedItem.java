@@ -3,8 +3,8 @@
 package io.github.musicdoc.music.rythm.value;
 
 import java.util.List;
+import java.util.Objects;
 
-import io.github.musicdoc.ObjectHelper;
 import io.github.musicdoc.music.decoration.MusicalDecoration;
 import io.github.musicdoc.music.glyphs.MusicalGlyphs;
 import io.github.musicdoc.music.note.Note;
@@ -35,7 +35,7 @@ public abstract class ValuedItem<SELF extends ValuedItem<SELF>> extends Abstract
   public ValuedItem(MusicalValue value, List<MusicalDecoration> decorations) {
 
     super();
-    ObjectHelper.requireNonNull(value, "value");
+    Objects.requireNonNull(value, "value");
     this.value = value;
     this.decorations = decorations;
   }
@@ -68,7 +68,7 @@ public abstract class ValuedItem<SELF extends ValuedItem<SELF>> extends Abstract
   @Override
   public int hashCode() {
 
-    return ObjectHelper.hash(this.value, getTone());
+    return Objects.hash(this.value, getTone());
   }
 
   @Override
@@ -80,8 +80,8 @@ public abstract class ValuedItem<SELF extends ValuedItem<SELF>> extends Abstract
       return false;
     }
     ValuedItem<?> other = (ValuedItem<?>) obj;
-    if (!ObjectHelper.equals(this.value, other.value) || !ObjectHelper.equals(getTone(), other.getTone())
-        || !ObjectHelper.equals(this.decorations, other.decorations)) {
+    if (!Objects.equals(this.value, other.value) || !Objects.equals(getTone(), other.getTone())
+        || !Objects.equals(this.decorations, other.decorations)) {
       return false;
     }
     return true;

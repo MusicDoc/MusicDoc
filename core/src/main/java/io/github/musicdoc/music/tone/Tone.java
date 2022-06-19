@@ -7,7 +7,7 @@ import java.util.Locale;
 import io.github.musicdoc.music.clef.Clef;
 import io.github.musicdoc.music.harmony.MusicalKey;
 import io.github.musicdoc.music.interval.ChromaticInterval;
-import io.github.musicdoc.music.interval.Interval;
+import io.github.musicdoc.music.interval.ToneInterval;
 import io.github.musicdoc.music.transpose.AbstractTransposable;
 import io.github.musicdoc.music.transpose.TransposeContext;
 
@@ -476,7 +476,7 @@ public class Tone extends AbstractTransposable<Tone> implements Comparable<Tone>
    * cover all steps and can exceed one or multiple octaves.
    *
    * @param targetTone is the target {@link TonePitch}.
-   * @return the {@link ChromaticInterval} to {@link #transpose(Interval, TransposeContext) get} from this
+   * @return the {@link ChromaticInterval} to {@link #transpose(ToneInterval, TransposeContext) get} from this
    *         {@link TonePitch} to the given {@code targetTone}.
    */
   public ChromaticInterval getInterval(Tone targetTone) {

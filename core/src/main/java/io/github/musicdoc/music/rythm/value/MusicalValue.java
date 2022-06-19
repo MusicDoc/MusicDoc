@@ -2,7 +2,8 @@
  * http://www.apache.org/licenses/LICENSE-2.0 */
 package io.github.musicdoc.music.rythm.value;
 
-import io.github.musicdoc.ObjectHelper;
+import java.util.Objects;
+
 import io.github.musicdoc.music.rythm.Fraction;
 import io.github.musicdoc.music.rythm.beat.Beat;
 import io.github.musicdoc.music.rythm.rest.Rest;
@@ -81,7 +82,7 @@ public class MusicalValue implements Fraction {
   public MusicalValue(int beats, int fraction, MusicalValueVariation variation) {
 
     super();
-    ObjectHelper.requireNonNull(variation, "variation");
+    Objects.requireNonNull(variation, "variation");
     if (beats < 1) {
       throw new IllegalArgumentException("Invalid beats value " + beats + " - must be positive!");
     }
@@ -211,7 +212,7 @@ public class MusicalValue implements Fraction {
     if (this.fraction != other.fraction) {
       return false;
     }
-    if (!ObjectHelper.equals(this.variation, other.variation)) {
+    if (!Objects.equals(this.variation, other.variation)) {
       return false;
     }
     return true;

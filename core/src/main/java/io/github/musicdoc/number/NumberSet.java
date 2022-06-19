@@ -5,6 +5,9 @@ package io.github.musicdoc.number;
  */
 public interface NumberSet {
 
+  /** The empty {@link NumberSet}. */
+  NumberSet EMPTY = EmptyNumberSet.INSTANCE;
+
   /**
    * @return the minimum number {@link #contains(int) contained} in this set.
    */

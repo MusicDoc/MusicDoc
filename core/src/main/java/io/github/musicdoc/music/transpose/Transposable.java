@@ -1,7 +1,7 @@
 package io.github.musicdoc.music.transpose;
 
 import io.github.musicdoc.music.harmony.MusicalKey;
-import io.github.musicdoc.music.interval.Interval;
+import io.github.musicdoc.music.interval.ToneInterval;
 
 /**
  * A {@link Transposable} is a musical object that can be {@link #transpose(int, boolean, TransposeContext) transposed}.
@@ -55,10 +55,10 @@ public interface Transposable<SELF extends Transposable<SELF>> {
   /**
    * Transposes this object by the given number of {@code steps} in a generic way.
    *
-   * @param interval the {@link Interval} by which to transpose.
+   * @param interval the {@link ToneInterval} by which to transpose.
    * @param context the {@link TransposeContext}.
    * @return the transposed "copy" of this instance.
    */
-  SELF transpose(Interval interval, TransposeContext context);
+  SELF transpose(ToneInterval interval, TransposeContext context);
 
 }

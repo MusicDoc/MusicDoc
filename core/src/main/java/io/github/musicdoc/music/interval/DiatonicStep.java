@@ -3,10 +3,10 @@ package io.github.musicdoc.music.interval;
 import io.github.musicdoc.music.harmony.TonalSystem;
 
 /**
- * Implementation of {@link Interval} as enum with the {@link #getDiatonicSteps() diatonic steps} within a single
+ * Implementation of {@link ToneInterval} as enum with the {@link #getDiatonicSteps() diatonic steps} within a single
  * octave.
  */
-public enum DiatonicStep implements Interval {
+public enum DiatonicStep implements ToneInterval {
 
   /**
    * The empty {@link Interval} representing the first tone of the

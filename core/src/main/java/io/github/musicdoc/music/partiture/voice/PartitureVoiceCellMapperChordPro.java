@@ -2,19 +2,19 @@ package io.github.musicdoc.music.partiture.voice;
 
 import java.io.IOException;
 
-import io.github.musicdoc.format.SongFormatOptions;
-import io.github.musicdoc.music.bar.Bar;
-import io.github.musicdoc.music.bar.BarMapper;
-import io.github.musicdoc.music.harmony.ChordContainer;
-import io.github.musicdoc.music.harmony.ChordContainerMapperChordPro;
+import io.github.musicdoc.format.MusicFormatOptions;
+import io.github.musicdoc.music.bar.BarLine;
+import io.github.musicdoc.music.bar.BarLineMapper;
+import io.github.musicdoc.music.harmony.chord.ChordContainer;
+import io.github.musicdoc.music.harmony.chord.ChordContainerMapperChordPro;
 import io.github.musicdoc.music.rythm.value.ValuedItem;
 import io.github.musicdoc.music.rythm.value.ValuedItemMapperChordPro;
 import io.github.musicdoc.music.stave.Stave;
-import io.github.musicdoc.music.stave.StaveMapperChordPro;
+import io.github.musicdoc.music.stave.StaveMapperMusicDoc;
 import io.github.musicdoc.parser.CharStream;
 
 /**
- * {@link PartitureVoiceCellMapper} for {@link io.github.musicdoc.format.SongFormatChordPro ChordPro format}.
+ * {@link PartitureVoiceCellMapper} for {@link io.github.musicdoc.format.SongFormatMusicDoc ChordPro format}.
  */
 public class PartitureVoiceCellMapperChordPro extends PartitureVoiceCellMapper {
 
@@ -24,7 +24,7 @@ public class PartitureVoiceCellMapperChordPro extends PartitureVoiceCellMapper {
     public PartitureVoiceCell parse(CharStream chars) {
         PartitureVoiceCell currentCell = new PartitureVoiceCell();
         PartitureVoiceCell result = currentCell;
-        Stave stave = StaveMapperChordPro.INSTANCE.parse(chars);
+        Stave stave = StaveMapperMusicDoc.INSTANCE.parse(chars);
         currentCell.setStave(stave);
 
         ValuedItem<?> item = ValuedItemMapperChordPro.INSTANCE.parse(chars);
@@ -36,20 +36,20 @@ public class PartitureVoiceCellMapperChordPro extends PartitureVoiceCellMapper {
         currentCell.setItem(item);
         String lyric = chars.readUntil(STOP_FILTER, true);
         currentCell.setLyric(lyric);
-        Bar bar = BarMapper.INSTANCE.parse(chars);
+        BarLine bar = BarLineMapper.INSTANCE.parse(chars);
         currentCell.setBar(bar);
         return result;
     }
 
     @Override
-    public void format(PartitureVoiceCell cell, Appendable buffer, SongFormatOptions options) throws IOException {
+    public void format(PartitureVoiceCell cell, Appendable buffer, MusicFormatOptions options) throws IOException {
         if (cell == null) {
             return;
         }
-        StaveMapperChordPro.INSTANCE.format(cell.getStave(), buffer, options);
+        StaveMapperMusicDoc.INSTANCE.format(cell.getStave(), buffer, options);
         ValuedItemMapperChordPro.INSTANCE.format(cell.getItem(), buffer, options);
         ChordContainerMapperChordPro.INSTANCE.format(cell.getChordContainer(), buffer, options);
         buffer.append(cell.getLyric());
-        BarMapper.INSTANCE.format(cell.getBar(), buffer, options);
+        BarLineMapper.INSTANCE.format(cell.getBar(), buffer, options);
     }
 }

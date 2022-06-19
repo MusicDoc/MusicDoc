@@ -1,7 +1,7 @@
 package io.github.musicdoc.property;
 
 import io.github.musicdoc.format.SongFormat;
-import io.github.musicdoc.format.SongFormatChordPro;
+import io.github.musicdoc.format.SongFormatMusicDoc;
 
 /**
  * Implementation of {@link Property} with {@link #getValue() value} of type {@link String}.
@@ -17,7 +17,7 @@ public class SongFormatProperty extends AbstractProperty<SongFormat> {
    */
   public SongFormatProperty(String name) {
 
-    this(name, SongFormatChordPro.INSTANCE);
+    this(name, SongFormatMusicDoc.INSTANCE);
   }
 
   /**

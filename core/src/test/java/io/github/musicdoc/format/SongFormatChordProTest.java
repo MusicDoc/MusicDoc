@@ -3,11 +3,11 @@ package io.github.musicdoc.format;
 import org.junit.jupiter.api.Test;
 
 import io.github.musicdoc.music.clef.Clef;
-import io.github.musicdoc.music.harmony.Chord;
-import io.github.musicdoc.music.harmony.ChordExtension;
-import io.github.musicdoc.music.harmony.ChordMapper;
 import io.github.musicdoc.music.harmony.MusicalKey;
 import io.github.musicdoc.music.harmony.TonalSystem;
+import io.github.musicdoc.music.harmony.chord.Chord;
+import io.github.musicdoc.music.harmony.chord.ChordExtension;
+import io.github.musicdoc.music.harmony.chord.ChordMapper;
 import io.github.musicdoc.music.note.Note;
 import io.github.musicdoc.music.partiture.Partiture;
 import io.github.musicdoc.music.partiture.PartitureLine;
@@ -28,7 +28,7 @@ import io.github.musicdoc.music.tone.Tone;
 import io.github.musicdoc.music.tone.TonePitchEnglish;
 
 /**
- * Test of {@link SongFormatChordPro}.
+ * Test of {@link SongFormatMusicDoc}.
  */
 public class SongFormatChordProTest extends SongFormatTest {
 
@@ -43,7 +43,7 @@ public class SongFormatChordProTest extends SongFormatTest {
       + "+<V:Alto;A>{F2}{G2}{A}{B}{A}{G}{F2}{z2}\n" + "-<[]C:F,V:Tenor;T>{C2}{D2}{E}{F}{E}{D}{C2}{z2}\n"
       + "+<V:Bass;B>{A,2}{B,2}{C}{D}{C}{B,}{A,2}{z2}";
 
-  /** Test of {@link SongFormatChordPro#parse(String)}. */
+  /** Test of {@link SongFormatMusicDoc#parse(String)}. */
   @Test
   public void testParseLyricsWithChords() {
 
@@ -51,7 +51,7 @@ public class SongFormatChordProTest extends SongFormatTest {
     String lyrics = LYRICS_WITH_CHORDS;
 
     // when
-    Partiture partiture = SongFormatChordPro.INSTANCE.parse(lyrics);
+    Partiture partiture = SongFormatMusicDoc.INSTANCE.parse(lyrics);
 
     // then
     assertThat(partiture).isNotNull();
@@ -97,7 +97,7 @@ public class SongFormatChordProTest extends SongFormatTest {
     assertThat(cell.getLyric()).isEqualTo(" dead.");
   }
 
-  /** Test of {@link SongFormatChordPro#format(Partiture)}. */
+  /** Test of {@link SongFormatMusicDoc#format(Partiture)}. */
   @Test
   public void formatLyricsWithChords() {
 
@@ -117,13 +117,13 @@ public class SongFormatChordProTest extends SongFormatTest {
     partiture.getSections().add(section);
 
     // when
-    String lyrics = SongFormatChordPro.INSTANCE.format(partiture);
+    String lyrics = SongFormatMusicDoc.INSTANCE.format(partiture);
 
     // then
     assertThat(lyrics).isEqualTo(LYRICS_WITH_CHORDS);
   }
 
-  /** Test of {@link SongFormatChordPro#parse(String)} with full partiture. */
+  /** Test of {@link SongFormatMusicDoc#parse(String)} with full partiture. */
   @Test
   public void testParseLyricsWithPartiture() {
 
@@ -131,7 +131,7 @@ public class SongFormatChordProTest extends SongFormatTest {
     String lyrics = LYRICS_WITH_PARTITURE;
 
     // when
-    Partiture partiture = SongFormatChordPro.INSTANCE.parse(lyrics);
+    Partiture partiture = SongFormatMusicDoc.INSTANCE.parse(lyrics);
 
     // then
     assertThat(partiture).isNotNull();

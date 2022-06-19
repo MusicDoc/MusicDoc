@@ -8,10 +8,12 @@ import io.github.musicdoc.music.partiture.voice.PartitureVoiceLineMapperOpenSong
  */
 public class PartitureLineMapperOpenSong extends PartitureLineMapper {
 
-    public static final PartitureLineMapperOpenSong INSTANCE = new PartitureLineMapperOpenSong();
+  /** The singleton instance. */
+  public static final PartitureLineMapperOpenSong INSTANCE = new PartitureLineMapperOpenSong();
 
-    @Override
-    protected PartitureVoiceLineMapper getVoiceLineMapper() {
-        return PartitureVoiceLineMapperOpenSong.INSTANCE;
-    }
+  @Override
+  protected PartitureVoiceLineMapper getVoiceLineMapper() {
+
+    return PartitureVoiceLineMapperOpenSong.INSTANCE;
+  }
 }

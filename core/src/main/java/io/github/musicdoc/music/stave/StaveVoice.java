@@ -1,6 +1,7 @@
 package io.github.musicdoc.music.stave;
 
-import io.github.musicdoc.ObjectHelper;
+import java.util.Objects;
+
 import io.github.musicdoc.format.FormatConstants;
 import io.github.musicdoc.music.instrument.Instrument;
 
@@ -9,12 +10,16 @@ import io.github.musicdoc.music.instrument.Instrument;
  */
 public class StaveVoice {
 
+  /** {@link StaveVoice} for soprano (treble). */
   public static final StaveVoice SOPRANO = new StaveVoice("Soprano", "S");
 
+  /** {@link StaveVoice} for alto. */
   public static final StaveVoice ALTO = new StaveVoice("Alto", "A");
 
+  /** {@link StaveVoice} for tenor. */
   public static final StaveVoice TENOR = new StaveVoice("Tenor", "T");
 
+  /** {@link StaveVoice} for bass. */
   public static final StaveVoice BASS = new StaveVoice("Bass", "B");
 
   private final Instrument instrument;
@@ -23,16 +28,34 @@ public class StaveVoice {
 
   private final String abbreviation;
 
+  /**
+   * The constructor.
+   *
+   * @param name the {@link #getName() voice name}.
+   */
   public StaveVoice(String name) {
 
     this(name, null, null);
   }
 
+  /**
+   * The constructor.
+   *
+   * @param name the {@link #getName() voice name}.
+   * @param abbreviation the {@link #getAbbreviation() voice abbreviation}.
+   */
   public StaveVoice(String name, String abbreviation) {
 
     this(name, abbreviation, null);
   }
 
+  /**
+   * The constructor.
+   *
+   * @param name the {@link #getName() voice name}.
+   * @param abbreviation the {@link #getAbbreviation() voice abbreviation}.
+   * @param instrument the {@link #getInstrument() voice instrument}.
+   */
   public StaveVoice(String name, String abbreviation, Instrument instrument) {
 
     super();
@@ -41,11 +64,18 @@ public class StaveVoice {
     this.instrument = instrument;
   }
 
+  /**
+   * @return the display name of this voice (e.g. "Bass").
+   */
   public String getName() {
 
     return this.name;
   }
 
+  /**
+   * @return the abbreviation of the {@link #getName() name}. Used to display the voice {@link #getName() name} for
+   *         repeated staves to save space.
+   */
   public String getAbbreviation() {
 
     return this.abbreviation;
@@ -75,8 +105,8 @@ public class StaveVoice {
       return false;
     }
     StaveVoice other = (StaveVoice) obj;
-    if (!ObjectHelper.equals(this.name, other.name) || !ObjectHelper.equals(this.abbreviation, other.abbreviation)
-        || !ObjectHelper.equals(this.instrument, other.instrument)) {
+    if (!Objects.equals(this.name, other.name) || !Objects.equals(this.abbreviation, other.abbreviation)
+        || !Objects.equals(this.instrument, other.instrument)) {
       return false;
     }
     return true;

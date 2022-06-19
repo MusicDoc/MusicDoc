@@ -3,7 +3,7 @@ package io.github.musicdoc.music.rythm.rest;
 import java.io.IOException;
 import java.util.List;
 
-import io.github.musicdoc.format.SongFormatOptions;
+import io.github.musicdoc.format.MusicFormatOptions;
 import io.github.musicdoc.music.decoration.MusicalDecoration;
 import io.github.musicdoc.music.rythm.value.AbstractValuedItemMapper;
 import io.github.musicdoc.music.rythm.value.MusicalValue;
@@ -39,7 +39,7 @@ public class RestMapper extends AbstractValuedItemMapper<Rest> {
   }
 
   @Override
-  protected void formatItem(Rest item, Appendable buffer, SongFormatOptions options) throws IOException {
+  protected void formatItem(Rest item, Appendable buffer, MusicFormatOptions options) throws IOException {
 
     if (item == null) {
       return;

@@ -9,7 +9,7 @@ public interface SongFormatConstants {
 
   char BEGIN_SECTION = '#';
 
-  String START_SECTION_CHORD_PRO = "#[";
+  String START_SECTION_MUSIC_DOC = "#[";
 
   String START_SECTION_OPEN_SONG = "[";
 

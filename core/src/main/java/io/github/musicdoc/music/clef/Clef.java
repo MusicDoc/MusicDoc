@@ -4,15 +4,15 @@ package io.github.musicdoc.music.clef;
 
 import java.util.Objects;
 
+import io.github.musicdoc.music.glyphs.MusicalGlyphs;
 import io.github.musicdoc.music.glyphs.MusicalGlyphsContext;
 import io.github.musicdoc.music.glyphs.smufl.SmuflGlyphsClefs;
-import io.github.musicdoc.music.glyphs.MusicalGlyphs;
 import io.github.musicdoc.music.glyphs.unicode.UnicodeGlyphsClefs;
 import io.github.musicdoc.music.harmony.MusicalKey;
 import io.github.musicdoc.music.harmony.TonalSystem;
 import io.github.musicdoc.music.interval.ChromaticInterval;
 import io.github.musicdoc.music.interval.DiatonicInterval;
-import io.github.musicdoc.music.interval.Interval;
+import io.github.musicdoc.music.interval.ToneInterval;
 import io.github.musicdoc.music.tone.Tone;
 import io.github.musicdoc.music.transpose.TransposeContext;
 
@@ -42,7 +42,7 @@ public class Clef implements MusicalGlyphs, ClefObject {
 
   private final ClefSymbol symbol;
 
-  private final Interval shift;
+  private final ToneInterval shift;
 
   /**
    * The constructor.
@@ -61,7 +61,7 @@ public class Clef implements MusicalGlyphs, ClefObject {
    * @param symbol the {@link #getSymbol() clef symbol}.
    * @param shift the {@link #getShift() shift}.
    */
-  private Clef(ClefSymbol symbol, Interval shift) {
+  private Clef(ClefSymbol symbol, ToneInterval shift) {
 
     super();
     this.symbol = symbol;
@@ -77,10 +77,12 @@ public class Clef implements MusicalGlyphs, ClefObject {
   }
 
   /**
-   * @return the {@link Interval} to shift the {@link ClefSymbol}. Typically {@code 0}. E.g. a value of {@code +8}
-   *         shifts the clef one octave up and a value of {@code -8} shifts the clef one octave down.
+   * @return the {@link ToneInterval} to shift the {@link ClefSymbol}. Typically
+   *         {@link ChromaticInterval#PERFECT_UNISON} meaning no shift. E.g. a value of
+   *         {@link ChromaticInterval#PERFECT_OCTAVE} shifts the clef one octave up and {@link ChromaticInterval#of(int)
+   *         ChromaticInterval.of(-12)} shifts the clef one octave down.
    */
-  public Interval getShift() {
+  public ToneInterval getShift() {
 
     return this.shift;
   }
@@ -162,7 +164,7 @@ public class Clef implements MusicalGlyphs, ClefObject {
    * @param shift the {@link #getShift() shift}.
    * @return the according {@link Clef}.
    */
-  public static Clef of(ClefSymbol type, Interval shift) {
+  public static Clef of(ClefSymbol type, ToneInterval shift) {
 
     return new Clef(type, shift);
   }

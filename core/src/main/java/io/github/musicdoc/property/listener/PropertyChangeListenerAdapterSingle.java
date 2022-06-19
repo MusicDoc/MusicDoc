@@ -1,6 +1,7 @@
 package io.github.musicdoc.property.listener;
 
-import io.github.musicdoc.ObjectHelper;
+import java.util.Objects;
+
 import io.github.musicdoc.property.Property;
 
 /**
@@ -50,7 +51,7 @@ public class PropertyChangeListenerAdapterSingle<V> extends PropertyChangeListen
 
     final V oldValue = this.value;
     this.value = this.property.getValue();
-    if (!ObjectHelper.equals(this.value, oldValue)) {
+    if (!Objects.equals(this.value, oldValue)) {
       try {
         this.listener.onChange(this.property, oldValue, this.value);
       } catch (Exception e) {

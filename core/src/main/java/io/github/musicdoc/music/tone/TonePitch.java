@@ -8,7 +8,7 @@ import io.github.musicdoc.music.harmony.TonalSystem;
 import io.github.musicdoc.music.interval.ChromaticInterval;
 import io.github.musicdoc.music.interval.ChromaticStep;
 import io.github.musicdoc.music.interval.DiatonicStep;
-import io.github.musicdoc.music.interval.Interval;
+import io.github.musicdoc.music.interval.ToneInterval;
 import io.github.musicdoc.music.transpose.AbstractTransposable;
 import io.github.musicdoc.music.transpose.TransposeContext;
 
@@ -256,7 +256,7 @@ public abstract class TonePitch extends AbstractTransposable<TonePitch> {
 
   /**
    * @param targetTone is the target {@link TonePitch}.
-   * @return the {@link ChromaticInterval} to {@link #transpose(Interval, TransposeContext) get} from this
+   * @return the {@link ChromaticInterval} to {@link #transpose(ToneInterval, TransposeContext) get} from this
    *         {@link TonePitch} to the given {@code targetTone}.
    */
   public ChromaticInterval getInterval(TonePitch targetTone) {

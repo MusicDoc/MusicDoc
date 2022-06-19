@@ -215,11 +215,11 @@ public class TonalSystem {
   }
 
   /**
-   * @param chromaticSteps the number of {@link io.github.musicdoc.music.interval.Interval#getChromaticSteps() chromatic
+   * @param chromaticSteps the number of {@link io.github.musicdoc.music.interval.ToneInterval#getChromaticSteps() chromatic
    *        steps}.
    * @param strict - {@code true} to return {@link Integer#MIN_VALUE} if the chromatic steps do not fit properly into
    *        this {@link TonalSystem}, {@code false} otherwise (to always return the diatonic steps).
-   * @return the according number of {@link io.github.musicdoc.music.interval.Interval#getDiatonicSteps() diatonic
+   * @return the according number of {@link io.github.musicdoc.music.interval.ToneInterval#getDiatonicSteps() diatonic
    *         steps}. May be {@link Integer#MIN_VALUE} if {@code strict} is {@code true}.
    */
   public int getDiatonicSteps(int chromaticSteps, boolean strict) {
@@ -251,9 +251,9 @@ public class TonalSystem {
   }
 
   /**
-   * @param diatonicSteps the number of {@link io.github.musicdoc.music.interval.Interval#getDiatonicSteps() diatonic
+   * @param diatonicSteps the number of {@link io.github.musicdoc.music.interval.ToneInterval#getDiatonicSteps() diatonic
    *        steps}.
-   * @return the according the number of {@link io.github.musicdoc.music.interval.Interval#getChromaticSteps() chromatic
+   * @return the according the number of {@link io.github.musicdoc.music.interval.ToneInterval#getChromaticSteps() chromatic
    *         steps} within this {@link TonalSystem} starting from {@link MusicalKey#getTonika() tonika}.
    */
   public int getChromaticSteps(int diatonicSteps) {

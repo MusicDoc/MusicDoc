@@ -1,8 +1,8 @@
 package io.github.musicdoc.property.listener;
 
 import java.util.Arrays;
+import java.util.Objects;
 
-import io.github.musicdoc.ObjectHelper;
 import io.github.musicdoc.property.Property;
 
 /**
@@ -103,7 +103,7 @@ public class PropertyChangeListenerAdapterMultiple<V> extends PropertyChangeList
       this.locked = true;
       final V oldValue = this.value;
       this.value = this.property.getValue();
-      if (!ObjectHelper.equals(this.value, oldValue)) {
+      if (!Objects.equals(this.value, oldValue)) {
         for (int i = 0; i < currentListenerCount; i++) {
           try {
             currentListeners[i].onChange(this.property, oldValue, this.value);

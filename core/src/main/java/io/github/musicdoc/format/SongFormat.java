@@ -6,12 +6,12 @@ import java.util.Map;
 
 import io.github.musicdoc.music.partiture.Partiture;
 import io.github.musicdoc.music.partiture.PartitureMapper;
-import io.github.musicdoc.parser.Parser;
+import io.github.musicdoc.parser.CharStream;
 
 /**
  * Abstract base class for a format to {@link #parse(String) parse} {@link Partiture}s.
  */
-public abstract class SongFormat implements Parser<Partiture> {
+public abstract class SongFormat implements MusicParser<Partiture> {
 
   private static final Map<String, SongFormat> FORMAT_MAP = new HashMap<>();
 
@@ -44,21 +44,27 @@ public abstract class SongFormat implements Parser<Partiture> {
     return getPartitureMapper().parse(lyrics);
   }
 
+  @Override
+  public Partiture parse(CharStream chars) {
+
+    return getPartitureMapper().parse(chars);
+  }
+
   /**
    * @param partiture the {@link Partiture} to format.
    * @return the given {@link Partiture} formatted as text (lyrics) in this {@link SongFormat}.
    */
   public final String format(Partiture partiture) {
 
-    return format(partiture, new SongFormatOptions());
+    return format(partiture, new MusicFormatOptions());
   }
 
   /**
    * @param partiture the {@link Partiture} to format.
-   * @param options the {@link SongFormatOptions}.
+   * @param options the {@link MusicFormatOptions}.
    * @return the given {@link Partiture} formatted as text (lyrics) in this {@link SongFormat}.
    */
-  public String format(Partiture partiture, SongFormatOptions options) {
+  public String format(Partiture partiture, MusicFormatOptions options) {
 
     StringBuilder buffer = new StringBuilder();
     try {

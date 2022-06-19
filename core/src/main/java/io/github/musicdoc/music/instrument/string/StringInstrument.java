@@ -9,28 +9,31 @@ import io.github.musicdoc.music.tone.Tone;
 
 public abstract class StringInstrument extends Instrument {
 
-    private final List<Tone> tuning;
+  private final List<Tone> tuning;
 
-    private final Tone lowestTone;
+  private final Tone lowestTone;
 
-    public StringInstrument(Tone... tuning) {
-        super();
-        this.tuning = Collections.unmodifiableList(Arrays.asList(tuning));
-        Tone lowest = null;
-        for (Tone tone : tuning) {
-            if (tone.isLower(lowest)) {
-                lowest = tone;
-            }
-        }
-        this.lowestTone = lowest;
+  public StringInstrument(Tone... tuning) {
+
+    super();
+    this.tuning = Collections.unmodifiableList(Arrays.asList(tuning));
+    Tone lowest = null;
+    for (Tone tone : tuning) {
+      if (tone.isLower(lowest)) {
+        lowest = tone;
+      }
     }
+    this.lowestTone = lowest;
+  }
 
-    public List<Tone> getTuning() {
-        return this.tuning;
-    }
+  public List<Tone> getTuning() {
 
-    @Override
-    public Tone getLowestTone() {
-        return this.lowestTone;
-    }
+    return this.tuning;
+  }
+
+  @Override
+  public Tone getLowestTone() {
+
+    return this.lowestTone;
+  }
 }

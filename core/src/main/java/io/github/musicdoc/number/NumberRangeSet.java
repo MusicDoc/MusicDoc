@@ -55,6 +55,10 @@ public class NumberRangeSet implements NumberSet {
     return this.text;
   }
 
+  /**
+   * @param ranges the {@link NumberRange}s to combine as {@link NumberRangeSet}.
+   * @return the {@link NumberRangeSet} joining the given {@link NumberRange}s.
+   */
   public static NumberRangeSet of(NumberRange... ranges) {
 
     Objects.requireNonNull(ranges, "ranges");

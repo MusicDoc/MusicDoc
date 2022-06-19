@@ -2,10 +2,10 @@ package io.github.musicdoc.format;
 
 import org.junit.jupiter.api.Test;
 
-import io.github.musicdoc.music.harmony.Chord;
-import io.github.musicdoc.music.harmony.ChordExtension;
-import io.github.musicdoc.music.harmony.ChordMapper;
 import io.github.musicdoc.music.harmony.TonalSystem;
+import io.github.musicdoc.music.harmony.chord.Chord;
+import io.github.musicdoc.music.harmony.chord.ChordExtension;
+import io.github.musicdoc.music.harmony.chord.ChordMapper;
 import io.github.musicdoc.music.partiture.Partiture;
 import io.github.musicdoc.music.partiture.PartitureLine;
 import io.github.musicdoc.music.partiture.PartitureRow;

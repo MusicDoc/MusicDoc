@@ -12,7 +12,7 @@ import io.github.musicdoc.music.tone.TonePitchEnglish;
  *
  * @see TonePitch#getStep()
  */
-public enum ChromaticStep implements Interval {
+public enum ChromaticStep implements ToneInterval {
 
   /**
    * The empty {@link Interval} with zero {@link #getChromaticSteps() chromatic steps}.

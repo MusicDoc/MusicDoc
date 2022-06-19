@@ -74,7 +74,7 @@ public class Beat implements Fraction {
   @Override
   public String toString() {
 
-    return "(" + this.beats + "/" + this.fraction + ")";
+    return this.beats + "/" + this.fraction;
   }
 
   /**

@@ -5,7 +5,7 @@ import java.io.IOException;
 import io.github.musicdoc.filter.CharFilter;
 import io.github.musicdoc.filter.ListCharFilter;
 import io.github.musicdoc.format.AbstractMapper;
-import io.github.musicdoc.format.SongFormatOptions;
+import io.github.musicdoc.format.MusicFormatOptions;
 import io.github.musicdoc.music.instrument.Instrument;
 import io.github.musicdoc.music.instrument.InstrumentMapper;
 import io.github.musicdoc.parser.CharStream;
@@ -34,7 +34,7 @@ public class StaveVoiceMapper extends AbstractMapper<StaveVoice> {
     }
 
     @Override
-    public void format(StaveVoice voice, Appendable buffer, SongFormatOptions options) throws IOException {
+    public void format(StaveVoice voice, Appendable buffer, MusicFormatOptions options) throws IOException {
         if (voice == null) {
             return;
         }

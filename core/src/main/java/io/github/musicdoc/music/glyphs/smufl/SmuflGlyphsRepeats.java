@@ -1,6 +1,6 @@
 package io.github.musicdoc.music.glyphs.smufl;
 
-import io.github.musicdoc.music.bar.BarType;
+import io.github.musicdoc.music.bar.BarLineType;
 import io.github.musicdoc.music.glyphs.unicode.UnicodeGlyphs;
 
 /**
@@ -23,13 +23,13 @@ public interface SmuflGlyphsRepeats extends UnicodeGlyphs {
   /** The coda symbol: {@value}. */
   String CODA = "\uE048C";
 
-  /** The {@link BarType#REPEAT_START start repeat} symbol: {@value}. */
+  /** The {@link BarLineType#REPEAT_START start repeat} symbol: {@value}. */
   String REPEAT_LEFT = "\uE040";
 
-  /** The {@link BarType#REPEAT_END end repeat} symbol: {@value}. */
+  /** The {@link BarLineType#REPEAT_END end repeat} symbol: {@value}. */
   String REPEAT_RIGHT = "\uE041";
 
-  /** The {@link BarType#REPEAT_END_START end and start repeat} symbol: {@value}. */
+  /** The {@link BarLineType#REPEAT_END_START end and start repeat} symbol: {@value}. */
   String REPEAT_RIGHT_LEFT = "\uE040";
 
 }

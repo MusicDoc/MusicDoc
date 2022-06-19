@@ -1,8 +1,8 @@
 package io.github.musicdoc;
 
 import io.github.musicdoc.config.AppConfig;
-import io.github.musicdoc.song.Song;
-import io.github.musicdoc.song.SongWithContext;
+import io.github.musicdoc.music.song.Song;
+import io.github.musicdoc.music.song.SongWithContext;
 
 /**
  * The context of this application from where to get access to all important state data.

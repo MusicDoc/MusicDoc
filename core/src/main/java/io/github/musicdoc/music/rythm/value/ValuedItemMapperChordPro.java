@@ -2,11 +2,11 @@ package io.github.musicdoc.music.rythm.value;
 
 import java.io.IOException;
 
-import io.github.musicdoc.format.SongFormatOptions;
+import io.github.musicdoc.format.MusicFormatOptions;
 import io.github.musicdoc.parser.CharStream;
 
 /**
- * {@link ValuedItemMapper} for {@link io.github.musicdoc.format.SongFormatChordPro}.
+ * {@link ValuedItemMapper} for {@link io.github.musicdoc.format.SongFormatMusicDoc}.
  */
 public class ValuedItemMapperChordPro extends ValuedItemMapper {
 
@@ -25,7 +25,7 @@ public class ValuedItemMapperChordPro extends ValuedItemMapper {
   }
 
   @Override
-  public void format(ValuedItem<?> item, Appendable buffer, SongFormatOptions options) throws IOException {
+  public void format(ValuedItem<?> item, Appendable buffer, MusicFormatOptions options) throws IOException {
 
     if (item == null) {
       return;

@@ -1,11 +1,11 @@
 package io.github.musicdoc.music.glyphs.unicode;
 
-import io.github.musicdoc.music.bar.BarType;
+import io.github.musicdoc.music.bar.BarLineType;
 
 /**
  * {@link UnicodeGlyphs} for <a href="https://www.htmlsymbols.xyz/musical-symbols/bars">bars</a>-
  *
- * @see io.github.musicdoc.music.bar.Bar
+ * @see io.github.musicdoc.music.bar.BarLine
  */
 public interface UnicodeGlyphsBars extends UnicodeGlyphs {
 
@@ -22,28 +22,28 @@ public interface UnicodeGlyphsBars extends UnicodeGlyphs {
   String REVERSE_FINAL_BARLINE = "\uD834\uDD03";
 
   /**
-   * @param barType the {@link BarType}.
+   * @param barType the {@link BarLineType}.
    * @return the according glyph.
    */
-  static String get(BarType barType) {
+  static String get(BarLineType barType) {
 
-    if (barType == BarType.SINGLE) {
+    if (barType == BarLineType.SINGLE) {
       return SINGLE_BARLINE;
-    } else if (barType == BarType.DOUBLE) {
+    } else if (barType == BarLineType.DOUBLE) {
       return DOUBLE_BARLINE;
-    } else if (barType == BarType.THIN_THICK) {
+    } else if (barType == BarLineType.THIN_THICK) {
       return FINAL_BARLINE;
-    } else if (barType == BarType.THICK) {
+    } else if (barType == BarLineType.THICK) {
       return SINGLE_BARLINE; // fallback
-    } else if (barType == BarType.THICK_THIN) {
+    } else if (barType == BarLineType.THICK_THIN) {
       return REVERSE_FINAL_BARLINE;
-    } else if (barType == BarType.THICK_THICK) {
+    } else if (barType == BarLineType.THICK_THICK) {
       return DOUBLE_BARLINE; // fallback
-    } else if (barType == BarType.REPEAT_START) {
+    } else if (barType == BarLineType.REPEAT_START) {
       return UnicodeGlyphsCodas.LEFT_REPEAT;
-    } else if (barType == BarType.REPEAT_END) {
+    } else if (barType == BarLineType.REPEAT_END) {
       return UnicodeGlyphsCodas.RIGHT_REPEAT;
-    } else if (barType == BarType.REPEAT_END_START) {
+    } else if (barType == BarLineType.REPEAT_END_START) {
       return UnicodeGlyphsCodas.RIGHT_REPEAT + UnicodeGlyphsCodas.LEFT_REPEAT;
     }
     return null;

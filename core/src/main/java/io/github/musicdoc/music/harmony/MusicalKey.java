@@ -11,8 +11,8 @@ import java.util.Map;
 
 import io.github.musicdoc.music.interval.ChromaticInterval;
 import io.github.musicdoc.music.interval.DiatonicInterval;
-import io.github.musicdoc.music.interval.Interval;
 import io.github.musicdoc.music.interval.Solmization;
+import io.github.musicdoc.music.interval.ToneInterval;
 import io.github.musicdoc.music.tone.ToneNameCase;
 import io.github.musicdoc.music.tone.ToneNameStyle;
 import io.github.musicdoc.music.tone.TonePitch;
@@ -343,14 +343,16 @@ public final class MusicalKey extends AbstractTransposable<MusicalKey> {
   @Override
   public MusicalKey transpose(int steps, boolean diatonic, TransposeContext context) {
 
+    MusicalKey key;
     if (context.isKeepKey()) {
-      return this;
-    }
-    if (diatonic) {
-      return transposeDiatonic(steps);
+      key = this;
+    } else if (diatonic) {
+      key = transposeDiatonic(steps);
     } else {
-      return transposeChromatic(steps);
+      key = transposeChromatic(steps);
     }
+    context.setKey(key);
+    return key;
   }
 
   @Override
@@ -368,7 +370,7 @@ public final class MusicalKey extends AbstractTransposable<MusicalKey> {
   }
 
   @Override
-  public MusicalKey transpose(Interval interval, TransposeContext context) {
+  public MusicalKey transpose(ToneInterval interval, TransposeContext context) {
 
     Integer steps = interval.getChromaticSteps();
     if (steps != null) {
@@ -383,13 +385,13 @@ public final class MusicalKey extends AbstractTransposable<MusicalKey> {
   }
 
   /**
-   * Returns the tone for the given {@link Interval}.
+   * Returns the tone for the given {@link ToneInterval}.
    *
-   * @param interval is the {@link Interval} such as e.g. {@link Solmization#MI}, {@link ChromaticInterval#MAJOR_THIRD},
-   *        or {@link DiatonicInterval#THIRD}.
+   * @param interval is the {@link ToneInterval} such as e.g. {@link Solmization#MI},
+   *        {@link ChromaticInterval#MAJOR_THIRD}, or {@link DiatonicInterval#THIRD}.
    * @return the requested {@link TonePitch} of this {@link MusicalKey}.
    */
-  public TonePitch getTone(Interval interval) {
+  public TonePitch getTone(ToneInterval interval) {
 
     Integer chromaticSteps = interval.getChromaticSteps();
     if (chromaticSteps != null) {

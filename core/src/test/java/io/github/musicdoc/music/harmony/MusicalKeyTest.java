@@ -571,7 +571,7 @@ public class MusicalKeyTest extends Assertions {
   }
 
   /**
-   * Test of {@link MusicalKey#getTone(Interval)}.
+   * Test of {@link MusicalKey#getTone(io.github.musicdoc.music.interval.ToneInterval)}.
    */
   @Test
   public void testGetTone() {

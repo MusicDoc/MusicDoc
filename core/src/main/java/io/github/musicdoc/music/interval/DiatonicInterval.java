@@ -5,9 +5,9 @@ package io.github.musicdoc.music.interval;
 import io.github.musicdoc.music.harmony.TonalSystem;
 
 /**
- * Enum with the {@link #getDiatonicSteps() diatonic} {@link Interval}s.
+ * Enum with the {@link #getDiatonicSteps() diatonic} {@link ToneInterval}s.
  */
-public enum DiatonicInterval implements Interval {
+public enum DiatonicInterval implements ToneInterval {
 
   /** The "empty" interval called (perfect) <em>unison</em>. Also called <em>primum</em>. */
   UNISON(0),

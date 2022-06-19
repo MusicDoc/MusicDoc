@@ -5,7 +5,7 @@ import java.io.IOException;
 import io.github.musicdoc.filter.CharFilter;
 import io.github.musicdoc.filter.ListCharFilter;
 import io.github.musicdoc.format.AbstractMapper;
-import io.github.musicdoc.format.SongFormatOptions;
+import io.github.musicdoc.format.MusicFormatOptions;
 import io.github.musicdoc.music.glyphs.unicode.UnicodeGlyphsAccidentals;
 import io.github.musicdoc.parser.CharStream;
 
@@ -47,7 +47,7 @@ public class TonePitchMapper extends AbstractMapper<TonePitch> {
   }
 
   @Override
-  public void format(TonePitch pitch, Appendable buffer, SongFormatOptions options) throws IOException {
+  public void format(TonePitch pitch, Appendable buffer, MusicFormatOptions options) throws IOException {
 
     buffer.append(pitch.getName());
   }
