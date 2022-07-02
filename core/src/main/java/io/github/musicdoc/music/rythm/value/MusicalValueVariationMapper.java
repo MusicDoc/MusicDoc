@@ -1,21 +1,17 @@
 package io.github.musicdoc.music.rythm.value;
 
-import java.io.IOException;
-
-import io.github.musicdoc.format.AbstractMapper;
-import io.github.musicdoc.format.MusicFormatOptions;
-import io.github.musicdoc.parser.CharStream;
+import io.github.musicdoc.io.MusicInputStream;
+import io.github.musicdoc.io.MusicOutputStream;
+import io.github.musicdoc.music.format.AbstractMapper;
+import io.github.musicdoc.music.format.SongFormatOptions;
 
 /**
  * {@link AbstractMapper Mapper} for {@link MusicalValueVariation}.
  */
-public class MusicalValueVariationMapper extends AbstractMapper<MusicalValueVariation> {
-
-  /** The singleton instance. */
-  public static final MusicalValueVariationMapper INSTANCE = new MusicalValueVariationMapper();
+public abstract class MusicalValueVariationMapper extends AbstractMapper<MusicalValueVariation> {
 
   @Override
-  public MusicalValueVariation parse(CharStream chars) {
+  public MusicalValueVariation parse(MusicInputStream chars, SongFormatOptions options) {
 
     if (chars.expect(MusicalValueVariation.DOUBLE_PUNCTURED.toString(), false)) {
       return MusicalValueVariation.DOUBLE_PUNCTURED;
@@ -28,11 +24,11 @@ public class MusicalValueVariationMapper extends AbstractMapper<MusicalValueVari
   }
 
   @Override
-  public void format(MusicalValueVariation variation, Appendable buffer, MusicFormatOptions options) throws IOException {
+  public void format(MusicalValueVariation variation, MusicOutputStream out, SongFormatOptions options) {
 
     if (variation == null) {
       return;
     }
-    buffer.append(variation.toString());
+    out.append(variation.toString());
   }
 }

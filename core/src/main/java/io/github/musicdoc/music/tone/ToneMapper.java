@@ -1,38 +1,30 @@
 package io.github.musicdoc.music.tone;
 
-import java.io.IOException;
-
-import io.github.musicdoc.format.AbstractMapper;
-import io.github.musicdoc.format.MusicFormatOptions;
-import io.github.musicdoc.parser.CharStream;
+import io.github.musicdoc.io.MusicInputStream;
+import io.github.musicdoc.io.MusicOutputStream;
+import io.github.musicdoc.music.clef.Clef;
+import io.github.musicdoc.music.format.AbstractMapper;
+import io.github.musicdoc.music.format.SongFormatOptions;
 
 /**
  * {@link AbstractMapper Mapper} for {@link Tone}.
  */
-public class ToneMapper extends AbstractMapper<Tone> {
-
-  /** The singleton instance. */
-  public static final ToneMapper INSTANCE = new ToneMapper();
+public abstract class ToneMapper extends AbstractMapper<Tone> {
 
   @Override
-  public Tone parse(CharStream chars) {
+  public Tone parse(MusicInputStream chars, SongFormatOptions options) {
 
-    return parse(chars, 4);
-  }
-
-  /**
-   * @param chars the {@link CharStream} to parse.
-   * @param clefOctave the clef octave - see {@link Tone#getNameAbc(ToneNameStyle, int)}.
-   * @return the parsed {@link Tone}
-   * @see #parse(CharStream)
-   */
-  public Tone parse(CharStream chars, int clefOctave) {
-
-    TonePitch pitch = TonePitchMapper.INSTANCE.parse(chars);
+    TonePitch pitch = getTonePitchMapper().parse(chars, options);
+    // TODO support for absolute tones specifying octave...
     if (pitch == null) {
       return null;
     }
-    int octave = clefOctave;
+    int octave = 4;
+    Clef clef = options.getClef();
+    if (clef != null) {
+      Tone lowTone = clef.getLowTone();
+      octave = lowTone.getOctave();
+    }
     if (pitch.isLowercase()) {
       octave++;
     }
@@ -50,9 +42,14 @@ public class ToneMapper extends AbstractMapper<Tone> {
     return Tone.of(pitch, octave);
   }
 
-  @Override
-  public void format(Tone tone, Appendable buffer, MusicFormatOptions options) throws IOException {
+  /**
+   * @return the {@link TonePitchMapper}.
+   */
+  protected abstract TonePitchMapper getTonePitchMapper();
 
-    buffer.append(tone.getName());
+  @Override
+  public void format(Tone tone, MusicOutputStream out, SongFormatOptions options) {
+
+    out.append(tone.getName());
   }
 }

@@ -26,6 +26,9 @@ public abstract class Bean {
 
   private final Map<String, Property<?>> propertyMap;
 
+  /**
+   * The constructor.
+   */
   protected Bean() {
 
     super();
@@ -58,10 +61,10 @@ public abstract class Bean {
   }
 
   /**
-   * @param <T>
-   * @param <P>
+   * @param <T> type of the {@link Property#getValue() value}.
+   * @param <P> type of the {@link Property}.
    * @param property the {@link Property} to register.
-   * @return
+   * @return the property itself.
    */
   protected <T, P extends Property<T>> P register(P property) {
 
@@ -89,6 +92,12 @@ public abstract class Bean {
     return getPropertyMap().values();
   }
 
+  /**
+   * @param recursive - {@code true} to collect properties recursively from nested {@link BeanProperty bean properties},
+   *        {@code false} otherwise.
+   * @param includeParents - {@code true} to include {@link BeanProperty bean properties}, {@code false} otherwise.
+   * @return the {@link Collection} of the collected {@link Property properties}.
+   */
   public Collection<Property<?>> getProperties(boolean recursive, boolean includeParents) {
 
     List<Property<?>> properties = new ArrayList<>();
@@ -100,19 +109,28 @@ public abstract class Bean {
 
     for (Property<?> p : getPropertyMap().values()) {
       if (p instanceof BeanProperty) {
+        if (includeParents) {
+          properties.add(p);
+        }
         if (recursive) {
-          Bean config = ((BeanProperty) p).getValue();
+          Bean config = ((BeanProperty<?>) p).getValue();
           if (config != null) {
             config.collectProperties(properties, recursive, includeParents);
           }
-        }
-        if (includeParents) {
-          properties.add(p);
         }
       } else {
         properties.add(p);
       }
     }
+  }
+
+  /**
+   * @param name the {@link Property#getName() name} of the requested property.
+   * @return the requested {@link Property} or {@code null} if not found.
+   */
+  public Property<?> getProperty(String name) {
+
+    return getProperty(name, false);
   }
 
   /**
@@ -144,11 +162,34 @@ public abstract class Bean {
     return null;
   }
 
-  public void setValue(String name, String value) {
+  /**
+   * Sets a property value from its {@link String} representation.
+   *
+   * @param name the {@link Property#getName() property name}.
+   * @param value the {@link Property#getValue() property value} as {@link String}.
+   */
+  public void setValueAsString(String name, String value) {
 
     Property<?> property = getProperty(name, true);
     if (property != null) {
       property.setValueAsString(value);
+    } else {
+      LOG.warn(TAG, "Property '{}' is undefined and cannot be set.", name);
+    }
+  }
+
+  /**
+   * Sets a property value in a generic but not type-safe way.
+   *
+   * @param name the {@link Property#getName() property name}.
+   * @param value the {@link Property#getValue() property value} as {@link String}.
+   */
+  @SuppressWarnings({ "rawtypes", "unchecked" })
+  public void setValue(String name, Object value) {
+
+    Property property = getProperty(name, true);
+    if (property != null) {
+      property.setValue(value);
     } else {
       LOG.warn(TAG, "Property '{}' is undefined and cannot be set.", name);
     }

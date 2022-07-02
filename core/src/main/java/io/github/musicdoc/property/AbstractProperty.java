@@ -90,10 +90,10 @@ public abstract class AbstractProperty<V> implements Property<V> {
   }
 
   /**
-   * @param value the property value as {@link String}.
+   * @param valueAsString the property value as {@link String}.
    * @return the parsed property value.
    */
-  protected abstract V parseValue(String value);
+  protected abstract V parseValue(String valueAsString);
 
   /**
    * Has to be called whenever the {@link #getValue() value} {@link #setValue(Object) changes}.

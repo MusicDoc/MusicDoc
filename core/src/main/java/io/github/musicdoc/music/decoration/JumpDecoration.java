@@ -13,7 +13,7 @@ public final class JumpDecoration extends MusicalDecoration {
 
   /**
    * Da capo (D.C.). It is a mark indicating a jump from the current position to the beginning of the
-   * {@link io.github.musicdoc.music.partiture.Partiture}.
+   * {@link io.github.musicdoc.music.score.Score}.
    */
   public static final JumpDecoration DA_CAPO = create("D.C.", UnicodeGlyphsCodas.DA_CAPO, SmuflGlyphsRepeats.DA_CAPO,
       MarkerDecoration.CAPO, "dacapo");

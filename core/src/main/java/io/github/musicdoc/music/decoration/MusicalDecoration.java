@@ -5,8 +5,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-import io.github.musicdoc.format.FormatConstants;
 import io.github.musicdoc.music.PeriodType;
+import io.github.musicdoc.music.format.FormatConstants;
 import io.github.musicdoc.music.glyphs.MusicalGlyphs;
 import io.github.musicdoc.music.glyphs.MusicalGlyphsContext;
 import io.github.musicdoc.music.rythm.value.ValuedItem;

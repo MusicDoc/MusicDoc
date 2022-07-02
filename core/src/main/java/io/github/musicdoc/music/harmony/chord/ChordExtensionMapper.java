@@ -1,25 +1,22 @@
 package io.github.musicdoc.music.harmony.chord;
 
-import java.io.IOException;
 import java.util.Locale;
 
 import io.github.musicdoc.filter.ListCharFilter;
-import io.github.musicdoc.format.AbstractMapper;
-import io.github.musicdoc.format.MusicFormatOptions;
-import io.github.musicdoc.parser.CharStream;
+import io.github.musicdoc.io.MusicInputStream;
+import io.github.musicdoc.io.MusicOutputStream;
+import io.github.musicdoc.music.format.AbstractMapper;
+import io.github.musicdoc.music.format.SongFormatOptions;
 
 /**
  * {@link AbstractMapper Mapper} for {@link ChordExtension}.
  */
-public class ChordExtensionMapper extends AbstractMapper<ChordExtension> {
+public abstract class ChordExtensionMapper extends AbstractMapper<ChordExtension> {
 
   private static final ListCharFilter EXT_FILTER = ListCharFilter.allOfAnyCase("MAJORINDSU0123456789+Δ°");
 
-  /** The singleton instance. */
-  public static final ChordExtensionMapper INSTANCE = new ChordExtensionMapper();
-
   @Override
-  public ChordExtension parse(CharStream chars) {
+  public ChordExtension parse(MusicInputStream chars, SongFormatOptions options) {
 
     String lookahead = chars.peekWhile(EXT_FILTER, 6);
     lookahead = lookahead.toLowerCase(Locale.US);
@@ -35,7 +32,7 @@ public class ChordExtensionMapper extends AbstractMapper<ChordExtension> {
   }
 
   @Override
-  public void format(ChordExtension extension, Appendable buffer, MusicFormatOptions options) throws IOException {
+  public void format(ChordExtension extension, MusicOutputStream out, SongFormatOptions options) {
 
     if (extension == null) {
       return;
@@ -43,6 +40,6 @@ public class ChordExtensionMapper extends AbstractMapper<ChordExtension> {
     if (options.isNormalizeChordExtensions()) {
       extension = extension.getReference();
     }
-    buffer.append(extension.getName());
+    out.append(extension.getName());
   }
 }

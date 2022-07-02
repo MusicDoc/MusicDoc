@@ -50,6 +50,11 @@ public class IntProperty extends AbstractProperty<Integer> {
     return this.value;
   }
 
+  /**
+   * @return the primitive {@link #getValue() value} with {@code 0} instead of {@code null}.
+   * @see #getValue()
+   * @see #set(int)
+   */
   public int get() {
 
     if (this.value == null) {
@@ -65,6 +70,11 @@ public class IntProperty extends AbstractProperty<Integer> {
     this.value = newValue;
   }
 
+  /**
+   * @param value the primitive {@link #getValue() value}.
+   * @see #get()
+   * @see #setValue(Integer)
+   */
   public void set(int value) {
 
     setValue(Integer.valueOf(value));

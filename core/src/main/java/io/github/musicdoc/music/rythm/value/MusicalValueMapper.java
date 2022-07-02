@@ -1,23 +1,19 @@
 package io.github.musicdoc.music.rythm.value;
 
-import java.io.IOException;
-
-import io.github.musicdoc.format.AbstractMapper;
-import io.github.musicdoc.format.MusicFormatOptions;
-import io.github.musicdoc.parser.CharStream;
+import io.github.musicdoc.io.MusicInputStream;
+import io.github.musicdoc.io.MusicOutputStream;
+import io.github.musicdoc.music.format.AbstractMapper;
+import io.github.musicdoc.music.format.SongFormatOptions;
 
 /**
  * {@link AbstractMapper Mapper} for {@link MusicalValue}.
  */
-public class MusicalValueMapper extends AbstractMapper<MusicalValue> {
-
-  /** The singleton instance. */
-  public static final MusicalValueMapper INSTANCE = new MusicalValueMapper();
+public abstract class MusicalValueMapper extends AbstractMapper<MusicalValue> {
 
   private static final String BEAT_SEPRATOR_STRING = Character.toString(BEAT_SEPARATOR);
 
   @Override
-  public MusicalValue parse(CharStream chars) {
+  public MusicalValue parse(MusicInputStream chars, SongFormatOptions options) {
 
     Integer beatsInt = chars.readInteger(2, false);
     int beats = 1;
@@ -45,22 +41,27 @@ public class MusicalValueMapper extends AbstractMapper<MusicalValue> {
         fraction = fraction * 4;
       }
     }
-    MusicalValueVariation variation = MusicalValueVariationMapper.INSTANCE.parse(chars);
+    MusicalValueVariation variation = getVariationMapper().parse(chars, options);
     return new MusicalValue(beats, fraction, variation);
   }
 
+  /**
+   * @return the {@link MusicalValueVariationMapper}.
+   */
+  protected abstract MusicalValueVariationMapper getVariationMapper();
+
   @Override
-  public void format(MusicalValue value, Appendable buffer, MusicFormatOptions options) throws IOException {
+  public void format(MusicalValue value, MusicOutputStream out, SongFormatOptions options) {
 
     if (value == null) {
       return;
     }
     int beats = value.getBeats();
     if (beats > 1) {
-      buffer.append(Integer.toString(beats));
-      buffer.append(BEAT_SEPARATOR);
+      out.append(Integer.toString(beats));
+      out.append(BEAT_SEPARATOR);
     }
-    buffer.append(Integer.toString(value.getFraction()));
-    MusicalValueVariationMapper.INSTANCE.format(value.getVariation(), buffer, options);
+    out.append(Integer.toString(value.getFraction()));
+    getVariationMapper().format(value.getVariation(), out, options);
   }
 }

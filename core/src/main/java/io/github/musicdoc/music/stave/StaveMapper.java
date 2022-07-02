@@ -1,28 +1,26 @@
 package io.github.musicdoc.music.stave;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import io.github.musicdoc.format.AbstractMapper;
-import io.github.musicdoc.format.AppendableAdapter;
-import io.github.musicdoc.format.FormatConstants;
-import io.github.musicdoc.format.MusicFormatter;
-import io.github.musicdoc.format.MusicFormatOptions;
+import io.github.musicdoc.io.AttributePropertySuffix;
+import io.github.musicdoc.io.MusicInputStream;
+import io.github.musicdoc.io.MusicOutputStream;
+import io.github.musicdoc.io.TextMusicInputStream;
 import io.github.musicdoc.music.clef.ClefMapper;
+import io.github.musicdoc.music.format.AbstractMapper;
+import io.github.musicdoc.music.format.FormatConstants;
+import io.github.musicdoc.music.format.SongFormat;
+import io.github.musicdoc.music.format.SongFormatOptions;
 import io.github.musicdoc.music.harmony.MusicalKeyMapper;
 import io.github.musicdoc.music.rythm.beat.BeatMapper;
-import io.github.musicdoc.parser.CharStream;
 
-public class StaveMapper extends AbstractMapper<Stave> {
+/**
+ * {@link AbstractMapper Mapper} for {@link Stave}.
+ */
+public abstract class StaveMapper extends AbstractMapper<Stave> {
 
-  public static final StaveMapper INSTANCE = new StaveMapper();
-
-  public static final StaveMapper OPEN_SONG = INSTANCE;
-
-  public static final StaveMapper MUSIC_DOC = INSTANCE;
-
-  public static final StaveMapper ABC = new StaveMapper(new StaveProperties('C', 'K', 'Q', 'V'));
+  // public static final StaveMapper ABC = new StaveMapper(new StaveProperties('C', 'K', 'Q', 'V'));
 
   private static final String PROPERTIES_SEPARATOR_STRING = "" + FormatConstants.PROPERTIES_SEPARATOR;
 
@@ -30,90 +28,112 @@ public class StaveMapper extends AbstractMapper<Stave> {
 
   /**
    * The constructor.
+   *
+   * @param properties the {@link StaveProperties}
    */
-  public StaveMapper() {
+  protected StaveMapper(StaveProperties properties) {
 
-    this.properties = new StaveProperties();
-  }
-
-  private StaveMapper(StaveProperties keys) {
-
-    this.properties = keys;
+    this.properties = properties;
   }
 
   @Override
-  public Stave parse(CharStream chars) {
+  public Stave parse(MusicInputStream chars, SongFormatOptions options) {
 
     Stave stave = new Stave();
-    StaveBracket bracket = StaveBracketMapper.INSTANCE.parse(chars);
+    if (chars instanceof TextMusicInputStream) {
+      // TODO format specific
+      ((TextMusicInputStream) chars).setPropertySuffix(FormatConstants.PROPERTIES_SEPARATOR);
+    }
+    options.setStave(stave);
+    StaveBracket bracket = getBracketMapper().parse(chars, options);
     stave.setBracket(bracket);
     boolean found = true;
     while (found) {
       chars.skipWhile(' ');
-      found = parseProperty(chars, stave);
-      if (found) {
-        chars.skipWhile(' ');
-        char c = chars.peek();
-        if ((c == FormatConstants.PROPERTIES_SEPARATOR) || (c == ',')) {
-          found = true;
-          chars.next();
-        }
+      found = parseProperty(chars, options);
+      if (!found) {
+        // TODO
       }
     }
     return stave;
   }
 
-  private boolean parseProperty(CharStream chars, Stave stave) {
+  /**
+   * @return the {@link StaveBracketMapper}.
+   */
+  protected abstract StaveBracketMapper getBracketMapper();
 
-    char propertyKey = chars.peek();
-    StavePropertyMapper<?> propertyMapper = this.properties.map.get(propertyKey);
-    if (propertyMapper == null) {
+  private boolean parseProperty(MusicInputStream chars, SongFormatOptions options) {
+
+    String property = chars.readPropertyStart();
+    if (property == null) {
       return false;
     }
-    String prefix = "" + propertyKey + FormatConstants.PROPERTIES_KEY_VALUE_SEPARATOR;
-    if (!chars.expect(prefix, false)) {
-      return false;
+    StavePropertyMapper<?> propertyMapper = this.properties.map.get(property);
+    if (propertyMapper == null) {
+      chars.addError("Unknownm property: " + property);
+      chars.readPropertyValue();
+      return true;
     }
     chars.skipWhile(' ');
-    propertyMapper.parse(chars, stave);
-    return true;
+    Stave stave = propertyMapper.parse(chars, options);
+    String rest = chars.readPropertyValue();
+    assert (rest.isEmpty()) : rest;
+    return (stave != null);
   }
 
   @Override
-  public void format(Stave stave, Appendable buffer, MusicFormatOptions options) throws IOException {
+  public void format(Stave stave, MusicOutputStream out, SongFormatOptions options) {
 
     if (stave == null) {
       return;
     }
-    AppendableAdapter adapter = new AppendableAdapter(buffer);
+    AttributePropertySuffix attribute = null;
+    String suffix = null;
+    if (out instanceof AttributePropertySuffix) {
+      attribute = (AttributePropertySuffix) out;
+      suffix = attribute.getPropertySuffix();
+      attribute.setPropertySuffix(PROPERTIES_SEPARATOR_STRING);
+    }
     for (StavePropertyMapper<?> mapper : this.properties.map.values()) {
-      adapter.setSeparatorIfUpdated(PROPERTIES_SEPARATOR_STRING);
-      mapper.format(stave, adapter, options);
+      mapper.format(stave, out, options);
+    }
+    if (attribute != null) {
+      attribute.setPropertySuffix(suffix);
     }
   }
 
-  private static class StavePropertyMapper<T> implements MusicFormatter<Stave> {
+  private static class StavePropertyMapper<T> extends AbstractMapper<Stave> {
 
     private final StaveProperty<T> property;
 
     private final AbstractMapper<T> mapper;
 
-    private final char key;
+    private final String key;
 
-    public StavePropertyMapper(StaveProperty<T> property, AbstractMapper<T> mapper, char key) {
+    public StavePropertyMapper(StaveProperty<T> property, AbstractMapper<T> mapper, String key) {
 
       this.property = property;
       this.mapper = mapper;
       this.key = key;
     }
 
-    public boolean parse(CharStream chars, Stave stave) {
+    @Override
+    protected SongFormat getFormat() {
 
-      T value = this.mapper.parse(chars);
+      throw new UnsupportedOperationException();
+      // return null;
+    }
+
+    @Override
+    public Stave parse(MusicInputStream chars, SongFormatOptions options) {
+
+      T value = this.mapper.parse(chars, options);
       if (value == null) {
-        // invalid property value, log error
-        return false;
+        chars.addError("Invalid stave property value for key " + this.key + ".");
+        return null;
       }
+      Stave stave = options.getStave();
       if (this.property != StavePropertyVoice.INSTANCE) {
         T old = this.property.get(stave);
         if (old != null) {
@@ -124,48 +144,44 @@ public class StaveMapper extends AbstractMapper<Stave> {
         }
       }
       this.property.set(stave, value);
-      return true;
+      return stave;
     }
 
     @Override
-    public void format(Stave stave, Appendable buffer, MusicFormatOptions options) throws IOException {
+    public void format(Stave stave, MusicOutputStream out, SongFormatOptions options) {
 
       T value = this.property.get(stave);
       if (value == null) {
         return;
       }
-      buffer.append(this.key);
-      buffer.append(PROPERTIES_KEY_VALUE_SEPARATOR);
-      this.mapper.format(value, buffer, options);
+      out.append(this.key);
+      out.append(PROPERTIES_KEY_VALUE_SEPARATOR);
+      this.mapper.format(value, out, options);
     }
   }
 
-  private static class StaveProperties {
+  protected static class StaveProperties {
 
-    private final Map<Character, StavePropertyMapper<?>> map;
+    private final Map<String, StavePropertyMapper<?>> map;
 
-    public StaveProperties() {
+    public StaveProperties(ClefMapper clefMapper, MusicalKeyMapper keyMapper, BeatMapper beatMapper,
+        StaveVoiceMapper voiceMapper) {
 
-      this(PROPERTY_CLEV, PROPERTY_KEY, PROPERTY_BEAT, PROPERTY_VOICE);
-    }
-
-    public StaveProperties(char clef, char key, char beat, char voice) {
-
-      this(new StavePropertyMapper<>(StavePropertyClef.INSTANCE, ClefMapper.INSTANCE, clef),
-          new StavePropertyMapper<>(StavePropertyKey.INSTANCE, MusicalKeyMapper.INSTANCE, key),
-          new StavePropertyMapper<>(StavePropertyBeat.INSTANCE, BeatMapper.INSTANCE, beat),
-          new StavePropertyMapper<>(StavePropertyVoice.INSTANCE, StaveVoiceMapper.INSTANCE, voice));
+      this(new StavePropertyMapper<>(StavePropertyClef.INSTANCE, clefMapper, PROPERTY_CLEF),
+          new StavePropertyMapper<>(StavePropertyKey.INSTANCE, keyMapper, PROPERTY_KEY),
+          new StavePropertyMapper<>(StavePropertyBeat.INSTANCE, beatMapper, PROPERTY_METER),
+          new StavePropertyMapper<>(StavePropertyVoice.INSTANCE, voiceMapper, PROPERTY_VOICE));
     }
 
     public StaveProperties(StavePropertyMapper... keys) {
 
-      this(new HashMap<Character, StavePropertyMapper<?>>(keys.length));
+      this(new HashMap<String, StavePropertyMapper<?>>(keys.length));
       for (StavePropertyMapper<?> key : keys) {
         this.map.put(key.key, key);
       }
     }
 
-    public StaveProperties(Map<Character, StavePropertyMapper<?>> map) {
+    public StaveProperties(Map<String, StavePropertyMapper<?>> map) {
 
       this.map = map;
     }

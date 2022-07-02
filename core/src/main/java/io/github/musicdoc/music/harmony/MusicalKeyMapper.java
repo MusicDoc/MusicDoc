@@ -1,31 +1,27 @@
 package io.github.musicdoc.music.harmony;
 
-import java.io.IOException;
-
-import io.github.musicdoc.format.AbstractMapper;
-import io.github.musicdoc.format.MusicFormatOptions;
+import io.github.musicdoc.io.MusicInputStream;
+import io.github.musicdoc.io.MusicOutputStream;
+import io.github.musicdoc.music.format.AbstractMapper;
+import io.github.musicdoc.music.format.SongFormatOptions;
 import io.github.musicdoc.music.tone.TonePitch;
 import io.github.musicdoc.music.tone.TonePitchMapper;
-import io.github.musicdoc.parser.CharStream;
 
 /**
  * {@link AbstractMapper Mapper} for {@link MusicalKey}.
  */
-public class MusicalKeyMapper extends AbstractMapper<MusicalKey> {
-
-  /** The singleton instance. */
-  public static final MusicalKeyMapper INSTANCE = new MusicalKeyMapper();
+public abstract class MusicalKeyMapper extends AbstractMapper<MusicalKey> {
 
   @Override
-  public MusicalKey parse(CharStream chars) {
+  public MusicalKey parse(MusicInputStream chars, SongFormatOptions options) {
 
-    TonePitch tonika = TonePitchMapper.INSTANCE.parse(chars);
+    TonePitch tonika = getTonePitchMapper().parse(chars, options);
     if (tonika == null) {
       return null;
     }
     chars.skipWhile(' '); // for ABC compatibility
     // detect tonal system (maj/min)...
-    TonalSystem tonalSystem = TonalSystemMapper.INSTANCE.parse(chars);
+    TonalSystem tonalSystem = getTonalSystemMapper().parse(chars, options);
     if (tonalSystem == null) {
       if (tonika.isLowercase()) {
         tonalSystem = TonalSystem.MINOR;
@@ -37,7 +33,7 @@ public class MusicalKeyMapper extends AbstractMapper<MusicalKey> {
   }
 
   @Override
-  public void format(MusicalKey key, Appendable buffer, MusicFormatOptions options) throws IOException {
+  public void format(MusicalKey key, MusicOutputStream out, SongFormatOptions options) {
 
     if (key == null) {
       return;
@@ -46,7 +42,17 @@ public class MusicalKeyMapper extends AbstractMapper<MusicalKey> {
     if (options.isNormalizeMusicalKeys()) {
       tonika = tonika.with(options.getToneNameStyle());
     }
-    TonePitchMapper.INSTANCE.format(tonika, buffer, options);
-    TonalSystemMapper.INSTANCE.format(key.getSystem(), buffer, options);
+    getTonePitchMapper().format(tonika, out, options);
+    getTonalSystemMapper().format(key.getSystem(), out, options);
   }
+
+  /**
+   * @return the {@link TonePitchMapper}.
+   */
+  protected abstract TonePitchMapper getTonePitchMapper();
+
+  /**
+   * @return the {@link TonalSystemMapper}.
+   */
+  protected abstract TonalSystemMapper getTonalSystemMapper();
 }

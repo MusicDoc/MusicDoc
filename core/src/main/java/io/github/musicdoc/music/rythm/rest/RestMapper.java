@@ -1,25 +1,21 @@
 package io.github.musicdoc.music.rythm.rest;
 
-import java.io.IOException;
 import java.util.List;
 
-import io.github.musicdoc.format.MusicFormatOptions;
+import io.github.musicdoc.io.MusicInputStream;
+import io.github.musicdoc.io.MusicOutputStream;
 import io.github.musicdoc.music.decoration.MusicalDecoration;
+import io.github.musicdoc.music.format.SongFormatOptions;
 import io.github.musicdoc.music.rythm.value.AbstractValuedItemMapper;
 import io.github.musicdoc.music.rythm.value.MusicalValue;
-import io.github.musicdoc.music.rythm.value.MusicalValueMapper;
-import io.github.musicdoc.parser.CharStream;
 
 /**
- * {@link io.github.musicdoc.format.AbstractMapper Mapper} for {@link Rest}.
+ * {@link io.github.musicdoc.music.format.AbstractMapper Mapper} for {@link Rest}.
  */
-public class RestMapper extends AbstractValuedItemMapper<Rest> {
-
-  /** The singleton instance. */
-  public static final RestMapper INSTANCE = new RestMapper();
+public abstract class RestMapper extends AbstractValuedItemMapper<Rest> {
 
   @Override
-  protected Rest parseItem(CharStream chars, List<MusicalDecoration> decorations) {
+  protected Rest parseItem(MusicInputStream chars, SongFormatOptions options, List<MusicalDecoration> decorations) {
 
     char c = chars.peek();
     boolean invisible;
@@ -31,7 +27,7 @@ public class RestMapper extends AbstractValuedItemMapper<Rest> {
       return null;
     }
     chars.next();
-    MusicalValue value = MusicalValueMapper.INSTANCE.parse(chars);
+    MusicalValue value = getValueMapper().parse(chars, options);
     if (value == null) {
       value = MusicalValue._1_1;
     }
@@ -39,11 +35,11 @@ public class RestMapper extends AbstractValuedItemMapper<Rest> {
   }
 
   @Override
-  protected void formatItem(Rest item, Appendable buffer, MusicFormatOptions options) throws IOException {
+  protected void formatItem(Rest item, MusicOutputStream out, SongFormatOptions options) {
 
     if (item == null) {
       return;
     }
-    buffer.append(item.getSymbol());
+    out.append(item.getSymbol());
   }
 }

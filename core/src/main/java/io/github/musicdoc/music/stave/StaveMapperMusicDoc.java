@@ -1,13 +1,17 @@
 package io.github.musicdoc.music.stave;
 
-import java.io.IOException;
-
 import io.github.musicdoc.filter.ListCharFilter;
-import io.github.musicdoc.format.MusicFormatOptions;
-import io.github.musicdoc.parser.CharStream;
+import io.github.musicdoc.io.MusicInputStream;
+import io.github.musicdoc.io.MusicOutputStream;
+import io.github.musicdoc.music.clef.ClefMapperMusicDoc;
+import io.github.musicdoc.music.format.SongFormat;
+import io.github.musicdoc.music.format.SongFormatMusicDoc;
+import io.github.musicdoc.music.format.SongFormatOptions;
+import io.github.musicdoc.music.harmony.MusicalKeyMapperMusicDoc;
+import io.github.musicdoc.music.rythm.beat.BeatMapperMusicDoc;
 
 /**
- * {@link StaveMapper} for {@link io.github.musicdoc.format.SongFormatMusicDoc}.
+ * {@link StaveMapper} for {@link io.github.musicdoc.music.format.SongFormatMusicDoc}.
  */
 public class StaveMapperMusicDoc extends StaveMapper {
 
@@ -16,15 +20,36 @@ public class StaveMapperMusicDoc extends StaveMapper {
 
   private static final ListCharFilter STOP_FILTER = ListCharFilter.NEWLINE.join(STAVE_END);
 
+  /**
+   * The constructor.
+   */
+  protected StaveMapperMusicDoc() {
+
+    super(new StaveProperties(ClefMapperMusicDoc.INSTANCE, MusicalKeyMapperMusicDoc.INSTANCE,
+        BeatMapperMusicDoc.INSTANCE, StaveVoiceMapperMusicDoc.INSTANCE));
+  }
+
   @Override
-  public Stave parse(CharStream chars) {
+  protected SongFormat getFormat() {
+
+    return SongFormatMusicDoc.INSTANCE;
+  }
+
+  @Override
+  protected StaveBracketMapper getBracketMapper() {
+
+    return StaveBracketMapperMusicDoc.INSTANCE;
+  }
+
+  @Override
+  public Stave parse(MusicInputStream chars, SongFormatOptions options) {
 
     Stave stave = null;
     if (chars.expect(STAVE_START)) {
-      stave = super.parse(chars);
+      stave = super.parse(chars, options);
       if (!chars.expect(STAVE_END, true)) {
-        String gabarge = chars.readUntil(STOP_FILTER, true);
-        // log gabarge
+        String garbage = chars.readUntil(STOP_FILTER, true);
+        chars.addError("Unexpected garbage at stave bracket '" + garbage + "'.");
         chars.expect(STAVE_END, true);
       }
     }
@@ -32,13 +57,13 @@ public class StaveMapperMusicDoc extends StaveMapper {
   }
 
   @Override
-  public void format(Stave stave, Appendable buffer, MusicFormatOptions options) throws IOException {
+  public void format(Stave stave, MusicOutputStream out, SongFormatOptions options) {
 
     if (stave == null) {
       return;
     }
-    buffer.append(STAVE_START);
-    super.format(stave, buffer, options);
-    buffer.append(STAVE_END);
+    out.append(STAVE_START);
+    super.format(stave, out, options);
+    out.append(STAVE_END);
   }
 }

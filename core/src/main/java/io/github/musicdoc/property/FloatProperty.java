@@ -50,6 +50,11 @@ public class FloatProperty extends AbstractProperty<Float> {
     return this.value;
   }
 
+  /**
+   * @return the primitive {@link #getValue() value} with {@code 0} instead of {@code null}.
+   * @See {@link #getValue()}
+   * @see #set(float)
+   */
   public float get() {
 
     if (this.value == null) {
@@ -65,6 +70,11 @@ public class FloatProperty extends AbstractProperty<Float> {
     this.value = newValue;
   }
 
+  /**
+   * @param value the primitive {@link #getValue() value}.
+   * @see #get()
+   * @see #setValue(Float)
+   */
   public void set(float value) {
 
     setValue(Float.valueOf(value));

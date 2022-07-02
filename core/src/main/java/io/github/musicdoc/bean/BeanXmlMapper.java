@@ -9,12 +9,21 @@ import java.io.Writer;
 
 import io.github.musicdoc.config.Config;
 
+/**
+ * Abstract {@link BeanMapper} mapping {@link Bean}s to XML.
+ */
 public abstract class BeanXmlMapper extends BeanMapper {
 
   private String rootTag;
 
-  private boolean includeGroupTags;
+  /** @see #isIncludeGroupTags() */
+  protected boolean includeGroupTags;
 
+  /**
+   * The constructor.
+   *
+   * @param bean the {@link Bean} to map.
+   */
   public BeanXmlMapper(Bean bean) {
 
     super(bean);
@@ -23,6 +32,9 @@ public abstract class BeanXmlMapper extends BeanMapper {
     }
   }
 
+  /**
+   * @return the XML root tag.
+   */
   public String getRootTag() {
 
     return this.rootTag;

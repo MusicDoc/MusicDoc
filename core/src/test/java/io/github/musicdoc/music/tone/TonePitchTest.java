@@ -106,16 +106,17 @@ public class TonePitchTest extends Assertions {
   @Test
   public void testGetTonePrefix() {
 
-    assertThat(TonePitchMapper.INSTANCE.parse("c").getName()).isEqualTo("c");
-    assertThat(TonePitchMapper.INSTANCE.parse("ce").getName()).isEqualTo("c");
-    assertThat(TonePitchMapper.INSTANCE.parse("ceS").getName()).isEqualTo("ces");
-    assertThat(TonePitchMapper.INSTANCE.parse("cbe").getName()).isEqualTo("cb");
-    assertThat(TonePitchMapper.INSTANCE.parse("c#9").getName()).isEqualTo("c#");
-    assertThat(TonePitchMapper.INSTANCE.parse("hesesisas").getName()).isEqualTo("heses");
-    assertThat(TonePitchMapper.INSTANCE.parse("B" + UnicodeGlyphsAccidentals.FLAT_2).getName())
+    TonePitchMapper mapper = TonePitchMapperMusicDoc.INSTANCE;
+    assertThat(mapper.parse("c").getName()).isEqualTo("c");
+    assertThat(mapper.parse("ce").getName()).isEqualTo("c");
+    assertThat(mapper.parse("ceS").getName()).isEqualTo("ces");
+    assertThat(mapper.parse("cbe").getName()).isEqualTo("cb");
+    assertThat(mapper.parse("c#9").getName()).isEqualTo("c#");
+    assertThat(mapper.parse("hesesisas").getName()).isEqualTo("heses");
+    assertThat(mapper.parse("B" + UnicodeGlyphsAccidentals.FLAT_2).getName())
         .isEqualTo("B" + UnicodeGlyphsAccidentals.FLAT_2);
-    assertThat(TonePitchMapper.INSTANCE.parse("Bbb").getName()).isEqualTo("Bbb");
-    assertThat(TonePitchMapper.INSTANCE.parse("Bub").getName()).isEqualTo("B");
+    assertThat(mapper.parse("Bbb").getName()).isEqualTo("Bbb");
+    assertThat(mapper.parse("Bub").getName()).isEqualTo("B");
   }
 
   /**

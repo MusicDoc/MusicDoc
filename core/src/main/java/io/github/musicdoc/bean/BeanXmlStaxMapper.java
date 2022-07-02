@@ -15,11 +15,19 @@ import javax.xml.stream.XMLStreamWriter;
 import io.github.musicdoc.property.BeanProperty;
 import io.github.musicdoc.property.Property;
 
+/**
+ * Implementation of {@link BeanXmlMapper} using StAX.
+ */
 public class BeanXmlStaxMapper extends BeanXmlMapper {
 
-  public BeanXmlStaxMapper(Bean config) {
+  /**
+   * The constructor.
+   *
+   * @param bean the {@link Bean} to map.
+   */
+  public BeanXmlStaxMapper(Bean bean) {
 
-    super(config);
+    super(bean);
   }
 
   @Override
@@ -44,6 +52,10 @@ public class BeanXmlStaxMapper extends BeanXmlMapper {
     }
   }
 
+  /**
+   * @param xmlWriter the {@link XMLStreamWriter} to write the XML to.
+   * @throws XMLStreamException if writing XML failed.
+   */
   public void saveXml(XMLStreamWriter xmlWriter) throws XMLStreamException {
 
     xmlWriter.writeStartDocument();
@@ -62,13 +74,13 @@ public class BeanXmlStaxMapper extends BeanXmlMapper {
 
     for (Property<?> property : bean.getProperties()) {
       if (property instanceof BeanProperty) {
-        Bean childBean = ((BeanProperty) property).getValue();
+        Bean childBean = ((BeanProperty<?>) property).getValue();
         if (childBean != null) {
-          if (isIncludeGroupTags()) {
+          if (this.includeGroupTags) {
             xmlWriter.writeStartElement(property.getName());
           }
           saveXml(xmlWriter, childBean);
-          if (isIncludeGroupTags()) {
+          if (this.includeGroupTags) {
             xmlWriter.writeEndElement();
           }
         }
@@ -147,6 +159,10 @@ public class BeanXmlStaxMapper extends BeanXmlMapper {
     }
   }
 
+  /**
+   * @param xmlReader the {@link XMLStreamReader} to read the XML from.
+   * @throws XMLStreamException if reading XML failed.
+   */
   public void loadXml(XMLStreamReader xmlReader) throws XMLStreamException {
 
     String rootTag = getRootTag();
@@ -157,15 +173,14 @@ public class BeanXmlStaxMapper extends BeanXmlMapper {
 
   private void loadXml(XMLStreamReader xmlReader, Bean bean) throws XMLStreamException {
 
-    boolean includeGroupTags = isIncludeGroupTags();
     int event = xmlReader.next();
     while ((event != XMLStreamConstants.END_ELEMENT) && (event != XMLStreamConstants.END_DOCUMENT)) {
       if (event == XMLStreamConstants.START_ELEMENT) {
         String name = xmlReader.getName().getLocalPart();
-        Property<?> property = bean.getProperty(name, !includeGroupTags);
+        Property<?> property = bean.getProperty(name, !this.includeGroupTags);
         if (property instanceof BeanProperty) {
-          assert (includeGroupTags);
-          Bean childBean = ((BeanProperty) property).getValue();
+          assert (this.includeGroupTags);
+          Bean childBean = ((BeanProperty<?>) property).getValue();
           if (childBean != null) {
             loadXml(xmlReader, childBean);
           }

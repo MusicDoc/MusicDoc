@@ -1,46 +1,43 @@
 package io.github.musicdoc.music.harmony.chord;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.github.musicdoc.format.AbstractMapper;
-import io.github.musicdoc.format.MusicFormatOptions;
+import io.github.musicdoc.io.MusicInputStream;
+import io.github.musicdoc.io.MusicOutputStream;
+import io.github.musicdoc.music.format.AbstractMapper;
+import io.github.musicdoc.music.format.SongFormatOptions;
 import io.github.musicdoc.music.harmony.TonalSystem;
 import io.github.musicdoc.music.harmony.TonalSystemMapper;
 import io.github.musicdoc.music.tone.ToneNameCase;
 import io.github.musicdoc.music.tone.ToneNameStyle;
 import io.github.musicdoc.music.tone.TonePitch;
 import io.github.musicdoc.music.tone.TonePitchMapper;
-import io.github.musicdoc.parser.CharStream;
 
 /**
  * {@link AbstractMapper Mapper} for {@link Chord}.
  */
-public class ChordMapper extends AbstractMapper<Chord> {
+public abstract class ChordMapper extends AbstractMapper<Chord> {
 
   /** Separator character for base tone. */
   public static final char BASE_TONE_SEPARATOR = '/';
 
-  /** The singleton instance. */
-  public static final ChordMapper INSTANCE = new ChordMapper();
-
   @Override
-  public Chord parse(CharStream chars) {
+  public Chord parse(MusicInputStream chars, SongFormatOptions options) {
 
     chars.skipWhile(' ');
     // detect fundamental tone
-    TonePitch fundamentalTone = TonePitchMapper.INSTANCE.parse(chars);
+    TonePitch fundamentalTone = getTonePitchMapper().parse(chars, options);
     if (fundamentalTone == null) {
       return null;
     }
     // Amaj may conflict with Amaj7
     List<ChordExtension> extensions = new ArrayList<>();
-    ChordExtension extension = ChordExtensionMapper.INSTANCE.parse(chars);
+    ChordExtension extension = getChordExtensionMapper().parse(chars, options);
     // detect tonal tonalSystem (maj/min)...
     TonalSystem tonalSystem = null;
     if (extension == null) {
-      tonalSystem = TonalSystemMapper.INSTANCE.parse(chars);
+      tonalSystem = getTonalSystemMapper().parse(chars, options);
     }
     if (tonalSystem == null) {
       if (fundamentalTone.isLowercase()) {
@@ -53,7 +50,7 @@ public class ChordMapper extends AbstractMapper<Chord> {
     boolean startExt = (extension != null);
     do {
       if (!startExt) {
-        extension = ChordExtensionMapper.INSTANCE.parse(chars);
+        extension = getChordExtensionMapper().parse(chars, options);
       }
       startExt = false;
       if (extension != null) {
@@ -66,7 +63,7 @@ public class ChordMapper extends AbstractMapper<Chord> {
     // detect base tone
     TonePitch baseTone = fundamentalTone;
     if (chars.expect(BASE_TONE_SEPARATOR)) {
-      baseTone = TonePitchMapper.INSTANCE.parse(chars);
+      baseTone = getTonePitchMapper().parse(chars, options);
       if (baseTone == null) {
         // actually a parse error...
         baseTone = fundamentalTone;
@@ -81,8 +78,23 @@ public class ChordMapper extends AbstractMapper<Chord> {
     return new Chord(fundamentalTone, tonalSystem, baseTone, extensions);
   }
 
+  /**
+   * @return the {@link TonalSystemMapper}.
+   */
+  protected abstract TonalSystemMapper getTonalSystemMapper();
+
+  /**
+   * @return the {@link ChordExtensionMapper}.
+   */
+  protected abstract ChordExtensionMapper getChordExtensionMapper();
+
+  /**
+   * @return the {@link TonePitchMapper}.
+   */
+  protected abstract TonePitchMapper getTonePitchMapper();
+
   @Override
-  public void format(Chord chord, Appendable buffer, MusicFormatOptions options) throws IOException {
+  public void format(Chord chord, MusicOutputStream out, SongFormatOptions options) {
 
     if (chord == null) {
       return;
@@ -98,21 +110,21 @@ public class ChordMapper extends AbstractMapper<Chord> {
       } else {
         fundamental = fundamental.with(toneNameStyle);
       }
-      TonePitchMapper.INSTANCE.format(fundamental, buffer, options);
+      getTonePitchMapper().format(fundamental, out, options);
       if (tonalSystem.isMinor()) {
-        buffer.append('m');
+        out.append('m');
       }
       for (ChordExtension ext : chord.getExtensions()) {
-        ChordExtensionMapper.INSTANCE.format(ext, buffer, options);
+        getChordExtensionMapper().format(ext, out, options);
       }
       TonePitch base = chord.getBase();
       if (base.getStep() != fundamental.getStep()) {
-        buffer.append(BASE_TONE_SEPARATOR);
+        out.append(BASE_TONE_SEPARATOR);
         base = base.with(toneNameStyle);
-        TonePitchMapper.INSTANCE.format(base, buffer, options);
+        getTonePitchMapper().format(base, out, options);
       }
     } else {
-      buffer.append(chord.toString());
+      out.append(chord.toString());
     }
   }
 }

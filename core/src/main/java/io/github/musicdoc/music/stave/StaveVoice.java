@@ -2,7 +2,7 @@ package io.github.musicdoc.music.stave;
 
 import java.util.Objects;
 
-import io.github.musicdoc.format.FormatConstants;
+import io.github.musicdoc.music.format.FormatConstants;
 import io.github.musicdoc.music.instrument.Instrument;
 
 /**

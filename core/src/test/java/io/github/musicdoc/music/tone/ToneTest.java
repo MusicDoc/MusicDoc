@@ -28,13 +28,15 @@ public class ToneTest extends Assertions {
     checkToneByAsciiName("bb", TonePitchEnglish.B_FLAT, 5);
     checkToneByAsciiName("Bb", TonePitchEnglish.B_FLAT, 4);
     checkToneByAsciiName("B", TonePitchEnglish.B, 4);
-    assertThat(ToneMapper.INSTANCE.parse("Cis','")).isEqualTo(ToneMapper.INSTANCE.parse("c#"));
-    assertThat(ToneMapper.INSTANCE.parse("Deses','").isEqualTo(ToneMapper.INSTANCE.parse("dbb"))).isTrue();
+    ToneMapper mapper = ToneMapperMusicDoc.INSTANCE;
+    assertThat(mapper.parse("Cis','")).isEqualTo(mapper.parse("c#"));
+    assertThat(mapper.parse("Deses','").isEqualTo(mapper.parse("dbb"))).isTrue();
   }
 
   private void checkToneByAsciiName(String ascii, TonePitch pitch, int octave) {
 
-    Tone tone = ToneMapper.INSTANCE.parse(ascii);
+    ToneMapper mapper = ToneMapperMusicDoc.INSTANCE;
+    Tone tone = mapper.parse(ascii);
     assertThat(tone.getNameAbc(TonePitchEnglish.STYLE)).isEqualTo(ascii);
     assertThat(tone.getPitch()).isSameAs(pitch);
     assertThat(tone.getOctave()).isEqualTo(octave);

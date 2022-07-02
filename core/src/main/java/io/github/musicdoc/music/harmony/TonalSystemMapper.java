@@ -1,26 +1,23 @@
 package io.github.musicdoc.music.harmony;
 
-import java.io.IOException;
 import java.util.Locale;
 
 import io.github.musicdoc.filter.ListCharFilter;
-import io.github.musicdoc.format.AbstractMapper;
-import io.github.musicdoc.format.MusicFormatOptions;
-import io.github.musicdoc.parser.CharStream;
+import io.github.musicdoc.io.MusicInputStream;
+import io.github.musicdoc.io.MusicOutputStream;
+import io.github.musicdoc.music.format.AbstractMapper;
+import io.github.musicdoc.music.format.SongFormatOptions;
 
 /**
  * {@link AbstractMapper Mapper} for {@link TonalSystem}.
  */
-public class TonalSystemMapper extends AbstractMapper<TonalSystem> {
+public abstract class TonalSystemMapper extends AbstractMapper<TonalSystem> {
 
   // needs to be changed when early tonal systems as hypomixolydian are added
   private static final ListCharFilter SYSTEM_FILTER = ListCharFilter.allOfAnyCase("MAJORIN");
 
-  /** The singleton instance. */
-  public static final TonalSystemMapper INSTANCE = new TonalSystemMapper();
-
   @Override
-  public TonalSystem parse(CharStream chars) {
+  public TonalSystem parse(MusicInputStream chars, SongFormatOptions options) {
 
     int maxLen = 5; // needs to be increased when early tonal systems as hypomixolydian are added
     String lookahead = chars.peekWhile(SYSTEM_FILTER, maxLen).toLowerCase(Locale.US);
@@ -36,11 +33,11 @@ public class TonalSystemMapper extends AbstractMapper<TonalSystem> {
   }
 
   @Override
-  public void format(TonalSystem tonalSystem, Appendable buffer, MusicFormatOptions options) throws IOException {
+  public void format(TonalSystem tonalSystem, MusicOutputStream out, SongFormatOptions options) {
 
     if (tonalSystem == null) {
       return;
     }
-    buffer.append(tonalSystem.getName());
+    out.append(tonalSystem.getName());
   }
 }

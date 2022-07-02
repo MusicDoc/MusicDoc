@@ -1,20 +1,16 @@
 package io.github.musicdoc.music.decoration;
 
-import java.io.IOException;
-
 import io.github.musicdoc.filter.CharFilter;
 import io.github.musicdoc.filter.ListCharFilter;
-import io.github.musicdoc.format.AbstractMapper;
-import io.github.musicdoc.format.MusicFormatOptions;
-import io.github.musicdoc.parser.CharStream;
+import io.github.musicdoc.io.MusicInputStream;
+import io.github.musicdoc.io.MusicOutputStream;
+import io.github.musicdoc.music.format.AbstractMapper;
+import io.github.musicdoc.music.format.SongFormatOptions;
 
 /**
  * {@link AbstractMapper Mapper} for {@link MusicalDecoration}.
  */
-public class MusicalDecorationMapper extends AbstractMapper<MusicalDecoration> {
-
-  /** The singleton instance. */
-  public static final MusicalDecorationMapper INSTANCE = new MusicalDecorationMapper();
+public abstract class MusicalDecorationMapper extends AbstractMapper<MusicalDecoration> {
 
   // TODO: This is crappy and hardcoded - we should use MusicalDecoration instead take all keys that have only a single
   // char.
@@ -25,7 +21,7 @@ public class MusicalDecorationMapper extends AbstractMapper<MusicalDecoration> {
       CHORD_END);
 
   @Override
-  public MusicalDecoration parse(CharStream chars) {
+  public MusicalDecoration parse(MusicInputStream chars, SongFormatOptions options) {
 
     char c = chars.peek();
     String name = null;
@@ -45,7 +41,7 @@ public class MusicalDecorationMapper extends AbstractMapper<MusicalDecoration> {
   }
 
   @Override
-  public void format(MusicalDecoration decoration, Appendable buffer, MusicFormatOptions options) throws IOException {
+  public void format(MusicalDecoration decoration, MusicOutputStream out, SongFormatOptions options) {
 
     if (decoration == null) {
       return;
@@ -55,11 +51,11 @@ public class MusicalDecorationMapper extends AbstractMapper<MusicalDecoration> {
     }
     String name = decoration.getName();
     if (name.length() > 1) {
-      buffer.append(DECORATION_START);
-      buffer.append(name);
-      buffer.append(DECORATION_END);
+      out.append(DECORATION_START);
+      out.append(name);
+      out.append(DECORATION_END);
     } else {
-      buffer.append(name);
+      out.append(name);
     }
   }
 }

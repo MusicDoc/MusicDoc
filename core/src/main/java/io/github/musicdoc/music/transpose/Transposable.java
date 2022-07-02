@@ -10,7 +10,7 @@ import io.github.musicdoc.music.interval.ToneInterval;
  * contextual information while others like {@link MusicalKey} do not. To provide the transposing feature via this
  * interface as a single API a {@link TransposeContext} is used for contextual information. This allows to pre-define
  * settings from outside for transposing as well as modifying the context during the recursive transposing of complex
- * objects like e.g. a complete {@link io.github.musicdoc.music.partiture.Partiture}. The drawback is that some of the
+ * objects like e.g. a complete {@link io.github.musicdoc.music.score.Score}. The drawback is that some of the
  * methods defined here like e.g. {@link #transposeChromatic(int)} will not work perfectly or make sense as expected if
  * invoked on low-level types like e.g. a {@link io.github.musicdoc.music.tone.TonePitch}. In such case use
  * {@link #transpose(int, boolean, TransposeContext)} and set the {@link MusicalKey} in the given

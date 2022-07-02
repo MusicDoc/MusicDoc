@@ -9,7 +9,7 @@ import io.github.musicdoc.music.harmony.TonalSystem;
 public enum DiatonicStep implements ToneInterval {
 
   /**
-   * The empty {@link Interval} representing the first tone of the
+   * The empty {@link ToneInterval} representing the first tone of the
    * {@link io.github.musicdoc.music.harmony.MusicalKey#getDiatonicScale() diatonic scale}
    * ({@link io.github.musicdoc.music.harmony.MusicalKey#getTonika() tonika}).
    *
@@ -98,6 +98,9 @@ public enum DiatonicStep implements ToneInterval {
   public int getChromaticSteps(TonalSystem system) {
 
     if (system == null) {
+      if (this == S0) {
+        return 0;
+      }
       return Integer.MIN_VALUE;
     }
     return system.getChromaticSteps(get());

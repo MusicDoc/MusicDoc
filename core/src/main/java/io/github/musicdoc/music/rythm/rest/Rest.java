@@ -5,8 +5,8 @@ package io.github.musicdoc.music.rythm.rest;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.github.musicdoc.format.FormatConstants;
 import io.github.musicdoc.music.decoration.MusicalDecoration;
+import io.github.musicdoc.music.format.FormatConstants;
 import io.github.musicdoc.music.glyphs.MusicalGlyphsContext;
 import io.github.musicdoc.music.glyphs.smufl.SmuflGlyphsRest;
 import io.github.musicdoc.music.glyphs.unicode.UnicodeGlyphsRests;

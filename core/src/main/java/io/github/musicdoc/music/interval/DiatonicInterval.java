@@ -7,48 +7,51 @@ import io.github.musicdoc.music.harmony.TonalSystem;
 /**
  * Enum with the {@link #getDiatonicSteps() diatonic} {@link ToneInterval}s.
  */
-public enum DiatonicInterval implements ToneInterval {
+public class DiatonicInterval implements ToneInterval {
 
   /** The "empty" interval called (perfect) <em>unison</em>. Also called <em>primum</em>. */
-  UNISON(0),
+  public static DiatonicInterval UNISON = new DiatonicInterval(0);
 
   /** <em>secundum</em>. */
-  SECOND(1),
+  public static DiatonicInterval SECOND = new DiatonicInterval(1);
 
   /** <em>tertium</em>. */
-  THIRD(2),
+  public static DiatonicInterval THIRD = new DiatonicInterval(2);
 
   /** <em>quartum</em>. */
-  FOURTH(3),
+  public static DiatonicInterval FOURTH = new DiatonicInterval(3);
 
   /** <em>quintum</em>. */
-  FIFTH(4),
+  public static DiatonicInterval FIFTH = new DiatonicInterval(4);
 
   /** <em>sextum</em>. */
-  SIXTH(5),
+  public static DiatonicInterval SIXTH = new DiatonicInterval(5);
 
   /** <em>septum</em>. */
-  SEVENTH(6),
+  public static DiatonicInterval SEVENTH = new DiatonicInterval(6);
 
   /** Eight or <em>octave</em>. */
-  OCTAVE(7),
+  public static DiatonicInterval OCTAVE = new DiatonicInterval(7);
 
   /** <em>nonum</em>. */
-  NINTH(8),
+  public static DiatonicInterval NINTH = new DiatonicInterval(8);
 
   /** <em>decum</em>. */
-  TENTH(9),
+  public static DiatonicInterval TENTH = new DiatonicInterval(9);
 
   /** <em>eleventh</em>. */
-  ELEVENTH(10),
+  public static DiatonicInterval ELEVENTH = new DiatonicInterval(10);
 
   /** <em>twelfth</em> or <em>tritave</em>. */
-  TWELFTH(11),
+  public static DiatonicInterval TWELFTH = new DiatonicInterval(11);
 
   /** <em>thirteenth</em> or <em>compound sixth</em>. */
-  THIRTEENTH(12);
+  public static DiatonicInterval THIRTEENTH = new DiatonicInterval(12);
 
-  private final int diatonicSteps;
+  private static final DiatonicInterval[] INTERVALS = new DiatonicInterval[] { UNISON, SECOND, THIRD, FOURTH, FIFTH,
+  SIXTH, SEVENTH, OCTAVE, NINTH, TENTH, ELEVENTH, TWELFTH, THIRTEENTH };
+
+  private final Integer diatonicSteps;
 
   /**
    * The constructor.
@@ -57,24 +60,27 @@ public enum DiatonicInterval implements ToneInterval {
    */
   private DiatonicInterval(int diatonicSteps) {
 
-    this.diatonicSteps = diatonicSteps;
+    this.diatonicSteps = Integer.valueOf(diatonicSteps);
   }
 
   @Override
   public int getChromaticSteps(TonalSystem system) {
 
-    if (this == UNISON) {
-      return 0;
-    } else if (this == OCTAVE) {
-      return 12;
+    int steps = this.diatonicSteps.intValue();
+    if (system == null) {
+      if ((steps % 7) == 0) {
+        return (steps / 7) * 12;
+      }
+      return Integer.MIN_VALUE;
+    } else {
+      return system.getChromaticSteps(steps);
     }
-    return Integer.MIN_VALUE;
   }
 
   @Override
   public int getDiatonicSteps(TonalSystem system) {
 
-    return this.diatonicSteps;
+    return this.diatonicSteps.intValue();
   }
 
   @Override
@@ -88,14 +94,12 @@ public enum DiatonicInterval implements ToneInterval {
    * @return the corresponding {@link DiatonicInterval} or <code>null</code> if no such {@link DiatonicInterval} exists
    *         (given value is negative or too high).
    */
-  public static DiatonicInterval ofDiatonicSteps(int diatonicSteps) {
+  public static DiatonicInterval of(int diatonicSteps) {
 
-    for (DiatonicInterval interval : values()) {
-      if (interval.diatonicSteps == diatonicSteps) {
-        return interval;
-      }
+    if ((diatonicSteps >= 0) && (diatonicSteps < INTERVALS.length)) {
+      return INTERVALS[diatonicSteps];
     }
-    return null;
+    return new DiatonicInterval(diatonicSteps);
   }
 
 }

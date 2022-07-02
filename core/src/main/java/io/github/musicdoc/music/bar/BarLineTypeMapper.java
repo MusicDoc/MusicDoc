@@ -1,21 +1,17 @@
 package io.github.musicdoc.music.bar;
 
-import java.io.IOException;
-
-import io.github.musicdoc.format.AbstractMapper;
-import io.github.musicdoc.format.MusicFormatOptions;
-import io.github.musicdoc.parser.CharStream;
+import io.github.musicdoc.io.MusicInputStream;
+import io.github.musicdoc.io.MusicOutputStream;
+import io.github.musicdoc.music.format.AbstractMapper;
+import io.github.musicdoc.music.format.SongFormatOptions;
 
 /**
  * {@link AbstractMapper Mapper} for {@link BarLineType}.
  */
-public class BarLineTypeMapper extends AbstractMapper<BarLineType> {
-
-  /** The singleton instance. */
-  public static final BarLineTypeMapper INSTANCE = new BarLineTypeMapper();
+public abstract class BarLineTypeMapper extends AbstractMapper<BarLineType> {
 
   @Override
-  public BarLineType parse(CharStream chars) {
+  public BarLineType parse(MusicInputStream chars, SongFormatOptions options) {
 
     char c = chars.peek();
     if (c == '|') {
@@ -56,11 +52,11 @@ public class BarLineTypeMapper extends AbstractMapper<BarLineType> {
   }
 
   @Override
-  public void format(BarLineType barType, Appendable buffer, MusicFormatOptions options) throws IOException {
+  public void format(BarLineType barType, MusicOutputStream out, SongFormatOptions options) {
 
     if (barType == null) {
       return;
     }
-    buffer.append(barType.getSymbol());
+    out.append(barType.getSymbol());
   }
 }

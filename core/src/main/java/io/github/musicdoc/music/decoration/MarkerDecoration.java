@@ -6,15 +6,15 @@ import io.github.musicdoc.music.glyphs.unicode.UnicodeGlyphsCodas;
 
 /**
  * {@link MusicalDecoration} for a marker like {@link #CODA} or {@link #SEGNO}. Such marker acts like a label marking a
- * position in the {@link io.github.musicdoc.music.partiture.Partiture} to {@link JumpDecoration jump to from a
- * different location}.
+ * position in the {@link io.github.musicdoc.music.score.Score} to {@link JumpDecoration jump to from a different
+ * location}.
  *
  * @see JumpDecoration
  */
 public final class MarkerDecoration extends MusicalDecoration {
 
   /**
-   * Capo. The capo is a virtual marker for the beginning of the partiture.
+   * Capo. The capo is a virtual marker for the beginning of the score.
    *
    * @see JumpDecoration#DA_CAPO
    */
@@ -22,7 +22,7 @@ public final class MarkerDecoration extends MusicalDecoration {
 
   /**
    * Coda. A coda is a mark looking like a circle with an overlapping plus sign (o+). It marks the start of an appended
-   * ending of a partiture.
+   * ending of a score.
    */
   public static final MarkerDecoration CODA = create("O", UnicodeGlyphsCodas.CODA, SmuflGlyphsRepeats.CODA, "coda");
 
@@ -33,7 +33,7 @@ public final class MarkerDecoration extends MusicalDecoration {
    */
   public static final MarkerDecoration SEGNO = create("S", UnicodeGlyphsCodas.SEGNO, SmuflGlyphsRepeats.SEGNO, "segno");
 
-  /** Fine. Marks the end of the partiture. Incredible but true neither Unicode nor SMuFL supports a glyph for it. */
+  /** Fine. Marks the end of the score. Incredible but true neither Unicode nor SMuFL supports a glyph for it. */
   public static final MarkerDecoration FINE = create("fine", "FINE", "FINE");
 
   private MarkerDecoration(String name, PeriodType period, String unicode, String smufl, MusicalDecoration reference) {

@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * {@link BarLine#getType() Type} of a {@link BarLine}.
  */
-public class BarLineType implements BarLineObject {
+public class BarLineType {
 
   private static final Map<String, BarLineType> SYMBOL_MAP = new HashMap<>();
 
@@ -54,18 +54,6 @@ public class BarLineType implements BarLineObject {
     super();
     this.symbol = symbol;
     SYMBOL_MAP.put(symbol, this);
-  }
-
-  @Override
-  public boolean isLeftBarOnly() {
-
-    return (this == REPEAT_START);
-  }
-
-  @Override
-  public boolean isRightBarOnly() {
-
-    return (this == REPEAT_END);
   }
 
   /**

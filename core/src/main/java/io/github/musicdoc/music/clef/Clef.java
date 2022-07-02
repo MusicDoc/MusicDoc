@@ -112,10 +112,7 @@ public class Clef implements MusicalGlyphs, ClefObject {
 
     // should we actually combine the clef with the key to resolve this perfectly?
     int chromaticShift = this.shift.getChromaticSteps(TonalSystem.MAJOR);
-    if (chromaticShift == Integer.MIN_VALUE) {
-      int diatonicSteps = this.shift.getDiatonicSteps(TonalSystem.MAJOR);
-
-    }
+    assert (chromaticShift != Integer.MIN_VALUE);
     if (context.isEnforceUnicode()) {
       return UnicodeGlyphsClefs.get(this.symbol, chromaticShift);
     } else {

@@ -24,14 +24,32 @@ public class Beat implements Fraction {
   /** A 3/4 beat. */
   public static final Beat _6_8 = new Beat(6, 8);
 
+  /** A 4/4 beat as common time (C glyph). */
+  public static final Beat COMMON_TIME = new Beat(4, 4, "C");
+
+  /** A 2/2 beat as cut time (C glyph with vertical bar through it). Also called "alla breve". */
+  public static final Beat CUT_TIME = new Beat(2, 2, "C|");
+
+  /** No beat. */
+  public static final Beat NONE = new Beat(0, 1, "none");
+
   private final int beats;
 
   private final int fraction;
 
+  private final String text;
+
   private Beat(int beats, int fraction) {
 
+    this(beats, fraction, beats + "/" + fraction);
+  }
+
+  private Beat(int beats, int fraction, String text) {
+
+    super();
     this.beats = beats;
     this.fraction = fraction;
+    this.text = text;
   }
 
   @Override
@@ -74,7 +92,7 @@ public class Beat implements Fraction {
   @Override
   public String toString() {
 
-    return this.beats + "/" + this.fraction;
+    return this.text;
   }
 
   /**

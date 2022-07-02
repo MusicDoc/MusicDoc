@@ -1,30 +1,27 @@
 package io.github.musicdoc.music.volta;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import io.github.musicdoc.format.AbstractMapper;
-import io.github.musicdoc.format.MusicFormatOptions;
+import io.github.musicdoc.io.MusicInputStream;
+import io.github.musicdoc.io.MusicOutputStream;
+import io.github.musicdoc.music.format.AbstractMapper;
+import io.github.musicdoc.music.format.SongFormatOptions;
 import io.github.musicdoc.number.NumberRange;
 import io.github.musicdoc.number.NumberRangeSet;
 import io.github.musicdoc.number.NumberSet;
-import io.github.musicdoc.parser.CharStream;
 
 /**
  * {@link AbstractMapper Mapper} for {@link Volta}.
  */
-public class VoltaMapper extends AbstractMapper<Volta> {
+public abstract class VoltaMapper extends AbstractMapper<Volta> {
 
   private static final char EXTRA_BARS_CHAR = '+';
 
   private static final char RANGE_CHAR = '-';
 
   private static final char SET_CHAR = ',';
-
-  /** The singleton instance. */
-  public static final VoltaMapper INSTANCE = new VoltaMapper();
 
   /**
    * The constructor.
@@ -35,22 +32,22 @@ public class VoltaMapper extends AbstractMapper<Volta> {
   }
 
   @Override
-  public void format(Volta volta, Appendable buffer, MusicFormatOptions options) throws IOException {
+  public void format(Volta volta, MusicOutputStream out, SongFormatOptions options) {
 
     if ((volta == null) || (volta == Volta.NONE)) {
       return;
     }
     NumberSet numbers = volta.getNumbers();
-    buffer.append(numbers.toString());
+    out.append(numbers.toString());
     int extraBars = volta.getExtraBars();
     if (extraBars > 0) {
-      buffer.append(EXTRA_BARS_CHAR);
-      buffer.append(Integer.toString(extraBars));
+      out.append(EXTRA_BARS_CHAR);
+      out.append(Integer.toString(extraBars));
     }
   }
 
   @Override
-  public Volta parse(CharStream chars) {
+  public Volta parse(MusicInputStream chars, SongFormatOptions options) {
 
     NumberSet numbers = parseSet(chars);
     if (numbers == null) {
@@ -68,7 +65,7 @@ public class VoltaMapper extends AbstractMapper<Volta> {
     return Volta.of(numbers, extraBars);
   }
 
-  private static NumberSet parseSet(CharStream chars) {
+  private static NumberSet parseSet(MusicInputStream chars) {
 
     NumberRange range = parseRange(chars);
     if (range == null) {
@@ -95,7 +92,7 @@ public class VoltaMapper extends AbstractMapper<Volta> {
     return numbers;
   }
 
-  private static NumberRange parseRange(CharStream chars) {
+  private static NumberRange parseRange(MusicInputStream chars) {
 
     Integer i = chars.readInteger(2, false);
     if (i == null) {

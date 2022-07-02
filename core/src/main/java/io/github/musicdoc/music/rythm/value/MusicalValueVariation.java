@@ -7,7 +7,7 @@ import io.github.musicdoc.music.rythm.Fraction;
 
 /**
  * A {@link MusicalValueVariation} is a {@link Fraction} that modifies a {@link MusicalValue}. There are particular
- * symbols to visualize a {@link MusicalValueVariation} in a partiture.
+ * symbols to visualize a {@link MusicalValueVariation} in a score.
  */
 public enum MusicalValueVariation implements Fraction, MusicalGlyphs {
 

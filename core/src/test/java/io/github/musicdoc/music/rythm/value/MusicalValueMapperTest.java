@@ -15,7 +15,7 @@ public class MusicalValueMapperTest extends AbstractTest {
   @Test
   public void testParse() {
 
-    MusicalValueMapper mapper = MusicalValueMapper.INSTANCE;
+    MusicalValueMapper mapper = MusicalValueMapperMusicDoc.INSTANCE;
     assertThat(mapper.parse("1/1")).isEqualTo(MusicalValue._1_1);
     assertThat(mapper.parse("4/4")).isEqualTo(MusicalValue._4_4);
     assertThat(mapper.parse("1/2")).isEqualTo(MusicalValue._1_2);

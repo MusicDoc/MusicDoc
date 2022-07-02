@@ -1,21 +1,18 @@
 package io.github.musicdoc.music.clef;
 
-import java.io.IOException;
-
-import io.github.musicdoc.format.AbstractMapper;
-import io.github.musicdoc.format.MusicFormatOptions;
+import io.github.musicdoc.io.MusicInputStream;
+import io.github.musicdoc.io.MusicOutputStream;
+import io.github.musicdoc.music.format.AbstractMapper;
+import io.github.musicdoc.music.format.SongFormatOptions;
 import io.github.musicdoc.music.interval.ChromaticInterval;
-import io.github.musicdoc.parser.CharStream;
 
 /**
  * {@link AbstractMapper Mapper} for {@link Clef}.
  */
-public class ClefMapper extends AbstractMapper<Clef> {
-
-  public static final ClefMapper INSTANCE = new ClefMapper();
+public abstract class ClefMapper extends AbstractMapper<Clef> {
 
   @Override
-  public Clef parse(CharStream chars) {
+  public Clef parse(MusicInputStream chars, SongFormatOptions options) {
 
     char c = chars.peek();
     ClefSymbol type = ClefSymbol.valueOf("" + Character.toUpperCase(c));
@@ -40,11 +37,11 @@ public class ClefMapper extends AbstractMapper<Clef> {
   }
 
   @Override
-  public void format(Clef clef, Appendable buffer, MusicFormatOptions options) throws IOException {
+  public void format(Clef clef, MusicOutputStream out, SongFormatOptions options) {
 
     if (clef == null) {
       return;
     }
-    buffer.append(clef.toString());
+    out.append(clef.toString());
   }
 }

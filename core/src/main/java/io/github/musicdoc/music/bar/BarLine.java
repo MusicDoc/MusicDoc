@@ -9,7 +9,7 @@ import io.github.musicdoc.music.volta.Volta;
  *
  * @see BarLineType
  */
-public class BarLine implements BarLineObject {
+public class BarLine {
 
   private final BarLineType type;
 
@@ -53,18 +53,6 @@ public class BarLine implements BarLineObject {
   public Volta getVolta() {
 
     return this.volta;
-  }
-
-  @Override
-  public boolean isLeftBarOnly() {
-
-    return this.type.isLeftBarOnly();
-  }
-
-  @Override
-  public boolean isRightBarOnly() {
-
-    return this.type.isRightBarOnly();
   }
 
   @Override

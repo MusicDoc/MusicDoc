@@ -1,39 +1,45 @@
 package io.github.musicdoc.music.song;
 
 import io.github.musicdoc.bean.Bean;
-import io.github.musicdoc.format.SongFormat;
-import io.github.musicdoc.format.SongFormatMusicDoc;
-import io.github.musicdoc.music.harmony.MusicalKey;
-import io.github.musicdoc.music.partiture.Partiture;
+import io.github.musicdoc.music.harmony.MusicalKeyProperty;
+import io.github.musicdoc.music.rythm.beat.Beat;
+import io.github.musicdoc.music.rythm.beat.BeatProperty;
+import io.github.musicdoc.music.rythm.tempo.TempoProperty;
+import io.github.musicdoc.music.score.ScoreProperty;
 import io.github.musicdoc.property.IntProperty;
-import io.github.musicdoc.property.MusicalKeyProperty;
 import io.github.musicdoc.property.StringProperty;
 
 /**
- * Representation of a song as a simple Java bean. This is a stupid data container with no logic. For advanced logic see
- * {@link SongWithContext}.
+ * Representation of a song as a simple {@link Bean}.
  */
 public class Song extends Bean {
 
   /** The display title of the song (e.g. "The winner takes it all"). */
   public final StringProperty title;
 
-  /** The author of the song. Typically used for the band (e.g. "Abba"). */
-  public final StringProperty author;
+  /** The composer or author of the song. Typically used for the band (e.g. "Abba"). */
+  public final StringProperty composer;
+
+  /** The optional origin of the song (e.g. "England; Yorkshire; Bradford and Bingley."). */
+  public final StringProperty origin;
+
+  /** The album of the song. Typically used for the CD or LP (e.g. "More Abba Gold"). */
+  public final StringProperty album;
 
   /** the additional copyright information. Typically the original artists (song composer, lyrics writer). */
   public final StringProperty copyright;
 
-  /**
-   * The lyrics of the song potentially annotated with metadata such as chords, tabs, or partiture.
-   *
-   * @see Partiture
-   * @see SongWithContext#getPartiture()
-   */
-  public final StringProperty lyrics;
-
-  /** The optional {@link MusicalKey}. */
+  /** The optional {@link io.github.musicdoc.music.harmony.MusicalKey}. */
   public final MusicalKeyProperty key;
+
+  /** The optional {@link io.github.musicdoc.music.rythm.tempo.Tempo}. */
+  public final TempoProperty tempo;
+
+  /** The optional {@link Beat}. */
+  public final BeatProperty beat;
+
+  /** The optional <a href="https://abcnotation.com/wiki/abc:standard:v2.1#lunit_note_length">unit note length</a>. */
+  public final BeatProperty unitNoteLength;
 
   /** The pre delay in seconds before the song starts scrolling. */
   public final IntProperty preDelay;
@@ -44,7 +50,13 @@ public class Song extends Bean {
   /** The fret where to place the capo (to play in original or preferred key). */
   public final IntProperty capo;
 
-  private Partiture partiture;
+  /** The {@link io.github.musicdoc.music.score.Score} of the song with the lyrics. */
+  public final ScoreProperty score;
+
+  /**
+   * The optional <a href="https://abcnotation.com/wiki/abc:standard:v2.1#xreference_number">reference number</a>3750.
+   */
+  public final IntProperty referenceNumber;
 
   /**
    * The constructor.
@@ -53,13 +65,19 @@ public class Song extends Bean {
 
     super();
     this.title = register(new StringProperty("title"));
-    this.author = register(new StringProperty("author"));
+    this.composer = register(new StringProperty("composer"));
+    this.album = register(new StringProperty("album"));
+    this.origin = register(new StringProperty("origin"));
     this.copyright = register(new StringProperty("copyright"));
-    this.lyrics = register(new StringProperty("lyrics"));
+    this.score = register(new ScoreProperty("score"));
     this.key = register(new MusicalKeyProperty("key"));
+    this.beat = register(new BeatProperty("beat"));
+    this.tempo = register(new TempoProperty("tempo"));
+    this.unitNoteLength = register(new BeatProperty("unitNoteLength"));
     this.preDelay = register(new IntProperty("preDelay"));
     this.duration = register(new IntProperty("duration"));
     this.capo = register(new IntProperty("capo"));
+    this.referenceNumber = register(new IntProperty("referenceNumber"));
   }
 
   /**
@@ -71,19 +89,4 @@ public class Song extends Bean {
     copy(song);
   }
 
-  /**
-   * @return the {@link Partiture}.
-   */
-  public Partiture getPartiture() {
-
-    if (this.partiture == null) {
-      String lyrics = this.lyrics.getValue();
-      if (lyrics == null) {
-        return null;
-      }
-      SongFormat format = SongFormatMusicDoc.INSTANCE;
-      this.partiture = format.parse(lyrics);
-    }
-    return this.partiture;
-  }
 }

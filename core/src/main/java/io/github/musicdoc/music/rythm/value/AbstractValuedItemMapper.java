@@ -1,14 +1,14 @@
 package io.github.musicdoc.music.rythm.value;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.github.musicdoc.format.AbstractMapper;
-import io.github.musicdoc.format.MusicFormatOptions;
+import io.github.musicdoc.io.MusicInputStream;
+import io.github.musicdoc.io.MusicOutputStream;
 import io.github.musicdoc.music.decoration.MusicalDecoration;
 import io.github.musicdoc.music.decoration.MusicalDecorationMapper;
-import io.github.musicdoc.parser.CharStream;
+import io.github.musicdoc.music.format.AbstractMapper;
+import io.github.musicdoc.music.format.SongFormatOptions;
 
 /**
  * {@link AbstractMapper} for {@link ValuedItem}.
@@ -18,20 +18,20 @@ import io.github.musicdoc.parser.CharStream;
 public abstract class AbstractValuedItemMapper<I extends ValuedItem<?>> extends AbstractMapper<I> {
 
   @Override
-  public I parse(CharStream chars) {
+  public I parse(MusicInputStream chars, SongFormatOptions options) {
 
     List<MusicalDecoration> decorations = new ArrayList<>();
     while (true) {
-      MusicalDecoration decoration = MusicalDecorationMapper.INSTANCE.parse(chars);
+      MusicalDecoration decoration = getDecorationMapper().parse(chars, options);
       if (decoration == null) {
         break;
       }
       assert (!decoration.isItemSuffix());
       decorations.add(decoration);
     }
-    I item = parseItem(chars, decorations);
+    I item = parseItem(chars, options, decorations);
     while (true) {
-      MusicalDecoration decoration = MusicalDecorationMapper.INSTANCE.parse(chars);
+      MusicalDecoration decoration = getDecorationMapper().parse(chars, options);
       if (decoration == null) {
         break;
       }
@@ -42,14 +42,26 @@ public abstract class AbstractValuedItemMapper<I extends ValuedItem<?>> extends 
   }
 
   /**
-   * @param chars the {@link CharStream} to parse.
+   * @return the {@link MusicalDecorationMapper}.
+   */
+  protected abstract MusicalDecorationMapper getDecorationMapper();
+
+  /**
+   * @param chars the {@link MusicInputStream} to parse.
+   * @param options the {@link SongFormatOptions}.
    * @param decorations the {@link List} of {@link MusicalDecoration}s.
    * @return the parsed item.
    */
-  protected abstract I parseItem(CharStream chars, List<MusicalDecoration> decorations);
+  protected abstract I parseItem(MusicInputStream chars, SongFormatOptions options,
+      List<MusicalDecoration> decorations);
+
+  /**
+   * @return the {@link MusicalValueMapper}.
+   */
+  protected abstract MusicalValueMapper getValueMapper();
 
   @Override
-  public void format(I item, Appendable buffer, MusicFormatOptions options) throws IOException {
+  public void format(I item, MusicOutputStream out, SongFormatOptions options) {
 
     if (item == null) {
       return;
@@ -62,18 +74,18 @@ public abstract class AbstractValuedItemMapper<I extends ValuedItem<?>> extends 
         suffix = decoration;
         suffixCount++;
       } else {
-        MusicalDecorationMapper.INSTANCE.format(decoration, buffer, options);
+        getDecorationMapper().format(decoration, out, options);
       }
     }
-    formatItem(item, buffer, options);
-    MusicalValueMapper.INSTANCE.format(item.getValue(), buffer, options);
+    formatItem(item, out, options);
+    getValueMapper().format(item.getValue(), out, options);
     // decoration suffixes
     if (suffixCount == 1) {
-      MusicalDecorationMapper.INSTANCE.format(suffix, buffer, options);
+      getDecorationMapper().format(suffix, out, options);
     } else if (suffixCount > 1) {
       for (MusicalDecoration decoration : item.getDecorations()) {
         if (decoration.isItemSuffix()) {
-          MusicalDecorationMapper.INSTANCE.format(decoration, buffer, options);
+          getDecorationMapper().format(decoration, out, options);
         }
       }
     }
@@ -81,10 +93,9 @@ public abstract class AbstractValuedItemMapper<I extends ValuedItem<?>> extends 
 
   /**
    * @param item {@link ValuedItem} to format.
-   * @param buffer the {@link Appendable} where to {@link Appendable#append(CharSequence) append} the formatted output.
-   * @param options the {@link MusicFormatOptions}.
-   * @throws IOException in case of an input/output error.
+   * @param out the {@link Appendable} where to {@link Appendable#append(CharSequence) append} the formatted output.
+   * @param options the {@link SongFormatOptions}.
    */
-  protected abstract void formatItem(I item, Appendable buffer, MusicFormatOptions options) throws IOException;
+  protected abstract void formatItem(I item, MusicOutputStream out, SongFormatOptions options);
 
 }

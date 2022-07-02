@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import io.github.musicdoc.format.FormatConstants;
 import io.github.musicdoc.music.clef.Clef;
+import io.github.musicdoc.music.format.FormatConstants;
 import io.github.musicdoc.music.harmony.MusicalKey;
 import io.github.musicdoc.music.rythm.beat.Beat;
 import io.github.musicdoc.music.transpose.AbstractTransposable;
@@ -85,12 +85,12 @@ public final class Stave extends AbstractTransposable<Stave> {
 
   /**
    * @return the optional {@link StaveBracket bracket} of this stave. May be {@code null} for none. In case one or more
-   *         {@link io.github.musicdoc.music.partiture.voice.PartitureVoiceLine lines} in a
-   *         {@link io.github.musicdoc.music.partiture.PartitureRow row} start with the same {@link StaveBracket
+   *         {@link io.github.musicdoc.music.score.voice.ScoreVoiceLine lines} in a
+   *         {@link io.github.musicdoc.music.score.ScoreRow row} start with the same {@link StaveBracket
    *         bracket}, they will be visually grouped together by a bracket of this type. Otherwise the
    *         {@link StaveBracket bracket} is only displayed for its single
-   *         {@link io.github.musicdoc.music.partiture.voice.PartitureVoiceLine line}. In case a {@link Stave} is not at
-   *         the beginning of a {@link io.github.musicdoc.music.partiture.voice.PartitureVoiceLine line}, it will have
+   *         {@link io.github.musicdoc.music.score.voice.ScoreVoiceLine line}. In case a {@link Stave} is not at
+   *         the beginning of a {@link io.github.musicdoc.music.score.voice.ScoreVoiceLine line}, it will have
    *         no visual effect (unless a dynamic reformatting would insert a line break at this place, what would then
    *         overrule the defaults from the start of the line).
    */
@@ -144,7 +144,7 @@ public final class Stave extends AbstractTransposable<Stave> {
   /**
    * @return the optional {@link Beat}. If {@code null} or the same {@link Beat} as the previous {@link Stave} on the
    *         same line, no beat will be displayed (e.g. the new {@link Stave} might only change the {@link Clef}). If
-   *         this is the first {@link Stave} of a {@link io.github.musicdoc.music.partiture.Partiture} and no
+   *         this is the first {@link Stave} of a {@link io.github.musicdoc.music.score.Score} and no
    *         {@link Beat} is defined then {@link Beat#_4_4 4/4} is assumed (but not displayed).
    */
   public Beat getBeat() {
@@ -193,6 +193,9 @@ public final class Stave extends AbstractTransposable<Stave> {
 
   public void join(Stave otherStave, boolean joinVoices) {
 
+    if (otherStave == null) {
+      return;
+    }
     if (this.clef == null) {
       this.clef = otherStave.clef;
     }
@@ -252,7 +255,7 @@ public final class Stave extends AbstractTransposable<Stave> {
     }
     String separator = "";
     if (this.clef != null) {
-      sb.append(FormatConstants.PROPERTY_CLEV);
+      sb.append(FormatConstants.PROPERTY_CLEF);
       sb.append(FormatConstants.PROPERTIES_KEY_VALUE_SEPARATOR);
       sb.append(this.clef);
       separator = SEPARATOR;
@@ -266,7 +269,7 @@ public final class Stave extends AbstractTransposable<Stave> {
     }
     if (this.beat != null) {
       sb.append(separator);
-      sb.append(FormatConstants.PROPERTY_BEAT);
+      sb.append(FormatConstants.PROPERTY_METER);
       sb.append(FormatConstants.PROPERTIES_KEY_VALUE_SEPARATOR);
       sb.append(this.beat);
       separator = SEPARATOR;
