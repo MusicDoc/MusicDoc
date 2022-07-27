@@ -4,7 +4,7 @@ import io.github.musicdoc.filter.ListCharFilter;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
 import io.github.musicdoc.music.format.AbstractMapper;
-import io.github.musicdoc.music.format.SongFormatOptions;
+import io.github.musicdoc.music.format.SongFormatContext;
 import io.github.musicdoc.music.tone.TonePitchMapper;
 
 /**
@@ -12,28 +12,23 @@ import io.github.musicdoc.music.tone.TonePitchMapper;
  */
 public abstract class ChordContainerMapper extends AbstractMapper<ChordContainer> {
 
-  private static final ListCharFilter START_FILTER = TonePitchMapper.FILTER_TONE_START.joinChars(ListCharFilter.NEWLINE)
-      .join(CHORD_START, CHORD_END, ITEM_START, ITEM_END);
+  private static final ListCharFilter START_FILTER = TonePitchMapper.FILTER_TONE_START.joinChars(ListCharFilter.NEWLINE).join(CHORD_START,
+      CHORD_END, ITEM_START, ITEM_END);
 
   @Override
-  public ChordContainer parse(MusicInputStream chars, SongFormatOptions options) {
+  public ChordContainer read(MusicInputStream in, SongFormatContext context) {
 
-    Chord chord = getChordMapper().parse(chars, options);
-    String suffix = chars.readUntil(START_FILTER, true);
+    Chord chord = getChordMapper().read(in, context);
+    String suffix = in.readUntil(START_FILTER, true);
     if (suffix.isEmpty() && (chord == null)) {
       return null;
     }
     return new ChordContainer(chord, suffix);
   }
 
-  /**
-   * @return the {@link ChordMapper}.
-   */
-  protected abstract ChordMapper getChordMapper();
-
   @Override
-  public void format(ChordContainer chordContainer, MusicOutputStream out, SongFormatOptions options) {
+  public void write(ChordContainer chordContainer, MusicOutputStream out, SongFormatContext context) {
 
-    out.append(chordContainer.toString());
+    out.write(chordContainer.toString());
   }
 }

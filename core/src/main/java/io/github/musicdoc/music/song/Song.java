@@ -1,7 +1,7 @@
 package io.github.musicdoc.music.song;
 
 import io.github.musicdoc.bean.Bean;
-import io.github.musicdoc.music.harmony.MusicalKeyProperty;
+import io.github.musicdoc.music.harmony.key.MusicalKeyProperty;
 import io.github.musicdoc.music.rythm.beat.Beat;
 import io.github.musicdoc.music.rythm.beat.BeatProperty;
 import io.github.musicdoc.music.rythm.tempo.TempoProperty;
@@ -29,7 +29,7 @@ public class Song extends Bean {
   /** the additional copyright information. Typically the original artists (song composer, lyrics writer). */
   public final StringProperty copyright;
 
-  /** The optional {@link io.github.musicdoc.music.harmony.MusicalKey}. */
+  /** The optional {@link io.github.musicdoc.music.harmony.key.MusicalKey}. */
   public final MusicalKeyProperty key;
 
   /** The optional {@link io.github.musicdoc.music.rythm.tempo.Tempo}. */

@@ -1,8 +1,8 @@
 package io.github.musicdoc.music.transpose;
 
 import io.github.musicdoc.music.harmony.EnharmonicStyle;
-import io.github.musicdoc.music.harmony.MusicalKey;
 import io.github.musicdoc.music.harmony.TonalSystem;
+import io.github.musicdoc.music.harmony.key.MusicalKey;
 import io.github.musicdoc.music.tab.Tab;
 import io.github.musicdoc.music.tone.Tone;
 

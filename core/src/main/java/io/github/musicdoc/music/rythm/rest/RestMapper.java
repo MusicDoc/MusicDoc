@@ -5,7 +5,7 @@ import java.util.List;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
 import io.github.musicdoc.music.decoration.MusicalDecoration;
-import io.github.musicdoc.music.format.SongFormatOptions;
+import io.github.musicdoc.music.format.SongFormatContext;
 import io.github.musicdoc.music.rythm.value.AbstractValuedItemMapper;
 import io.github.musicdoc.music.rythm.value.MusicalValue;
 
@@ -15,9 +15,9 @@ import io.github.musicdoc.music.rythm.value.MusicalValue;
 public abstract class RestMapper extends AbstractValuedItemMapper<Rest> {
 
   @Override
-  protected Rest parseItem(MusicInputStream chars, SongFormatOptions options, List<MusicalDecoration> decorations) {
+  protected Rest readItem(MusicInputStream in, SongFormatContext context, List<MusicalDecoration> decorations) {
 
-    char c = chars.peek();
+    char c = in.peek();
     boolean invisible;
     if (c == REST_VISIBLE) {
       invisible = false;
@@ -26,8 +26,8 @@ public abstract class RestMapper extends AbstractValuedItemMapper<Rest> {
     } else {
       return null;
     }
-    chars.next();
-    MusicalValue value = getValueMapper().parse(chars, options);
+    in.next();
+    MusicalValue value = getValueMapper().read(in, context);
     if (value == null) {
       value = MusicalValue._1_1;
     }
@@ -35,11 +35,11 @@ public abstract class RestMapper extends AbstractValuedItemMapper<Rest> {
   }
 
   @Override
-  protected void formatItem(Rest item, MusicOutputStream out, SongFormatOptions options) {
+  protected void writeItem(Rest item, MusicOutputStream out, SongFormatContext context) {
 
     if (item == null) {
       return;
     }
-    out.append(item.getSymbol());
+    out.write(item.getSymbol());
   }
 }

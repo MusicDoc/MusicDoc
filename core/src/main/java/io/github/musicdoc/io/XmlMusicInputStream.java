@@ -23,6 +23,15 @@ public class XmlMusicInputStream extends AbstractTextMusicInputStream {
 
     super("", 0, -1);
     this.xmlReader = xmlReader;
+    try {
+      int event = xmlReader.nextTag();
+      assert (event == XMLStreamConstants.START_ELEMENT);
+      // skip root element
+      event = xmlReader.nextTag();
+      assert (event == XMLStreamConstants.START_ELEMENT);
+    } catch (XMLStreamException e) {
+      throw new IllegalStateException("Failed to load XML.", e);
+    }
   }
 
   @Override
@@ -52,19 +61,28 @@ public class XmlMusicInputStream extends AbstractTextMusicInputStream {
   }
 
   @Override
+  public boolean isPropertyStart(String property) {
+
+    int event = this.xmlReader.getEventType();
+    if (event == XMLStreamConstants.START_ELEMENT) {
+      if (property.equals(this.xmlReader.getLocalName())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  @Override
   public String readPropertyStart() {
 
     try {
-      int event = this.xmlReader.nextTag();
-      if (event == XMLStreamConstants.START_ELEMENT) {
-        String property = this.xmlReader.getLocalName();
-        setString(this.xmlReader.getElementText().trim());
-        return property;
-      } else {
-        addError("Invalid XML - expected start element.");
-        assert (event == XMLStreamConstants.END_ELEMENT);
+      int event = this.xmlReader.getEventType();
+      if (event != XMLStreamConstants.START_ELEMENT) {
         return null;
       }
+      String property = this.xmlReader.getLocalName();
+      setString(this.xmlReader.getElementText().trim());
+      return property;
     } catch (XMLStreamException e) {
       throw new IllegalStateException(e);
     }
@@ -74,29 +92,29 @@ public class XmlMusicInputStream extends AbstractTextMusicInputStream {
   public String readPropertyValue() {
 
     try {
-      int event = this.xmlReader.nextTag();
-      if (event == XMLStreamConstants.END_ELEMENT) {
-        return read(Integer.MAX_VALUE);
-      } else {
-        addError("Invalid XML - expected end element.");
-        assert (event == XMLStreamConstants.START_ELEMENT);
-        return null;
-      }
+      assert (this.xmlReader.getEventType() == XMLStreamConstants.END_ELEMENT);
+      String value = read(Integer.MAX_VALUE);
+      this.xmlReader.nextTag();
+      return value;
     } catch (XMLStreamException e) {
       throw new IllegalStateException(e);
     }
   }
 
   @Override
-  public void close() throws Exception {
+  public void close() {
 
     if (this.xmlReader == null) {
       return;
     }
-    assert (this.xmlReader.next() == XMLStreamConstants.END_ELEMENT);
-    assert (this.xmlReader.next() == XMLStreamConstants.END_DOCUMENT);
-    this.xmlReader.close();
-    this.xmlReader = null;
+    try {
+      assert (this.xmlReader.next() == XMLStreamConstants.END_ELEMENT);
+      assert (this.xmlReader.next() == XMLStreamConstants.END_DOCUMENT);
+      this.xmlReader.close();
+      this.xmlReader = null;
+    } catch (XMLStreamException e) {
+      throw new IllegalStateException(e);
+    }
   }
 
   /**
@@ -107,12 +125,6 @@ public class XmlMusicInputStream extends AbstractTextMusicInputStream {
 
     try {
       XMLStreamReader xmlReader = XMLInputFactory.newInstance().createXMLStreamReader(inStream);
-      int event;
-      do {
-        event = xmlReader.next();
-      } while (event != XMLStreamConstants.START_DOCUMENT);
-      event = xmlReader.nextTag();
-      assert (event == XMLStreamConstants.START_ELEMENT);
       return new XmlMusicInputStream(xmlReader);
     } catch (XMLStreamException e) {
       throw new IllegalStateException("Failed to load XML.", e);

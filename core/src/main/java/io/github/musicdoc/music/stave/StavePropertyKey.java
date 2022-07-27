@@ -1,6 +1,6 @@
 package io.github.musicdoc.music.stave;
 
-import io.github.musicdoc.music.harmony.MusicalKey;
+import io.github.musicdoc.music.harmony.key.MusicalKey;
 
 /**
  * {@link StaveProperty} to {@link Stave#getKey() key property}.
@@ -15,7 +15,7 @@ class StavePropertyKey extends StaveProperty<MusicalKey> {
   }
 
   @Override
-  public MusicalKey get(Stave stave) {
+  public MusicalKey get(AbstractStave<?> stave) {
 
     if (stave == null) {
       return null;
@@ -24,10 +24,11 @@ class StavePropertyKey extends StaveProperty<MusicalKey> {
   }
 
   @Override
-  public void set(Stave stave, MusicalKey key) {
+  public AbstractStave<?> set(AbstractStave<?> stave, MusicalKey key) {
 
     if (stave != null) {
-      stave.setKey(key);
+      stave = stave.setKey(key);
     }
+    return stave;
   }
 }

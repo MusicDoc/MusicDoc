@@ -49,4 +49,7 @@ public interface MusicStream extends TextPosition, AutoCloseable {
    */
   void addMessage(SongFormatMessageType type, String text);
 
+  @Override
+  void close();
+
 }

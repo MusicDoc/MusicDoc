@@ -1,7 +1,7 @@
 package io.github.musicdoc.music.interval;
 
-import io.github.musicdoc.music.harmony.MusicalKey;
 import io.github.musicdoc.music.harmony.TonalSystem;
+import io.github.musicdoc.music.harmony.key.MusicalKey;
 import io.github.musicdoc.music.tone.TonePitch;
 import io.github.musicdoc.music.tone.TonePitchEnglish;
 
@@ -201,6 +201,27 @@ public enum ChromaticStep implements ToneInterval {
   public ChromaticStep subtract(ChromaticStep step) {
 
     return subtract(step.get());
+  }
+
+  @Override
+  public int getOctaves() {
+
+    return 0;
+  }
+
+  @Override
+  public boolean isEmpty() {
+
+    return (this == S0);
+  }
+
+  @Override
+  public ToneInterval invert() {
+
+    if (this == S0) {
+      return S0;
+    }
+    return ChromaticInterval.of(-get());
   }
 
   @Override

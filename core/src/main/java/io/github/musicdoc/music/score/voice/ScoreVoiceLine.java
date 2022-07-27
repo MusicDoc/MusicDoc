@@ -1,7 +1,8 @@
 package io.github.musicdoc.music.score.voice;
 
+import io.github.musicdoc.MutableObjecteCopier;
 import io.github.musicdoc.music.score.ScoreLine;
-import io.github.musicdoc.music.stave.Stave;
+import io.github.musicdoc.music.stave.voice.StaveVoice;
 import io.github.musicdoc.music.transpose.TransposeContext;
 
 /**
@@ -10,7 +11,7 @@ import io.github.musicdoc.music.transpose.TransposeContext;
  */
 public class ScoreVoiceLine extends ScoreLine<ScoreVoiceCell, ScoreVoiceLine> {
 
-  private ScoreVoiceLineContinuation continuation;
+  private StaveVoice voice;
 
   /**
    * The constructor.
@@ -20,27 +21,37 @@ public class ScoreVoiceLine extends ScoreLine<ScoreVoiceCell, ScoreVoiceLine> {
     super();
   }
 
-  /**
-   * @return the optional {@link ScoreVoiceLineContinuation continuation} of this line or {@code null}, if this is
-   *         the first line of a new {@link io.github.musicdoc.music.score.ScoreRow row}.
-   */
-  public ScoreVoiceLineContinuation getContinuation() {
+  private ScoreVoiceLine(ScoreVoiceLine line, MutableObjecteCopier copier) {
 
-    return this.continuation;
+    super(line, copier);
+    this.voice = copier.copy(line.voice);
   }
 
   @Override
-  public boolean isContinueRow() {
+  public ScoreVoiceLine copy(MutableObjecteCopier copier) {
 
-    return (this.continuation != null);
+    return new ScoreVoiceLine(this, copier);
+  }
+
+  @Override
+  public StaveVoice getVoice() {
+
+    return this.voice;
   }
 
   /**
-   * @param continuation the new value of {@link #getContinuation()}.
+   * @param voice new value of {@link #getVoice()}.
+   * @return a {@link ScoreVoiceLine} with the given {@link #getVoice() voice} and all other properties like
+   *         {@code this} one. Will be a {@link #copy() copy} if {@link #isImmutable() immutable}.
    */
-  public void setContinuation(ScoreVoiceLineContinuation continuation) {
+  public ScoreVoiceLine setVoice(StaveVoice voice) {
 
-    this.continuation = continuation;
+    if (this.voice == voice) {
+      return this;
+    }
+    ScoreVoiceLine line = makeMutable();
+    line.voice = voice;
+    return line;
   }
 
   /**
@@ -67,30 +78,4 @@ public class ScoreVoiceLine extends ScoreLine<ScoreVoiceCell, ScoreVoiceLine> {
     return transposed;
   }
 
-  /**
-   * @param voiceLine the {@link ScoreVoiceLine} to join (append).
-   */
-  public void join(ScoreVoiceLine voiceLine) {
-
-    assert (this.continuation != null);
-    int len = this.cells.size();
-    int otherLen = voiceLine.cells.size();
-    if (otherLen < len) {
-      len = otherLen;
-    }
-    for (int i = 0; i < len; i++) {
-      ScoreVoiceCell otherCell = voiceLine.cells.get(i);
-      Stave otherStave = otherCell.getStave();
-      if (otherStave != null) {
-        ScoreVoiceCell myCell = this.cells.get(i);
-        Stave myStave = myCell.getStave();
-        if (this.continuation == ScoreVoiceLineContinuation.STAVE) {
-          otherStave.join(myStave, true);
-          myCell.setStave(otherStave);
-        } else if (this.continuation == ScoreVoiceLineContinuation.LINE) {
-          myStave.join(otherStave, false);
-        }
-      }
-    }
-  }
 }

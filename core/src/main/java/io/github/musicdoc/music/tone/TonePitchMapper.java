@@ -5,7 +5,7 @@ import io.github.musicdoc.filter.ListCharFilter;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
 import io.github.musicdoc.music.format.AbstractMapper;
-import io.github.musicdoc.music.format.SongFormatOptions;
+import io.github.musicdoc.music.format.SongFormatContext;
 import io.github.musicdoc.music.glyphs.unicode.UnicodeGlyphsAccidentals;
 
 /**
@@ -18,24 +18,23 @@ public abstract class TonePitchMapper extends AbstractMapper<TonePitch> {
 
   /** {@link CharFilter} that {@link CharFilter#accept(char) accepts} start characters of a {@link TonePitch}. */
   public static final ListCharFilter FILTER_TONE = FILTER_TONE_START.join('i', 'I', 's', 'S', '#', 'b',
-      UnicodeGlyphsAccidentals.NEUTRAL_CHAR, UnicodeGlyphsAccidentals.FLAT_1_CHAR,
-      UnicodeGlyphsAccidentals.SHARP_1_CHAR, UnicodeGlyphsAccidentals.SIGN_2_CHAR1,
-      UnicodeGlyphsAccidentals.FLAT_2_CHAR2, UnicodeGlyphsAccidentals.SHARP_2_CHAR2);
+      UnicodeGlyphsAccidentals.NEUTRAL_CHAR, UnicodeGlyphsAccidentals.FLAT_1_CHAR, UnicodeGlyphsAccidentals.SHARP_1_CHAR,
+      UnicodeGlyphsAccidentals.SIGN_2_CHAR1, UnicodeGlyphsAccidentals.FLAT_2_CHAR2, UnicodeGlyphsAccidentals.SHARP_2_CHAR2);
 
   @Override
-  public TonePitch parse(MusicInputStream chars, SongFormatOptions options) {
+  public TonePitch read(MusicInputStream in, SongFormatContext context) {
 
-    char c = chars.peek();
+    char c = in.peek();
     if (!FILTER_TONE_START.accept(c)) {
       return null;
     }
-    String lookahead = chars.peekWhile(FILTER_TONE, 5); // maximum length of TonePitch.name is 5 (e.g. "Cisis")
+    String lookahead = in.peekWhile(FILTER_TONE, 5); // maximum length of TonePitch.name is 5 (e.g. "Cisis")
     int length = lookahead.length();
     for (int i = length; i > 0; i--) {
       String key = lookahead.substring(0, i);
       TonePitch pitch = TonePitches.of(key);
       if (pitch != null) {
-        chars.skip(i);
+        in.skip(i);
         return pitch;
       }
     }
@@ -43,8 +42,8 @@ public abstract class TonePitchMapper extends AbstractMapper<TonePitch> {
   }
 
   @Override
-  public void format(TonePitch pitch, MusicOutputStream out, SongFormatOptions options) {
+  public void write(TonePitch pitch, MusicOutputStream out, SongFormatContext context) {
 
-    out.append(pitch.getName());
+    out.write(pitch.getName());
   }
 }

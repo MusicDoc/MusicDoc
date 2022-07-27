@@ -7,7 +7,7 @@ import io.github.musicdoc.property.PropertyAccessor;
  *
  * @param <T> type of the property value.
  */
-abstract class StaveProperty<T> implements PropertyAccessor<Stave, T> {
+abstract class StaveProperty<T> implements PropertyAccessor<AbstractStave<?>, T> {
 
   private final String name;
 

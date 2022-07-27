@@ -3,7 +3,7 @@ package io.github.musicdoc.music.bar;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
 import io.github.musicdoc.music.format.AbstractMapper;
-import io.github.musicdoc.music.format.SongFormatOptions;
+import io.github.musicdoc.music.format.SongFormatContext;
 
 /**
  * {@link AbstractMapper Mapper} for {@link BarLineType}.
@@ -11,52 +11,49 @@ import io.github.musicdoc.music.format.SongFormatOptions;
 public abstract class BarLineTypeMapper extends AbstractMapper<BarLineType> {
 
   @Override
-  public BarLineType parse(MusicInputStream chars, SongFormatOptions options) {
+  public BarLineType read(MusicInputStream in, SongFormatContext context) {
 
-    char c = chars.peek();
+    char c = in.peek();
     if (c == '|') {
-      chars.next();
-      c = chars.peek();
+      in.next();
+      c = in.peek();
       if (c == '|') {
-        chars.next();
+        in.next();
         return BarLineType.DOUBLE;
       } else if (c == ':') {
-        chars.next();
+        in.next();
         return BarLineType.REPEAT_START;
-      } else if (c == '§') {
-        chars.next();
+      } else if (c == ']') {
+        in.next();
         return BarLineType.THIN_THICK;
       } else {
         return BarLineType.SINGLE;
       }
     } else if (c == ':') {
-      if (chars.expect("::", false) || chars.expect(":|:", false) || chars.expect(":||:", false)) {
+      if (in.expect("::", false) || in.expect(":|:", false) || in.expect(":||:", false)) {
         return BarLineType.REPEAT_END_START;
-      } else if (chars.expect(":|", false)) {
+      } else if (in.expect(":|", false)) {
         return BarLineType.REPEAT_END;
       }
-    } else if (c == '§') {
-      chars.next();
-      c = chars.peek();
-      if (c == '|') {
-        chars.next();
-        return BarLineType.THICK_THIN;
-      } else if (c == '§') {
-        chars.next();
-        return BarLineType.THICK_THICK;
-      } else {
-        return BarLineType.THICK;
+    } else if (c == '[') {
+      String bar = in.peek(2);
+      BarLineType type = BarLineType.of(bar);
+      if (type != null) {
+        in.skip(2);
+        return type;
       }
+    } else if (in.expect("][", false)) {
+      return BarLineType.THICK;
     }
     return null;
   }
 
   @Override
-  public void format(BarLineType barType, MusicOutputStream out, SongFormatOptions options) {
+  public void write(BarLineType barType, MusicOutputStream out, SongFormatContext context) {
 
     if (barType == null) {
       return;
     }
-    out.append(barType.getSymbol());
+    out.write(barType.getSymbol());
   }
 }

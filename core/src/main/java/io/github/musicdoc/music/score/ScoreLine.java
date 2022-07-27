@@ -3,7 +3,10 @@ package io.github.musicdoc.music.score;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.github.musicdoc.music.score.voice.ScoreVoiceLine;
+import io.github.musicdoc.MutableObject;
+import io.github.musicdoc.MutableObjecteCopier;
+import io.github.musicdoc.MutableObjecteHelper;
+import io.github.musicdoc.music.stave.voice.StaveVoice;
 import io.github.musicdoc.music.transpose.AbstractTransposable;
 
 /**
@@ -11,13 +14,16 @@ import io.github.musicdoc.music.transpose.AbstractTransposable;
  *
  * @param <C> type of the contained {@link ScoreCell}s.
  * @param <SELF> this type itself.
- * @see ScoreVoiceLine
+ * @see io.github.musicdoc.music.score.voice.ScoreVoiceLine
  */
-public abstract class ScoreLine<C extends ScoreCell<?>, SELF extends ScoreLine<C, SELF>>
-    extends AbstractTransposable<SELF> {
+public abstract class ScoreLine<C extends ScoreCell<C>, SELF extends ScoreLine<C, SELF>> extends AbstractTransposable<SELF>
+    implements MutableObject<SELF> {
 
   /** @see #getCells() */
-  protected final List<C> cells;
+  protected List<C> cells;
+
+  /** @see #isImmutable() */
+  protected boolean immutalbe;
 
   /**
    * The constructor.
@@ -37,6 +43,34 @@ public abstract class ScoreLine<C extends ScoreCell<?>, SELF extends ScoreLine<C
 
     super();
     this.cells = cells;
+  }
+
+  /**
+   * The {@link #copy()} constructor.
+   *
+   * @param line the {@link ScoreLine} to copy.
+   * @param copier the {@link MutableObjecteCopier}.
+   */
+  protected ScoreLine(ScoreLine<C, SELF> line, MutableObjecteCopier copier) {
+
+    super();
+    this.cells = copier.copyList(line.cells);
+  }
+
+  @Override
+  public boolean isImmutable() {
+
+    return this.immutalbe;
+  }
+
+  @Override
+  public SELF makeImmutable() {
+
+    if (!this.immutalbe) {
+      this.cells = MutableObjecteHelper.makeImmutableRecursive(this.cells);
+      this.immutalbe = true;
+    }
+    return self();
   }
 
   /**
@@ -90,9 +124,12 @@ public abstract class ScoreLine<C extends ScoreCell<?>, SELF extends ScoreLine<C
   protected abstract C createCell();
 
   /**
-   * @return {@code true} if this line belongs to the same {@link ScoreRow}, {@code false} otherwise (if this is the
-   *         first line of a new {@link ScoreRow}).
+   * @return the {@link StaveVoice} this line is assigned to in case of a
+   *         {@link io.github.musicdoc.music.score.voice.ScoreVoiceLine}.
    */
-  public abstract boolean isContinueRow();
+  public StaveVoice getVoice() {
+
+    return null;
+  }
 
 }

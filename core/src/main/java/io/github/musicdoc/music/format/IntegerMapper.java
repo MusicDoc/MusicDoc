@@ -12,16 +12,16 @@ public class IntegerMapper extends AbstractMapper<Integer> {
   public static final IntegerMapper INSTANCE = new IntegerMapper();
 
   @Override
-  public Integer parse(MusicInputStream chars, SongFormatOptions options) {
+  public Integer read(MusicInputStream in, SongFormatContext context) {
 
-    Integer value = chars.readInteger();
+    Integer value = in.readInteger();
     return value;
   }
 
   @Override
-  public void format(Integer value, MusicOutputStream out, SongFormatOptions options) {
+  public void write(Integer value, MusicOutputStream out, SongFormatContext context) {
 
-    out.append(value);
+    out.write(value);
   }
 
   @Override

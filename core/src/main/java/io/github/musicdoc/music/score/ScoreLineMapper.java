@@ -3,11 +3,9 @@ package io.github.musicdoc.music.score;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
 import io.github.musicdoc.music.format.AbstractMapper;
-import io.github.musicdoc.music.format.SongFormatOptions;
+import io.github.musicdoc.music.format.SongFormatContext;
 import io.github.musicdoc.music.score.comment.ScoreCommentLine;
-import io.github.musicdoc.music.score.comment.ScoreCommentLineMapper;
 import io.github.musicdoc.music.score.voice.ScoreVoiceLine;
-import io.github.musicdoc.music.score.voice.ScoreVoiceLineMapper;
 
 /**
  * {@link AbstractMapper Mapper} for {@link ScoreLine}.
@@ -15,38 +13,28 @@ import io.github.musicdoc.music.score.voice.ScoreVoiceLineMapper;
 public abstract class ScoreLineMapper extends AbstractMapper<ScoreLine<?, ?>> {
 
   @Override
-  public ScoreLine<?, ?> parse(MusicInputStream chars, SongFormatOptions options) {
+  public ScoreLine<?, ?> read(MusicInputStream in, SongFormatContext context) {
 
-    ScoreCommentLine comment = getCommentLineMapper().parse(chars, options);
+    ScoreCommentLine comment = getCommentLineMapper().read(in, context);
     if (comment != null) {
       return comment;
     }
-    if (chars.skipNewline()) {
+    if (in.skipNewline()) {
       return ScoreEmptyLine.INSTANCE;
     }
-    return getVoiceLineMapper().parse(chars, options);
+    return getVoiceLineMapper().read(in, context);
   }
 
-  /**
-   * @return the {@link ScoreCommentLineMapper}.
-   */
-  protected abstract ScoreCommentLineMapper getCommentLineMapper();
-
-  /**
-   * @return the {@link ScoreVoiceLineMapper}.
-   */
-  protected abstract ScoreVoiceLineMapper getVoiceLineMapper();
-
   @Override
-  public void format(ScoreLine<?, ?> line, MusicOutputStream out, SongFormatOptions options) {
+  public void write(ScoreLine<?, ?> line, MusicOutputStream out, SongFormatContext context) {
 
     if (line instanceof ScoreVoiceLine) {
-      getVoiceLineMapper().format((ScoreVoiceLine) line, out, options);
+      getVoiceLineMapper().write((ScoreVoiceLine) line, out, context);
     } else if (line instanceof ScoreCommentLine) {
-      getCommentLineMapper().format((ScoreCommentLine) line, out, options);
+      getCommentLineMapper().write((ScoreCommentLine) line, out, context);
     } else if (line instanceof ScoreEmptyLine) {
       // nothing to do
-      out.append(NEWLINE);
+      out.write(NEWLINE);
     } else {
       throw new IllegalStateException(line.getClass().getName());
     }

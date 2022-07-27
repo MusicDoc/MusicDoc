@@ -31,8 +31,8 @@ public class TonePitchInternational extends TonePitch {
   private static final TonePitchInternational[][] PITCHES_BY_TYPE_AND_STEP = new TonePitchInternational[5][12];
 
   /**
-   * {@code C} is the {@link io.github.musicdoc.music.harmony.MusicalKey#getTonika() tonika} of the common
-   * {@link io.github.musicdoc.music.harmony.MusicalKey#C_MAJOR} key.
+   * {@code C} is the {@link io.github.musicdoc.music.harmony.key.MusicalKey#getTonika() tonika} of the common
+   * {@link io.github.musicdoc.music.harmony.key.MusicalKey#C_MAJOR} key.
    */
   public static final TonePitchInternational C = create("C", 0);
 

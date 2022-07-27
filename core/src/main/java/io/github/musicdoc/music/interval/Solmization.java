@@ -2,8 +2,8 @@
  * http://www.apache.org/licenses/LICENSE-2.0 */
 package io.github.musicdoc.music.interval;
 
-import io.github.musicdoc.music.harmony.MusicalKey;
 import io.github.musicdoc.music.harmony.TonalSystem;
+import io.github.musicdoc.music.harmony.key.MusicalKey;
 import io.github.musicdoc.music.tone.TonePitchEnglish;
 
 /**
@@ -105,6 +105,8 @@ public enum Solmization implements ToneInterval {
 
   private final int semitone;
 
+  private final InvertedSolmization inverse;
+
   private Solmization(int majorStep, int minorStep) {
 
     this(majorStep, minorStep, 0);
@@ -115,6 +117,7 @@ public enum Solmization implements ToneInterval {
     this.majorChromaticSteps = Integer.valueOf(majorStep);
     this.minorChromaticSteps = Integer.valueOf(minorStep);
     this.semitone = semitone;
+    this.inverse = new InvertedSolmization(this);
   }
 
   /**
@@ -194,6 +197,66 @@ public enum Solmization implements ToneInterval {
     } else {
       return Integer.MIN_VALUE;
     }
+  }
+
+  @Override
+  public int getOctaves() {
+
+    return 0;
+  }
+
+  @Override
+  public boolean isEmpty() {
+
+    return false;
+  }
+
+  @Override
+  public ToneInterval invert() {
+
+    return this.inverse;
+  }
+
+  private static class InvertedSolmization implements ToneInterval {
+
+    private final Solmization solmization;
+
+    private InvertedSolmization(Solmization solmization) {
+
+      super();
+      this.solmization = solmization;
+    }
+
+    @Override
+    public int getChromaticSteps(TonalSystem system) {
+
+      return -this.solmization.getChromaticSteps(system);
+    }
+
+    @Override
+    public int getDiatonicSteps(TonalSystem system) {
+
+      return -this.solmization.getDiatonicSteps(system);
+    }
+
+    @Override
+    public int getOctaves() {
+
+      return 0;
+    }
+
+    @Override
+    public boolean isEmpty() {
+
+      return false;
+    }
+
+    @Override
+    public ToneInterval invert() {
+
+      return this.solmization;
+    }
+
   }
 
 }

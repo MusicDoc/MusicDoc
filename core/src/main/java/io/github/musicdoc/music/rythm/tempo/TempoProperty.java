@@ -3,7 +3,7 @@ package io.github.musicdoc.music.rythm.tempo;
 import io.github.musicdoc.property.AbstractProperty;
 
 /**
- * Implementation of {@link AbstractProperty} with {@link #getValue() value} of type {@link Tempo}.
+ * {@link io.github.musicdoc.property.Property} with {@link #getValue() value} of {@link #getType() type} {@link Tempo}.
  */
 public class TempoProperty extends AbstractProperty<Tempo> {
 
@@ -52,6 +52,6 @@ public class TempoProperty extends AbstractProperty<Tempo> {
   @Override
   protected Tempo parseValue(String valueAsString) {
 
-    return TempoMapperMusicDoc.INSTANCE.parse(valueAsString);
+    return TempoMapperMusicDoc.INSTANCE.read(valueAsString);
   }
 }

@@ -2,10 +2,12 @@
  * http://www.apache.org/licenses/LICENSE-2.0 */
 package io.github.musicdoc.music.interval;
 
-import io.github.musicdoc.music.harmony.MusicalKey;
+import java.util.Objects;
+
 import io.github.musicdoc.music.harmony.TonalSystem;
 import io.github.musicdoc.music.harmony.chord.Chord;
 import io.github.musicdoc.music.harmony.chord.ChordExtension;
+import io.github.musicdoc.music.harmony.key.MusicalKey;
 import io.github.musicdoc.music.tone.TonePitch;
 
 /**
@@ -152,9 +154,9 @@ public class ChromaticInterval implements ToneInterval {
    */
   public static final ChromaticInterval MAJOR_THIRTEENTH = new ChromaticInterval(21, 12);
 
-  private static final ChromaticInterval[] INTERVALS = new ChromaticInterval[] { PERFECT_UNISON, MAJOR_SECOND,
-  MINOR_THIRD, MAJOR_THIRD, PERFECT_FOURTH, DIMINISHED_FIFTH, PERFECT_FIFTH, MINOR_SIXT, MAJOR_SIXT, MINOR_SEVENTH,
-  MAJOR_SEVENTH, PERFECT_OCTAVE, MINOR_NINTH, MAJOR_NINTH, MINOR_NINTH, MAJOR_TENTH, PERFECT_ELEVENTH,
+  private static final ChromaticInterval[] INTERVALS = new ChromaticInterval[] { PERFECT_UNISON, MINOR_SECOND,
+  MAJOR_SECOND, MINOR_THIRD, MAJOR_THIRD, PERFECT_FOURTH, DIMINISHED_FIFTH, PERFECT_FIFTH, MINOR_SIXT, MAJOR_SIXT,
+  MINOR_SEVENTH, MAJOR_SEVENTH, PERFECT_OCTAVE, MINOR_NINTH, MAJOR_NINTH, MINOR_TENTH, MAJOR_TENTH, PERFECT_ELEVENTH,
   DIMINISHED_TWELVE, PERFECT_TWELVE, MINOR_THIRTEENTH, MAJOR_THIRTEENTH };
 
   private final Integer chromaticSteps;
@@ -189,6 +191,61 @@ public class ChromaticInterval implements ToneInterval {
   public int getDiatonicSteps(TonalSystem system) {
 
     return this.diatonicSteps;
+  }
+
+  @Override
+  public int getOctaves() {
+
+    return this.chromaticSteps / 12;
+  }
+
+  @Override
+  public boolean isEmpty() {
+
+    return (this.chromaticSteps == 0);
+  }
+
+  @Override
+  public ToneInterval invert() {
+
+    int chromatic = -this.chromaticSteps;
+    int diatonic = -this.diatonicSteps;
+    if ((chromatic >= 0) && (chromatic < INTERVALS.length)) {
+      ChromaticInterval inverted = INTERVALS[chromatic];
+      if (inverted.diatonicSteps.intValue() == diatonic) {
+        return inverted;
+      }
+    }
+    return new ChromaticInterval(chromatic, diatonic);
+  }
+
+  @Override
+  public int hashCode() {
+
+    return this.chromaticSteps;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+
+    if (this == obj) {
+      return true;
+    }
+    if ((obj == null) || (getClass() != obj.getClass())) {
+      return false;
+    }
+    ChromaticInterval other = (ChromaticInterval) obj;
+    if (!Objects.equals(this.chromaticSteps, other.chromaticSteps)
+        || !Objects.equals(this.diatonicSteps, other.diatonicSteps)) {
+      return false;
+    }
+    return true;
+  }
+
+  @Override
+  public String toString() {
+
+    return "#" + this.chromaticSteps;
   }
 
   /**

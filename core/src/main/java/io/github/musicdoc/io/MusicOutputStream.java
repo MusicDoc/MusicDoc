@@ -9,17 +9,23 @@ public interface MusicOutputStream extends MusicStream {
    * @param value the value to append its {@link Object#toString() string representation} to this stream.
    * @see StringBuilder#append(Object)
    */
-  void append(Object value);
+  void write(Object value);
+
+  /**
+   * @param c the character to append to this stream.
+   * @see StringBuilder#append(char)
+   */
+  void write(char c);
 
   /**
    * @param propertyName the name of the property to start.
    */
-  void startProperty(String propertyName);
+  void writePropertyStart(String propertyName);
 
   /**
    * @param propertyName the name of the property to end.
    */
-  void endProperty(String propertyName);
+  void writePropertyEnd(String propertyName);
 
   /**
    * @param propertyName the name of the property to write.
@@ -27,9 +33,9 @@ public interface MusicOutputStream extends MusicStream {
    */
   default void writeProperty(String propertyName, String propertyValue) {
 
-    startProperty(propertyName);
-    append(propertyValue);
-    endProperty(propertyName);
+    writePropertyStart(propertyName);
+    write(propertyValue);
+    writePropertyEnd(propertyName);
   }
 
 }

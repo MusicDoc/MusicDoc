@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import io.github.musicdoc.music.harmony.TonalSystem;
 import io.github.musicdoc.music.harmony.chord.Chord;
 import io.github.musicdoc.music.harmony.chord.ChordExtension;
-import io.github.musicdoc.music.harmony.chord.ChordMapperOpenSong;
 import io.github.musicdoc.music.score.Score;
 import io.github.musicdoc.music.score.ScoreLine;
 import io.github.musicdoc.music.score.ScoreRow;
@@ -22,11 +21,12 @@ import io.github.musicdoc.music.tone.TonePitchEnglish;
  */
 public class SongFormatOpenSongTest extends SongFormatTest {
 
-  private static final String LYRICS_WITH_CHORDS = "[Chorus 1]\n" + ".A Bm7 Cadd9        D\n"
-      + " a b   c the caT is  dead.\n";
+  private static final String LYRICS_WITH_CHORDS = "<?xml version=\"1.0\" ?><song><lyrics>" //
+      + "[Chorus 1]\n" + ".A Bm7 Cadd9        D\n" + " a b   c the caT is  dead.\n" //
+      + "</lyrics></song>";
 
   /**
-   * Test of {@link SongFormatOpenSong#parse(String)}.
+   * Test of {@link SongFormatOpenSong#read(String)}.
    */
   @Test
   public void testParseLyricsWithChords() {
@@ -35,7 +35,8 @@ public class SongFormatOpenSongTest extends SongFormatTest {
     String lyrics = LYRICS_WITH_CHORDS;
 
     // when
-    Score score = SongFormatOpenSong.INSTANCE.getScoreMapper().parse(lyrics);
+    Song song = SongFormatOpenSong.INSTANCE.getSongMapper().read(lyrics);
+    Score score = song.score.getValue();
 
     // then
     assertThat(score).isNotNull();
@@ -57,35 +58,35 @@ public class SongFormatOpenSongTest extends SongFormatTest {
     assertThat(voiceLine.getCells()).hasSize(4);
     ScoreVoiceCell cell = voiceLine.getCell(0);
     assertThat(cell).isNotNull();
-    assertThat(cell.getStave()).isNull();
+    assertThat(cell.getStaveChange()).isNull();
     assertThat(cell.getItem()).isNull();
     assertThat(cell.getChord()).isEqualTo(new Chord(TonePitchEnglish.A, TonalSystem.MAJOR_EMPTY));
     assertThat(cell.getLyric()).isEqualTo("a ");
     cell = voiceLine.getCell(1);
     assertThat(cell).isNotNull();
-    assertThat(cell.getStave()).isNull();
+    assertThat(cell.getStaveChange()).isNull();
     assertThat(cell.getItem()).isNull();
     assertThat(cell.getChord()).isEqualTo(new Chord(TonePitchEnglish.B, TonalSystem.of("m"), ChordExtension._7));
     assertThat(cell.getLyric()).isEqualTo("b   ");
     cell = voiceLine.getCell(2);
     assertThat(cell).isNotNull();
-    assertThat(cell.getStave()).isNull();
+    assertThat(cell.getStaveChange()).isNull();
     assertThat(cell.getItem()).isNull();
     assertThat(cell.getChord()).isEqualTo(new Chord(TonePitchEnglish.C, TonalSystem.MAJOR_EMPTY, ChordExtension.ADD_9));
     assertThat(cell.getLyric()).isEqualTo("c the caT is ");
     cell = voiceLine.getCell(3);
     assertThat(cell).isNotNull();
-    assertThat(cell.getStave()).isNull();
+    assertThat(cell.getStaveChange()).isNull();
     assertThat(cell.getItem()).isNull();
     assertThat(cell.getChord()).isEqualTo(new Chord(TonePitchEnglish.D, TonalSystem.MAJOR_EMPTY));
     assertThat(cell.getLyric()).isEqualTo(" dead.");
   }
 
   /**
-   * Test of {@link SongFormatOpenSong#format(Song)}.
+   * Test of {@link SongFormatOpenSong#write(Song, java.io.OutputStream)}.
    */
   @Test
-  public void formatLyricsWithChords() {
+  public void writeWithChords() {
 
     // given
     Score score = new Score();
@@ -94,16 +95,17 @@ public class SongFormatOpenSongTest extends SongFormatTest {
     ScoreRow row = new ScoreRow();
     ScoreVoiceLine line = new ScoreVoiceLine();
     line.addCell(new ScoreVoiceCell(new Chord(TonePitchEnglish.A, TonalSystem.MAJOR_EMPTY), "a "));
-    line.addCell(new ScoreVoiceCell(ChordMapperOpenSong.INSTANCE.parse("Bm7"), "b "));
-    line.addCell(new ScoreVoiceCell(new Chord(TonePitchEnglish.C, TonalSystem.MAJOR_EMPTY, ChordExtension.ADD_9),
-        "c the caT is "));
+    line.addCell(new ScoreVoiceCell(new Chord(TonePitchEnglish.B, TonalSystem.MINOR_M, ChordExtension._7), "b "));
+    line.addCell(new ScoreVoiceCell(new Chord(TonePitchEnglish.C, TonalSystem.MAJOR_EMPTY, ChordExtension.ADD_9), "c the caT is "));
     line.addCell(new ScoreVoiceCell(new Chord(TonePitchEnglish.D, TonalSystem.MAJOR_EMPTY), " dead."));
     row.addLine(line);
     section.getRows().add(row);
     score.getSections().add(section);
+    Song song = new Song();
+    song.score.setValue(score);
 
     // when
-    String lyrics = SongFormatOpenSong.INSTANCE.getScoreMapper().format(score);
+    String lyrics = SongFormatOpenSong.INSTANCE.getSongMapper().write(song);
 
     // then
     assertThat(lyrics).isEqualTo(LYRICS_WITH_CHORDS);

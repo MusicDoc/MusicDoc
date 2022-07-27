@@ -20,12 +20,6 @@ public class MusicalValueMapperMusicDoc extends MusicalValueMapper {
   }
 
   @Override
-  protected MusicalValueVariationMapper getVariationMapper() {
-
-    return MusicalValueVariationMapperMusicDoc.INSTANCE;
-  }
-
-  @Override
   protected SongFormat getFormat() {
 
     return SongFormatMusicDoc.INSTANCE;

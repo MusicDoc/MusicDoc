@@ -7,24 +7,22 @@ import io.github.musicdoc.filter.ListCharFilter;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
 import io.github.musicdoc.music.format.SongFormat;
+import io.github.musicdoc.music.format.SongFormatContext;
 import io.github.musicdoc.music.format.SongFormatOpenSong;
-import io.github.musicdoc.music.format.SongFormatOptions;
 import io.github.musicdoc.music.harmony.chord.ChordContainer;
-import io.github.musicdoc.music.harmony.chord.ChordContainerMapper;
-import io.github.musicdoc.music.harmony.chord.ChordContainerMapperOpenSong;
 import io.github.musicdoc.music.score.comment.ScoreCommentLineMapper;
 
 /**
- * {@link ScoreVoiceLineMapper} for {@link io.github.musicdoc.music.format.SongFormatOpenSong OpenSong format}.
+ * {@link ScoreVoiceLineMapper} for {@link SongFormatOpenSong}.
  */
 public class ScoreVoiceLineMapperOpenSong extends ScoreVoiceLineMapper {
 
   /** The singleton instance. */
   public static final ScoreVoiceLineMapperOpenSong INSTANCE = new ScoreVoiceLineMapperOpenSong();
 
-  static final char BEGIN_ITEMS = '=';
+  private static final char BEGIN_LYRICS = ' ';
 
-  static final char BEGIN_LYRICS = ' ';
+  private static final char BEGIN_CHORDS = '.';
 
   @Override
   protected SongFormat getFormat() {
@@ -33,76 +31,57 @@ public class ScoreVoiceLineMapperOpenSong extends ScoreVoiceLineMapper {
   }
 
   @Override
-  public ScoreVoiceLine parse(MusicInputStream chars, SongFormatOptions options) {
+  public ScoreVoiceLine read(MusicInputStream in, SongFormatContext context) {
 
-    char c = chars.peek();
+    char c = in.peek();
     if ((c == ScoreCommentLineMapper.BEGIN_COMMENT) || ListCharFilter.NEWLINE.accept(c)) {
       return null;
     }
     ScoreVoiceLine line = new ScoreVoiceLine();
     if (c == BEGIN_CHORDS) {
-      chars.next();
-      ScoreVoiceLineContinuation continuation = ScoreVoiceLineContinuation.of(c);
-      if (continuation != null) {
-        chars.next();
-        line.setContinuation(continuation);
-      }
-      while (chars.hasNext() && !chars.skipNewline()) {
-        ChordContainer chordContainer = getChordContainerMapper().parse(chars, options);
+      in.next();
+      while (in.hasNext() && !in.skipNewline()) {
+        ChordContainer chordContainer = getChordContainerMapper().read(in, context);
         if (chordContainer == null) {
           break;
         } else {
           line.addCell(new ScoreVoiceCell(chordContainer));
         }
       }
-      c = chars.peek();
+      c = in.peek();
     }
     if (c == BEGIN_LYRICS) {
-      chars.next();
+      in.next();
     }
     int cellCount = line.getCellCount();
     if (cellCount == 0) {
-      String lyric = chars.readUntil(ListCharFilter.NEWLINE, true);
+      String lyric = in.readLine();
       line.addCell(new ScoreVoiceCell(lyric));
-      chars.skipNewline();
     } else {
       int cellMax = cellCount - 1;
       for (int i = 0; i < cellMax; i++) {
         ScoreVoiceCell cell = line.getCell(i);
         ChordContainer chordContainer = cell.getChordContainer();
         int chordLength = chordContainer.toString().length();
-        String lyric = chars.readUntil(ListCharFilter.NEWLINE, chordLength);
+        String lyric = in.readUntil(ListCharFilter.NEWLINE, chordLength);
         cell.setLyric(lyric);
       }
-      String lyric = chars.readUntil(ListCharFilter.NEWLINE, true);
+      String lyric = in.readLine();
       if (lyric.length() > 0) {
         ScoreVoiceCell cell = line.getCell(cellMax);
         cell.setLyric(lyric);
       }
-      chars.skipNewline();
     }
     return line;
   }
 
-  /**
-   * @return the {@link ChordContainerMapper}.
-   */
-  private ChordContainerMapper getChordContainerMapper() {
-
-    return ChordContainerMapperOpenSong.INSTANCE;
-  }
-
   @Override
-  public void format(ScoreVoiceLine line, MusicOutputStream out, SongFormatOptions options) {
+  public void write(ScoreVoiceLine line, MusicOutputStream out, SongFormatContext context) {
 
     if (line == null) {
       return;
     }
-    out.append(BEGIN_CHORDS);
-    ScoreVoiceLineContinuation continuation = line.getContinuation();
-    if (continuation != null) {
-      out.append(continuation.getSymbol());
-    }
+    out.write(BEGIN_CHORDS);
     StringBuilder lyrics = new StringBuilder();
     lyrics.append(BEGIN_LYRICS);
     List<ScoreVoiceCell> cells = line.getCells();
@@ -112,11 +91,12 @@ public class ScoreVoiceLineMapperOpenSong extends ScoreVoiceLineMapper {
       int chordLength = 0;
       ChordContainer chordContainer = cell.getChordContainer();
       if (chordContainer != null) {
-        String chord = chordContainer.toString();
-        out.append(chord); // ChordContainerMapper.INSTANCE.format(chordContainer, buffer, options);
-        chordLength = chord.length();
+        int col = out.getColumn();
+        getChordContainerMapper().write(chordContainer, out, context);
+        chordLength = out.getColumn() - col;
+        assert (chordLength > 0);
         if (i < cellMax) {
-          out.append(' ');
+          out.write(' ');
           chordLength++;
         }
       }
@@ -131,8 +111,8 @@ public class ScoreVoiceLineMapperOpenSong extends ScoreVoiceLineMapper {
         }
       }
     }
-    out.append(NEWLINE);
-    out.append(lyrics);
-    out.append(NEWLINE);
+    out.write(NEWLINE);
+    out.write(lyrics);
+    out.write(NEWLINE);
   }
 }

@@ -3,7 +3,7 @@ package io.github.musicdoc.music.rythm.value;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
 import io.github.musicdoc.music.format.AbstractMapper;
-import io.github.musicdoc.music.format.SongFormatOptions;
+import io.github.musicdoc.music.format.SongFormatContext;
 
 /**
  * {@link AbstractMapper Mapper} for {@link MusicalValue}.
@@ -13,17 +13,17 @@ public abstract class MusicalValueMapper extends AbstractMapper<MusicalValue> {
   private static final String BEAT_SEPRATOR_STRING = Character.toString(BEAT_SEPARATOR);
 
   @Override
-  public MusicalValue parse(MusicInputStream chars, SongFormatOptions options) {
+  public MusicalValue read(MusicInputStream in, SongFormatContext context) {
 
-    Integer beatsInt = chars.readInteger(2, false);
+    Integer beatsInt = in.readInteger(2, false);
     int beats = 1;
     if (beatsInt != null) {
       beats = beatsInt.intValue();
     }
     Integer fractionInt = null;
     int fraction = 4;
-    if (chars.expect(BEAT_SEPRATOR_STRING, false)) {
-      fractionInt = chars.readInteger(4, false);
+    if (in.expect(BEAT_SEPRATOR_STRING, false)) {
+      fractionInt = in.readInteger(4, false);
     } else if (beatsInt == null) {
       return null;
     }
@@ -41,27 +41,22 @@ public abstract class MusicalValueMapper extends AbstractMapper<MusicalValue> {
         fraction = fraction * 4;
       }
     }
-    MusicalValueVariation variation = getVariationMapper().parse(chars, options);
+    MusicalValueVariation variation = getVariationMapper().read(in, context);
     return new MusicalValue(beats, fraction, variation);
   }
 
-  /**
-   * @return the {@link MusicalValueVariationMapper}.
-   */
-  protected abstract MusicalValueVariationMapper getVariationMapper();
-
   @Override
-  public void format(MusicalValue value, MusicOutputStream out, SongFormatOptions options) {
+  public void write(MusicalValue value, MusicOutputStream out, SongFormatContext context) {
 
     if (value == null) {
       return;
     }
     int beats = value.getBeats();
     if (beats > 1) {
-      out.append(Integer.toString(beats));
-      out.append(BEAT_SEPARATOR);
+      out.write(Integer.toString(beats));
+      out.write(BEAT_SEPARATOR);
     }
-    out.append(Integer.toString(value.getFraction()));
-    getVariationMapper().format(value.getVariation(), out, options);
+    out.write(Integer.toString(value.getFraction()));
+    getVariationMapper().write(value.getVariation(), out, context);
   }
 }

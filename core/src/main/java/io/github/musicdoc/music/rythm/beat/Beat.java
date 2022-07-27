@@ -1,14 +1,14 @@
 package io.github.musicdoc.music.rythm.beat;
 
 import io.github.musicdoc.music.rythm.Fraction;
-import io.github.musicdoc.music.rythm.value.MusicalValue;
-import io.github.musicdoc.music.stave.Stave;
 
 /**
- * A {@link Beat} indicates the {@link MusicalValue} of a single bar in a {@link Stave}. E.g. a {@link #_4_4 4/4} beat
- * allows to fit 4 {@link MusicalValue#_1_4 quarters} into one bar.<br/>
+ * A {@link Beat} indicates the {@link io.github.musicdoc.music.rythm.value.MusicalValue} of a single bar in a
+ * {@link io.github.musicdoc.music.stave.Stave}. E.g. a {@link #_4_4 4/4} beat allows to fit 4
+ * {@link io.github.musicdoc.music.rythm.value.MusicalValue#_1_4 quarters} into one bar.<br/>
  * The {@link #getFraction() fraction} indicates the unit of a regular beat. Therefore a {@link #_4_4 4/4} beat is not
- * the same as a {@link #_2_2 2/2} beat even though they can cover the same {@link MusicalValue}s per bar.
+ * the same as a {@link #_2_2 2/2} beat even though they can cover the same
+ * {@link io.github.musicdoc.music.rythm.value.MusicalValue}s per bar.
  */
 public class Beat implements Fraction {
 

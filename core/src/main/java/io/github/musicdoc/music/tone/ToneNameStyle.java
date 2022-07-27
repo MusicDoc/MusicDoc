@@ -9,7 +9,7 @@ import io.github.musicdoc.music.interval.ChromaticStep;
 
 /**
  * Style of the {@link TonePitch#getName() name} of a {@link TonePitch} and its related objects such as {@link Tone},
- * {@link io.github.musicdoc.music.harmony.chord.Chord}, {@link io.github.musicdoc.music.harmony.MusicalKey}, etc.
+ * {@link io.github.musicdoc.music.harmony.chord.Chord}, {@link io.github.musicdoc.music.harmony.key.MusicalKey}, etc.
  *
  * Instances of this class are found in the {@code STYLE} constants of the {@link TonePitch} classes so as default use
  * {@link TonePitchEnglish#STYLE}.
@@ -197,7 +197,7 @@ public abstract class ToneNameStyle<P extends TonePitch> {
 
   /**
    * @param sign the number of {@link EnharmonicStyle#isSharp() sharp} signs or the negative number of
-   *        {@link EnharmonicStyle#isFlat() flat} signs of a {@link io.github.musicdoc.music.harmony.MusicalKey}. Should
+   *        {@link EnharmonicStyle#isFlat() flat} signs of a {@link io.github.musicdoc.music.harmony.key.MusicalKey}. Should
    *        be in the range from {@code -7} to {@code 7}.
    * @return the {@link TonePitch} added by the enharmonic sign represented by {@code sign} according to the <em>circle
    *         of fifths</em>.

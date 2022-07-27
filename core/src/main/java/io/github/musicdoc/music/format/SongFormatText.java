@@ -3,6 +3,9 @@ package io.github.musicdoc.music.format;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import io.github.musicdoc.io.MusicInputStream;
+import io.github.musicdoc.io.MusicOutputStream;
+import io.github.musicdoc.io.PropertyState;
 import io.github.musicdoc.io.TextMusicInputStream;
 import io.github.musicdoc.io.TextMusicOutputStream;
 import io.github.musicdoc.music.song.Song;
@@ -12,18 +15,38 @@ import io.github.musicdoc.music.song.Song;
  */
 public abstract class SongFormatText extends SongFormat {
 
-  @Override
-  public Song parse(InputStream inStream) {
+  /**
+   * @return a new {@link PropertyState} for this {@link SongFormat}.
+   */
+  protected PropertyState newPropertyState() {
 
-    TextMusicInputStream tmis = TextMusicInputStream.of(inStream);
-    return getSongMapper().parse(tmis, new SongFormatOptions(this));
+    return PropertyState.of();
   }
 
   @Override
-  public void format(Song song, OutputStream outStream) {
+  protected MusicInputStream createInputStream(String payload) {
 
-    TextMusicOutputStream tmos = TextMusicOutputStream.of(outStream);
-    getSongMapper().format(song, tmos, new SongFormatOptions(this));
+    return new TextMusicInputStream(payload, newPropertyState());
+  }
+
+  @Override
+  protected MusicOutputStream createOutputStream(Appendable out) {
+
+    return new TextMusicOutputStream(out, newPropertyState());
+  }
+
+  @Override
+  public Song read(InputStream inStream) {
+
+    TextMusicInputStream tmis = TextMusicInputStream.of(inStream, newPropertyState());
+    return getSongMapper().read(tmis, new SongFormatContext(this));
+  }
+
+  @Override
+  public void write(Song song, OutputStream outStream) {
+
+    TextMusicOutputStream tmos = TextMusicOutputStream.of(outStream, newPropertyState());
+    getSongMapper().write(song, tmos, new SongFormatContext(this));
   }
 
 }

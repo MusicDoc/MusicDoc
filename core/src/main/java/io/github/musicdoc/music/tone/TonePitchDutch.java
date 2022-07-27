@@ -29,8 +29,8 @@ public class TonePitchDutch extends TonePitch {
   private static final TonePitchDutch[][] PITCHES_BY_TYPE_AND_STEP = new TonePitchDutch[5][12];
 
   /**
-   * {@code C} is the {@link io.github.musicdoc.music.harmony.MusicalKey#getTonika() tonika} of the common
-   * {@link io.github.musicdoc.music.harmony.MusicalKey#C_MAJOR} key.
+   * {@code C} is the {@link io.github.musicdoc.music.harmony.key.MusicalKey#getTonika() tonika} of the common
+   * {@link io.github.musicdoc.music.harmony.key.MusicalKey#C_MAJOR} key.
    *
    * @see TonePitchEnglish#C
    */

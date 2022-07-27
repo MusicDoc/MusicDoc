@@ -12,16 +12,16 @@ public class StringMapper extends AbstractMapper<String> {
   public static final StringMapper INSTANCE = new StringMapper();
 
   @Override
-  public String parse(MusicInputStream chars, SongFormatOptions options) {
+  public String read(MusicInputStream in, SongFormatContext context) {
 
-    String value = chars.readPropertyValue();
+    String value = in.readPropertyValue();
     return value;
   }
 
   @Override
-  public void format(String value, MusicOutputStream out, SongFormatOptions options) {
+  public void write(String value, MusicOutputStream out, SongFormatContext context) {
 
-    out.append(value);
+    out.write(value);
   }
 
   @Override

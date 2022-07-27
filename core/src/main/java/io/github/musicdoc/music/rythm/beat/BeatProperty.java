@@ -3,8 +3,7 @@ package io.github.musicdoc.music.rythm.beat;
 import io.github.musicdoc.property.AbstractProperty;
 
 /**
- * TODO joerg This type ...
- *
+ * {@link io.github.musicdoc.property.Property} with {@link #getValue() value} {@link #getType() type} {@link Beat}.
  */
 public class BeatProperty extends AbstractProperty<Beat> {
 
@@ -53,6 +52,6 @@ public class BeatProperty extends AbstractProperty<Beat> {
   @Override
   protected Beat parseValue(String valueAsString) {
 
-    return BeatMapperMusicDoc.INSTANCE.parse(valueAsString);
+    return BeatMapperMusicDoc.INSTANCE.read(valueAsString);
   }
 }

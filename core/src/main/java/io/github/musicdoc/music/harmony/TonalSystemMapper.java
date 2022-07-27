@@ -1,12 +1,10 @@
 package io.github.musicdoc.music.harmony;
 
-import java.util.Locale;
-
 import io.github.musicdoc.filter.ListCharFilter;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
 import io.github.musicdoc.music.format.AbstractMapper;
-import io.github.musicdoc.music.format.SongFormatOptions;
+import io.github.musicdoc.music.format.SongFormatContext;
 
 /**
  * {@link AbstractMapper Mapper} for {@link TonalSystem}.
@@ -17,15 +15,15 @@ public abstract class TonalSystemMapper extends AbstractMapper<TonalSystem> {
   private static final ListCharFilter SYSTEM_FILTER = ListCharFilter.allOfAnyCase("MAJORIN");
 
   @Override
-  public TonalSystem parse(MusicInputStream chars, SongFormatOptions options) {
+  public TonalSystem read(MusicInputStream in, SongFormatContext context) {
 
     int maxLen = 5; // needs to be increased when early tonal systems as hypomixolydian are added
-    String lookahead = chars.peekWhile(SYSTEM_FILTER, maxLen).toLowerCase(Locale.US);
+    String lookahead = toLowerCase(in.peekWhile(SYSTEM_FILTER, maxLen));
     for (int i = lookahead.length(); i > 0; i--) {
       String name = lookahead.substring(0, i);
       TonalSystem tonalSystem = TonalSystem.of(name);
       if (tonalSystem != null) {
-        chars.skip(i);
+        in.skip(i);
         return tonalSystem;
       }
     }
@@ -33,11 +31,11 @@ public abstract class TonalSystemMapper extends AbstractMapper<TonalSystem> {
   }
 
   @Override
-  public void format(TonalSystem tonalSystem, MusicOutputStream out, SongFormatOptions options) {
+  public void write(TonalSystem tonalSystem, MusicOutputStream out, SongFormatContext context) {
 
     if (tonalSystem == null) {
       return;
     }
-    out.append(tonalSystem.getName());
+    out.write(tonalSystem.getName());
   }
 }

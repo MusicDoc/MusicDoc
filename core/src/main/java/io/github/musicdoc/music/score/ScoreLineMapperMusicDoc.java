@@ -2,13 +2,9 @@ package io.github.musicdoc.music.score;
 
 import io.github.musicdoc.music.format.SongFormat;
 import io.github.musicdoc.music.format.SongFormatMusicDoc;
-import io.github.musicdoc.music.score.comment.ScoreCommentLineMapper;
-import io.github.musicdoc.music.score.comment.ScoreCommentLineMapperMusicDoc;
-import io.github.musicdoc.music.score.voice.ScoreVoiceLineMapper;
-import io.github.musicdoc.music.score.voice.ScoreVoiceLineMapperMusicDoc;
 
 /**
- * {@link ScoreLineMapper} for {@link io.github.musicdoc.music.format.SongFormatMusicDoc MusicDoc format}.
+ * {@link ScoreLineMapper} for {@link SongFormatMusicDoc}.
  */
 public class ScoreLineMapperMusicDoc extends ScoreLineMapper {
 
@@ -29,15 +25,4 @@ public class ScoreLineMapperMusicDoc extends ScoreLineMapper {
     return SongFormatMusicDoc.INSTANCE;
   }
 
-  @Override
-  protected ScoreVoiceLineMapper getVoiceLineMapper() {
-
-    return ScoreVoiceLineMapperMusicDoc.INSTANCE;
-  }
-
-  @Override
-  protected ScoreCommentLineMapper getCommentLineMapper() {
-
-    return ScoreCommentLineMapperMusicDoc.INSTANCE;
-  }
 }

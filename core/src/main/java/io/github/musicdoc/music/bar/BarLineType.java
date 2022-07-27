@@ -17,16 +17,16 @@ public class BarLineType {
   public static final BarLineType DOUBLE = new BarLineType("||");
 
   /** A thick bar followed by a thin bar. */
-  public static final BarLineType THICK_THIN = new BarLineType("§|");
+  public static final BarLineType THICK_THIN = new BarLineType("[|");
 
   /** A thin bar followed by a thick bar. */
-  public static final BarLineType THIN_THICK = new BarLineType("|§");
+  public static final BarLineType THIN_THICK = new BarLineType("|]");
 
   /** A single thick bar. */
-  public static final BarLineType THICK = new BarLineType("§");
+  public static final BarLineType THICK = new BarLineType("][");
 
   /** A double thick bar. */
-  public static final BarLineType THICK_THICK = new BarLineType("§§");
+  public static final BarLineType THICK_THICK = new BarLineType("[]");
 
   /** The bar to start a repeat. */
   public static final BarLineType REPEAT_START = new BarLineType("|:");

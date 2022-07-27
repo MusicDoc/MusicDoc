@@ -41,6 +41,22 @@ public enum ClefSymbol implements ClefObject {
    */
   PERCUSSION_2;
 
+  /**
+   * @return the number of the {@link io.github.musicdoc.music.stave.Stave} line (starting with the first line from the
+   *         bottom) where this clef is written by default.
+   */
+  public int getLineNumber() {
+
+    if (this == G) {
+      return 2;
+    } else if (this == F) {
+      return 4;
+    } else if (this == C) {
+      return 3;
+    }
+    return -1;
+  }
+
   @Override
   public Tone getReferenceTone() {
 
@@ -55,14 +71,14 @@ public enum ClefSymbol implements ClefObject {
   }
 
   @Override
-  public Tone getLowTone() {
+  public Tone getMiddleTone() {
 
     if (this == G) {
-      return Tone.F4;
+      return Tone.B4;
     } else if (this == F) {
-      return Tone.A2;
+      return Tone.D3;
     } else if (this == C) {
-      return Tone.G4;
+      return Tone.C4;
     }
     return null;
   }

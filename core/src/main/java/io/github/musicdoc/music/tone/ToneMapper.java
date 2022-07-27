@@ -4,7 +4,9 @@ import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
 import io.github.musicdoc.music.clef.Clef;
 import io.github.musicdoc.music.format.AbstractMapper;
-import io.github.musicdoc.music.format.SongFormatOptions;
+import io.github.musicdoc.music.format.SongFormatContext;
+import io.github.musicdoc.music.stave.Stave;
+import io.github.musicdoc.music.stave.voice.StaveVoice;
 
 /**
  * {@link AbstractMapper Mapper} for {@link Tone}.
@@ -12,24 +14,26 @@ import io.github.musicdoc.music.format.SongFormatOptions;
 public abstract class ToneMapper extends AbstractMapper<Tone> {
 
   @Override
-  public Tone parse(MusicInputStream chars, SongFormatOptions options) {
+  public Tone read(MusicInputStream in, SongFormatContext context) {
 
-    TonePitch pitch = getTonePitchMapper().parse(chars, options);
-    // TODO support for absolute tones specifying octave...
+    TonePitch pitch = getTonePitchMapper().read(in, context);
     if (pitch == null) {
       return null;
     }
-    int octave = 4;
-    Clef clef = options.getClef();
-    if (clef != null) {
-      Tone lowTone = clef.getLowTone();
-      octave = lowTone.getOctave();
-    }
-    if (pitch.isLowercase()) {
-      octave++;
-    }
+    return parseOctave(in, context, pitch);
+  }
+
+  /**
+   * @param in the {@link MusicInputStream} to read from.
+   * @param context the {@link SongFormatContext}.
+   * @param pitch the already parsed pitch.
+   * @return the {@link Tone}.
+   */
+  protected Tone parseOctave(MusicInputStream in, SongFormatContext context, TonePitch pitch) {
+
+    int octave = getOctave(context, pitch);
     while (true) {
-      char c = chars.peek();
+      char c = in.peek();
       if (c == Tone.OCTAVE_UP) {
         octave++;
       } else if (c == Tone.OCTAVE_DOWN) {
@@ -37,19 +41,61 @@ public abstract class ToneMapper extends AbstractMapper<Tone> {
       } else {
         break;
       }
-      chars.next();
+      in.next();
     }
     return Tone.of(pitch, octave);
   }
 
-  /**
-   * @return the {@link TonePitchMapper}.
-   */
-  protected abstract TonePitchMapper getTonePitchMapper();
+  private int getOctave(SongFormatContext context, TonePitch pitch) {
+
+    int octave = 4;
+    StaveVoice voice = context.getStaveVoice();
+    if (voice == null) {
+      Clef clef = context.getClef();
+      if (clef == null) {
+        clef = context.getClef();
+      }
+    } else {
+      Stave stave = voice.getStave();
+      if (stave != null) {
+        Clef clef = stave.getClef();
+        if (clef != null) {
+          octave = clef.getMiddleTone().getOctave();
+        }
+      }
+      octave += voice.getOctaveShift();
+    }
+    if (pitch.isLowercase()) {
+      octave++;
+    }
+    return octave;
+  }
 
   @Override
-  public void format(Tone tone, MusicOutputStream out, SongFormatOptions options) {
+  public void write(Tone tone, MusicOutputStream out, SongFormatContext context) {
 
-    out.append(tone.getName());
+    if (tone == null) {
+      return;
+    }
+    TonePitch pitch = tone.getPitch();
+    int baseOctave = getOctave(context, pitch);
+    int octave = tone.getOctave();
+    int delta = octave - baseOctave;
+    if (delta > 0) {
+      pitch = pitch.with(ToneNameCase.LOWER_CASE);
+      getTonePitchMapper().write(pitch);
+      while (delta > 1) {
+        delta--;
+        out.write(Tone.OCTAVE_UP);
+      }
+    } else {
+      pitch = pitch.with(ToneNameCase.CAPITAL_CASE);
+      getTonePitchMapper().write(pitch);
+      while (delta < 0) {
+        delta++;
+        out.write(Tone.OCTAVE_DOWN);
+      }
+    }
   }
+
 }

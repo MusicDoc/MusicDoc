@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.github.musicdoc.music.harmony.key.MusicalKey;
 import io.github.musicdoc.music.interval.ChromaticStep;
 import io.github.musicdoc.music.tone.TonePitch;
 import io.github.musicdoc.music.tone.TonePitchEnglish;

@@ -3,20 +3,25 @@ package io.github.musicdoc.music.score;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.github.musicdoc.MutableObject;
+import io.github.musicdoc.MutableObjecteCopier;
+import io.github.musicdoc.MutableObjecteHelper;
 import io.github.musicdoc.music.score.section.ScoreSection;
-import io.github.musicdoc.music.stave.Stave;
 import io.github.musicdoc.music.transpose.AbstractTransposable;
 import io.github.musicdoc.music.transpose.TransposeContext;
 
 /**
- * Represents a row of a {@link Score}. Such row is a consists of a number of {@link #getLines() lines} that can
- * form an entire system of {@link Stave}(s), lyrics, etc.
+ * Represents a row of a {@link Score}. Such row is a consists of a number of {@link #getLines() lines} that can form an
+ * entire system of {@link io.github.musicdoc.music.stave.Stave}(s), lyrics, etc.
  *
  * @see ScoreSection#getRows()
  */
-public class ScoreRow extends AbstractTransposable<ScoreRow> {
+public class ScoreRow extends AbstractTransposable<ScoreRow> implements MutableObject<ScoreRow> {
 
-  private final List<ScoreLine<?, ?>> lines;
+  @SuppressWarnings("rawtypes")
+  private List<ScoreLine> lines;
+
+  private boolean immutable;
 
   /**
    * The constructor.
@@ -27,10 +32,41 @@ public class ScoreRow extends AbstractTransposable<ScoreRow> {
     this.lines = new ArrayList<>();
   }
 
+  @SuppressWarnings("unchecked")
+  private ScoreRow(ScoreRow row, MutableObjecteCopier copier) {
+
+    super();
+    this.lines = copier.copyList(this.lines);
+  }
+
+  @Override
+  public ScoreRow copy(MutableObjecteCopier copier) {
+
+    return new ScoreRow(this, copier);
+  }
+
+  @Override
+  public boolean isImmutable() {
+
+    return this.immutable;
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public ScoreRow makeImmutable() {
+
+    if (!this.immutable) {
+      this.lines = MutableObjecteHelper.makeImmutableRecursive(this.lines);
+      this.immutable = true;
+    }
+    return this;
+  }
+
   /**
    * @return the {@link List} of {@link ScoreLine}s.
    */
-  public List<ScoreLine<?, ?>> getLines() {
+  @SuppressWarnings("rawtypes")
+  public List<ScoreLine> getLines() {
 
     return this.lines;
   }

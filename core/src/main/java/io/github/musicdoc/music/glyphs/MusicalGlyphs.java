@@ -6,7 +6,7 @@ package io.github.musicdoc.music.glyphs;
 public interface MusicalGlyphs {
 
   /**
-   * @return the unicode symbol(s) to render this musical element using a
+   * @return the glyph symbol(s) to render this musical element using a
    *         <a href="https://w3c.github.io/smufl/latest/index.html">SMuFL</a> font.
    */
   default String getGlyphs() {

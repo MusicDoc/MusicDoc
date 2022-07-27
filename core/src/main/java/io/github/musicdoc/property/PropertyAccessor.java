@@ -17,8 +17,9 @@ public interface PropertyAccessor<B, T> {
   /**
    * @param bean the Java bean containing the property to set.
    * @param value the new value of the property. May be {@code null}.
+   * @return the {@code bean} itself or a modified copy if immutable.
    */
-  void set(B bean, T value);
+  B set(B bean, T value);
 
   /**
    * @return the name of the property.

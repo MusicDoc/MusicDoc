@@ -29,10 +29,10 @@ public class StringHelper {
       return;
     }
     while (delta >= 8) {
-      out.append(SPACES[8]);
+      out.write(SPACES[8]);
       delta = delta - 8;
     }
-    out.append(SPACES[delta]);
+    out.write(SPACES[delta]);
   }
 
   /**

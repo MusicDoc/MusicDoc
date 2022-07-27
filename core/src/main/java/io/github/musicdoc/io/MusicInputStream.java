@@ -113,6 +113,17 @@ public interface MusicInputStream extends MusicStream {
   String read(int length);
 
   /**
+   * @return the line that was read (excluding the newline character(s)).
+   */
+  default String readLine() {
+
+    String line = readUntil('\n', true);
+    expect('\n');
+    expect('\r');
+    return line;
+  }
+
+  /**
    * @return an {@link Integer} from all {@link #next() next} consumed characters that belong to an {@link Integer}
    *         number or {@code null} if no integer was found and this stream remains unchanged.
    */
@@ -188,6 +199,16 @@ public interface MusicInputStream extends MusicStream {
    *         remains unchanged).
    */
   boolean expect(char expected, boolean warning);
+
+  /**
+   * Lookahead for {@link #readPropertyStart()}. Will not consume data and therefore not change the state of this
+   * stream.
+   *
+   * @param property the expected property to look for.
+   * @return {@code true} if {@link #readPropertyStart()} will return the given {@code property}, {@code false}
+   *         otherwise.
+   */
+  boolean isPropertyStart(String property);
 
   /**
    * @return the name of the property that has just started. If a property name was returned, this stream is filled with

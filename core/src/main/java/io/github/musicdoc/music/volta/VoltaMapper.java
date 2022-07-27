@@ -7,7 +7,7 @@ import java.util.List;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
 import io.github.musicdoc.music.format.AbstractMapper;
-import io.github.musicdoc.music.format.SongFormatOptions;
+import io.github.musicdoc.music.format.SongFormatContext;
 import io.github.musicdoc.number.NumberRange;
 import io.github.musicdoc.number.NumberRangeSet;
 import io.github.musicdoc.number.NumberSet;
@@ -32,32 +32,32 @@ public abstract class VoltaMapper extends AbstractMapper<Volta> {
   }
 
   @Override
-  public void format(Volta volta, MusicOutputStream out, SongFormatOptions options) {
+  public void write(Volta volta, MusicOutputStream out, SongFormatContext context) {
 
     if ((volta == null) || (volta == Volta.NONE)) {
       return;
     }
     NumberSet numbers = volta.getNumbers();
-    out.append(numbers.toString());
+    out.write(numbers.toString());
     int extraBars = volta.getExtraBars();
     if (extraBars > 0) {
-      out.append(EXTRA_BARS_CHAR);
-      out.append(Integer.toString(extraBars));
+      out.write(EXTRA_BARS_CHAR);
+      out.write(Integer.toString(extraBars));
     }
   }
 
   @Override
-  public Volta parse(MusicInputStream chars, SongFormatOptions options) {
+  public Volta read(MusicInputStream in, SongFormatContext context) {
 
-    NumberSet numbers = parseSet(chars);
+    NumberSet numbers = parseSet(in);
     if (numbers == null) {
       return Volta.NONE;
     }
     int extraBars = 0;
-    if (chars.expect(EXTRA_BARS_CHAR)) {
-      Integer i = chars.readInteger(3, false);
+    if (in.expect(EXTRA_BARS_CHAR)) {
+      Integer i = in.readInteger(3, false);
       if (i == null) {
-        chars.addError("Volta extra bars (+) has to be followed by a number.");
+        in.addError("Volta extra bars (+) has to be followed by a number.");
       } else {
         extraBars = i.intValue();
       }

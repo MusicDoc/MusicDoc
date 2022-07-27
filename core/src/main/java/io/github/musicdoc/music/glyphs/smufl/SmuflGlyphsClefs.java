@@ -60,9 +60,7 @@ public interface SmuflGlyphsClefs extends SmuflGlyphs {
 
     switch (clefType) {
       case G:
-        if (chromaticShift == 0) {
-          return G_CLEV;
-        } else if (chromaticShift == 12) {
+        if (chromaticShift == 12) {
           return G_CLEV_UP_8;
         } else if (chromaticShift == -12) {
           return G_CLEV_DOWN_8;
@@ -70,12 +68,11 @@ public interface SmuflGlyphsClefs extends SmuflGlyphs {
           return G_CLEV_UP_15;
         } else if (chromaticShift == -24) {
           return G_CLEV_DOWN_15;
+        } else {
+          return G_CLEV;
         }
-        break;
       case F:
-        if (chromaticShift == 0) {
-          return F_CLEV;
-        } else if (chromaticShift == 12) {
+        if (chromaticShift == 12) {
           return F_CLEV_UP_8;
         } else if (chromaticShift == -12) {
           return F_CLEV_DOWN_8;
@@ -83,15 +80,15 @@ public interface SmuflGlyphsClefs extends SmuflGlyphs {
           return F_CLEV_UP_15;
         } else if (chromaticShift == -24) {
           return F_CLEV_DOWN_15;
+        } else {
+          return F_CLEV;
         }
-        break;
       case C:
-        if (chromaticShift == 0) {
-          return C_CLEV;
-        } else if (chromaticShift == -12) {
+        if (chromaticShift == -12) {
           return C_CLEV_DOWN_8;
+        } else {
+          return C_CLEV;
         }
-        break;
       case PERCUSSION_1:
         return PERCUSSION_CLEV_1;
       case PERCUSSION_2:

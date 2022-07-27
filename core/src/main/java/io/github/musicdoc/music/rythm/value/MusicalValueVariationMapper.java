@@ -3,7 +3,7 @@ package io.github.musicdoc.music.rythm.value;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
 import io.github.musicdoc.music.format.AbstractMapper;
-import io.github.musicdoc.music.format.SongFormatOptions;
+import io.github.musicdoc.music.format.SongFormatContext;
 
 /**
  * {@link AbstractMapper Mapper} for {@link MusicalValueVariation}.
@@ -11,24 +11,24 @@ import io.github.musicdoc.music.format.SongFormatOptions;
 public abstract class MusicalValueVariationMapper extends AbstractMapper<MusicalValueVariation> {
 
   @Override
-  public MusicalValueVariation parse(MusicInputStream chars, SongFormatOptions options) {
+  public MusicalValueVariation read(MusicInputStream in, SongFormatContext context) {
 
-    if (chars.expect(MusicalValueVariation.DOUBLE_PUNCTURED.toString(), false)) {
+    if (in.expect(MusicalValueVariation.DOUBLE_PUNCTURED.toString(), false)) {
       return MusicalValueVariation.DOUBLE_PUNCTURED;
-    } else if (chars.expect(MusicalValueVariation.PUNCTURED.toString(), false)) {
+    } else if (in.expect(MusicalValueVariation.PUNCTURED.toString(), false)) {
       return MusicalValueVariation.PUNCTURED;
-    } else if (chars.expect(MusicalValueVariation.TRIPLET.toString(), false)) {
+    } else if (in.expect(MusicalValueVariation.TRIPLET.toString(), false)) {
       return MusicalValueVariation.TRIPLET;
     }
     return MusicalValueVariation.NONE;
   }
 
   @Override
-  public void format(MusicalValueVariation variation, MusicOutputStream out, SongFormatOptions options) {
+  public void write(MusicalValueVariation variation, MusicOutputStream out, SongFormatContext context) {
 
     if (variation == null) {
       return;
     }
-    out.append(variation.toString());
+    out.write(variation.toString());
   }
 }

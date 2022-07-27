@@ -5,77 +5,53 @@ import io.github.musicdoc.filter.ListCharFilter;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
 import io.github.musicdoc.music.bar.BarLine;
-import io.github.musicdoc.music.bar.BarLineMapper;
-import io.github.musicdoc.music.bar.BarLineMapperMusicDoc;
 import io.github.musicdoc.music.format.AbstractMapper;
-import io.github.musicdoc.music.format.SongFormatOptions;
+import io.github.musicdoc.music.format.SongFormatContext;
 import io.github.musicdoc.music.harmony.chord.ChordContainer;
-import io.github.musicdoc.music.harmony.chord.ChordContainerMapper;
 import io.github.musicdoc.music.rythm.value.ValuedItem;
-import io.github.musicdoc.music.rythm.value.ValuedItemMapper;
-import io.github.musicdoc.music.stave.Stave;
-import io.github.musicdoc.music.stave.StaveMapper;
+import io.github.musicdoc.music.stave.StaveChange;
 
 /**
  * {@link AbstractMapper Mapper} for {@link ScoreVoiceCell}.
  */
 public abstract class ScoreVoiceCellMapper extends AbstractMapper<ScoreVoiceCell> {
 
-  static final CharFilter STOP_FILTER = ListCharFilter.NEWLINE.join(CHORD_START, ITEM_START, STAVE_START, BAR_SINGLE,
-      BAR_REPEAT);
+  static final CharFilter STOP_FILTER = ListCharFilter.NEWLINE.join(CHORD_START, ITEM_START, BAR_SINGLE, BAR_REPEAT, BAR_THICK_2);
 
   @Override
-  public ScoreVoiceCell parse(MusicInputStream chars, SongFormatOptions options) {
+  public ScoreVoiceCell read(MusicInputStream in, SongFormatContext context) {
 
-    ScoreVoiceCell currentCell = new ScoreVoiceCell();
-    ScoreVoiceCell result = currentCell;
-    Stave stave = getStaveMapper().parse(chars, options);
-    currentCell.setStave(stave);
-
-    ValuedItem<?> item = getValuedItemMapper().parse(chars, options);
-    ChordContainer chordContainer = getChordContainerMapper().parse(chars, options);
-    currentCell.setChordContainer(chordContainer);
+    StaveChange staveChange = getStaveChangeMapper().read(in, context);
+    ValuedItem<?> item = getValuedItemMapper().read(in, context);
+    ChordContainer chordContainer = getChordContainerMapper().read(in, context);
     if ((item == null) && (chordContainer != null)) {
-      item = getValuedItemMapper().parse(chars, options);
+      item = getValuedItemMapper().read(in, context);
     }
+    String lyric = in.readUntil(STOP_FILTER, true);
+    BarLine bar = getBarLineMapper().read(in, context);
+    if ((staveChange == null) && (item == null) && (chordContainer == null) && lyric.isEmpty() && (bar == null)) {
+      return null;
+    }
+    ScoreVoiceCell currentCell = new ScoreVoiceCell();
+    currentCell.setStaveChange(staveChange);
+    currentCell.setChordContainer(chordContainer);
     currentCell.setItem(item);
-    String lyric = chars.readUntil(STOP_FILTER, true);
     currentCell.setLyric(lyric);
-    BarLine bar = getBarLineMapper().parse(chars, options);
     currentCell.setBar(bar);
-    return result;
+    return currentCell;
   }
 
   @Override
-  public void format(ScoreVoiceCell cell, MusicOutputStream out, SongFormatOptions options) {
+  public void write(ScoreVoiceCell cell, MusicOutputStream out, SongFormatContext context) {
 
     if (cell == null) {
       return;
     }
-    getStaveMapper().format(cell.getStave(), out, options);
-    getValuedItemMapper().format(cell.getItem(), out, options);
-    getChordContainerMapper().format(cell.getChordContainer(), out, options);
-    out.append(cell.getLyric());
-    getBarLineMapper().format(cell.getBar(), out, options);
+    getStaveChangeMapper().write(cell.getStaveChange(), out, context);
+    getValuedItemMapper().write(cell.getItem(), out, context);
+    getChordContainerMapper().write(cell.getChordContainer(), out, context);
+    out.write(cell.getLyric());
+    getBarLineMapper().write(cell.getBar(), out, context);
   }
 
-  /**
-   * @return the {@link BarLineMapperMusicDoc}.
-   */
-  protected abstract BarLineMapper getBarLineMapper();
-
-  /**
-   * @return the {@link StaveMapper}.
-   */
-  protected abstract StaveMapper getStaveMapper();
-
-  /**
-   * @return the {@link ValuedItemMapper}.
-   */
-  protected abstract ValuedItemMapper getValuedItemMapper();
-
-  /**
-   * @return the {@link ChordContainerMapper}.
-   */
-  protected abstract ChordContainerMapper getChordContainerMapper();
 }

@@ -6,7 +6,7 @@ import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
 import io.github.musicdoc.music.format.AbstractMapper;
 import io.github.musicdoc.music.format.FormatConstants;
-import io.github.musicdoc.music.format.SongFormatOptions;
+import io.github.musicdoc.music.format.SongFormatContext;
 
 /**
  * {@link AbstractMapper Mapper} for {@link ScoreSectionName}.
@@ -28,23 +28,28 @@ public abstract class ScoreSectionNameMapper extends AbstractMapper<ScoreSection
   }
 
   @Override
-  public ScoreSectionName parse(MusicInputStream chars, SongFormatOptions options) {
+  public ScoreSectionName read(MusicInputStream in, SongFormatContext context) {
 
-    if (chars.expect(this.sectionStart, false)) {
-      String section = chars.readUntil(STOP_FILTER, true);
+    if (in.expect(this.sectionStart, false)) {
+      String section = in.readUntil(STOP_FILTER, true);
       ScoreSectionName name = new ScoreSectionName(section);
-      chars.expect(SECTION_END, true);
+      in.expect(SECTION_END, true);
+      in.skipWhile(' ');
+      if (!in.skipNewline()) {
+        in.addWarning("Ignoring gabarge.");
+        in.readLine();
+      }
       return name;
     }
     return null;
   }
 
   @Override
-  public void format(ScoreSectionName object, MusicOutputStream out, SongFormatOptions options) {
+  public void write(ScoreSectionName object, MusicOutputStream out, SongFormatContext context) {
 
-    out.append(this.sectionStart);
-    out.append(object.getName());
-    out.append(SECTION_END);
+    out.write(this.sectionStart);
+    out.write(object.getName());
+    out.write(SECTION_END);
   }
 
 }

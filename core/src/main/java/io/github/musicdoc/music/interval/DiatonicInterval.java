@@ -89,6 +89,56 @@ public class DiatonicInterval implements ToneInterval {
     return this.diatonicSteps;
   }
 
+  @Override
+  public int getOctaves() {
+
+    return this.diatonicSteps / 7;
+  }
+
+  @Override
+  public boolean isEmpty() {
+
+    return (this.diatonicSteps == 0);
+  }
+
+  @Override
+  public ToneInterval invert() {
+
+    return of(-this.diatonicSteps);
+  }
+
+  @Override
+  public int hashCode() {
+
+    return this.diatonicSteps;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+
+    if (this == obj) {
+      return true;
+    }
+    if ((obj == null) || (getClass() != obj.getClass())) {
+      return false;
+    }
+    DiatonicInterval other = (DiatonicInterval) obj;
+    if (this.diatonicSteps != other.diatonicSteps) {
+      return false;
+    }
+    return true;
+  }
+
+  @Override
+  public String toString() {
+
+    String string = Integer.toString(this.diatonicSteps);
+    if (this.diatonicSteps >= 0) {
+      string = "+" + string;
+    }
+    return string;
+  }
+
   /**
    * @param diatonicSteps the number of {@link #getDiatonicSteps() diatonic steps}.
    * @return the corresponding {@link DiatonicInterval} or <code>null</code> if no such {@link DiatonicInterval} exists

@@ -15,7 +15,7 @@ class StavePropertyClef extends StaveProperty<Clef> {
   }
 
   @Override
-  public Clef get(Stave stave) {
+  public Clef get(AbstractStave<?> stave) {
 
     if (stave == null) {
       return null;
@@ -24,10 +24,11 @@ class StavePropertyClef extends StaveProperty<Clef> {
   }
 
   @Override
-  public void set(Stave stave, Clef clef) {
+  public AbstractStave<?> set(AbstractStave<?> stave, Clef clef) {
 
     if (stave != null) {
-      stave.setClef(clef);
+      stave = stave.setClef(clef);
     }
+    return stave;
   }
 }

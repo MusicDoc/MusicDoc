@@ -1,17 +1,10 @@
 package io.github.musicdoc.music.song;
 
-import io.github.musicdoc.music.format.IntegerMapper;
 import io.github.musicdoc.music.format.SongFormat;
 import io.github.musicdoc.music.format.SongFormatMusicDoc;
-import io.github.musicdoc.music.format.StringMapper;
-import io.github.musicdoc.music.harmony.MusicalKeyMapperMusicDoc;
-import io.github.musicdoc.music.rythm.beat.BeatMapperMusicDoc;
-import io.github.musicdoc.music.rythm.tempo.TempoMapperMusicDoc;
-import io.github.musicdoc.music.score.ScoreMapper;
-import io.github.musicdoc.music.score.ScoreMapperMusicDoc;
 
 /**
- * {@link SongMapper} for {@link io.github.musicdoc.music.format.SongFormatMusicDoc}.
+ * {@link SongMapper} for {@link SongFormatMusicDoc}.
  */
 public class SongMapperMusicDoc extends SongMapper {
 
@@ -23,16 +16,7 @@ public class SongMapperMusicDoc extends SongMapper {
    */
   protected SongMapperMusicDoc() {
 
-    super(SongPropertyMapper.of(TEMPLATE.beat, PROPERTY_METER, BeatMapperMusicDoc.INSTANCE),
-        SongPropertyMapper.of(TEMPLATE.unitNoteLength, PROPERTY_UNIT_NOTE_LENGTH, BeatMapperMusicDoc.INSTANCE),
-        SongPropertyMapper.of(TEMPLATE.key, PROPERTY_KEY, MusicalKeyMapperMusicDoc.INSTANCE),
-        SongPropertyMapper.of(TEMPLATE.tempo, PROPERTY_TEMPO, TempoMapperMusicDoc.INSTANCE),
-        SongPropertyMapper.of(TEMPLATE.title, PROPERTY_TITLE, StringMapper.INSTANCE),
-        SongPropertyMapper.of(TEMPLATE.composer, PROPERTY_COMPOSER, StringMapper.INSTANCE),
-        SongPropertyMapper.of(TEMPLATE.album, PROPERTY_ALBUM, StringMapper.INSTANCE),
-        SongPropertyMapper.of(TEMPLATE.capo, PROPERTY_CAPO, IntegerMapper.INSTANCE),
-        SongPropertyMapper.of(TEMPLATE.referenceNumber, PROPERTY_REFERENCE_NUMBER, IntegerMapper.INSTANCE),
-        SongPropertyMapper.of(TEMPLATE.origin, PROPERTY_ORIGIN, StringMapper.INSTANCE));
+    super();
   }
 
   @Override
@@ -42,9 +26,29 @@ public class SongMapperMusicDoc extends SongMapper {
   }
 
   @Override
-  public ScoreMapper getScoreMapper() {
+  protected String getPropertyKey(String propertyName) {
 
-    return ScoreMapperMusicDoc.INSTANCE;
+    if (TEMPLATE.referenceNumber.getName().equals(propertyName)) {
+      return PROPERTY_REFERENCE_NUMBER;
+    } else if (TEMPLATE.key.getName().equals(propertyName)) {
+      return PROPERTY_KEY;
+    } else if (TEMPLATE.beat.getName().equals(propertyName)) {
+      return PROPERTY_METER;
+    } else if (TEMPLATE.tempo.getName().equals(propertyName)) {
+      return PROPERTY_TEMPO;
+    } else if (TEMPLATE.unitNoteLength.getName().equals(propertyName)) {
+      return PROPERTY_UNIT_NOTE_LENGTH;
+    } else if (TEMPLATE.title.getName().equals(propertyName)) {
+      return PROPERTY_TITLE;
+    } else if (TEMPLATE.composer.getName().equals(propertyName)) {
+      return PROPERTY_COMPOSER;
+    } else if (TEMPLATE.album.getName().equals(propertyName)) {
+      return PROPERTY_DISCOGRAPHY;
+    } else if (TEMPLATE.origin.getName().equals(propertyName)) {
+      return PROPERTY_ORIGIN;
+    } else if (TEMPLATE.capo.getName().equals(propertyName)) {
+      return PROPERTY_CAPO;
+    }
+    return null;
   }
-
 }

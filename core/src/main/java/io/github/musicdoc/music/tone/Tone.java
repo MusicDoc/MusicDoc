@@ -5,7 +5,7 @@ package io.github.musicdoc.music.tone;
 import java.util.Locale;
 
 import io.github.musicdoc.music.clef.Clef;
-import io.github.musicdoc.music.harmony.MusicalKey;
+import io.github.musicdoc.music.harmony.key.MusicalKey;
 import io.github.musicdoc.music.interval.ChromaticInterval;
 import io.github.musicdoc.music.interval.ToneInterval;
 import io.github.musicdoc.music.transpose.AbstractTransposable;
@@ -348,17 +348,18 @@ public class Tone extends AbstractTransposable<Tone> implements Comparable<Tone>
   /** {@link TonePitchEnglish#B} with {@link #getOctave() octave} {@code 8}. */
   public static final Tone B8 = new Tone(TonePitchEnglish.B, 8);
 
-  private static final Tone[] TONES = new Tone[] { C0, CS0, D0, DS0, E0, F0, FS0, G0, GS0, A0, BF0, B0, C1, CS1, D1,
-  DS1, E1, F1, FS1, G1, GS1, A1, BF1, B1, C2, CS2, D2, DS2, E2, F2, FS2, G2, GS2, A2, BF2, B2, C3, CS3, D3, DS3, E3, F3,
-  FS3, G3, GS3, A3, BF3, B3, C4, CS4, D4, DS4, E4, F4, FS4, G4, GS4, A4, BF4, B4, C5, CS5, D5, DS5, E5, F5, FS5, G5,
-  GS5, A5, BF5, B5, C6, CS6, D6, DS6, E6, F6, FS6, G6, GS6, A6, BF6, B6, C7, CS7, D7, DS7, E7, F7, FS7, G7, GS7, A7,
-  BF7, B7, C8, CS8, D8, DS8, E8, F8, FS8, G8, GS8, A8, BF8, B8 };
+  private static final Tone[] TONES = new Tone[] { C0, CS0, D0, DS0, E0, F0, FS0, G0, GS0, A0, BF0, B0, C1, CS1, D1, DS1, E1, F1, FS1, G1,
+  GS1, A1, BF1, B1, C2, CS2, D2, DS2, E2, F2, FS2, G2, GS2, A2, BF2, B2, C3, CS3, D3, DS3, E3, F3, FS3, G3, GS3, A3, BF3, B3, C4, CS4, D4,
+  DS4, E4, F4, FS4, G4, GS4, A4, BF4, B4, C5, CS5, D5, DS5, E5, F5, FS5, G5, GS5, A5, BF5, B5, C6, CS6, D6, DS6, E6, F6, FS6, G6, GS6, A6,
+  BF6, B6, C7, CS7, D7, DS7, E7, F7, FS7, G7, GS7, A7, BF7, B7, C8, CS8, D8, DS8, E8, F8, FS8, G8, GS8, A8, BF8, B8 };
 
   private final TonePitch pitch;
 
   private final int octave;
 
   private final String name;
+
+  private final boolean absolute;
 
   /**
    * The constructor.
@@ -368,9 +369,21 @@ public class Tone extends AbstractTransposable<Tone> implements Comparable<Tone>
    */
   private Tone(TonePitch pitch, int octave) {
 
+    this(pitch, octave, false);
+  }
+
+  /**
+   * The constructor.
+   *
+   * @param pitch - see {@link #getPitch()}.
+   * @param octave - see {@link #getOctave()}.
+   */
+  private Tone(TonePitch pitch, int octave, boolean absolute) {
+
     super();
     this.pitch = pitch;
     this.octave = octave;
+    this.absolute = absolute;
     this.name = getName(TonePitchEnglish.STYLE);
   }
 
@@ -401,6 +414,15 @@ public class Tone extends AbstractTransposable<Tone> implements Comparable<Tone>
   public int getStep() {
 
     return (this.octave * 12) + this.pitch.getStep().get();
+  }
+
+  /**
+   * @return {@code true} if the {@link #getOctave() octave} was parsed and shall be formatted absolute, {@code false}
+   *         otherwise (default).
+   */
+  public boolean isAbsolute() {
+
+    return this.absolute;
   }
 
   @Override
@@ -499,7 +521,7 @@ public class Tone extends AbstractTransposable<Tone> implements Comparable<Tone>
         int targetStep = (this.pitch.getStep().get() + steps - key.getTonika().getStep().get()) % 8;
         int octaveStep = targetStep / 8;
         int resultOctave = this.octave + octaveStep;
-        return new Tone(transposedPitch, resultOctave);
+        return new Tone(transposedPitch, resultOctave, this.absolute);
       }
     } else {
       return transposeOctaveChromatic(transposedPitch, steps);
@@ -524,7 +546,7 @@ public class Tone extends AbstractTransposable<Tone> implements Comparable<Tone>
       }
     }
     int resultOctave = this.octave + octaveSteps;
-    return new Tone(resultPitch, resultOctave);
+    return of(resultPitch, resultOctave);
   }
 
   /**
@@ -552,7 +574,7 @@ public class Tone extends AbstractTransposable<Tone> implements Comparable<Tone>
    */
   public String getNameAbc(ToneNameStyle<?> style, Clef clef) {
 
-    return getNameAbc(style, clef.getLowTone().octave);
+    return getNameAbc(style, clef.getMiddleTone().octave);
   }
 
   /**
@@ -623,14 +645,7 @@ public class Tone extends AbstractTransposable<Tone> implements Comparable<Tone>
     if ((obj == null) || (getClass() != obj.getClass())) {
       return false;
     }
-    Tone other = (Tone) obj;
-    if (this.octave != other.octave) {
-      return false;
-    }
-    if (this.pitch != other.pitch) {
-      return false;
-    }
-    return true;
+    return isEqualTo((Tone) obj);
   }
 
   @Override
@@ -646,11 +661,22 @@ public class Tone extends AbstractTransposable<Tone> implements Comparable<Tone>
    */
   public static Tone of(TonePitch pitch, int octave) {
 
-    if ((octave >= 0) && (octave <= 8) && pitch.isNormal()) {
+    return of(pitch, octave, false);
+  }
+
+  /**
+   * @param pitch the {@link #getPitch() pitch}.
+   * @param octave the {@link #getOctave() octave}.
+   * @param absolute the {@link #isAbsolute() absolute} flag.
+   * @return the specified {@link Tone}.
+   */
+  public static Tone of(TonePitch pitch, int octave, boolean absolute) {
+
+    if ((octave >= 0) && (octave <= 8) && pitch.isNormal() && !absolute) {
       int step = (octave * 12) + pitch.getStep().get();
       return TONES[step];
     }
-    return new Tone(pitch, octave);
+    return new Tone(pitch, octave, absolute);
   }
 
 }

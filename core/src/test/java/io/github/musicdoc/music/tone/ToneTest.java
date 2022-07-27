@@ -14,7 +14,7 @@ import io.github.musicdoc.music.transpose.TransposeContext;
 public class ToneTest extends Assertions {
 
   /**
-   * Test of {@link Tone#getName(ToneNameStyle)}, {@link ToneMapper#parse(String)}, etc.
+   * Test of {@link Tone#getName(ToneNameStyle)}, {@link ToneMapper#usic(String)}, etc.
    */
   @Test
   public void testName() {
@@ -29,14 +29,14 @@ public class ToneTest extends Assertions {
     checkToneByAsciiName("Bb", TonePitchEnglish.B_FLAT, 4);
     checkToneByAsciiName("B", TonePitchEnglish.B, 4);
     ToneMapper mapper = ToneMapperMusicDoc.INSTANCE;
-    assertThat(mapper.parse("Cis','")).isEqualTo(mapper.parse("c#"));
-    assertThat(mapper.parse("Deses','").isEqualTo(mapper.parse("dbb"))).isTrue();
+    assertThat(mapper.read("Cis','")).isEqualTo(mapper.read("c#"));
+    assertThat(mapper.read("Deses','").isEqualTo(mapper.read("dbb"))).isTrue();
   }
 
   private void checkToneByAsciiName(String ascii, TonePitch pitch, int octave) {
 
     ToneMapper mapper = ToneMapperMusicDoc.INSTANCE;
-    Tone tone = mapper.parse(ascii);
+    Tone tone = mapper.read(ascii);
     assertThat(tone.getNameAbc(TonePitchEnglish.STYLE)).isEqualTo(ascii);
     assertThat(tone.getPitch()).isSameAs(pitch);
     assertThat(tone.getOctave()).isEqualTo(octave);
@@ -78,8 +78,7 @@ public class ToneTest extends Assertions {
     checkTransposeChromaticNormalStyle(0, pitch, step, newPitch, octaveStep);
   }
 
-  private void checkTransposeChromaticNormalStyle(int octave, TonePitch pitch, int step, TonePitch newPitch,
-      int octaveStep) {
+  private void checkTransposeChromaticNormalStyle(int octave, TonePitch pitch, int step, TonePitch newPitch, int octaveStep) {
 
     // given
     Tone tone = Tone.of(pitch, octave);

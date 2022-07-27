@@ -6,9 +6,8 @@ import java.util.List;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
 import io.github.musicdoc.music.decoration.MusicalDecoration;
-import io.github.musicdoc.music.decoration.MusicalDecorationMapper;
 import io.github.musicdoc.music.format.AbstractMapper;
-import io.github.musicdoc.music.format.SongFormatOptions;
+import io.github.musicdoc.music.format.SongFormatContext;
 
 /**
  * {@link AbstractMapper} for {@link ValuedItem}.
@@ -18,20 +17,20 @@ import io.github.musicdoc.music.format.SongFormatOptions;
 public abstract class AbstractValuedItemMapper<I extends ValuedItem<?>> extends AbstractMapper<I> {
 
   @Override
-  public I parse(MusicInputStream chars, SongFormatOptions options) {
+  public I read(MusicInputStream in, SongFormatContext context) {
 
     List<MusicalDecoration> decorations = new ArrayList<>();
     while (true) {
-      MusicalDecoration decoration = getDecorationMapper().parse(chars, options);
+      MusicalDecoration decoration = getDecorationMapper().read(in, context);
       if (decoration == null) {
         break;
       }
       assert (!decoration.isItemSuffix());
       decorations.add(decoration);
     }
-    I item = parseItem(chars, options, decorations);
+    I item = readItem(in, context, decorations);
     while (true) {
-      MusicalDecoration decoration = getDecorationMapper().parse(chars, options);
+      MusicalDecoration decoration = getDecorationMapper().read(in, context);
       if (decoration == null) {
         break;
       }
@@ -42,26 +41,15 @@ public abstract class AbstractValuedItemMapper<I extends ValuedItem<?>> extends 
   }
 
   /**
-   * @return the {@link MusicalDecorationMapper}.
-   */
-  protected abstract MusicalDecorationMapper getDecorationMapper();
-
-  /**
-   * @param chars the {@link MusicInputStream} to parse.
-   * @param options the {@link SongFormatOptions}.
+   * @param in the {@link MusicInputStream} to parse.
+   * @param context the {@link SongFormatContext}.
    * @param decorations the {@link List} of {@link MusicalDecoration}s.
    * @return the parsed item.
    */
-  protected abstract I parseItem(MusicInputStream chars, SongFormatOptions options,
-      List<MusicalDecoration> decorations);
-
-  /**
-   * @return the {@link MusicalValueMapper}.
-   */
-  protected abstract MusicalValueMapper getValueMapper();
+  protected abstract I readItem(MusicInputStream in, SongFormatContext context, List<MusicalDecoration> decorations);
 
   @Override
-  public void format(I item, MusicOutputStream out, SongFormatOptions options) {
+  public void write(I item, MusicOutputStream out, SongFormatContext context) {
 
     if (item == null) {
       return;
@@ -74,18 +62,18 @@ public abstract class AbstractValuedItemMapper<I extends ValuedItem<?>> extends 
         suffix = decoration;
         suffixCount++;
       } else {
-        getDecorationMapper().format(decoration, out, options);
+        getDecorationMapper().write(decoration, out, context);
       }
     }
-    formatItem(item, out, options);
-    getValueMapper().format(item.getValue(), out, options);
+    writeItem(item, out, context);
+    getValueMapper().write(item.getValue(), out, context);
     // decoration suffixes
     if (suffixCount == 1) {
-      getDecorationMapper().format(suffix, out, options);
+      getDecorationMapper().write(suffix, out, context);
     } else if (suffixCount > 1) {
       for (MusicalDecoration decoration : item.getDecorations()) {
         if (decoration.isItemSuffix()) {
-          getDecorationMapper().format(decoration, out, options);
+          getDecorationMapper().write(decoration, out, context);
         }
       }
     }
@@ -94,8 +82,8 @@ public abstract class AbstractValuedItemMapper<I extends ValuedItem<?>> extends 
   /**
    * @param item {@link ValuedItem} to format.
    * @param out the {@link Appendable} where to {@link Appendable#append(CharSequence) append} the formatted output.
-   * @param options the {@link SongFormatOptions}.
+   * @param context the {@link SongFormatContext}.
    */
-  protected abstract void formatItem(I item, MusicOutputStream out, SongFormatOptions options);
+  protected abstract void writeItem(I item, MusicOutputStream out, SongFormatContext context);
 
 }

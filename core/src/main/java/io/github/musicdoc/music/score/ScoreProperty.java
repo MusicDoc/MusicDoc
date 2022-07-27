@@ -53,6 +53,6 @@ public class ScoreProperty extends AbstractProperty<Score> {
   @Override
   protected Score parseValue(String valueAsString) {
 
-    return ScoreMapperMusicDoc.INSTANCE.parse(valueAsString);
+    return ScoreMapperMusicDoc.INSTANCE.read(valueAsString);
   }
 }

@@ -2,6 +2,8 @@ package io.github.musicdoc.music.stave;
 
 import java.util.List;
 
+import io.github.musicdoc.music.stave.voice.StaveVoice;
+
 /**
  * {@link StaveProperty} for the first {@link StaveVoice} of the {@link Stave#getVoices() voices property}.
  */
@@ -15,12 +17,12 @@ class StavePropertyVoice extends StaveProperty<StaveVoice> {
   }
 
   @Override
-  public StaveVoice get(Stave stave) {
+  public StaveVoice get(AbstractStave<?> stave) {
 
-    if (stave == null) {
+    if (!(stave instanceof Stave)) {
       return null;
     }
-    List<StaveVoice> voices = stave.getVoices();
+    List<StaveVoice> voices = ((Stave) stave).getVoices();
     int size = voices.size();
     if (size == 0) {
       return null;
@@ -29,10 +31,11 @@ class StavePropertyVoice extends StaveProperty<StaveVoice> {
   }
 
   @Override
-  public void set(Stave stave, StaveVoice voice) {
+  public AbstractStave<?> set(AbstractStave<?> stave, StaveVoice voice) {
 
-    if (stave != null) {
-      stave.addVoice(voice);
+    if (stave instanceof Stave) {
+      stave = ((Stave) stave).addVoice(voice);
     }
+    return stave;
   }
 }

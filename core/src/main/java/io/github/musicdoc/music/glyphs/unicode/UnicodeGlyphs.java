@@ -2,27 +2,11 @@
  * http://www.apache.org/licenses/LICENSE-2.0 */
 package io.github.musicdoc.music.glyphs.unicode;
 
-import io.github.musicdoc.music.stave.StaveBracket;
-
 /**
  * Marker interface for collections of musical glyphs based on
  * <a href="https://unicode-table.com/en/blocks/musical-symbols/">Unicode Musical Symbols</a>.
  */
 public interface UnicodeGlyphs {
-
-  /**
-   * The brace symbol: {@value}.
-   *
-   * @see StaveBracket#CURLY
-   */
-  String BRACE = "\uD834\uDD14";
-
-  /**
-   * The bracket symbol: {@value}.
-   *
-   * @see StaveBracket#SQUARE
-   */
-  String BRACKET = "\uD834\uDD15";
 
   /**
    * The 5-line stave symbol: {@value}.

@@ -3,7 +3,7 @@ package io.github.musicdoc.music.rythm.beat;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
 import io.github.musicdoc.music.format.AbstractMapper;
-import io.github.musicdoc.music.format.SongFormatOptions;
+import io.github.musicdoc.music.format.SongFormatContext;
 
 /**
  * {@link AbstractMapper Mapper} for {@link Beat}.
@@ -11,25 +11,23 @@ import io.github.musicdoc.music.format.SongFormatOptions;
 public abstract class BeatMapper extends AbstractMapper<Beat> {
 
   @Override
-  public Beat parse(MusicInputStream chars, SongFormatOptions options) {
+  public Beat read(MusicInputStream in, SongFormatContext context) {
 
-    Integer beats = chars.readInteger(3, false);
+    Integer beats = in.readInteger(3, false);
     if (beats == null) {
-      if (chars.expect(Beat.CUT_TIME.toString(), false)) {
+      if (in.expect(Beat.CUT_TIME.toString(), false)) {
         return Beat.CUT_TIME;
-      } else if (chars.expect(Beat.COMMON_TIME.toString(), false)) {
+      } else if (in.expect(Beat.COMMON_TIME.toString(), false)) {
         return Beat.COMMON_TIME;
-      } else if (chars.expect(Beat.NONE.toString(), false)) {
+      } else if (in.expect(Beat.NONE.toString(), false)) {
         return Beat.NONE;
       } else {
-        String garbage = chars.readUntil(NEWLINE_CHAR, false);
-        chars.addError("Undefined beat: " + garbage);
         return null;
       }
     }
     int fract = 4;
-    if (chars.expect(BEAT_SEPARATOR)) {
-      Integer fraction = chars.readInteger(3, false);
+    if (in.expect(BEAT_SEPARATOR)) {
+      Integer fraction = in.readInteger(3, false);
       if (fraction != null) {
         fract = fraction.intValue();
       }
@@ -38,21 +36,21 @@ public abstract class BeatMapper extends AbstractMapper<Beat> {
   }
 
   @Override
-  public void format(Beat beat, MusicOutputStream out, SongFormatOptions options) {
+  public void write(Beat beat, MusicOutputStream out, SongFormatContext context) {
 
     if (beat == null) {
-      out.append("none");
+      out.write("none");
     } else if (beat == Beat.COMMON_TIME) {
-      out.append("C");
+      out.write("C");
     } else if (beat == Beat.CUT_TIME) {
-      out.append("C|");
+      out.write("C|");
     } else {
       int beats = beat.getBeats();
-      out.append(Integer.toString(beats));
+      out.write(Integer.toString(beats));
       int fraction = beat.getFraction();
       if (fraction != 4) {
-        out.append(BEAT_SEPARATOR);
-        out.append(Integer.toString(fraction));
+        out.write(BEAT_SEPARATOR);
+        out.write(Integer.toString(fraction));
       }
     }
   }

@@ -6,7 +6,7 @@ import io.github.musicdoc.filter.ListCharFilter;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
 import io.github.musicdoc.music.format.AbstractMapper;
-import io.github.musicdoc.music.format.SongFormatOptions;
+import io.github.musicdoc.music.format.SongFormatContext;
 
 /**
  * {@link AbstractMapper Mapper} for {@link ChordExtension}.
@@ -16,15 +16,15 @@ public abstract class ChordExtensionMapper extends AbstractMapper<ChordExtension
   private static final ListCharFilter EXT_FILTER = ListCharFilter.allOfAnyCase("MAJORINDSU0123456789+Δ°");
 
   @Override
-  public ChordExtension parse(MusicInputStream chars, SongFormatOptions options) {
+  public ChordExtension read(MusicInputStream in, SongFormatContext context) {
 
-    String lookahead = chars.peekWhile(EXT_FILTER, 6);
+    String lookahead = in.peekWhile(EXT_FILTER, 6);
     lookahead = lookahead.toLowerCase(Locale.US);
     for (int i = lookahead.length(); i > 0; i--) {
       String name = lookahead.substring(0, i);
       ChordExtension ext = ChordExtension.of(name);
       if (ext != null) {
-        chars.skip(i);
+        in.skip(i);
         return ext;
       }
     }
@@ -32,14 +32,14 @@ public abstract class ChordExtensionMapper extends AbstractMapper<ChordExtension
   }
 
   @Override
-  public void format(ChordExtension extension, MusicOutputStream out, SongFormatOptions options) {
+  public void write(ChordExtension extension, MusicOutputStream out, SongFormatContext context) {
 
     if (extension == null) {
       return;
     }
-    if (options.isNormalizeChordExtensions()) {
+    if (context.isNormalizeChordExtensions()) {
       extension = extension.getReference();
     }
-    out.append(extension.getName());
+    out.write(extension.getName());
   }
 }

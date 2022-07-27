@@ -4,7 +4,7 @@ import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
 import io.github.musicdoc.music.format.AbstractMapper;
 import io.github.musicdoc.music.format.SongFormat;
-import io.github.musicdoc.music.format.SongFormatOptions;
+import io.github.musicdoc.music.format.SongFormatContext;
 import io.github.musicdoc.property.Property;
 
 /**
@@ -54,7 +54,7 @@ public class SongPropertyMapper extends AbstractMapper<Song> {
 
   @SuppressWarnings("unchecked")
   @Override
-  public void format(Song song, MusicOutputStream out, SongFormatOptions options) {
+  public void write(Song song, MusicOutputStream out, SongFormatContext context) {
 
     Property<?> property = null;
     if (song != null) {
@@ -69,22 +69,22 @@ public class SongPropertyMapper extends AbstractMapper<Song> {
       return;
     }
     if (this.valueMapper == null) {
-      out.append(value.toString());
+      out.write(value.toString());
     } else {
-      this.valueMapper.format(value, out, options);
+      this.valueMapper.write(value, out, context);
     }
   }
 
   @Override
-  public Song parse(MusicInputStream chars, SongFormatOptions options) {
+  public Song read(MusicInputStream in, SongFormatContext context) {
 
-    Song song = options.getSong();
+    Song song = context.getSong();
     if (song != null) {
       if (this.valueMapper == null) {
-        String value = chars.readUntil('\n', true).trim();
+        String value = in.readUntil('\n', true).trim();
         song.setValueAsString(this.propertyName, value);
       } else {
-        Object value = this.valueMapper.parse(chars, options);
+        Object value = this.valueMapper.read(in, context);
         song.setValue(this.propertyName, value);
       }
     }
@@ -95,6 +95,12 @@ public class SongPropertyMapper extends AbstractMapper<Song> {
   protected SongFormat getFormat() {
 
     return getFormat(this.valueMapper);
+  }
+
+  @Override
+  public String toString() {
+
+    return this.key + "=" + this.propertyName;
   }
 
   /**

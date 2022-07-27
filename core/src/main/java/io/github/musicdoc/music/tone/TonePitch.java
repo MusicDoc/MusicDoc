@@ -3,8 +3,8 @@
 package io.github.musicdoc.music.tone;
 
 import io.github.musicdoc.music.harmony.EnharmonicStyle;
-import io.github.musicdoc.music.harmony.MusicalKey;
 import io.github.musicdoc.music.harmony.TonalSystem;
+import io.github.musicdoc.music.harmony.key.MusicalKey;
 import io.github.musicdoc.music.interval.ChromaticInterval;
 import io.github.musicdoc.music.interval.ChromaticStep;
 import io.github.musicdoc.music.interval.DiatonicStep;

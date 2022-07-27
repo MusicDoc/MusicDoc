@@ -47,7 +47,7 @@ public class XmlMusicOutputStream extends AbstractMusicStream implements MusicOu
   }
 
   @Override
-  public void append(Object value) {
+  public void write(Object value) {
 
     try {
       if (value == null) {
@@ -61,7 +61,13 @@ public class XmlMusicOutputStream extends AbstractMusicStream implements MusicOu
   }
 
   @Override
-  public void startProperty(String propertyName) {
+  public void write(char c) {
+
+    write(Character.toString(c));
+  }
+
+  @Override
+  public void writePropertyStart(String propertyName) {
 
     try {
       this.xmlWriter.writeStartElement(propertyName);
@@ -71,7 +77,7 @@ public class XmlMusicOutputStream extends AbstractMusicStream implements MusicOu
   }
 
   @Override
-  public void endProperty(String propertyName) {
+  public void writePropertyEnd(String propertyName) {
 
     try {
       this.xmlWriter.writeEndElement();
@@ -81,15 +87,19 @@ public class XmlMusicOutputStream extends AbstractMusicStream implements MusicOu
   }
 
   @Override
-  public void close() throws Exception {
+  public void close() {
 
     if (this.xmlWriter == null) {
       return;
     }
-    this.xmlWriter.writeEndElement();
-    this.xmlWriter.writeEndDocument();
-    this.xmlWriter.close();
-    this.xmlWriter = null;
+    try {
+      this.xmlWriter.writeEndElement();
+      this.xmlWriter.writeEndDocument();
+      this.xmlWriter.close();
+      this.xmlWriter = null;
+    } catch (XMLStreamException e) {
+      throw new IllegalStateException(e);
+    }
   }
 
   /**
@@ -101,6 +111,24 @@ public class XmlMusicOutputStream extends AbstractMusicStream implements MusicOu
 
     try {
       TextPositionOutputStream tpos = new TextPositionOutputStream(outStream);
+      XMLStreamWriter xmlWriter = XMLOutputFactory.newInstance().createXMLStreamWriter(tpos);
+      xmlWriter.writeStartDocument();
+      xmlWriter.writeStartElement(rootTag);
+      return new XmlMusicOutputStream(xmlWriter, tpos);
+    } catch (XMLStreamException e) {
+      throw new IllegalStateException("Failed to save XML.", e);
+    }
+  }
+
+  /**
+   * @param out the {@link Appendable} to write to.
+   * @param rootTag the XML root tag to use.
+   * @return the {@link XmlMusicOutputStream}.
+   */
+  public static XmlMusicOutputStream of(Appendable out, String rootTag) {
+
+    try {
+      TextPositionAppendable tpos = new TextPositionAppendable(out);
       XMLStreamWriter xmlWriter = XMLOutputFactory.newInstance().createXMLStreamWriter(tpos);
       xmlWriter.writeStartDocument();
       xmlWriter.writeStartElement(rootTag);

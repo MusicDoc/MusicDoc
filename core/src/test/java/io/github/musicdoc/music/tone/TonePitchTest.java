@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import io.github.musicdoc.music.glyphs.unicode.UnicodeGlyphsAccidentals;
 import io.github.musicdoc.music.harmony.EnharmonicStyle;
-import io.github.musicdoc.music.harmony.MusicalKey;
+import io.github.musicdoc.music.harmony.key.MusicalKey;
 import io.github.musicdoc.music.interval.ChromaticStep;
 
 /**
@@ -29,9 +29,9 @@ public class TonePitchTest extends Assertions {
   @Test
   public void testNormal() {
 
-    Set<TonePitchEnglish> normalPitches = new HashSet<>(Arrays.asList(TonePitchEnglish.C, TonePitchEnglish.C_SHARP,
-        TonePitchEnglish.D, TonePitchEnglish.D_SHARP, TonePitchEnglish.E, TonePitchEnglish.F, TonePitchEnglish.F_SHARP,
-        TonePitchEnglish.G, TonePitchEnglish.G_SHARP, TonePitchEnglish.A, TonePitchEnglish.B_FLAT, TonePitchEnglish.B));
+    Set<TonePitchEnglish> normalPitches = new HashSet<>(Arrays.asList(TonePitchEnglish.C, TonePitchEnglish.C_SHARP, TonePitchEnglish.D,
+        TonePitchEnglish.D_SHARP, TonePitchEnglish.E, TonePitchEnglish.F, TonePitchEnglish.F_SHARP, TonePitchEnglish.G,
+        TonePitchEnglish.G_SHARP, TonePitchEnglish.A, TonePitchEnglish.B_FLAT, TonePitchEnglish.B));
     for (int i = 0; i < 12; i++) {
       TonePitch pitch = TonePitchEnglish.STYLE.pitch(ChromaticStep.of(i));
       if (normalPitches.contains(pitch)) {
@@ -101,22 +101,21 @@ public class TonePitchTest extends Assertions {
   }
 
   /**
-   * Test of {@link TonePitchMapper#parse(String)}.
+   * Test of {@link TonePitchMapper#usic(String)}.
    */
   @Test
   public void testGetTonePrefix() {
 
     TonePitchMapper mapper = TonePitchMapperMusicDoc.INSTANCE;
-    assertThat(mapper.parse("c").getName()).isEqualTo("c");
-    assertThat(mapper.parse("ce").getName()).isEqualTo("c");
-    assertThat(mapper.parse("ceS").getName()).isEqualTo("ces");
-    assertThat(mapper.parse("cbe").getName()).isEqualTo("cb");
-    assertThat(mapper.parse("c#9").getName()).isEqualTo("c#");
-    assertThat(mapper.parse("hesesisas").getName()).isEqualTo("heses");
-    assertThat(mapper.parse("B" + UnicodeGlyphsAccidentals.FLAT_2).getName())
-        .isEqualTo("B" + UnicodeGlyphsAccidentals.FLAT_2);
-    assertThat(mapper.parse("Bbb").getName()).isEqualTo("Bbb");
-    assertThat(mapper.parse("Bub").getName()).isEqualTo("B");
+    assertThat(mapper.read("c").getName()).isEqualTo("c");
+    assertThat(mapper.read("ce").getName()).isEqualTo("c");
+    assertThat(mapper.read("ceS").getName()).isEqualTo("ces");
+    assertThat(mapper.read("cbe").getName()).isEqualTo("cb");
+    assertThat(mapper.read("c#9").getName()).isEqualTo("c#");
+    assertThat(mapper.read("hesesisas").getName()).isEqualTo("heses");
+    assertThat(mapper.read("B" + UnicodeGlyphsAccidentals.FLAT_2).getName()).isEqualTo("B" + UnicodeGlyphsAccidentals.FLAT_2);
+    assertThat(mapper.read("Bbb").getName()).isEqualTo("Bbb");
+    assertThat(mapper.read("Bub").getName()).isEqualTo("B");
   }
 
   /**

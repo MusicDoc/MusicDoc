@@ -3,7 +3,12 @@ package io.github.musicdoc.music.score;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.github.musicdoc.MutableObject;
+import io.github.musicdoc.MutableObjecteCopier;
+import io.github.musicdoc.MutableObjecteHelper;
 import io.github.musicdoc.music.score.section.ScoreSection;
+import io.github.musicdoc.music.stave.system.StaveSystem;
+import io.github.musicdoc.music.stave.system.StaveSystemContainer;
 import io.github.musicdoc.music.transpose.AbstractTransposable;
 import io.github.musicdoc.music.transpose.TransposeContext;
 
@@ -13,9 +18,13 @@ import io.github.musicdoc.music.transpose.TransposeContext;
  *
  * @see io.github.musicdoc.music.song.Song#score
  */
-public class Score extends AbstractTransposable<Score> {
+public class Score extends AbstractTransposable<Score> implements StaveSystemContainer, MutableObject<Score> {
 
-  private final List<ScoreSection> sections;
+  private List<ScoreSection> sections;
+
+  private StaveSystem staveSystem;
+
+  private boolean immutable;
 
   /**
    * The constructor.
@@ -24,6 +33,35 @@ public class Score extends AbstractTransposable<Score> {
 
     super();
     this.sections = new ArrayList<>();
+  }
+
+  private Score(Score score, MutableObjecteCopier copier) {
+
+    super();
+    this.sections = copier.copyList(this.sections);
+    this.staveSystem = score.staveSystem;
+  }
+
+  @Override
+  public Score copy(MutableObjecteCopier copier) {
+
+    return new Score(this, copier);
+  }
+
+  @Override
+  public boolean isImmutable() {
+
+    return this.immutable;
+  }
+
+  @Override
+  public Score makeImmutable() {
+
+    if (!this.immutable) {
+      this.immutable = true;
+      this.sections = MutableObjecteHelper.makeImmutableRecursive(this.sections);
+    }
+    return this;
   }
 
   /**
@@ -54,6 +92,23 @@ public class Score extends AbstractTransposable<Score> {
       return null;
     }
     return this.sections.get(i);
+  }
+
+  @Override
+  public StaveSystem getStaveSystem() {
+
+    return this.staveSystem;
+  }
+
+  @Override
+  public Score setStaveSystem(StaveSystem staveSystem) {
+
+    if (this.staveSystem == staveSystem) {
+      return this;
+    }
+    Score score = makeMutable();
+    score.staveSystem = staveSystem;
+    return score;
   }
 
   /**

@@ -1,11 +1,13 @@
 package io.github.musicdoc.music.score.voice;
 
+import io.github.musicdoc.MutableObjecteCopier;
 import io.github.musicdoc.music.bar.BarLine;
 import io.github.musicdoc.music.harmony.chord.Chord;
 import io.github.musicdoc.music.harmony.chord.ChordContainer;
 import io.github.musicdoc.music.rythm.value.ValuedItem;
 import io.github.musicdoc.music.score.ScoreCell;
 import io.github.musicdoc.music.stave.Stave;
+import io.github.musicdoc.music.stave.StaveChange;
 import io.github.musicdoc.music.transpose.TransposeContext;
 
 /**
@@ -19,7 +21,7 @@ public class ScoreVoiceCell extends ScoreCell<ScoreVoiceCell> {
 
   private BarLine bar;
 
-  private Stave stave;
+  private StaveChange staveChange;
 
   /**
    * The constructor.
@@ -88,21 +90,43 @@ public class ScoreVoiceCell extends ScoreCell<ScoreVoiceCell> {
     this.bar = bar;
   }
 
-  /**
-   * @return the optional {@link Stave} to change the current stave (e.g. its {@link Stave#getKey() key} or
-   *         {@link Stave#getBeat() beat}) at the beginning of this cell. Otherwise {@code null}.
-   */
-  public Stave getStave() {
+  private ScoreVoiceCell(ScoreVoiceCell cell, MutableObjecteCopier copier) {
 
-    return this.stave;
+    super(cell, copier);
+    this.item = cell.item;
+    this.lyric = cell.lyric;
+    this.bar = cell.bar;
+  }
+
+  @Override
+  public ScoreVoiceCell copy(MutableObjecteCopier copier) {
+
+    return new ScoreVoiceCell(this, copier);
   }
 
   /**
-   * @param stave the new value of {@link #getStave()}.
+   * @return the optional {@link StaveChange} to change the current {@link io.github.musicdoc.music.stave.Stave}
+   *         properties (e.g. its {@link Stave#getKey() key} or {@link Stave#getBeat() beat}) at the beginning of this
+   *         cell. Otherwise {@code null}.
    */
-  public void setStave(Stave stave) {
+  public StaveChange getStaveChange() {
 
-    this.stave = stave;
+    return this.staveChange;
+  }
+
+  /**
+   * @param stave the new value of {@link #getStaveChange()}.
+   * @return a new {@link ScoreVoiceCell} with the given {@link #getStaveChange() staveChange} and all other properties
+   *         like {@code this} one. Will be a {@link #copy()} if {@link #isImmutable() immutable}.
+   */
+  public ScoreVoiceCell setStaveChange(StaveChange stave) {
+
+    if (this.staveChange == stave) {
+      return this;
+    }
+    ScoreVoiceCell cell = makeMutable();
+    cell.staveChange = stave;
+    return cell;
   }
 
   /**
@@ -118,10 +142,17 @@ public class ScoreVoiceCell extends ScoreCell<ScoreVoiceCell> {
 
   /**
    * @param lyric the new value of {@link #getLyric()}.
+   * @return a new {@link ScoreVoiceCell} with the given {@link #getLyric() lyric} and all other properties like
+   *         {@code this} one. Will be a {@link #copy()} if {@link #isImmutable() immutable}.
    */
-  public void setLyric(String lyric) {
+  public ScoreVoiceCell setLyric(String lyric) {
 
-    this.lyric = lyric;
+    if (this.lyric == lyric) {
+      return this;
+    }
+    ScoreVoiceCell cell = makeMutable();
+    cell.lyric = lyric;
+    return cell;
   }
 
   /**
@@ -135,15 +166,22 @@ public class ScoreVoiceCell extends ScoreCell<ScoreVoiceCell> {
 
   /**
    * @param item the new value of {@link #getItem()}.
+   * @return a new {@link ScoreVoiceCell} with the given {@link #getItem() item} and all other properties like
+   *         {@code this} one. Will be a {@link #copy()} if {@link #isImmutable() immutable}.
    */
-  public void setItem(ValuedItem<?> item) {
+  public ScoreVoiceCell setItem(ValuedItem<?> item) {
 
-    this.item = item;
+    if (this.item == item) {
+      return this;
+    }
+    ScoreVoiceCell cell = makeMutable();
+    cell.item = item;
+    return cell;
   }
 
   /**
-   * @return the optional {@link BarLine} of this cell that will be displayed to the right. May be {@code null} for none.
-   *         There is no left {@link BarLine} as this would be the right {@link BarLine} of the previous cell.
+   * @return the optional {@link BarLine} of this cell that will be displayed to the right. May be {@code null} for
+   *         none. There is no left {@link BarLine} as this would be the right {@link BarLine} of the previous cell.
    */
   public BarLine getBar() {
 
@@ -152,25 +190,56 @@ public class ScoreVoiceCell extends ScoreCell<ScoreVoiceCell> {
 
   /**
    * @param bar the new value of {@link #getBar()}.
+   * @return a new {@link ScoreVoiceCell} with the given {@link #getBar() bar} and all other properties like
+   *         {@code this} one. Will be a {@link #copy()} if {@link #isImmutable() immutable}.
    */
-  public void setBar(BarLine bar) {
+  public ScoreVoiceCell setBar(BarLine bar) {
 
-    this.bar = bar;
+    if (this.bar == bar) {
+      return this;
+    }
+    ScoreVoiceCell cell = makeMutable();
+    cell.bar = bar;
+    return cell;
   }
 
   @Override
   public ScoreVoiceCell transpose(int steps, boolean diatonic, TransposeContext context) {
 
-    ScoreVoiceCell transposed = new ScoreVoiceCell();
-    transposed.bar = this.bar;
-    transposed.lyric = this.lyric;
-    if (this.chordContainer != null) {
-      transposed.chordContainer = this.chordContainer.transpose(steps, diatonic, context);
+    ScoreVoiceCell transposed = copy();
+    if (transposed.chordContainer != null) {
+      transposed.chordContainer = transposed.chordContainer.transpose(steps, diatonic, context);
     }
-    if (this.item != null) {
-      transposed.item = this.item.transpose(steps, diatonic, context);
+    if (transposed.item != null) {
+      transposed.item = transposed.item.transpose(steps, diatonic, context);
     }
     return transposed;
+  }
+
+  @Override
+  public String toString() {
+
+    StringBuilder sb = new StringBuilder();
+    toString(sb);
+    return sb.toString();
+  }
+
+  protected void toString(StringBuilder sb) {
+
+    if (this.item != null) {
+      sb.append('{');
+      sb.append(this.item);
+      sb.append('}');
+    }
+    if (this.chordContainer != null) {
+      sb.append('[');
+      sb.append(this.chordContainer);
+      sb.append(']');
+    }
+    sb.append(this.lyric);
+    if (this.bar != null) {
+      sb.append(this.bar);
+    }
   }
 
 }

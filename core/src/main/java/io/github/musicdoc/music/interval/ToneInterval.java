@@ -5,8 +5,8 @@ package io.github.musicdoc.music.interval;
 import io.github.musicdoc.music.harmony.TonalSystem;
 
 /**
- * Interface for an {@link ToneInterval} that defines the distance from one {@link io.github.musicdoc.music.tone.TonePitch}
- * or {@link io.github.musicdoc.music.tone.Tone} to another.
+ * Interface for an {@link ToneInterval} that defines the distance from one
+ * {@link io.github.musicdoc.music.tone.TonePitch} or {@link io.github.musicdoc.music.tone.Tone} to another.
  */
 public interface ToneInterval {
 
@@ -37,10 +37,10 @@ public interface ToneInterval {
    *         (tonika) or {@link Integer#MIN_VALUE} if undefined (e.g. for {@link Solmization} if {@link TonalSystem} is
    *         {@code null} or in case of a {@link DiatonicInterval}). The modulo of twelve ({@code %12}) of the result is
    *         the {@link java.util.List#get(int) index} of the {@link io.github.musicdoc.music.tone.TonePitch} from the
-   *         {@link io.github.musicdoc.music.harmony.MusicalKey#getChromaticScale() chromatic scale} of the
-   *         {@link io.github.musicdoc.music.harmony.MusicalKey} with the initial
+   *         {@link io.github.musicdoc.music.harmony.key.MusicalKey#getChromaticScale() chromatic scale} of the
+   *         {@link io.github.musicdoc.music.harmony.key.MusicalKey} with the initial
    *         {@link io.github.musicdoc.music.tone.TonePitch} as
-   *         {@link io.github.musicdoc.music.harmony.MusicalKey#getTonika() tonika}.
+   *         {@link io.github.musicdoc.music.harmony.key.MusicalKey#getTonika() tonika}.
    */
   int getChromaticSteps(TonalSystem system);
 
@@ -67,10 +67,10 @@ public interface ToneInterval {
    *         (tonika) or {@link Integer#MIN_VALUE} if {@link TonalSystem} is {@code null} and the result is undefined
    *         (e.g. for {@link Solmization}). The modulo of seven ({@code %7}) of the result is the
    *         {@link java.util.List#get(int) index} of the {@link io.github.musicdoc.music.tone.TonePitch} from the
-   *         {@link io.github.musicdoc.music.harmony.MusicalKey#getDiatonicScale() diatonic scale} of the
-   *         {@link io.github.musicdoc.music.harmony.MusicalKey} with the initial
+   *         {@link io.github.musicdoc.music.harmony.key.MusicalKey#getDiatonicScale() diatonic scale} of the
+   *         {@link io.github.musicdoc.music.harmony.key.MusicalKey} with the initial
    *         {@link io.github.musicdoc.music.tone.TonePitch} as
-   *         {@link io.github.musicdoc.music.harmony.MusicalKey#getTonika() tonika}.<br>
+   *         {@link io.github.musicdoc.music.harmony.key.MusicalKey#getTonika() tonika}.<br>
    *         <b>ATTENTION:</b><br>
    *         This means the result is {@code 0}-based, so e.g. for {@link DiatonicInterval#THIRD} it will return
    *         {@code 2} (NOT {@code 3}) and for {@link DiatonicInterval#OCTAVE} it will return {@code 7} (NOT {@code 8}).
@@ -95,5 +95,22 @@ public interface ToneInterval {
    *         scores.
    */
   int getDiatonicSteps(TonalSystem system);
+
+  /**
+   * @return the total number of octaves included in this interval to go up (if positive) or down (if negative).
+   */
+  int getOctaves();
+
+  /**
+   * @return {@code true} if the empty interval such as e.g. {@value ChromaticInterval#PERFECT_UNISON},
+   *         {@link DiatonicInterval#UNISON}, or {@link DiatonicStep#S0}. <b>ATTENTION:</b> will return {@code false}
+   *         for {@link Solmization#DO} as for {@link TonalSystem#MINOR} it is not an empty interval.
+   */
+  boolean isEmpty();
+
+  /**
+   * @return the inverted {@link ToneInterval} so it will transpose in the opposite direction.
+   */
+  ToneInterval invert();
 
 }

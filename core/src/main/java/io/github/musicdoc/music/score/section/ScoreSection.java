@@ -3,8 +3,13 @@ package io.github.musicdoc.music.score.section;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.github.musicdoc.MutableObject;
+import io.github.musicdoc.MutableObjecteCopier;
+import io.github.musicdoc.MutableObjecteHelper;
 import io.github.musicdoc.music.score.Score;
 import io.github.musicdoc.music.score.ScoreRow;
+import io.github.musicdoc.music.stave.system.StaveSystem;
+import io.github.musicdoc.music.stave.system.StaveSystemContainer;
 import io.github.musicdoc.music.transpose.AbstractTransposable;
 import io.github.musicdoc.music.transpose.TransposeContext;
 
@@ -12,11 +17,17 @@ import io.github.musicdoc.music.transpose.TransposeContext;
  * Represents a logical section of a {@link Score}. Each section has a {@link #getName() name} such as "Verse 1" and
  * multiple {@link #getRows() rows}.
  */
-public class ScoreSection extends AbstractTransposable<ScoreSection> {
+public class ScoreSection extends AbstractTransposable<ScoreSection> implements StaveSystemContainer, MutableObject<ScoreSection> {
 
   private ScoreSectionName name;
 
-  private final List<ScoreRow> rows;
+  private List<ScoreRow> rows;
+
+  private StaveSystem staveSystem;
+
+  private Score score;
+
+  private boolean immutable;
 
   /**
    * The constructor.
@@ -38,6 +49,26 @@ public class ScoreSection extends AbstractTransposable<ScoreSection> {
     this.name = name;
   }
 
+  private ScoreSection(ScoreSection section, MutableObjecteCopier copier) {
+
+    super();
+    this.name = section.name;
+    this.staveSystem = section.staveSystem;
+    this.rows = copier.copyList(this.rows);
+  }
+
+  @Override
+  public ScoreSection copy(MutableObjecteCopier copier) {
+
+    return new ScoreSection(this, copier);
+  }
+
+  @Override
+  public boolean isImmutable() {
+
+    return this.immutable;
+  }
+
   /**
    * @return the name of this section.
    */
@@ -48,10 +79,17 @@ public class ScoreSection extends AbstractTransposable<ScoreSection> {
 
   /**
    * @param name the new value of {@link #getName()}.
+   * @return a new {@link ScoreSection} with the given {@link #getName() name} and all other properties like
+   *         {@code this} one. Will be a {@link #copy()} if {@link #isImmutable() immutable}.
    */
-  public void setName(ScoreSectionName name) {
+  public ScoreSection setName(ScoreSectionName name) {
 
-    this.name = name;
+    if (this.name == name) {
+      return this;
+    }
+    ScoreSection section = makeMutable();
+    section.name = name;
+    return section;
   }
 
   /**
@@ -89,6 +127,56 @@ public class ScoreSection extends AbstractTransposable<ScoreSection> {
   public boolean isEmpty() {
 
     return this.rows.isEmpty();
+  }
+
+  @Override
+  public StaveSystem getStaveSystem() {
+
+    return this.staveSystem;
+  }
+
+  @Override
+  public ScoreSection setStaveSystem(StaveSystem staveSystem) {
+
+    if (this.staveSystem == staveSystem) {
+      return this;
+    }
+    ScoreSection section = makeMutable();
+    section.staveSystem = staveSystem;
+    return section;
+  }
+
+  /**
+   * @return the {@link Score} {@link Score#getSections() owning} this {@link ScoreSection}.
+   */
+  public Score getScore() {
+
+    return this.score;
+  }
+
+  /**
+   * @param score new value of {@link #getScore()}.
+   * @return a new {@link ScoreSection} with the given {@link #getScore() score} and all other properties like
+   *         {@code this} one. Will be a {@link #copy()} if {@link #isImmutable() immutable}.
+   */
+  public ScoreSection setScore(Score score) {
+
+    if (this.score == score) {
+      return this;
+    }
+    ScoreSection section = makeMutable();
+    section.score = score;
+    return section;
+  }
+
+  @Override
+  public ScoreSection makeImmutable() {
+
+    if (!this.immutable) {
+      this.rows = MutableObjecteHelper.makeImmutableRecursive(this.rows);
+      this.immutable = true;
+    }
+    return this;
   }
 
   @Override

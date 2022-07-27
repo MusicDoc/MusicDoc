@@ -30,6 +30,10 @@ public interface FormatConstants {
 
   char BAR_REPEAT = ':';
 
+  char BAR_THICK_1 = '[';
+
+  char BAR_THICK_2 = ']';
+
   char DECORATION_START = '!';
 
   char DECORATION_END = '!';
@@ -58,8 +62,8 @@ public interface FormatConstants {
   /** Property key for <a href="https://abcnotation.com/wiki/abc:standard:v2.1#ccomposer">composer</a>. */
   String PROPERTY_COMPOSER = "C";
 
-  /** Property key for album. */
-  String PROPERTY_ALBUM = "Album";
+  /** Property key for discography. */
+  String PROPERTY_DISCOGRAPHY = "D";
 
   /** Property key for capo. */
   String PROPERTY_CAPO = "Capo";
@@ -77,7 +81,7 @@ public interface FormatConstants {
    */
   String PROPERTY_REFERENCE_NUMBER = "X";
 
-  String PROPERTY_CLEF = "Clef";
+  String PROPERTY_CLEF = "clef";
 
   char VOICE_SEPARATOR = ';';
 
@@ -90,8 +94,6 @@ public interface FormatConstants {
   String PROPERTIES_SEPARATOR = Character.toString(PROPERTIES_SEPARATOR_CHAR);
 
   // char CONTINUE_ROW = '-';
-
-  char CONTINUE_STAVE = '+';
 
   char SECTION_START = '[';
 
@@ -106,10 +108,6 @@ public interface FormatConstants {
   String START_SECTION_OPEN_SONG = "[";
 
   char END_SECTION = ']';
-
-  char BEGIN_CHORDS = '.';
-
-  char CONTINUE_ROW = '-';
 
   char START_CHORD = '[';
 

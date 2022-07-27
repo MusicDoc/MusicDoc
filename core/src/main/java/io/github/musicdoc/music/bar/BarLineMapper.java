@@ -3,9 +3,8 @@ package io.github.musicdoc.music.bar;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
 import io.github.musicdoc.music.format.AbstractMapper;
-import io.github.musicdoc.music.format.SongFormatOptions;
+import io.github.musicdoc.music.format.SongFormatContext;
 import io.github.musicdoc.music.volta.Volta;
-import io.github.musicdoc.music.volta.VoltaMapper;
 
 /**
  * {@link AbstractMapper Mapper} for {@link BarLine}.
@@ -13,33 +12,23 @@ import io.github.musicdoc.music.volta.VoltaMapper;
 public abstract class BarLineMapper extends AbstractMapper<BarLine> {
 
   @Override
-  public BarLine parse(MusicInputStream chars, SongFormatOptions options) {
+  public BarLine read(MusicInputStream in, SongFormatContext context) {
 
-    BarLineType type = getBarLineTypeMapper().parse(chars, options);
+    BarLineType type = getBarLineTypeMapper().read(in, context);
     if (type == null) {
       return null;
     }
-    Volta volta = getVoltaMapper().parse(chars, options);
+    Volta volta = getVoltaMapper().read(in, context);
     return new BarLine(type, volta);
   }
 
-  /**
-   * @return the {@link BarLineTypeMapper}.
-   */
-  protected abstract BarLineTypeMapper getBarLineTypeMapper();
-
-  /**
-   * @return the {@link VoltaMapper}.
-   */
-  protected abstract VoltaMapper getVoltaMapper();
-
   @Override
-  public void format(BarLine bar, MusicOutputStream out, SongFormatOptions options) {
+  public void write(BarLine bar, MusicOutputStream out, SongFormatContext context) {
 
     if (bar == null) {
       return;
     }
-    getBarLineTypeMapper().format(bar.getType(), out, options);
-    getVoltaMapper().format(bar.getVolta(), out, options);
+    getBarLineTypeMapper().write(bar.getType(), out, context);
+    getVoltaMapper().write(bar.getVolta(), out, context);
   }
 }

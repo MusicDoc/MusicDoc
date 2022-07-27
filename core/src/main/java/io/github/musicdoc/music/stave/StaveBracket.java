@@ -1,76 +1,151 @@
 package io.github.musicdoc.music.stave;
 
-import io.github.musicdoc.music.glyphs.unicode.UnicodeGlyphs;
+import io.github.musicdoc.music.glyphs.MusicalGlyphs;
+import io.github.musicdoc.music.glyphs.MusicalGlyphsContext;
+import io.github.musicdoc.music.glyphs.smufl.SmuflGlyphsStaffBrackets;
+import io.github.musicdoc.music.glyphs.unicode.UnicodeGlyphsStaffBrackets;
 
 /**
- * The bracket (type) of one or multiple {@link Stave}s.
+ * The bracket (type) of one or multiple {@link Stave}s. Please note that in English there is no real neutral term for
+ * what we call <em>bracket</em> here:
+ * <ul>
+ * <li>{@link #SQUARE} is the (square) bracket: []</li>
+ * <li>{@link #CURLY} is the (curly) brace: {}</li>
+ * <li>{@link #NONE} is the (round) parenthesis: ()</li>
+ * </ul>
+ *
+ * @see io.github.musicdoc.music.stave.system.StaveSystem#getBracket()
  */
-public enum StaveBracket {
+public enum StaveBracket implements MusicalGlyphs {
 
-    SQUARE('[', ']', UnicodeGlyphs.BRACKET),
+  /** A sequare bracket (e.g. to connect {@link Stave}s of choir voices). */
+  SQUARE('[', ']', UnicodeGlyphsStaffBrackets.BRACKET, SmuflGlyphsStaffBrackets.BRACKET),
 
-    CURLY('{', '}', UnicodeGlyphs.BRACE);
+  /** A curly bracket (e.g. to connect treble and bass {@link Stave} of piano). */
+  CURLY('{', '}', UnicodeGlyphsStaffBrackets.BRACE, SmuflGlyphsStaffBrackets.BRACE),
 
-    private final char start;
+  /** No bracket (just join multiple {@link Stave#getVoices() voices} without bracket). */
+  NONE('(', ')', "", "");
 
-    private final char end;
+  private final char start;
 
-    private final String syntax;
+  private final char end;
 
-    private final String unicode;
+  private final String syntax;
 
-    private StaveBracket(char start, char end, String unicode) {
-        this.start = start;
-        this.end = end;
-        this.syntax = "" + start + end;
-        this.unicode = unicode;
+  private final String unicode;
+
+  private final String smufl;
+
+  private StaveBracket(char start, char end, String unicode, String smufl) {
+
+    this.start = start;
+    this.end = end;
+    this.syntax = "" + start + end;
+    this.unicode = unicode;
+    this.smufl = smufl;
+  }
+
+  /**
+   * @return the character to start the bracket (left/opening like '[', '{', or '(').
+   */
+  public char getStart() {
+
+    return this.start;
+  }
+
+  /**
+   * @return the character to end the bracket (right/closing like ']', '}', or ')').
+   */
+  public char getEnd() {
+
+    return this.end;
+  }
+
+  /**
+   * @return the syntax as combination for {@link #getStart() start} and {@link #getEnd() end}.
+   */
+  public String getSyntax() {
+
+    return this.syntax;
+  }
+
+  /**
+   * @return the {@link io.github.musicdoc.music.glyphs.unicode.UnicodeGlyphs musical unicode glyph} for the
+   *         {@link #getStart() opening} bracket of this type when rendering a
+   *         {@link io.github.musicdoc.music.stave.system.StaveSystem}.
+   */
+  public String getUnicode() {
+
+    return this.unicode;
+  }
+
+  /**
+   * @return the {@link io.github.musicdoc.music.glyphs.smufl.SmuflGlyphs SMuFL glyph} for the {@link #getStart()
+   *         opening} bracket of this type when rendering a {@link io.github.musicdoc.music.stave.system.StaveSystem}.
+   */
+  public String getSmufl() {
+
+    return this.smufl;
+  }
+
+  @Override
+  public String getGlyphs(MusicalGlyphsContext context) {
+
+    if (context.isEnforceUnicode()) {
+      return this.unicode;
     }
+    return this.smufl;
+  }
 
-    public char getStart() {
-        return this.start;
-    }
+  @Override
+  public String toString() {
 
-    public char getEnd() {
-        return this.end;
-    }
+    return "" + this.start + this.end;
+  }
 
-    public String getSyntax() {
-        return this.syntax;
-    }
+  /**
+   * @param c the potential {@link #getStart() left bracket character}.
+   * @return the {@link StaveBracket} having {@code c} as {@link #getStart() start character} or {@code null} if no such
+   *         {@link StaveBracket} exists.
+   */
+  public static StaveBracket ofStart(char c) {
 
-    public String getUnicode() {
-        return this.unicode;
+    for (StaveBracket bracket : values()) {
+      if (bracket.start == c) {
+        return bracket;
+      }
     }
+    return null;
+  }
 
-    @Override
-    public String toString() {
-        return "" + this.start + this.end;
-    }
+  /**
+   * @param c the potential {@link #getEnd() right bracket character}.
+   * @return the {@link StaveBracket} having {@code c} as {@link #getEnd() end character} or {@code null} if no such
+   *         {@link StaveBracket} exists.
+   */
+  public static StaveBracket ofEnd(char c) {
 
-    public static StaveBracket ofStart(char c) {
-        for (StaveBracket bracket : values()) {
-            if (bracket.start == c) {
-                return bracket;
-            }
-        }
-        return null;
+    for (StaveBracket bracket : values()) {
+      if (bracket.end == c) {
+        return bracket;
+      }
     }
+    return null;
+  }
 
-    public static StaveBracket ofEnd(char c) {
-        for (StaveBracket bracket : values()) {
-            if (bracket.end == c) {
-                return bracket;
-            }
-        }
-        return null;
-    }
+  /**
+   * @param syntax the potential {@link #getSyntax() syntax}.
+   * @return the {@link StaveBracket} having the given {@link #getSyntax() syntax} or {@code null} if no such
+   *         {@link StaveBracket} exists.
+   */
+  public static StaveBracket ofSyntax(String syntax) {
 
-    public static StaveBracket ofSyntax(String syntax) {
-        for (StaveBracket bracket : values()) {
-            if (bracket.syntax.equals(syntax)) {
-                return bracket;
-            }
-        }
-        return null;
+    for (StaveBracket bracket : values()) {
+      if (bracket.syntax.equals(syntax)) {
+        return bracket;
+      }
     }
+    return null;
+  }
 }

@@ -15,7 +15,7 @@ class StavePropertyBeat extends StaveProperty<Beat> {
   }
 
   @Override
-  public Beat get(Stave stave) {
+  public Beat get(AbstractStave<?> stave) {
 
     if (stave == null) {
       return null;
@@ -24,10 +24,11 @@ class StavePropertyBeat extends StaveProperty<Beat> {
   }
 
   @Override
-  public void set(Stave stave, Beat beat) {
+  public AbstractStave<?> set(AbstractStave<?> stave, Beat beat) {
 
     if (stave != null) {
-      stave.setBeat(beat);
+      stave = stave.setBeat(beat);
     }
+    return stave;
   }
 }

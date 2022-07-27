@@ -169,6 +169,27 @@ public enum DiatonicStep implements ToneInterval {
     return subtract(step.get());
   }
 
+  @Override
+  public int getOctaves() {
+
+    return 0;
+  }
+
+  @Override
+  public boolean isEmpty() {
+
+    return (this == S0);
+  }
+
+  @Override
+  public ToneInterval invert() {
+
+    if (this == S0) {
+      return this;
+    }
+    return DiatonicInterval.of(-get());
+  }
+
   /**
    * @param diatonicStep the {@link #getDiatonicSteps() diatonic steps}. Values out of the range from {@code 0-6} will
    *        be wrapped (modulo 7).

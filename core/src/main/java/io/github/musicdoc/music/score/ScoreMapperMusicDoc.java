@@ -2,11 +2,9 @@ package io.github.musicdoc.music.score;
 
 import io.github.musicdoc.music.format.SongFormat;
 import io.github.musicdoc.music.format.SongFormatMusicDoc;
-import io.github.musicdoc.music.score.section.ScoreSectionNameMapper;
-import io.github.musicdoc.music.score.section.ScoreSectionNameMapperMusicDoc;
 
 /**
- * {@link ScoreMapper} for {@link io.github.musicdoc.music.format.SongFormatMusicDoc MusicDoc format}.
+ * {@link ScoreMapper} for {@link SongFormatMusicDoc}.
  */
 public class ScoreMapperMusicDoc extends ScoreMapper {
 
@@ -27,15 +25,4 @@ public class ScoreMapperMusicDoc extends ScoreMapper {
     return SongFormatMusicDoc.INSTANCE;
   }
 
-  @Override
-  protected ScoreLineMapper getLineMapper() {
-
-    return ScoreLineMapperMusicDoc.INSTANCE;
-  }
-
-  @Override
-  protected ScoreSectionNameMapper getSectionNameMapper() {
-
-    return ScoreSectionNameMapperMusicDoc.INSTANCE;
-  }
 }

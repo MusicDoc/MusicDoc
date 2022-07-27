@@ -6,35 +6,37 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import io.github.musicdoc.MutableObjecteCopier;
+import io.github.musicdoc.MutableObjecteHelper;
 import io.github.musicdoc.music.clef.Clef;
 import io.github.musicdoc.music.format.FormatConstants;
-import io.github.musicdoc.music.harmony.MusicalKey;
+import io.github.musicdoc.music.harmony.key.MusicalKey;
 import io.github.musicdoc.music.rythm.beat.Beat;
-import io.github.musicdoc.music.transpose.AbstractTransposable;
-import io.github.musicdoc.music.transpose.TransposeContext;
+import io.github.musicdoc.music.stave.system.StaveSystem;
+import io.github.musicdoc.music.stave.voice.StaveVoice;
+import io.github.musicdoc.music.stave.voice.StaveVoiceContainer;
 
 /**
- * Represents the configuration and intro of a musical <em>stave</em>, what in general refers to the five lines used in
- * classic music notation. Here a {@link Stave} contains the {@link #getClef() clef}, {@link #getKey() key} and
- * {@link #getBeat() beat} as well as the {@link #getVoices() voices} related to the stave. It is used for the initial
- * definition and configuration of a stave as well as for changes to a stave within the line (to change the key or
- * beat).<br>
+ * Represents the configuration and intro of a musical <em>stave</em> (also known as <em>staff</em>), what in general
+ * refers to the five lines used in classic music notation. Here a {@link Stave} contains the {@link #getClef() clef},
+ * {@link #getKey() key} and {@link #getBeat() beat} as well as the {@link #getVoices() voices} related to the stave. It
+ * is used for the initial definition and configuration of a stave as well as for changes to a stave within the line (to
+ * change the key or beat).<br>
  * <br>
  * <em>Stave</em> is the British term that is called <em>staff</em> in US English. As <em>staff</em> is more ambiguous
- * and the plural form is always <em>staves</em> the Brithish name was preferred even though <em>staff</em> is used
- * quite commonly.
+ * and the plural form is always <em>staves</em> the British name was preferred even though <em>staff</em> is used quite
+ * commonly.
  */
-public final class Stave extends AbstractTransposable<Stave> {
+public final class Stave extends AbstractStave<Stave> implements StaveVoiceContainer {
 
-  private static final String SEPARATOR = "" + FormatConstants.PROPERTIES_SEPARATOR;
+  /** The default {@link Stave}. */
+  public static final Stave DEFAULT = new Stave(Clef.TREBLE, MusicalKey.C_MAJOR, Beat.COMMON_TIME).makeImmutable();
 
-  private StaveBracket bracket;
+  private static final String SEPARATOR = FormatConstants.PROPERTIES_SEPARATOR;
 
-  private Clef clef;
+  private boolean disconnected;
 
-  private MusicalKey key;
-
-  private Beat beat;
+  private int lines;
 
   private List<StaveVoice> voices;
 
@@ -43,121 +45,51 @@ public final class Stave extends AbstractTransposable<Stave> {
    */
   public Stave() {
 
-    this(null);
+    this(null, null, null);
   }
 
   /**
    * The constructor.
    *
-   * @param clef - see {@link #getClef()}.
-   */
-  public Stave(Clef clef) {
-
-    this(clef, null);
-  }
-
-  /**
-   * The constructor.
-   *
-   * @param clef - see {@link #getClef()}.
-   * @param key - see {@link #getKey()}.
-   */
-  public Stave(Clef clef, MusicalKey key) {
-
-    this(clef, key, null);
-  }
-
-  /**
-   * The constructor.
-   *
-   * @param clef - see {@link #getClef()}.
-   * @param key - see {@link #getKey()}.
-   * @param beat - see {@link #getBeat()}.
+   * @param clef the {@link #getClef() clef}.
+   * @param key the {@link #getKey() key}.
+   * @param beat the {@link #getBeat() beat}.
    */
   public Stave(Clef clef, MusicalKey key, Beat beat) {
 
-    super();
-    this.clef = clef;
-    this.key = key;
-    this.beat = beat;
+    this(clef, key, beat, false);
+  }
+
+  /**
+   * The constructor.
+   *
+   * @param clef the {@link #getClef() clef}.
+   * @param key the {@link #getKey() key}.
+   * @param beat the {@link #getBeat() beat}.
+   * @param disconnected the {@link #isDisconnected() disconnected} flag.
+   */
+  public Stave(Clef clef, MusicalKey key, Beat beat, boolean disconnected) {
+
+    super(clef, key, beat);
+    this.disconnected = disconnected;
+    this.lines = 5;
     this.voices = new ArrayList<>();
   }
 
-  /**
-   * @return the optional {@link StaveBracket bracket} of this stave. May be {@code null} for none. In case one or more
-   *         {@link io.github.musicdoc.music.score.voice.ScoreVoiceLine lines} in a
-   *         {@link io.github.musicdoc.music.score.ScoreRow row} start with the same {@link StaveBracket
-   *         bracket}, they will be visually grouped together by a bracket of this type. Otherwise the
-   *         {@link StaveBracket bracket} is only displayed for its single
-   *         {@link io.github.musicdoc.music.score.voice.ScoreVoiceLine line}. In case a {@link Stave} is not at
-   *         the beginning of a {@link io.github.musicdoc.music.score.voice.ScoreVoiceLine line}, it will have
-   *         no visual effect (unless a dynamic reformatting would insert a line break at this place, what would then
-   *         overrule the defaults from the start of the line).
-   */
-  public StaveBracket getBracket() {
+  private Stave(Stave stave, MutableObjecteCopier copier) {
 
-    return this.bracket;
+    super(stave, copier);
+    this.disconnected = stave.disconnected;
+    this.lines = stave.lines;
+    this.voices = copier.copyList(stave.voices, voice -> {
+      voice.setStave(this);
+    });
   }
 
-  /**
-   * @param bracket new value of {@link #getBracket()}.
-   */
-  public void setBracket(StaveBracket bracket) {
+  @Override
+  public Stave copy(MutableObjecteCopier copier) {
 
-    this.bracket = bracket;
-  }
-
-  /**
-   * @return the optional {@link Clef} or {@code null} if undefined.
-   */
-  public Clef getClef() {
-
-    return this.clef;
-  }
-
-  /**
-   * @param clef the new value of {@link #getClef()}.
-   */
-  public void setClef(Clef clef) {
-
-    this.clef = clef;
-  }
-
-  /**
-   * @return the optional {@link MusicalKey}. If {@code null} or the same {@link MusicalKey} as the previous
-   *         {@link Stave} on the same line, no enharmonic signs will be displayed (e.g. the new {@link Stave} might
-   *         only change the {@link Beat}).
-   */
-  public MusicalKey getKey() {
-
-    return this.key;
-  }
-
-  /**
-   * @param key the new value of {@link #getKey()}.
-   */
-  public void setKey(MusicalKey key) {
-
-    this.key = key;
-  }
-
-  /**
-   * @return the optional {@link Beat}. If {@code null} or the same {@link Beat} as the previous {@link Stave} on the
-   *         same line, no beat will be displayed (e.g. the new {@link Stave} might only change the {@link Clef}). If
-   *         this is the first {@link Stave} of a {@link io.github.musicdoc.music.score.Score} and no
-   *         {@link Beat} is defined then {@link Beat#_4_4 4/4} is assumed (but not displayed).
-   */
-  public Beat getBeat() {
-
-    return this.beat;
-  }
-
-  /**
-   * @param beat the new value of {@link #getBeat()}.
-   */
-  public void setBeat(Beat beat) {
-
-    this.beat = beat;
+    return new Stave(this, copier);
   }
 
   /**
@@ -170,51 +102,129 @@ public final class Stave extends AbstractTransposable<Stave> {
 
   /**
    * @param voice the {@link StaveVoice} to add.
+   * @return the {@link StaveVoice} that has been added. Typically {@code voice} but may be a {@link #copy()} if
+   *         {@link StaveVoice#isImmutable() immutable}.
    * @see #getVoices()
    */
-  public void addVoice(StaveVoice voice) {
+  public Stave addVoice(StaveVoice voice) {
 
+    requireMutable();
+    voice = voice.setStave(this);
     this.voices.add(voice);
+    return this;
+  }
+
+  /**
+   * @param id the {@link StaveVoice#getId() ID} of the new {@link StaveVoice}.
+   * @return the created and added {@link StaveVoice}. Will be mutable.
+   */
+  public StaveVoice addVoice(String id) {
+
+    StaveVoice voice = new StaveVoice(id);
+    addVoice(voice);
+    return voice;
   }
 
   @Override
-  public Stave transpose(int steps, boolean diatonic, TransposeContext context) {
+  public StaveVoice getVoice(String id) {
 
-    if ((context.isKeepKey()) || (this.key == null)) {
-      return this;
-    }
-    Stave transposed = new Stave();
-    transposed.key = this.key.transpose(steps, diatonic, context);
-    transposed.clef = this.clef;
-    transposed.beat = this.beat;
-    transposed.voices.addAll(this.voices);
-    return transposed;
-  }
-
-  public void join(Stave otherStave, boolean joinVoices) {
-
-    if (otherStave == null) {
-      return;
-    }
-    if (this.clef == null) {
-      this.clef = otherStave.clef;
-    }
-    if (this.key == null) {
-      this.key = otherStave.key;
-    }
-    if (this.beat == null) {
-      this.beat = otherStave.beat;
-    }
-    if (this.bracket == null) {
-      this.bracket = otherStave.bracket;
-    }
-    if (joinVoices) {
-      for (StaveVoice voice : otherStave.voices) {
-        if (!this.voices.contains(voice)) {
-          this.voices.add(voice);
-        }
+    for (StaveVoice voice : this.voices) {
+      if (Objects.equals(voice.getId(), id)) {
+        return voice;
       }
     }
+    return null;
+  }
+
+  @Override
+  public StaveVoice getVoice(int index) {
+
+    if ((index < 0) || (index >= this.voices.size())) {
+      return null;
+    }
+    return this.voices.get(index);
+  }
+
+  @Override
+  public int indexOf(String id) {
+
+    int index = 0;
+    for (StaveVoice voice : this.voices) {
+      if (Objects.equals(voice.getId(), id)) {
+        return index;
+      }
+      index++;
+    }
+    return -1;
+  }
+
+  @Override
+  public int getVoiceCount() {
+
+    return this.voices.size();
+  }
+
+  /**
+   * @return {@code true} if this {@link Stave} is not connected to the previous {@link Stave} of the same
+   *         {@link StaveSystem} with a vertical bar, {@code false} otherwise. Default is {@code false}.
+   */
+  public boolean isDisconnected() {
+
+    return this.disconnected;
+  }
+
+  /**
+   * @param newDisconnected the new {@link #isDisconnected() disconnected}.
+   * @return a new {@link Stave} with the given {@link #isDisconnected() disconnected} and all other properties like
+   *         {@code this} one. Will be a {@link #copy()} if {@link #isImmutable() immutable}.
+   */
+  public Stave setDisconnected(boolean newDisconnected) {
+
+    if (newDisconnected == this.disconnected) {
+      return this;
+    }
+    Stave stave = makeMutable();
+    stave.disconnected = newDisconnected;
+    return stave;
+  }
+
+  /**
+   * @return the number of lines in this {@link Stave}. The default is 5.
+   */
+  public int getLines() {
+
+    return this.lines;
+  }
+
+  /**
+   * @param newLines the new {@link #getLines() lines}.
+   * @return a new {@link Stave} with the given {@link #getLines() lines} and all other properties like {@code this}
+   *         one. Will be a {@link #copy()} if {@link #isImmutable() immutable}.
+   */
+  public Stave setLines(int newLines) {
+
+    if (newLines == this.lines) {
+      return this;
+    }
+    if (newLines < 1) {
+      throw new IllegalArgumentException("Stave must have at least 1 line - too low value: " + newLines);
+    }
+    Stave stave = makeMutable();
+    stave.lines = newLines;
+    return stave;
+  }
+
+  @Override
+  public Stave makeImmutable() {
+
+    if (!this.immutable) {
+      for (StaveVoice voice : this.voices) {
+        voice.makeImmutable();
+      }
+      this.voices = MutableObjecteHelper.makeImmutableRecursive(this.voices);
+      super.makeImmutable();
+    }
+    return this;
   }
 
   @Override
@@ -238,8 +248,6 @@ public final class Stave extends AbstractTransposable<Stave> {
       return false;
     } else if (!Objects.equals(this.beat, other.beat)) {
       return false;
-    } else if (!Objects.equals(this.bracket, other.bracket)) {
-      return false;
     } else if (!Objects.equals(this.voices, other.voices)) {
       return false;
     }
@@ -250,36 +258,22 @@ public final class Stave extends AbstractTransposable<Stave> {
   public String toString() {
 
     StringBuilder sb = new StringBuilder();
-    if (this.bracket != null) {
-      sb.append(this.bracket.getSyntax());
-    }
-    String separator = "";
+    sb.append("§");
     if (this.clef != null) {
-      sb.append(FormatConstants.PROPERTY_CLEF);
-      sb.append(FormatConstants.PROPERTIES_KEY_VALUE_SEPARATOR);
       sb.append(this.clef);
-      separator = SEPARATOR;
     }
     if (this.key != null) {
-      sb.append(separator);
-      sb.append(FormatConstants.PROPERTY_KEY);
-      sb.append(FormatConstants.PROPERTIES_KEY_VALUE_SEPARATOR);
+      sb.append('K');
       sb.append(this.key);
-      separator = SEPARATOR;
     }
     if (this.beat != null) {
-      sb.append(separator);
-      sb.append(FormatConstants.PROPERTY_METER);
-      sb.append(FormatConstants.PROPERTIES_KEY_VALUE_SEPARATOR);
+      sb.append('M');
       sb.append(this.beat);
-      separator = SEPARATOR;
     }
     for (StaveVoice voice : this.voices) {
-      sb.append(separator);
-      sb.append(FormatConstants.PROPERTY_VOICE);
-      sb.append(FormatConstants.PROPERTIES_KEY_VALUE_SEPARATOR);
+      sb.append('(');
       sb.append(voice);
-      separator = SEPARATOR;
+      sb.append(')');
     }
     return sb.toString();
   }

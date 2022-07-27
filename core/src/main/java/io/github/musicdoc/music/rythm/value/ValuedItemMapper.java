@@ -3,11 +3,9 @@ package io.github.musicdoc.music.rythm.value;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
 import io.github.musicdoc.music.format.AbstractMapper;
-import io.github.musicdoc.music.format.SongFormatOptions;
+import io.github.musicdoc.music.format.SongFormatContext;
 import io.github.musicdoc.music.note.Note;
-import io.github.musicdoc.music.note.NoteMapper;
 import io.github.musicdoc.music.rythm.rest.Rest;
-import io.github.musicdoc.music.rythm.rest.RestMapper;
 
 /**
  * {@link AbstractMapper Mapper} for {@link ValuedItem}.
@@ -15,32 +13,22 @@ import io.github.musicdoc.music.rythm.rest.RestMapper;
 public abstract class ValuedItemMapper extends AbstractMapper<ValuedItem<?>> {
 
   @Override
-  public ValuedItem<?> parse(MusicInputStream chars, SongFormatOptions options) {
+  public ValuedItem<?> read(MusicInputStream in, SongFormatContext context) {
 
-    Note note = getNoteMapper().parse(chars, options);
+    Note note = getNoteMapper().read(in, context);
     if (note != null) {
       return note;
     }
-    return getRestMapper().parse(chars, options);
+    return getRestMapper().read(in, context);
   }
 
-  /**
-   * @return the {@link RestMapper}.
-   */
-  protected abstract RestMapper getRestMapper();
-
-  /**
-   * @return the {@link NoteMapper}.
-   */
-  protected abstract NoteMapper getNoteMapper();
-
   @Override
-  public void format(ValuedItem<?> item, MusicOutputStream out, SongFormatOptions options) {
+  public void write(ValuedItem<?> item, MusicOutputStream out, SongFormatContext context) {
 
     if (item instanceof Note) {
-      getNoteMapper().format((Note) item, out, options);
+      getNoteMapper().write((Note) item, out, context);
     } else if (item instanceof Rest) {
-      getRestMapper().format((Rest) item, out, options);
+      getRestMapper().write((Rest) item, out, context);
     }
   }
 }

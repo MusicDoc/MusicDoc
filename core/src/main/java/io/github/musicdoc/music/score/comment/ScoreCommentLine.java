@@ -1,17 +1,19 @@
 package io.github.musicdoc.music.score.comment;
 
 import java.util.Collections;
+import java.util.Objects;
 
-import io.github.musicdoc.music.score.ScoreCell;
+import io.github.musicdoc.MutableObjecteCopier;
+import io.github.musicdoc.music.score.ScoreEmptyCell;
 import io.github.musicdoc.music.score.ScoreLine;
 import io.github.musicdoc.music.transpose.TransposeContext;
 
 /**
  * {@link ScoreLine} for a general purpose {@link #getComment() comment}.
  */
-public class ScoreCommentLine extends ScoreLine<ScoreCell<?>, ScoreCommentLine> {
+public class ScoreCommentLine extends ScoreLine<ScoreEmptyCell, ScoreCommentLine> {
 
-  private final String comment;
+  private String comment;
 
   /**
    * The constructor.
@@ -20,8 +22,20 @@ public class ScoreCommentLine extends ScoreLine<ScoreCell<?>, ScoreCommentLine> 
    */
   public ScoreCommentLine(String comment) {
 
-    super(Collections.<ScoreCell<?>> emptyList());
+    super(Collections.emptyList());
     this.comment = comment;
+  }
+
+  private ScoreCommentLine(ScoreCommentLine line, MutableObjecteCopier copier) {
+
+    super(line, copier);
+    this.comment = line.comment;
+  }
+
+  @Override
+  public ScoreCommentLine copy(MutableObjecteCopier copier) {
+
+    return new ScoreCommentLine(this, copier);
   }
 
   /**
@@ -32,14 +46,23 @@ public class ScoreCommentLine extends ScoreLine<ScoreCell<?>, ScoreCommentLine> 
     return this.comment;
   }
 
-  @Override
-  public boolean isContinueRow() {
+  /**
+   * @param comment new value of {@link #getComment()}.
+   * @return a new {@link ScoreCommentLine} with the given {@link #getComment() comment} and all other properties like
+   *         {@code this} one. Will be a {@link #copy()} if {@link #isImmutable() immutable}.
+   */
+  public ScoreCommentLine setComment(String comment) {
 
-    return true;
+    if (Objects.equals(comment, this.comment)) {
+      return this;
+    }
+    ScoreCommentLine line = makeMutable();
+    line.comment = comment;
+    return line;
   }
 
   @Override
-  protected ScoreCell<?> createCell() {
+  protected ScoreEmptyCell createCell() {
 
     throw new IllegalStateException();
   }

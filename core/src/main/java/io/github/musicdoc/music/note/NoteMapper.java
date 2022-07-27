@@ -6,11 +6,10 @@ import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
 import io.github.musicdoc.music.decoration.MusicalDecoration;
 import io.github.musicdoc.music.format.AbstractMapper;
-import io.github.musicdoc.music.format.SongFormatOptions;
+import io.github.musicdoc.music.format.SongFormatContext;
 import io.github.musicdoc.music.rythm.value.AbstractValuedItemMapper;
 import io.github.musicdoc.music.rythm.value.MusicalValue;
 import io.github.musicdoc.music.tone.Tone;
-import io.github.musicdoc.music.tone.ToneMapper;
 
 /**
  * {@link AbstractMapper Mapper} for {@link Note}.
@@ -18,14 +17,14 @@ import io.github.musicdoc.music.tone.ToneMapper;
 public abstract class NoteMapper extends AbstractValuedItemMapper<Note> {
 
   @Override
-  protected Note parseItem(MusicInputStream chars, SongFormatOptions options, List<MusicalDecoration> decorations) {
+  protected Note readItem(MusicInputStream in, SongFormatContext context, List<MusicalDecoration> decorations) {
 
-    Tone tone = getToneMapper().parse(chars, options);
+    Tone tone = getToneMapper().read(in, context);
     if (tone == null) {
       return null;
     }
     // TODO consider unit note length
-    MusicalValue value = getValueMapper().parse(chars, options);
+    MusicalValue value = getValueMapper().read(in, context);
     if (value == null) {
       value = MusicalValue._1_4;
     } else if (value == MusicalValue._1_1) {
@@ -34,14 +33,9 @@ public abstract class NoteMapper extends AbstractValuedItemMapper<Note> {
     return new Note(tone, value, decorations);
   }
 
-  /**
-   * @return the {@link ToneMapper}.
-   */
-  protected abstract ToneMapper getToneMapper();
-
   @Override
-  protected void formatItem(Note note, MusicOutputStream out, SongFormatOptions options) {
+  protected void writeItem(Note note, MusicOutputStream out, SongFormatContext context) {
 
-    getToneMapper().format(note.getTone(), out, options);
+    getToneMapper().write(note.getTone(), out, context);
   }
 }

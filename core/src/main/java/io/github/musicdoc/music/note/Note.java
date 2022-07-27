@@ -68,7 +68,7 @@ public class Note extends ValuedItem<Note> {
     StemDirection stemDirection = context.getStemDirection();
     if ((stemDirection == null) || (stemDirection == StemDirection.AUTO)) {
       Clef clef = context.getClef();
-      Tone lowTone = clef.getLowTone();
+      Tone lowTone = clef.getMiddleTone();
       // TODO compute stem direction from clef low tone
     }
     boolean down = StemDirection.DOWN == stemDirection;
