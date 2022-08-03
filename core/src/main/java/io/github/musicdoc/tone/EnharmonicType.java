@@ -1,6 +1,7 @@
 package io.github.musicdoc.tone;
 
 import io.github.musicdoc.harmony.EnharmonicStyle;
+import io.github.musicdoc.tone.pitch.TonePitch;
 
 /**
  * The {@link EnharmonicType} specifies the enharmonic {@link #getStyle() style} and {@link #getSignCount() sign count}

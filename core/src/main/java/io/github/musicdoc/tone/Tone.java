@@ -8,6 +8,8 @@ import io.github.musicdoc.clef.Clef;
 import io.github.musicdoc.harmony.key.MusicalKey;
 import io.github.musicdoc.interval.ChromaticInterval;
 import io.github.musicdoc.interval.ToneInterval;
+import io.github.musicdoc.tone.pitch.TonePitch;
+import io.github.musicdoc.tone.pitch.TonePitchEnglish;
 import io.github.musicdoc.transpose.AbstractTransposable;
 import io.github.musicdoc.transpose.TransposeContext;
 

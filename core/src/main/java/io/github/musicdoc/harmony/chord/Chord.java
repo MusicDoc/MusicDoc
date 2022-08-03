@@ -11,7 +11,7 @@ import java.util.Objects;
 import io.github.musicdoc.harmony.TonalSystem;
 import io.github.musicdoc.interval.ChromaticInterval;
 import io.github.musicdoc.tone.ToneNameCase;
-import io.github.musicdoc.tone.TonePitch;
+import io.github.musicdoc.tone.pitch.TonePitch;
 import io.github.musicdoc.transpose.AbstractTransposable;
 import io.github.musicdoc.transpose.TransposeContext;
 
@@ -28,14 +28,14 @@ import io.github.musicdoc.transpose.TransposeContext;
  * </ul>
  * Simple examples:
  * <ul>
- * <li>the chord {@link #toString() named} "C" stands for {@link io.github.musicdoc.tone.TonePitchEnglish#C C}-
- * {@link TonalSystem#MAJOR major}) and is composed of {@link io.github.musicdoc.tone.TonePitchEnglish#C C},
- * {@link io.github.musicdoc.tone.TonePitchEnglish#E E}, and
- * {@link io.github.musicdoc.tone.TonePitchEnglish#G G}.</li>
- * <li>the chord {@link #toString() named} "cm" stands for {@link io.github.musicdoc.tone.TonePitchEnglish#C c}-
- * {@link TonalSystem#MINOR minor}) and is composed of {@link io.github.musicdoc.tone.TonePitchEnglish#C C},
- * {@link io.github.musicdoc.tone.TonePitchEnglish#D_SHARP D#}, and
- * {@link io.github.musicdoc.tone.TonePitchEnglish#G G}.</li>
+ * <li>the chord {@link #toString() named} "C" stands for {@link io.github.musicdoc.tone.pitch.TonePitchEnglish#C C}-
+ * {@link TonalSystem#MAJOR major}) and is composed of {@link io.github.musicdoc.tone.pitch.TonePitchEnglish#C C},
+ * {@link io.github.musicdoc.tone.pitch.TonePitchEnglish#E E}, and
+ * {@link io.github.musicdoc.tone.pitch.TonePitchEnglish#G G}.</li>
+ * <li>the chord {@link #toString() named} "cm" stands for {@link io.github.musicdoc.tone.pitch.TonePitchEnglish#C c}-
+ * {@link TonalSystem#MINOR minor}) and is composed of {@link io.github.musicdoc.tone.pitch.TonePitchEnglish#C C},
+ * {@link io.github.musicdoc.tone.pitch.TonePitchEnglish#D_SHARP D#}, and
+ * {@link io.github.musicdoc.tone.pitch.TonePitchEnglish#G G}.</li>
  * </ul>
  * Further, a {@link Chord} can have {@link #getExtensions() extensions} that {@link ChordExtension#getIntervals() add}
  * or {@link ChordExtension#isRemoveThird() remove} tones from the {@link Chord}. A very common example is

@@ -1,4 +1,4 @@
-package io.github.musicdoc.tone;
+package io.github.musicdoc.tone.pitch;
 
 import io.github.musicdoc.format.SongFormat;
 import io.github.musicdoc.format.SongFormatMusicDoc;

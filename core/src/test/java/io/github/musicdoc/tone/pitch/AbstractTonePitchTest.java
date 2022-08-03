@@ -1,4 +1,4 @@
-package io.github.musicdoc.tone;
+package io.github.musicdoc.tone.pitch;
 
 import java.util.Locale;
 
@@ -9,7 +9,6 @@ import io.github.musicdoc.interval.ChromaticStep;
 import io.github.musicdoc.tone.EnharmonicType;
 import io.github.musicdoc.tone.ToneNameCase;
 import io.github.musicdoc.tone.ToneNameStyle;
-import io.github.musicdoc.tone.TonePitch;
 
 public abstract class AbstractTonePitchTest extends Assertions {
 
@@ -53,7 +52,8 @@ public abstract class AbstractTonePitchTest extends Assertions {
     if (sharpened != null) {
       sharpenedLower = sharpened.with(lowerCase);
     }
-    verify(pitch.with(lowerCase), name.toLowerCase(Locale.US), step, type, normal, reference, flattenedLower, sharpenedLower, style, lowerCase);
+    verify(pitch.with(lowerCase), name.toLowerCase(Locale.US), step, type, normal, reference, flattenedLower, sharpenedLower, style,
+        lowerCase);
   }
 
   protected void verify(TonePitch pitch, String name, ChromaticStep step, EnharmonicType type, boolean normal, TonePitch reference,
@@ -68,13 +68,14 @@ public abstract class AbstractTonePitchTest extends Assertions {
     verify(pitch, name, reference.getStep(), type, false, reference, flattened, sharpened);
   }
 
-  protected void verifyNormal(TonePitch pitch, String name, ChromaticStep step, EnharmonicType type, TonePitch reference, TonePitch flattened,
-      TonePitch sharpened) {
+  protected void verifyNormal(TonePitch pitch, String name, ChromaticStep step, EnharmonicType type, TonePitch reference,
+      TonePitch flattened, TonePitch sharpened) {
 
     verify(pitch, name, step, type, true, reference, flattened, sharpened);
   }
 
-  protected void verifyReference(TonePitch pitch, String name, ChromaticStep step, EnharmonicType type, TonePitch flattened, TonePitch sharpened) {
+  protected void verifyReference(TonePitch pitch, String name, ChromaticStep step, EnharmonicType type, TonePitch flattened,
+      TonePitch sharpened) {
 
     verifyNormal(pitch, name, step, type, pitch, flattened, sharpened);
   }

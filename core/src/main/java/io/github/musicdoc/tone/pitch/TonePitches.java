@@ -1,8 +1,10 @@
-package io.github.musicdoc.tone;
+package io.github.musicdoc.tone.pitch;
 
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+
+import io.github.musicdoc.tone.ToneNameStyle;
 
 /**
  * Access to {@link #of(String) parse} a {@link TonePitch} by {@link TonePitch#getName() name} for all available

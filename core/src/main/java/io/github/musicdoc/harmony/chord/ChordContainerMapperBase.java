@@ -4,7 +4,7 @@ import io.github.musicdoc.filter.ListCharFilter;
 import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
-import io.github.musicdoc.tone.TonePitchMapper;
+import io.github.musicdoc.tone.pitch.TonePitchMapper;
 
 /**
  * Basic implementation of {@link ChordContainerMapper}.

@@ -2,6 +2,8 @@ package io.github.musicdoc.tone;
 
 import java.util.Locale;
 
+import io.github.musicdoc.tone.pitch.TonePitch;
+
 /**
  * Case-style of a {@link TonePitch#getName() tone name}.
  */

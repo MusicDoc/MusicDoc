@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import io.github.musicdoc.harmony.EnharmonicStyle;
 import io.github.musicdoc.harmony.TonalSystem;
 import io.github.musicdoc.interval.Solmization;
-import io.github.musicdoc.tone.TonePitchEnglish;
+import io.github.musicdoc.tone.pitch.TonePitchEnglish;
 
 /**
  * Test of {@link MusicalKey}.

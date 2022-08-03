@@ -12,10 +12,10 @@ import io.github.musicdoc.interval.ChromaticInterval;
 import io.github.musicdoc.interval.DiatonicInterval;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.tone.ToneNameCase;
-import io.github.musicdoc.tone.TonePitch;
-import io.github.musicdoc.tone.TonePitchEnglish;
-import io.github.musicdoc.tone.TonePitchGerman;
-import io.github.musicdoc.tone.TonePitchInternational;
+import io.github.musicdoc.tone.pitch.TonePitch;
+import io.github.musicdoc.tone.pitch.TonePitchEnglish;
+import io.github.musicdoc.tone.pitch.TonePitchGerman;
+import io.github.musicdoc.tone.pitch.TonePitchInternational;
 import io.github.musicdoc.transpose.TransposeContext;
 
 /**

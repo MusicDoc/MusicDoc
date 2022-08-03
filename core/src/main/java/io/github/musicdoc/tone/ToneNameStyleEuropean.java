@@ -2,6 +2,8 @@ package io.github.musicdoc.tone;
 
 import java.util.Map;
 
+import io.github.musicdoc.tone.pitch.TonePitch;
+
 /**
  * Abstract base class for European {@link ToneNameStyle}s.
  *

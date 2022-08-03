@@ -10,7 +10,7 @@ import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
 import io.github.musicdoc.tone.ToneNameCase;
 import io.github.musicdoc.tone.ToneNameStyle;
-import io.github.musicdoc.tone.TonePitch;
+import io.github.musicdoc.tone.pitch.TonePitch;
 
 /**
  * {@link AbstractMapper Mapper} for {@link Chord}.

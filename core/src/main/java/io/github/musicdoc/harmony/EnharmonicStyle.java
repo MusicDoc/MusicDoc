@@ -2,7 +2,7 @@
  * http://www.apache.org/licenses/LICENSE-2.0 */
 package io.github.musicdoc.harmony;
 
-import io.github.musicdoc.tone.TonePitch;
+import io.github.musicdoc.tone.pitch.TonePitch;
 
 /**
  * The style of an enharmonic change.

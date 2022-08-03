@@ -1,6 +1,6 @@
 /* Copyright (c) The m-m-m Team, Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0 */
-package io.github.musicdoc.tone;
+package io.github.musicdoc.tone.pitch;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,14 +19,6 @@ import io.github.musicdoc.harmony.key.MusicalKey;
 import io.github.musicdoc.interval.ChromaticStep;
 import io.github.musicdoc.tone.EnharmonicType;
 import io.github.musicdoc.tone.ToneNameCase;
-import io.github.musicdoc.tone.TonePitch;
-import io.github.musicdoc.tone.TonePitchDutch;
-import io.github.musicdoc.tone.TonePitchEnglish;
-import io.github.musicdoc.tone.TonePitchGerman;
-import io.github.musicdoc.tone.TonePitchInternational;
-import io.github.musicdoc.tone.TonePitchMapper;
-import io.github.musicdoc.tone.TonePitchMapperMusicDoc;
-import io.github.musicdoc.tone.TonePitches;
 
 /**
  * Test of {@link TonePitch}.

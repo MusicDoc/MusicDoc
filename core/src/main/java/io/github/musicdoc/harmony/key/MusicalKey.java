@@ -17,8 +17,8 @@ import io.github.musicdoc.interval.Solmization;
 import io.github.musicdoc.interval.ToneInterval;
 import io.github.musicdoc.tone.ToneNameCase;
 import io.github.musicdoc.tone.ToneNameStyle;
-import io.github.musicdoc.tone.TonePitch;
-import io.github.musicdoc.tone.TonePitchEnglish;
+import io.github.musicdoc.tone.pitch.TonePitch;
+import io.github.musicdoc.tone.pitch.TonePitchEnglish;
 import io.github.musicdoc.transpose.AbstractTransposable;
 import io.github.musicdoc.transpose.TransposeContext;
 

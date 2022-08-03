@@ -4,7 +4,7 @@ package io.github.musicdoc.interval;
 
 import io.github.musicdoc.harmony.TonalSystem;
 import io.github.musicdoc.harmony.key.MusicalKey;
-import io.github.musicdoc.tone.TonePitchEnglish;
+import io.github.musicdoc.tone.pitch.TonePitchEnglish;
 
 /**
  * Solmization is a system of attributing a distinct syllable to each note in a {@link MusicalKey#getDiatonicScale()

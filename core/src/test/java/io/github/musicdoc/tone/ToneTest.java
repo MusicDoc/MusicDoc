@@ -10,8 +10,8 @@ import io.github.musicdoc.tone.Tone;
 import io.github.musicdoc.tone.ToneMapper;
 import io.github.musicdoc.tone.ToneMapperMusicDoc;
 import io.github.musicdoc.tone.ToneNameStyle;
-import io.github.musicdoc.tone.TonePitch;
-import io.github.musicdoc.tone.TonePitchEnglish;
+import io.github.musicdoc.tone.pitch.TonePitch;
+import io.github.musicdoc.tone.pitch.TonePitchEnglish;
 import io.github.musicdoc.transpose.TransposeContext;
 
 /**

@@ -14,7 +14,7 @@ import io.github.musicdoc.score.section.ScoreSection;
 import io.github.musicdoc.score.section.ScoreSectionName;
 import io.github.musicdoc.score.section.ScoreSectionType;
 import io.github.musicdoc.song.Song;
-import io.github.musicdoc.tone.TonePitchEnglish;
+import io.github.musicdoc.tone.pitch.TonePitchEnglish;
 
 /**
  * Test of {@link SongFormatOpenSong}.

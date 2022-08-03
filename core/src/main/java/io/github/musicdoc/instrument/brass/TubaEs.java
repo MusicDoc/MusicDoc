@@ -1,7 +1,7 @@
 package io.github.musicdoc.instrument.brass;
 
 import io.github.musicdoc.tone.Tone;
-import io.github.musicdoc.tone.TonePitchEnglish;
+import io.github.musicdoc.tone.pitch.TonePitchEnglish;
 
 public class TubaEs extends Tuba {
 

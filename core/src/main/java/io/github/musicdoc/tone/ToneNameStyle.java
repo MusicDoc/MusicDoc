@@ -6,6 +6,9 @@ import java.util.Map;
 
 import io.github.musicdoc.harmony.EnharmonicStyle;
 import io.github.musicdoc.interval.ChromaticStep;
+import io.github.musicdoc.tone.pitch.TonePitch;
+import io.github.musicdoc.tone.pitch.TonePitchEnglish;
+import io.github.musicdoc.tone.pitch.TonePitchInternational;
 
 /**
  * Style of the {@link TonePitch#getName() name} of a {@link TonePitch} and its related objects such as {@link Tone},

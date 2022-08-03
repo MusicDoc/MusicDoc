@@ -1,4 +1,4 @@
-package io.github.musicdoc.tone;
+package io.github.musicdoc.tone.pitch;
 
 import io.github.musicdoc.filter.CharFilter;
 import io.github.musicdoc.filter.ListCharFilter;

@@ -3,7 +3,7 @@ package io.github.musicdoc.transpose;
 import io.github.musicdoc.AbstractMusicalObject;
 import io.github.musicdoc.harmony.TonalSystem;
 import io.github.musicdoc.interval.ToneInterval;
-import io.github.musicdoc.tone.TonePitch;
+import io.github.musicdoc.tone.pitch.TonePitch;
 
 /**
  * Abstract base implementation of {@link Transposable}.

@@ -6,13 +6,13 @@ import io.github.musicdoc.harmony.TonalSystem;
 
 /**
  * Interface for an {@link ToneInterval} that defines the distance from one
- * {@link io.github.musicdoc.tone.TonePitch} or {@link io.github.musicdoc.tone.Tone} to another.
+ * {@link io.github.musicdoc.tone.pitch.TonePitch} or {@link io.github.musicdoc.tone.Tone} to another.
  */
 public interface ToneInterval {
 
   /**
    * @see #getChromaticSteps(TonalSystem)
-   * @return the number of semitone steps relative to the initial {@link io.github.musicdoc.tone.TonePitch}
+   * @return the number of semitone steps relative to the initial {@link io.github.musicdoc.tone.pitch.TonePitch}
    *         (tonika) or {@code null} if undefined (e.g. for {@link Solmization} or {@link DiatonicStep}.
    */
   default Integer getChromaticSteps() {
@@ -26,27 +26,27 @@ public interface ToneInterval {
 
   /**
    * Returns the number of chromatic semitone steps from the initial
-   * {@link io.github.musicdoc.tone.TonePitch}.<br/>
+   * {@link io.github.musicdoc.tone.pitch.TonePitch}.<br/>
    * <b>ATTENTION:</b><br/>
    * This means the result is {@code 0}-based, so e.g. for {@link ChromaticInterval#PERFECT_FOURTH} it will return
    * {@code 5}.
    *
    * @param system the underlying {@link TonalSystem}. Instead of providing {@code null} it is recommended to use
    *        {@link #getChromaticSteps()} instead.
-   * @return the number of semitone steps relative to the initial {@link io.github.musicdoc.tone.TonePitch}
+   * @return the number of semitone steps relative to the initial {@link io.github.musicdoc.tone.pitch.TonePitch}
    *         (tonika) or {@link Integer#MIN_VALUE} if undefined (e.g. for {@link Solmization} if {@link TonalSystem} is
    *         {@code null} or in case of a {@link DiatonicInterval}). The modulo of twelve ({@code %12}) of the result is
-   *         the {@link java.util.List#get(int) index} of the {@link io.github.musicdoc.tone.TonePitch} from the
+   *         the {@link java.util.List#get(int) index} of the {@link io.github.musicdoc.tone.pitch.TonePitch} from the
    *         {@link io.github.musicdoc.harmony.key.MusicalKey#getChromaticScale() chromatic scale} of the
    *         {@link io.github.musicdoc.harmony.key.MusicalKey} with the initial
-   *         {@link io.github.musicdoc.tone.TonePitch} as
+   *         {@link io.github.musicdoc.tone.pitch.TonePitch} as
    *         {@link io.github.musicdoc.harmony.key.MusicalKey#getTonika() tonika}.
    */
   int getChromaticSteps(TonalSystem system);
 
   /**
    * @see #getDiatonicSteps(TonalSystem)
-   * @return the number of diatonic steps relative to the initial {@link io.github.musicdoc.tone.TonePitch}
+   * @return the number of diatonic steps relative to the initial {@link io.github.musicdoc.tone.pitch.TonePitch}
    *         (tonika) or {@code null} if undefined (e.g. for {@link Solmization} or {@link DiatonicStep}. <br>
    *         <b>ATTENTION:</b><br>
    *         The result is {@code 0}-based. See {@link #getDiatonicSteps(TonalSystem)} for details.
@@ -63,13 +63,13 @@ public interface ToneInterval {
   /**
    * @param system the underlying {@link TonalSystem}. Instead of providing {@code null} it is recommended to use
    *        {@link #getDiatonicSteps()} instead.
-   * @return the number of diatonic steps relative to the initial {@link io.github.musicdoc.tone.TonePitch}
+   * @return the number of diatonic steps relative to the initial {@link io.github.musicdoc.tone.pitch.TonePitch}
    *         (tonika) or {@link Integer#MIN_VALUE} if {@link TonalSystem} is {@code null} and the result is undefined
    *         (e.g. for {@link Solmization}). The modulo of seven ({@code %7}) of the result is the
-   *         {@link java.util.List#get(int) index} of the {@link io.github.musicdoc.tone.TonePitch} from the
+   *         {@link java.util.List#get(int) index} of the {@link io.github.musicdoc.tone.pitch.TonePitch} from the
    *         {@link io.github.musicdoc.harmony.key.MusicalKey#getDiatonicScale() diatonic scale} of the
    *         {@link io.github.musicdoc.harmony.key.MusicalKey} with the initial
-   *         {@link io.github.musicdoc.tone.TonePitch} as
+   *         {@link io.github.musicdoc.tone.pitch.TonePitch} as
    *         {@link io.github.musicdoc.harmony.key.MusicalKey#getTonika() tonika}.<br>
    *         <b>ATTENTION:</b><br>
    *         This means the result is {@code 0}-based, so e.g. for {@link DiatonicInterval#THIRD} it will return

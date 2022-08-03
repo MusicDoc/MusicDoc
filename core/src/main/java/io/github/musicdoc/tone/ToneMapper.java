@@ -7,6 +7,7 @@ import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
 import io.github.musicdoc.stave.Stave;
 import io.github.musicdoc.stave.voice.StaveVoice;
+import io.github.musicdoc.tone.pitch.TonePitch;
 
 /**
  * {@link AbstractMapper Mapper} for {@link Tone}.

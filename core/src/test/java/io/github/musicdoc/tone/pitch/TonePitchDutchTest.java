@@ -1,11 +1,10 @@
-package io.github.musicdoc.tone;
+package io.github.musicdoc.tone.pitch;
 
 import org.junit.jupiter.api.Test;
 
 import io.github.musicdoc.interval.ChromaticStep;
 import io.github.musicdoc.tone.EnharmonicType;
 import io.github.musicdoc.tone.ToneNameStyle;
-import io.github.musicdoc.tone.TonePitchDutch;
 
 /**
  * Test of {@link TonePitchDutch}.
@@ -38,19 +37,24 @@ public class TonePitchDutchTest extends AbstractTonePitchTest {
   @Test
   public void testSingleSharpEnharmonicChanges() {
 
-    verifyEnharmonicChange(TonePitchDutch.EIS, "Eis", EnharmonicType.SINGLE_SHARP, TonePitchDutch.F, TonePitchDutch.E, TonePitchDutch.EISIS);
-    verifyEnharmonicChange(TonePitchDutch.AIS, "Ais", EnharmonicType.SINGLE_SHARP, TonePitchDutch.BES, TonePitchDutch.A, TonePitchDutch.AISIS);
-    verifyEnharmonicChange(TonePitchDutch.BIS, "Bis", EnharmonicType.SINGLE_SHARP, TonePitchDutch.C, TonePitchDutch.B, TonePitchDutch.BISIS);
+    verifyEnharmonicChange(TonePitchDutch.EIS, "Eis", EnharmonicType.SINGLE_SHARP, TonePitchDutch.F, TonePitchDutch.E,
+        TonePitchDutch.EISIS);
+    verifyEnharmonicChange(TonePitchDutch.AIS, "Ais", EnharmonicType.SINGLE_SHARP, TonePitchDutch.BES, TonePitchDutch.A,
+        TonePitchDutch.AISIS);
+    verifyEnharmonicChange(TonePitchDutch.BIS, "Bis", EnharmonicType.SINGLE_SHARP, TonePitchDutch.C, TonePitchDutch.B,
+        TonePitchDutch.BISIS);
   }
 
   @Test
   public void testSingleFlatEnharmonicChanges() {
 
     verifyEnharmonicChange(TonePitchDutch.CES, "Ces", EnharmonicType.SINGLE_FLAT, TonePitchDutch.B, TonePitchDutch.CESES, TonePitchDutch.C);
-    verifyEnharmonicChange(TonePitchDutch.DES, "Des", EnharmonicType.SINGLE_FLAT, TonePitchDutch.CIS, TonePitchDutch.DESES, TonePitchDutch.D);
+    verifyEnharmonicChange(TonePitchDutch.DES, "Des", EnharmonicType.SINGLE_FLAT, TonePitchDutch.CIS, TonePitchDutch.DESES,
+        TonePitchDutch.D);
     verifyEnharmonicChange(TonePitchDutch.ES, "Es", EnharmonicType.SINGLE_FLAT, TonePitchDutch.DIS, TonePitchDutch.ESES, TonePitchDutch.E);
     verifyEnharmonicChange(TonePitchDutch.FES, "Fes", EnharmonicType.SINGLE_FLAT, TonePitchDutch.E, TonePitchDutch.FESES, TonePitchDutch.F);
-    verifyEnharmonicChange(TonePitchDutch.GES, "Ges", EnharmonicType.SINGLE_FLAT, TonePitchDutch.FIS, TonePitchDutch.GESES, TonePitchDutch.G);
+    verifyEnharmonicChange(TonePitchDutch.GES, "Ges", EnharmonicType.SINGLE_FLAT, TonePitchDutch.FIS, TonePitchDutch.GESES,
+        TonePitchDutch.G);
     verifyEnharmonicChange(TonePitchDutch.AS, "As", EnharmonicType.SINGLE_FLAT, TonePitchDutch.GIS, TonePitchDutch.ASES, TonePitchDutch.A);
   }
 

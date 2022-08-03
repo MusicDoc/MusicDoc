@@ -7,13 +7,13 @@ import io.github.musicdoc.interval.ToneInterval;
 /**
  * A {@link Transposable} is a musical object that can be {@link #transpose(int, boolean, TransposeContext) transposed}.
  * Please note that transposing is a complex operation and can behave slightly different depending on the type of object
- * (the implementing class). Atomic objects such as {@link io.github.musicdoc.tone.TonePitch} require specific
+ * (the implementing class). Atomic objects such as {@link io.github.musicdoc.tone.pitch.TonePitch} require specific
  * contextual information while others like {@link MusicalKey} do not. To provide the transposing feature via this
  * interface as a single API a {@link TransposeContext} is used for contextual information. This allows to pre-define
  * settings from outside for transposing as well as modifying the context during the recursive transposing of complex
  * objects like e.g. a complete {@link io.github.musicdoc.score.Score}. The drawback is that some of the methods
  * defined here like e.g. {@link #transposeChromatic(int)} will not work perfectly or make sense as expected if invoked
- * on low-level types like e.g. a {@link io.github.musicdoc.tone.TonePitch}. In such case use
+ * on low-level types like e.g. a {@link io.github.musicdoc.tone.pitch.TonePitch}. In such case use
  * {@link #transpose(int, boolean, TransposeContext)} and set the {@link MusicalKey} in the given
  * {@link TransposeContext} before invoking the transpose method.
  *

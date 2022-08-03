@@ -41,8 +41,8 @@ import io.github.musicdoc.stave.StaveMapper;
 import io.github.musicdoc.stave.system.StaveSystemMapper;
 import io.github.musicdoc.stave.voice.StaveVoiceMapper;
 import io.github.musicdoc.tone.ToneMapper;
-import io.github.musicdoc.tone.TonePitchMapper;
-import io.github.musicdoc.tone.TonePitchMapperOpenSong;
+import io.github.musicdoc.tone.pitch.TonePitchMapper;
+import io.github.musicdoc.tone.pitch.TonePitchMapperOpenSong;
 import io.github.musicdoc.volta.VoltaMapper;
 import io.github.musicdoc.volta.VoltaMapperOpenSong;
 

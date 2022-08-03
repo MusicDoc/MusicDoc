@@ -2,8 +2,8 @@ package io.github.musicdoc.interval;
 
 import io.github.musicdoc.harmony.TonalSystem;
 import io.github.musicdoc.harmony.key.MusicalKey;
-import io.github.musicdoc.tone.TonePitch;
-import io.github.musicdoc.tone.TonePitchEnglish;
+import io.github.musicdoc.tone.pitch.TonePitch;
+import io.github.musicdoc.tone.pitch.TonePitchEnglish;
 
 /**
  * The {@link ChromaticStep} represents the number of semitones a {@link TonePitch} is higher than

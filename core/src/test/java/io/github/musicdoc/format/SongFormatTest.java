@@ -26,7 +26,7 @@ import io.github.musicdoc.song.Song;
 import io.github.musicdoc.stave.StaveChange;
 import io.github.musicdoc.stave.voice.StaveVoice;
 import io.github.musicdoc.tone.Tone;
-import io.github.musicdoc.tone.TonePitchEnglish;
+import io.github.musicdoc.tone.pitch.TonePitchEnglish;
 
 /**
  * Abstract test case for {@link SongFormat}s.

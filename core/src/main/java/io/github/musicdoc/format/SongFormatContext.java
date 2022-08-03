@@ -13,7 +13,7 @@ import io.github.musicdoc.stave.system.StaveSystem;
 import io.github.musicdoc.stave.voice.StaveVoice;
 import io.github.musicdoc.stave.voice.StaveVoiceContainer;
 import io.github.musicdoc.tone.ToneNameStyle;
-import io.github.musicdoc.tone.TonePitchEnglish;
+import io.github.musicdoc.tone.pitch.TonePitchEnglish;
 
 /**
  * Bean with the context and options when reading or writing songs. All properties will initially be {@code null} and

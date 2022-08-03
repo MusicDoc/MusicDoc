@@ -1,6 +1,6 @@
 /* Copyright (c) The m-m-m Team, Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0 */
-package io.github.musicdoc.tone;
+package io.github.musicdoc.tone.pitch;
 
 import io.github.musicdoc.harmony.EnharmonicStyle;
 import io.github.musicdoc.harmony.TonalSystem;
@@ -9,6 +9,10 @@ import io.github.musicdoc.interval.ChromaticInterval;
 import io.github.musicdoc.interval.ChromaticStep;
 import io.github.musicdoc.interval.DiatonicStep;
 import io.github.musicdoc.interval.ToneInterval;
+import io.github.musicdoc.tone.EnharmonicType;
+import io.github.musicdoc.tone.Tone;
+import io.github.musicdoc.tone.ToneNameCase;
+import io.github.musicdoc.tone.ToneNameStyle;
 import io.github.musicdoc.transpose.AbstractTransposable;
 import io.github.musicdoc.transpose.TransposeContext;
 

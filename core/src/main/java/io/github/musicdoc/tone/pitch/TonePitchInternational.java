@@ -1,4 +1,4 @@
-package io.github.musicdoc.tone;
+package io.github.musicdoc.tone.pitch;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -8,6 +8,9 @@ import java.util.Map;
 
 import io.github.musicdoc.glyphs.unicode.UnicodeGlyphsAccidentals;
 import io.github.musicdoc.interval.ChromaticStep;
+import io.github.musicdoc.tone.EnharmonicType;
+import io.github.musicdoc.tone.ToneNameCase;
+import io.github.musicdoc.tone.ToneNameStyle;
 
 /**
  * {@link TonePitch} with international {@link ToneNameStyle}. This is similar to {@link TonePitchEnglish} but uses

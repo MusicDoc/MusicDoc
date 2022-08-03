@@ -1,4 +1,4 @@
-package io.github.musicdoc.tone;
+package io.github.musicdoc.tone.pitch;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -7,28 +7,30 @@ import java.util.Locale;
 import java.util.Map;
 
 import io.github.musicdoc.interval.ChromaticStep;
+import io.github.musicdoc.tone.EnharmonicType;
+import io.github.musicdoc.tone.ToneNameCase;
+import io.github.musicdoc.tone.ToneNameStyle;
+import io.github.musicdoc.tone.ToneNameStyleEuropean;
 
 /**
- * {@link TonePitch} with German {@link ToneNameStyle}. This style is used in the countries with these codes: AT, CZ,
- * DE, SE, DK, EE, FI, HU, LV, NO, PL, RS, SK. It uses {@link #H} for {@link TonePitchEnglish#B} and {@link #B} for
- * {@link TonePitchEnglish#B_FLAT}. Enharmonic signs are represented textually with e.g. "Cis" for "C#" or "Ces" for
- * "Cb".
+ * {@link TonePitch} with Dutch {@link ToneNameStyle}. This style is used in the Netherlands and Indonesia as well as
+ * sometimes in scandinavia. It uses {@link #BES} for {@link TonePitchEnglish#B_FLAT}. Enharmonic signs are represented
+ * textually with e.g. "Cis" for "C#" or "Ces" for "Cb".
  */
-public class TonePitchGerman extends TonePitch {
+public class TonePitchDutch extends TonePitch {
 
   /**
-   * {@link #getNameStyle() Name style} for {@link TonePitchGerman}.
+   * {@link #getNameStyle() Name style} for {@link TonePitchDutch}.
    */
-  public static final ToneNameStyleGerman STYLE = new ToneNameStyleGerman();
+  public static final ToneNameStyleDutch STYLE = new ToneNameStyleDutch();
 
-  private static final Map<String, TonePitchGerman> NAME2PITCH_MAP = new HashMap<>();
+  private static final Map<String, TonePitchDutch> NAME2PITCH_MAP = new HashMap<>();
 
-  private static final Collection<TonePitchGerman> PITCHES = Collections
-      .unmodifiableCollection(NAME2PITCH_MAP.values());
+  private static final Collection<TonePitchDutch> PITCHES = Collections.unmodifiableCollection(NAME2PITCH_MAP.values());
 
-  private static final TonePitchGerman[] PITCHES_NORMAL = new TonePitchGerman[12];
+  private static final TonePitchDutch[] PITCHES_NORMAL = new TonePitchDutch[12];
 
-  private static final TonePitchGerman[][] PITCHES_BY_TYPE_AND_STEP = new TonePitchGerman[5][12];
+  private static final TonePitchDutch[][] PITCHES_BY_TYPE_AND_STEP = new TonePitchDutch[5][12];
 
   /**
    * {@code C} is the {@link io.github.musicdoc.harmony.key.MusicalKey#getTonika() tonika} of the common
@@ -36,84 +38,84 @@ public class TonePitchGerman extends TonePitch {
    *
    * @see TonePitchEnglish#C
    */
-  public static final TonePitchGerman C = create("C", 0);
+  public static final TonePitchDutch C = create("C", 0);
 
   /**
    * {@code Cis} is one semitones higher than the pitch {@link #C}.
    *
    * @see TonePitchEnglish#C_SHARP
    */
-  public static final TonePitchGerman CIS = create("Cis", 1);
+  public static final TonePitchDutch CIS = create("Cis", 1);
 
   /**
    * {@code D} is two semitones higher than the pitch {@link #C}.
    *
    * @see TonePitchEnglish#D
    */
-  public static final TonePitchGerman D = create("D", 2);
+  public static final TonePitchDutch D = create("D", 2);
 
   /**
    * {@code Dis} is three semitones higher than the pitch {@link #C}.
    *
    * @see TonePitchEnglish#D_SHARP
    */
-  public static final TonePitchGerman DIS = create("Dis", 3);
+  public static final TonePitchDutch DIS = create("Dis", 3);
 
   /**
    * {@code E} is four semitones higher than the pitch {@link #C}.
    *
    * @see TonePitchEnglish#E
    */
-  public static final TonePitchGerman E = create("E", 4);
+  public static final TonePitchDutch E = create("E", 4);
 
   /**
    * {@code F} is five semitones higher than the pitch {@link #C}.
    *
    * @see TonePitchEnglish#F
    */
-  public static final TonePitchGerman F = create("F", 5);
+  public static final TonePitchDutch F = create("F", 5);
 
   /**
    * {@code Fis} is six semitones higher than the pitch {@link #C}.
    *
    * @see TonePitchEnglish#F_SHARP
    */
-  public static final TonePitchGerman FIS = create("Fis", 6);
+  public static final TonePitchDutch FIS = create("Fis", 6);
 
   /**
    * {@code G} is seven semitones higher than the pitch {@link #C}.
    *
    * @see TonePitchEnglish#G
    */
-  public static final TonePitchGerman G = create("G", 7);
+  public static final TonePitchDutch G = create("G", 7);
 
   /**
    * {@code Gis} is eight semitones higher than the pitch {@link #C}.
    *
    * @see TonePitchEnglish#G_SHARP
    */
-  public static final TonePitchGerman GIS = create("Gis", 8);
+  public static final TonePitchDutch GIS = create("Gis", 8);
 
   /**
    * {@code A} is nine semitones higher than the pitch {@link #C}.
    *
    * @see TonePitchEnglish#A
    */
-  public static final TonePitchGerman A = create("A", 9);
+  public static final TonePitchDutch A = create("A", 9);
 
   /**
-   * {@code B} is ten semitones higher than the pitch {@link #C}.
+   * {@code Bes} is ten semitones higher than the pitch {@link #C}.
    *
    * @see TonePitchEnglish#B_FLAT
    */
-  public static final TonePitchGerman B = create("B", 10);
+  public static final TonePitchDutch BES = create("Bes", 10);
 
   /**
-   * {@code H} is eleven semitones higher than the pitch {@link #C}.
+   * {@code B} is eleven semitones higher than the pitch {@link #C}.
    *
    * @see TonePitchEnglish#B
    */
-  public static final TonePitchGerman H = create("H", 11);
+  public static final TonePitchDutch B = create("B", 11);
 
   // ------------------------------ enharmonic changes (single sharp) ------------------------------
 
@@ -122,118 +124,118 @@ public class TonePitchGerman extends TonePitch {
    *
    * @see TonePitchEnglish#E_SHARP
    */
-  public static final TonePitchGerman EIS = create("Eis", F);
+  public static final TonePitchDutch EIS = create("Eis", F);
 
   /**
-   * {@code Ais} is an enharmonic change of {@link #B}.
+   * {@code Ais} is an enharmonic change of {@link #BES}.
    *
    * @see TonePitchEnglish#A_SHARP
    */
-  public static final TonePitchGerman AIS = create("Ais", B);
+  public static final TonePitchDutch AIS = create("Ais", BES);
 
   /**
-   * {@code His} is an enharmonic change of {@link #C}.
+   * {@code Bis} is an enharmonic change of {@link #C}.
    *
    * @see TonePitchEnglish#B_SHARP
    */
-  public static final TonePitchGerman HIS = create("His", C);
+  public static final TonePitchDutch BIS = create("Bis", C);
 
   // ------------------------------ enharmonic changes (single flat) ------------------------------
 
   /**
-   * {@code Ces} is an enharmonic change of {@link #H}.
+   * {@code Ces} is an enharmonic change of {@link #B}.
    *
    * @see TonePitchEnglish#C_FLAT
    */
-  public static final TonePitchGerman CES = create("Ces", H);
+  public static final TonePitchDutch CES = create("Ces", B);
 
   /**
    * {@code Des} is an enharmonic change of {@link #CIS}.
    *
    * @see TonePitchEnglish#D_FLAT
    */
-  public static final TonePitchGerman DES = create("Des", CIS);
+  public static final TonePitchDutch DES = create("Des", CIS);
 
   /**
    * {@code Es} is an enharmonic change of {@link #DIS}.
    *
    * @see TonePitchEnglish#E_FLAT
    */
-  public static final TonePitchGerman ES = create("Es", DIS);
+  public static final TonePitchDutch ES = create("Es", DIS);
 
   /**
    * {@code Fes} is an enharmonic change of {@link #E}.
    *
    * @see TonePitchEnglish#F_FLAT
    */
-  public static final TonePitchGerman FES = create("Fes", E);
+  public static final TonePitchDutch FES = create("Fes", E);
 
   /**
    * {@code Ges} is an enharmonic change of {@link #FIS}.
    *
    * @see TonePitchEnglish#G_FLAT
    */
-  public static final TonePitchGerman GES = create("Ges", FIS);
+  public static final TonePitchDutch GES = create("Ges", FIS);
 
   /**
    * {@code As} is an enharmonic change of {@link #GIS}.
    *
    * @see TonePitchEnglish#A_FLAT
    */
-  public static final TonePitchGerman AS = create("As", GIS);
+  public static final TonePitchDutch AS = create("As", GIS);
 
   // HES is B
 
   // ------------------------------ enharmonic changes (double flat) ------------------------------
 
   /**
-   * {@code Ceses} is an enharmonic change of {@link #B}.
+   * {@code Ceses} is an enharmonic change of {@link #BES}.
    *
    * @see TonePitchEnglish#C_DOUBLE_FLAT
    */
-  public static final TonePitchGerman CESES = create("Ceses", B);
+  public static final TonePitchDutch CESES = create("Ceses", BES);
 
   /**
    * {@code Deses} is an enharmonic change of {@link #C}.
    *
    * @see TonePitchEnglish#D_DOUBLE_FLAT
    */
-  public static final TonePitchGerman DESES = create("Deses", C);
+  public static final TonePitchDutch DESES = create("Deses", C);
 
   /**
    * {@code Eses} is an enharmonic change of {@link #D}.
    *
    * @see TonePitchEnglish#E_DOUBLE_FLAT
    */
-  public static final TonePitchGerman ESES = create("Eses", D);
+  public static final TonePitchDutch ESES = create("Eses", D);
 
   /**
    * {@code Feses} is an enharmonic change of {@link #DIS}.
    *
    * @see TonePitchEnglish#F_DOUBLE_FLAT
    */
-  public static final TonePitchGerman FESES = create("Feses", DIS);
+  public static final TonePitchDutch FESES = create("Feses", DIS);
 
   /**
    * {@code Geses} is an enharmonic change of {@link #F}.
    *
    * @see TonePitchEnglish#G_DOUBLE_FLAT
    */
-  public static final TonePitchGerman GESES = create("Geses", F);
+  public static final TonePitchDutch GESES = create("Geses", F);
 
   /**
    * {@code Ases} is an enharmonic change of {@link #G}.
    *
    * @see TonePitchEnglish#A_DOUBLE_FLAT
    */
-  public static final TonePitchGerman ASES = create("Ases", G);
+  public static final TonePitchDutch ASES = create("Ases", G);
 
   /**
-   * {@code Heses} is an enharmonic change of {@link #A}.
+   * {@code Beses} is an enharmonic change of {@link #A}.
    *
    * @see TonePitchEnglish#B_DOUBLE_FLAT
    */
-  public static final TonePitchGerman HESES = create("Heses", A);
+  public static final TonePitchDutch BESES = create("Beses", A);
 
   // ------------------------------ enharmonic changes (double sharp) ------------------------------
 
@@ -242,80 +244,80 @@ public class TonePitchGerman extends TonePitch {
    *
    * @see TonePitchEnglish#C_DOUBLE_SHARP
    */
-  public static final TonePitchGerman CISIS = create("Cisis", D);
+  public static final TonePitchDutch CISIS = create("Cisis", D);
 
   /**
    * {@code Disis} is an enharmonic change of {@link #E}.
    *
    * @see TonePitchEnglish#D_DOUBLE_SHARP
    */
-  public static final TonePitchGerman DISIS = create("Disis", E);
+  public static final TonePitchDutch DISIS = create("Disis", E);
 
   /**
    * {@code Eisis} is an enharmonic change of {@link #FIS}.
    *
    * @see TonePitchEnglish#E_DOUBLE_SHARP
    */
-  public static final TonePitchGerman EISIS = create("Eisis", FIS);
+  public static final TonePitchDutch EISIS = create("Eisis", FIS);
 
   /**
    * {@code Fisis} is an enharmonic change of {@link #G}.
    *
    * @see TonePitchEnglish#F_DOUBLE_SHARP
    */
-  public static final TonePitchGerman FISIS = create("Fisis", G);
+  public static final TonePitchDutch FISIS = create("Fisis", G);
 
   /**
    * {@code Gisis} is an enharmonic change of {@link #A}.
    *
    * @see TonePitchEnglish#G_DOUBLE_SHARP
    */
-  public static final TonePitchGerman GISIS = create("Gisis", A);
+  public static final TonePitchDutch GISIS = create("Gisis", A);
 
   /**
-   * {@code Aisis} is an enharmonic change of {@link #H}.
+   * {@code Aisis} is an enharmonic change of {@link #B}.
    *
    * @see TonePitchEnglish#A_DOUBLE_SHARP
    */
-  public static final TonePitchGerman AISIS = create("Aisis", H);
+  public static final TonePitchDutch AISIS = create("Aisis", B);
 
   /**
-   * {@code Hisis} is an enharmonic change of {@link #CIS}.
+   * {@code Bisis} is an enharmonic change of {@link #CIS}.
    *
    * @see TonePitchEnglish#B_DOUBLE_SHARP
    */
-  public static final TonePitchGerman HISIS = create("Hisis", CIS);
+  public static final TonePitchDutch BISIS = create("Bisis", CIS);
 
-  private final TonePitchGerman otherCase;
+  private final TonePitchDutch otherCase;
 
-  private TonePitchGerman(String name, ChromaticStep step, EnharmonicType enharmonicType, TonePitchGerman otherCase) {
+  private TonePitchDutch(String name, ChromaticStep step, EnharmonicType enharmonicType, TonePitchDutch otherCase) {
 
     super(name, step, (otherCase == null) ? ToneNameCase.CAPITAL_CASE : ToneNameCase.LOWER_CASE, enharmonicType);
     if (otherCase == null) {
       String lowercaseName = name.toLowerCase(Locale.US);
       assert (!lowercaseName.equals(name));
-      this.otherCase = new TonePitchGerman(lowercaseName, step, enharmonicType, this);
+      this.otherCase = new TonePitchDutch(lowercaseName, step, enharmonicType, this);
     } else {
       this.otherCase = otherCase;
     }
-    TonePitchGerman duplicate = NAME2PITCH_MAP.put(name, this);
+    TonePitchDutch duplicate = NAME2PITCH_MAP.put(name, this);
     assert (duplicate == null);
   }
 
   @Override
-  public ToneNameStyleGerman getNameStyle() {
+  public ToneNameStyleDutch getNameStyle() {
 
     return STYLE;
   }
 
   @Override
-  public TonePitchGerman getReference() {
+  public TonePitchDutch getReference() {
 
     return PITCHES_NORMAL[getStep().get()];
   }
 
   @Override
-  public TonePitchGerman with(ToneNameCase newCase) {
+  public TonePitchDutch with(ToneNameCase newCase) {
 
     if (this.nameCase == newCase) {
       return this;
@@ -323,36 +325,36 @@ public class TonePitchGerman extends TonePitch {
     return this.otherCase;
   }
 
-  private static TonePitchGerman create(String name, int step) {
+  private static TonePitchDutch create(String name, int step) {
 
-    TonePitchGerman pitch = create(name, ChromaticStep.of(step));
+    TonePitchDutch pitch = create(name, ChromaticStep.of(step));
     assert (PITCHES_NORMAL[step] == null);
     PITCHES_NORMAL[step] = pitch;
     return pitch;
   }
 
-  private static TonePitchGerman create(String name, TonePitchGerman reference) {
+  private static TonePitchDutch create(String name, TonePitchDutch reference) {
 
-    TonePitchGerman pitch = create(name, reference.step);
+    TonePitchDutch pitch = create(name, reference.step);
     return pitch;
   }
 
-  private static TonePitchGerman create(String name, ChromaticStep step) {
+  private static TonePitchDutch create(String name, ChromaticStep step) {
 
     EnharmonicType type = STYLE.getType(name);
-    TonePitchGerman pitch = new TonePitchGerman(name, step, type, null);
+    TonePitchDutch pitch = new TonePitchDutch(name, step, type, null);
     int typeIndex = type.getSignOffset() + 2;
-    assert (PITCHES_BY_TYPE_AND_STEP[typeIndex][step.get()] == null);
+    assert (PITCHES_BY_TYPE_AND_STEP[typeIndex][step.get()] == null) : pitch;
     PITCHES_BY_TYPE_AND_STEP[typeIndex][step.get()] = pitch;
     return pitch;
   }
 
   /**
-   * {@link ToneNameStyle} for {@link TonePitchGerman}.
+   * {@link ToneNameStyle} for {@link TonePitchDutch}.
    */
-  public static final class ToneNameStyleGerman extends ToneNameStyleEuropean<TonePitchGerman> {
+  public static final class ToneNameStyleDutch extends ToneNameStyleEuropean<TonePitchDutch> {
 
-    private ToneNameStyleGerman() {
+    private ToneNameStyleDutch() {
 
       super();
     }
@@ -360,34 +362,25 @@ public class TonePitchGerman extends TonePitch {
     @Override
     public String getName() {
 
-      return "German";
+      return "Dutch";
     }
 
     @Override
-    public EnharmonicType getType(String name) {
-
-      if (name.equalsIgnoreCase("B")) {
-        return EnharmonicType.SINGLE_FLAT;
-      }
-      return super.getType(name);
-    }
-
-    @Override
-    public TonePitchGerman pitch(String name) {
+    public TonePitchDutch pitch(String name) {
 
       return NAME2PITCH_MAP.get(name);
     }
 
     @Override
-    public Collection<TonePitchGerman> values() {
+    public Collection<TonePitchDutch> values() {
 
       return PITCHES;
     }
 
     @Override
-    public TonePitchGerman pitch(ChromaticStep step, EnharmonicType type, ToneNameCase nameCase) {
+    public TonePitchDutch pitch(ChromaticStep step, EnharmonicType type, ToneNameCase nameCase) {
 
-      TonePitchGerman result;
+      TonePitchDutch result;
       if (type == null) {
         result = PITCHES_NORMAL[step.get()];
       } else {

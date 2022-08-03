@@ -5,6 +5,7 @@ import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.format.SongFormatMusicDoc;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
+import io.github.musicdoc.tone.pitch.TonePitch;
 
 /**
  * {@link ToneMapper} for {@link SongFormatMusicDoc}.

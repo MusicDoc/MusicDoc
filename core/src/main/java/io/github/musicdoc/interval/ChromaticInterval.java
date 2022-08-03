@@ -8,7 +8,7 @@ import io.github.musicdoc.harmony.TonalSystem;
 import io.github.musicdoc.harmony.chord.Chord;
 import io.github.musicdoc.harmony.chord.ChordExtension;
 import io.github.musicdoc.harmony.key.MusicalKey;
-import io.github.musicdoc.tone.TonePitch;
+import io.github.musicdoc.tone.pitch.TonePitch;
 
 /**
  * Enum with the {@link #getChromaticSteps() chromatic} {@link ToneInterval}s.

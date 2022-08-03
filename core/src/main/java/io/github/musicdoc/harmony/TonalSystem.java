@@ -11,8 +11,8 @@ import java.util.Map;
 import io.github.musicdoc.MusicalObject;
 import io.github.musicdoc.harmony.key.MusicalKey;
 import io.github.musicdoc.interval.ChromaticStep;
-import io.github.musicdoc.tone.TonePitch;
-import io.github.musicdoc.tone.TonePitchEnglish;
+import io.github.musicdoc.tone.pitch.TonePitch;
+import io.github.musicdoc.tone.pitch.TonePitchEnglish;
 
 /**
  * A {@link TonalSystem} is a scale composed of seven distinct {@link TonePitch}es. The
