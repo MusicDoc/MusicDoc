@@ -14,7 +14,8 @@ import io.github.musicdoc.music.transpose.TransposeContext;
  *
  * @param <T> type of this class itself.
  */
-public abstract class AbstractStave<T extends AbstractStave<T>> extends AbstractTransposable<T> implements MutableObject<T> {
+public abstract class AbstractStave<T extends AbstractStave<T>> extends AbstractTransposable<T>
+    implements MutableObject<T> {
 
   /** Property name of {@link #getClef() clef}. */
   public static final String PROPERTY_CLEF = "clef";
@@ -170,6 +171,23 @@ public abstract class AbstractStave<T extends AbstractStave<T>> extends Abstract
     T transposed = copy();
     transposed.key = this.key.transpose(steps, diatonic, context);
     return transposed;
+  }
+
+  @Override
+  public void toString(StringBuilder sb) {
+
+    if (this.clef != null) {
+      sb.append("§");
+      sb.append(this.clef);
+    }
+    if (this.key != null) {
+      sb.append('$');
+      sb.append(this.key);
+    }
+    if (this.beat != null) {
+      sb.append('%');
+      sb.append(this.beat);
+    }
   }
 
 }

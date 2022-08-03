@@ -3,6 +3,7 @@ package io.github.musicdoc.music.format;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import io.github.musicdoc.io.MusicInputStream;
@@ -28,12 +29,10 @@ import io.github.musicdoc.music.rythm.value.MusicalValueMapper;
 import io.github.musicdoc.music.rythm.value.MusicalValueVariationMapper;
 import io.github.musicdoc.music.rythm.value.ValuedItemMapper;
 import io.github.musicdoc.music.score.Score;
-import io.github.musicdoc.music.score.ScoreLineMapper;
 import io.github.musicdoc.music.score.ScoreMapper;
-import io.github.musicdoc.music.score.comment.ScoreCommentLineMapper;
+import io.github.musicdoc.music.score.cell.ScoreCellMapper;
+import io.github.musicdoc.music.score.line.ScoreLineMapper;
 import io.github.musicdoc.music.score.section.ScoreSectionNameMapper;
-import io.github.musicdoc.music.score.voice.ScoreVoiceCellMapper;
-import io.github.musicdoc.music.score.voice.ScoreVoiceLineMapper;
 import io.github.musicdoc.music.song.Song;
 import io.github.musicdoc.music.song.SongMapper;
 import io.github.musicdoc.music.stave.StaveChangeMapper;
@@ -219,24 +218,22 @@ public abstract class SongFormat {
   protected abstract ScoreLineMapper getScoreLineMapper();
 
   /**
-   * @return the {@link ScoreCommentLineMapper}.
+   * @return the {@link ScoreCellMapper}
    */
-  protected abstract ScoreCommentLineMapper getCommentLineMapper();
-
-  /**
-   * @return the {@link ScoreVoiceLineMapper}.
-   */
-  protected abstract ScoreVoiceLineMapper getVoiceLineMapper();
-
-  /**
-   * @return the {@link ScoreVoiceCellMapper}
-   */
-  protected abstract ScoreVoiceCellMapper getVoiceCellMapper();
+  protected abstract ScoreCellMapper getScoreCellMapper();
 
   /**
    * @return the name of this formatSection.
    */
   public abstract String getName();
+
+  /**
+   * @return the default file extension of this format excluding the dot (e.g. "musicdoc").
+   */
+  public String getExtension() {
+
+    return getName().toLowerCase(Locale.ROOT);
+  }
 
   /**
    * @param inStream the {@link InputStream} to read.
@@ -266,6 +263,26 @@ public abstract class SongFormat {
   Beat getUnitNoteLength(Beat beat) {
 
     return Beat.of(1, 4);
+  }
+
+  /**
+   * @return {@code true} if {@link io.github.musicdoc.music.score.cell.ScoreCell#getItem() items} are supported,
+   *         {@code false} otherwise.
+   */
+  protected boolean isSupportItem() {
+
+    return true;
+  }
+
+  /**
+   * @return {@code true} if {@link io.github.musicdoc.music.score.Score#getSections() sections} are supported,
+   *         {@code false} otherwise. If not supported there will always be a single
+   *         {@link io.github.musicdoc.music.score.section.ScoreSection} without a
+   *         {@link io.github.musicdoc.music.score.section.ScoreSection#getName() name}.
+   */
+  protected boolean isSupportSection() {
+
+    return true;
   }
 
   @Override

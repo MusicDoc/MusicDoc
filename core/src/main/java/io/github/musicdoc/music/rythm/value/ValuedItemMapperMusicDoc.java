@@ -9,7 +9,7 @@ import io.github.musicdoc.music.format.SongFormatMusicDoc;
 /**
  * {@link ValuedItemMapper} for {@link SongFormatMusicDoc}.
  */
-public class ValuedItemMapperMusicDoc extends ValuedItemMapper {
+public class ValuedItemMapperMusicDoc extends ValuedItemMapperBase {
 
   /** The singleton instance. */
   public static final ValuedItemMapperMusicDoc INSTANCE = new ValuedItemMapperMusicDoc();

@@ -101,7 +101,13 @@ public enum StaveBracket implements MusicalGlyphs {
   @Override
   public String toString() {
 
-    return "" + this.start + this.end;
+    return this.syntax;
+  }
+
+  @Override
+  public void toString(StringBuilder sb) {
+
+    sb.append(this.syntax);
   }
 
   /**

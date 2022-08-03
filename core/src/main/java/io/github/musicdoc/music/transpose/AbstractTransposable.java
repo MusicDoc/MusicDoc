@@ -1,5 +1,6 @@
 package io.github.musicdoc.music.transpose;
 
+import io.github.musicdoc.AbstractMusicalObject;
 import io.github.musicdoc.music.harmony.TonalSystem;
 import io.github.musicdoc.music.interval.ToneInterval;
 import io.github.musicdoc.music.tone.TonePitch;
@@ -9,7 +10,8 @@ import io.github.musicdoc.music.tone.TonePitch;
  *
  * @param <SELF> this type itself.
  */
-public abstract class AbstractTransposable<SELF extends AbstractTransposable<SELF>> implements Transposable<SELF> {
+public abstract class AbstractTransposable<SELF extends Transposable<SELF>> extends AbstractMusicalObject
+    implements Transposable<SELF> {
 
   @Override
   public SELF transposeChromatic(int steps) {

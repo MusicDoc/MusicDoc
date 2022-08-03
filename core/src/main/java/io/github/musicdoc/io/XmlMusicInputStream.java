@@ -35,15 +35,23 @@ public class XmlMusicInputStream extends AbstractTextMusicInputStream {
   }
 
   @Override
-  public int getLine() {
+  public int getLine(boolean relative) {
 
-    return this.xmlReader.getLocation().getLineNumber() + super.getLine() - 1;
+    int result = this.line;
+    if (!relative) {
+      result += this.xmlReader.getLocation().getLineNumber() - 1;
+    }
+    return result;
   }
 
   @Override
-  public int getColumn() {
+  public int getColumn(boolean relative) {
 
-    return this.xmlReader.getLocation().getColumnNumber() + super.getColumn() - 1;
+    int result = this.column;
+    if (!relative && (this.line == 1)) {
+      result += this.xmlReader.getLocation().getColumnNumber() - 1;
+    }
+    return result;
   }
 
   @Override

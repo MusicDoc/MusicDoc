@@ -2,11 +2,13 @@
  * http://www.apache.org/licenses/LICENSE-2.0 */
 package io.github.musicdoc.music.rythm;
 
+import io.github.musicdoc.MusicalObject;
+
 /**
  * Common interface for {@link io.github.musicdoc.music.rythm.beat.Beat} and
  * {@link io.github.musicdoc.music.rythm.value.MusicalValue}.
  */
-public interface Fraction {
+public interface Fraction extends MusicalObject {
 
   /**
    * @return the beats

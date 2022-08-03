@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <song>
-  <title>Greensleves</title>
+  <title>Greensleeves</title>
   <author>Traditional</author>
   <tempo>100</tempo>
   <timesig>3/4</timesig>
   <key>C</key>
   <lyrics>[V1]
-.   Am      D7         G     Em         F                 E
- A-|las, my|lo-ve, you|do me|wro-ng, to|cast me|o-ff dis-|cour-teous-|ly. And|
-.Am     D7      G      Em         F          E7       Am
- I have|lo-ved_|you so|lo-ng, de-|ligh-_ting|in_ your|com-pa-|ny.||
+.   Am       D7          G      Em          F                  E
+ A-|las, my |lo-ve, you |do me |wro-ng, to |cast me |o-ff dis-|cour-teous-|ly. And|
+.Am      D7       G       Em         F            E7        Am
+ I have |lo-ved_ |you so |lo-ng, de-|ligh-_ ting |in_ your |com-pa-|ny.||
 [C]
 .C                   Bm     Em     Am      F            E
  Green-|slee-ves was|all my|joy,__|Gre-en-|sle-eves was|my de-|light,|
 .C                     G        Em         F          E7      Am
- Green-|sleeves was my|heart of|go-ld, and|who but my|la-_dy_|Green-|sleeves.|]
+ Green-|sleeves was my|heart of|go-ld, and|who but my|la-_dy_|Green-|sleeves.||*
   </lyrics>
  </song>

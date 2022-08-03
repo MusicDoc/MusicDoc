@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import io.github.musicdoc.AbstractMusicalObject;
 import io.github.musicdoc.MutableObject;
 import io.github.musicdoc.MutableObjecteCopier;
 import io.github.musicdoc.music.instrument.Instrument;
@@ -13,7 +14,7 @@ import io.github.musicdoc.music.stave.Stave;
 /**
  * Represents a voice inside a {@link Stave}.
  */
-public class StaveVoice implements MutableObject<StaveVoice> {
+public class StaveVoice extends AbstractMusicalObject implements MutableObject<StaveVoice> {
 
   /** Property name of {@link #getId() ID}. */
   public static final String PROPERTY_ID = "id";
@@ -89,6 +90,8 @@ public class StaveVoice implements MutableObject<StaveVoice> {
     super();
     Objects.requireNonNull(id, "ID");
     this.id = id;
+    this.name = "";
+    this.abbreviation = "";
   }
 
   /**
@@ -106,8 +109,8 @@ public class StaveVoice implements MutableObject<StaveVoice> {
     Objects.requireNonNull(abbreviation, "abbreviation");
   }
 
-  private StaveVoice(String id, String name, String abbreviation, Instrument instrument, StemDirection stemDirection, int transpose,
-      int octaveShift) {
+  private StaveVoice(String id, String name, String abbreviation, Instrument instrument, StemDirection stemDirection,
+      int transpose, int octaveShift) {
 
     super();
     this.name = name;
@@ -370,16 +373,16 @@ public class StaveVoice implements MutableObject<StaveVoice> {
     }
     StaveVoice other = (StaveVoice) obj;
     if (!Objects.equals(this.id, other.id) || !Objects.equals(this.name, other.name)
-        || !Objects.equals(this.abbreviation, other.abbreviation) || !Objects.equals(this.instrument, other.instrument)) {
+        || !Objects.equals(this.abbreviation, other.abbreviation)
+        || !Objects.equals(this.instrument, other.instrument)) {
       return false;
     }
     return true;
   }
 
   @Override
-  public String toString() {
+  public void toString(StringBuilder sb) {
 
-    StringBuilder sb = new StringBuilder();
     sb.append(this.id);
     if (this.name != null) {
       sb.append('=');
@@ -397,7 +400,6 @@ public class StaveVoice implements MutableObject<StaveVoice> {
       sb.append('|');
       sb.append(this.stemDirection);
     }
-    return sb.toString();
   }
 
   private static StaveVoice ofInternal(String id, String name) {

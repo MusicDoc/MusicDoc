@@ -1,90 +1,103 @@
 package io.github.musicdoc.music.bar;
 
-import java.util.HashMap;
-import java.util.Map;
+import io.github.musicdoc.MusicalObject;
 
 /**
  * {@link BarLine#getType() Type} of a {@link BarLine}.
  */
-public class BarLineType {
-
-  private static final Map<String, BarLineType> SYMBOL_MAP = new HashMap<>();
-
-  /** A single thin bar. */
-  public static final BarLineType SINGLE = new BarLineType("|");
-
-  /** A double thin bar. */
-  public static final BarLineType DOUBLE = new BarLineType("||");
-
-  /** A thick bar followed by a thin bar. */
-  public static final BarLineType THICK_THIN = new BarLineType("[|");
-
-  /** A thin bar followed by a thick bar. */
-  public static final BarLineType THIN_THICK = new BarLineType("|]");
-
-  /** A single thick bar. */
-  public static final BarLineType THICK = new BarLineType("][");
+public enum BarLineType implements MusicalObject {
 
   /** A double thick bar. */
-  public static final BarLineType THICK_THICK = new BarLineType("[]");
+  THICK_THICK("|*|*"),
+
+  /** A thick bar followed by a thin bar. */
+  THICK_THIN("|*|"),
+
+  /** A thin bar followed by a thick bar. */
+  THIN_THICK("||*"),
+
+  /** A single thick bar. */
+  THICK("|*"),
+
+  /** A double thin bar. */
+  DOUBLE("||"),
+
+  /** The bar to end a repeat and to start a new repeat (short form without '|'). */
+  REPEAT_END_START_0("::"),
+
+  /** The bar to end a repeat and to start a new repeat (form with single '|'). */
+  REPEAT_END_START_1(":|:"),
+
+  /** The bar to end a repeat and to start a new repeat (form with double '|'). */
+  REPEAT_END_START_2(":||:"),
 
   /** The bar to start a repeat. */
-  public static final BarLineType REPEAT_START = new BarLineType("|:");
+  REPEAT_START("|:"),
 
   /** The bar to end a repeat. */
-  public static final BarLineType REPEAT_END = new BarLineType(":|");
+  REPEAT_END(":|"),
 
-  /** The bar to end a repeat and to start a new repeat. */
-  public static final BarLineType REPEAT_END_START = new BarLineType("::");
+  /** A single thin bar. */
+  SINGLE("|");
 
-  private final String symbol;
+  private final String syntax;
 
-  static {
-    SYMBOL_MAP.put(":||:", REPEAT_END_START);
-    SYMBOL_MAP.put(":|:", REPEAT_END_START);
+  private BarLineType(String symbol) {
+
+    this.syntax = symbol;
   }
 
   /**
-   * The constructor.
-   *
-   * @param symbol the {@link #getSymbol() symbol}.
-   */
-  protected BarLineType(String symbol) {
-
-    super();
-    this.symbol = symbol;
-    SYMBOL_MAP.put(symbol, this);
-  }
-
-  /**
-   * @return {@code true} for a repeat type ({@link #REPEAT_START}, {@link #REPEAT_END}, {@link #REPEAT_END_START}),
-   *         {@code false} otherwise.
+   * @return {@code true} for a repeat type ({@link #REPEAT_START}, {@link #REPEAT_END}, {@link #REPEAT_END_START_0},
+   *         {@link #REPEAT_END_START_1}, {@link #REPEAT_END_START_2}), {@code false} otherwise.
    */
   public boolean isRepeat() {
 
-    return (this == REPEAT_START) || (this == REPEAT_END) || (this == REPEAT_END_START);
+    return (this == REPEAT_START) || (this == REPEAT_END) || (this == REPEAT_END_START_0)
+        || (this == REPEAT_END_START_1) || (this == REPEAT_END_START_2);
+  }
+
+  /**
+   * @return {@code true} for a repeat end+start type ({@link #REPEAT_END_START_0}, {@link #REPEAT_END_START_1},
+   *         {@link #REPEAT_END_START_2}), {@code false} otherwise.
+   */
+  public boolean isRepeatEndStart() {
+
+    return (this == REPEAT_END_START_0) || (this == REPEAT_END_START_1) || (this == REPEAT_END_START_2);
   }
 
   /**
    * @return the notation symbol if this bar type.
    */
-  public String getSymbol() {
+  public String getSyntax() {
 
-    return this.symbol;
+    return this.syntax;
   }
 
   @Override
   public String toString() {
 
-    return this.symbol;
+    return this.syntax;
+  }
+
+  @Override
+  public void toString(StringBuilder sb) {
+
+    sb.append(this.syntax);
   }
 
   /**
-   * @param symbol the symbol to parse.
-   * @return the according {@link BarLineType} or {@code null} if no such {@link BarLineType} could be found.
+   * @param syntax the {@link #getSyntax() syntax}.
+   * @return the {@link BarLineType} with the given {@link #getSyntax() syntax} or {@code null} if no such
+   *         {@link BarLineType} could be found.
    */
-  public static BarLineType of(String symbol) {
+  public static BarLineType of(String syntax) {
 
-    return SYMBOL_MAP.get(symbol);
+    for (BarLineType type : values()) {
+      if (type.syntax.equals(syntax)) {
+        return type;
+      }
+    }
+    return null;
   }
 }

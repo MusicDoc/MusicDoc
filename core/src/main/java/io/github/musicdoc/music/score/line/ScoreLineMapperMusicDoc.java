@@ -1,4 +1,4 @@
-package io.github.musicdoc.music.score;
+package io.github.musicdoc.music.score.line;
 
 import io.github.musicdoc.music.format.SongFormat;
 import io.github.musicdoc.music.format.SongFormatMusicDoc;
@@ -6,7 +6,7 @@ import io.github.musicdoc.music.format.SongFormatMusicDoc;
 /**
  * {@link ScoreLineMapper} for {@link SongFormatMusicDoc}.
  */
-public class ScoreLineMapperMusicDoc extends ScoreLineMapper {
+public class ScoreLineMapperMusicDoc extends ScoreLineMapperBase {
 
   /** The singleton instance. */
   public static final ScoreLineMapperMusicDoc INSTANCE = new ScoreLineMapperMusicDoc();
@@ -16,7 +16,7 @@ public class ScoreLineMapperMusicDoc extends ScoreLineMapper {
    */
   protected ScoreLineMapperMusicDoc() {
 
-    super();
+    super("$", " ", "%");
   }
 
   @Override

@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.github.musicdoc.MusicalObject;
 import io.github.musicdoc.music.harmony.key.MusicalKey;
 import io.github.musicdoc.music.interval.ChromaticStep;
 import io.github.musicdoc.music.tone.TonePitch;
@@ -19,7 +20,7 @@ import io.github.musicdoc.music.tone.TonePitchEnglish;
  * which the two half steps are separated from each other by either two or three whole steps, depending on their
  * position in the scale.
  */
-public class TonalSystem {
+public class TonalSystem implements MusicalObject {
 
   private static final Map<String, TonalSystem> NAME2SYSTEM_MAP = new HashMap<>();
 
@@ -216,8 +217,8 @@ public class TonalSystem {
   }
 
   /**
-   * @param chromaticSteps the number of {@link io.github.musicdoc.music.interval.ToneInterval#getChromaticSteps() chromatic
-   *        steps}.
+   * @param chromaticSteps the number of {@link io.github.musicdoc.music.interval.ToneInterval#getChromaticSteps()
+   *        chromatic steps}.
    * @param strict - {@code true} to return {@link Integer#MIN_VALUE} if the chromatic steps do not fit properly into
    *        this {@link TonalSystem}, {@code false} otherwise (to always return the diatonic steps).
    * @return the according number of {@link io.github.musicdoc.music.interval.ToneInterval#getDiatonicSteps() diatonic
@@ -252,10 +253,10 @@ public class TonalSystem {
   }
 
   /**
-   * @param diatonicSteps the number of {@link io.github.musicdoc.music.interval.ToneInterval#getDiatonicSteps() diatonic
-   *        steps}.
-   * @return the according the number of {@link io.github.musicdoc.music.interval.ToneInterval#getChromaticSteps() chromatic
-   *         steps} within this {@link TonalSystem} starting from {@link MusicalKey#getTonika() tonika}.
+   * @param diatonicSteps the number of {@link io.github.musicdoc.music.interval.ToneInterval#getDiatonicSteps()
+   *        diatonic steps}.
+   * @return the according the number of {@link io.github.musicdoc.music.interval.ToneInterval#getChromaticSteps()
+   *         chromatic steps} within this {@link TonalSystem} starting from {@link MusicalKey#getTonika() tonika}.
    */
   public int getChromaticSteps(int diatonicSteps) {
 
@@ -299,6 +300,18 @@ public class TonalSystem {
       return "<" + this.reference.name + ">";
     }
     return this.name;
+  }
+
+  @Override
+  public void toString(StringBuilder sb) {
+
+    if (this.name.isEmpty()) {
+      sb.append('<');
+      sb.append(this.reference.name);
+      sb.append('>');
+    } else {
+      sb.append(this.name);
+    }
   }
 
   private static final TonalSystem create(List<TonePitchEnglish> signPitches, int first, int second, String name,

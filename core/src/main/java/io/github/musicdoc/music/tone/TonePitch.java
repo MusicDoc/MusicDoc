@@ -376,4 +376,10 @@ public abstract class TonePitch extends AbstractTransposable<TonePitch> {
     return this.name;
   }
 
+  @Override
+  public void toString(StringBuilder sb) {
+
+    sb.append(this.name);
+  }
+
 }

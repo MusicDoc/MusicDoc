@@ -36,18 +36,14 @@ import io.github.musicdoc.music.rythm.value.MusicalValueVariationMapper;
 import io.github.musicdoc.music.rythm.value.MusicalValueVariationMapperMusicDoc;
 import io.github.musicdoc.music.rythm.value.ValuedItemMapper;
 import io.github.musicdoc.music.rythm.value.ValuedItemMapperMusicDoc;
-import io.github.musicdoc.music.score.ScoreLineMapper;
-import io.github.musicdoc.music.score.ScoreLineMapperMusicDoc;
 import io.github.musicdoc.music.score.ScoreMapper;
 import io.github.musicdoc.music.score.ScoreMapperMusicDoc;
-import io.github.musicdoc.music.score.comment.ScoreCommentLineMapper;
-import io.github.musicdoc.music.score.comment.ScoreCommentLineMapperMusicDoc;
+import io.github.musicdoc.music.score.cell.ScoreCellMapper;
+import io.github.musicdoc.music.score.cell.ScoreCellMapperMusicDoc;
+import io.github.musicdoc.music.score.line.ScoreLineMapper;
+import io.github.musicdoc.music.score.line.ScoreLineMapperMusicDoc;
 import io.github.musicdoc.music.score.section.ScoreSectionNameMapper;
 import io.github.musicdoc.music.score.section.ScoreSectionNameMapperMusicDoc;
-import io.github.musicdoc.music.score.voice.ScoreVoiceCellMapper;
-import io.github.musicdoc.music.score.voice.ScoreVoiceCellMapperMusicDoc;
-import io.github.musicdoc.music.score.voice.ScoreVoiceLineMapper;
-import io.github.musicdoc.music.score.voice.ScoreVoiceLineMapperMusicDoc;
 import io.github.musicdoc.music.song.SongMapper;
 import io.github.musicdoc.music.song.SongMapperMusicDoc;
 import io.github.musicdoc.music.stave.StaveChangeMapper;
@@ -247,21 +243,9 @@ public class SongFormatMusicDoc extends SongFormatText {
   }
 
   @Override
-  protected ScoreCommentLineMapper getCommentLineMapper() {
+  protected ScoreCellMapper getScoreCellMapper() {
 
-    return ScoreCommentLineMapperMusicDoc.INSTANCE;
-  }
-
-  @Override
-  protected ScoreVoiceLineMapper getVoiceLineMapper() {
-
-    return ScoreVoiceLineMapperMusicDoc.INSTANCE;
-  }
-
-  @Override
-  protected ScoreVoiceCellMapper getVoiceCellMapper() {
-
-    return ScoreVoiceCellMapperMusicDoc.INSTANCE;
+    return ScoreCellMapperMusicDoc.INSTANCE;
   }
 
   @Override

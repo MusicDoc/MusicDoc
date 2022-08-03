@@ -28,12 +28,6 @@ public interface FormatConstants {
 
   char BAR_SINGLE = '|';
 
-  char BAR_REPEAT = ':';
-
-  char BAR_THICK_1 = '[';
-
-  char BAR_THICK_2 = ']';
-
   char DECORATION_START = '!';
 
   char DECORATION_END = '!';
@@ -106,8 +100,6 @@ public interface FormatConstants {
   String START_SECTION_MUSIC_DOC = "#[";
 
   String START_SECTION_OPEN_SONG = "[";
-
-  char END_SECTION = ']';
 
   char START_CHORD = '[';
 

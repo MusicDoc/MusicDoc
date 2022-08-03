@@ -1,6 +1,8 @@
 package io.github.musicdoc.music.rythm.beat;
 
-import io.github.musicdoc.music.rythm.Fraction;
+import java.util.Objects;
+
+import io.github.musicdoc.music.rythm.AbstractFraction;
 
 /**
  * A {@link Beat} indicates the {@link io.github.musicdoc.music.rythm.value.MusicalValue} of a single bar in a
@@ -10,7 +12,7 @@ import io.github.musicdoc.music.rythm.Fraction;
  * the same as a {@link #_2_2 2/2} beat even though they can cover the same
  * {@link io.github.musicdoc.music.rythm.value.MusicalValue}s per bar.
  */
-public class Beat implements Fraction {
+public class Beat extends AbstractFraction {
 
   /** A 3/4 beat. */
   public static final Beat _3_4 = new Beat(3, 4);
@@ -33,10 +35,6 @@ public class Beat implements Fraction {
   /** No beat. */
   public static final Beat NONE = new Beat(0, 1, "none");
 
-  private final int beats;
-
-  private final int fraction;
-
   private final String text;
 
   private Beat(int beats, int fraction) {
@@ -46,28 +44,17 @@ public class Beat implements Fraction {
 
   private Beat(int beats, int fraction, String text) {
 
-    super();
-    this.beats = beats;
-    this.fraction = fraction;
+    super(beats, fraction);
     this.text = text;
   }
 
   @Override
-  public int getBeats() {
+  protected boolean isEqualTo(AbstractFraction other) {
 
-    return this.beats;
-  }
-
-  @Override
-  public int getFraction() {
-
-    return this.fraction;
-  }
-
-  @Override
-  public int hashCode() {
-
-    return 31 * this.beats + this.fraction;
+    if (super.isEqualTo(other)) {
+      return Objects.equals(this.text, ((Beat) other).text);
+    }
+    return false;
   }
 
   @Override
@@ -90,9 +77,9 @@ public class Beat implements Fraction {
   }
 
   @Override
-  public String toString() {
+  public void toString(StringBuilder sb) {
 
-    return this.text;
+    sb.append(this.text);
   }
 
   /**

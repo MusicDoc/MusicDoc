@@ -1,7 +1,9 @@
 package io.github.musicdoc.music.stave.system;
 
 import java.util.List;
+import java.util.Objects;
 
+import io.github.musicdoc.AbstractMusicalObject;
 import io.github.musicdoc.MutableObject;
 import io.github.musicdoc.MutableObjecteCopier;
 import io.github.musicdoc.music.stave.Stave;
@@ -16,11 +18,12 @@ import io.github.musicdoc.music.stave.voice.StaveVoiceContainer;
  * in this tree are wrapped in a {@link StaveSystemSingle} what can also be determined via {@link #isSingle()}. From the
  * perspective of a musical score only the root-node {@link StaveSystem} is actually what is called the system.
  */
-public abstract class StaveSystem implements StaveVoiceContainer, MutableObject<StaveSystem> {
+public abstract class StaveSystem extends AbstractMusicalObject
+    implements StaveVoiceContainer, MutableObject<StaveSystem> {
 
   /** The default {@link StaveSystem}. */
-  public static final StaveSystem DEFAULT = new StaveSystemSingle(Stave.DEFAULT.makeMutable().addVoice(StaveVoice.EMPTY), StaveBracket.NONE,
-      null).makeImmutable();
+  public static final StaveSystem DEFAULT = new StaveSystemSingle(
+      Stave.DEFAULT.makeMutable().addVoice(StaveVoice.EMPTY), StaveBracket.NONE, null).makeImmutable();
 
   /** @see #getBracket() */
   protected StaveBracket bracket;
@@ -40,6 +43,9 @@ public abstract class StaveSystem implements StaveVoiceContainer, MutableObject<
   protected StaveSystem(StaveBracket bracket, StaveSystemMultiple parent) {
 
     super();
+    if (bracket == null) {
+      bracket = StaveBracket.NONE;
+    }
     this.bracket = bracket;
     this.parent = parent;
   }
@@ -131,7 +137,9 @@ public abstract class StaveSystem implements StaveVoiceContainer, MutableObject<
   public Stave getLastStave() {
 
     StaveSystem lastChild = getLastChild();
-    if (lastChild.isSingle()) {
+    if (lastChild == null) {
+      return null;
+    } else if (lastChild.isSingle()) {
       return lastChild.getStave();
     } else {
       return lastChild.getLastStave();
@@ -200,14 +208,32 @@ public abstract class StaveSystem implements StaveVoiceContainer, MutableObject<
   }
 
   @Override
-  public String toString() {
+  public int hashCode() {
 
-    StringBuilder sb = new StringBuilder();
-    toString(sb);
-    return sb.toString();
+    int hash = Objects.hashCode(this.bracket);
+    Stave stave = getStave();
+    if (stave == null) {
+      return hash;
+    } else {
+      return hash * 31 + stave.hashCode();
+    }
   }
 
-  protected void toString(StringBuilder sb) {
+  @Override
+  public boolean equals(Object obj) {
+
+    if (obj == this) {
+      return true;
+    } else if (!(obj instanceof StaveSystem)) {
+      return false;
+    }
+    StaveSystem other = (StaveSystem) obj;
+    return (this.bracket == other.bracket) && Objects.equals(getStave(), other.getStave())
+        && Objects.equals(getChildren(), other.getChildren());
+  }
+
+  @Override
+  public void toString(StringBuilder sb) {
 
     if (this.bracket != null) {
       sb.append(this.bracket.getStart());

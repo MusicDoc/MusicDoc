@@ -5,6 +5,9 @@ package io.github.musicdoc.music.rythm.value;
 import java.util.List;
 import java.util.Objects;
 
+import io.github.musicdoc.MutableObject;
+import io.github.musicdoc.MutableObjecteCopier;
+import io.github.musicdoc.MutableObjecteHelper;
 import io.github.musicdoc.music.decoration.MusicalDecoration;
 import io.github.musicdoc.music.glyphs.MusicalGlyphs;
 import io.github.musicdoc.music.note.Note;
@@ -19,12 +22,14 @@ import io.github.musicdoc.music.transpose.AbstractTransposable;
  * @param <SELF> type of the class itself.
  */
 public abstract class ValuedItem<SELF extends ValuedItem<SELF>> extends AbstractTransposable<SELF>
-    implements MusicalGlyphs {
+    implements MusicalGlyphs, MutableObject<SELF> {
 
   /** @see #getValue() */
-  protected final MusicalValue value;
+  protected MusicalValue value;
 
-  private final List<MusicalDecoration> decorations;
+  private List<MusicalDecoration> decorations;
+
+  private boolean immutable;
 
   /**
    * The constructor.
@@ -38,6 +43,35 @@ public abstract class ValuedItem<SELF extends ValuedItem<SELF>> extends Abstract
     Objects.requireNonNull(value, "value");
     this.value = value;
     this.decorations = decorations;
+  }
+
+  /**
+   * The {@link #copy()} constructor.
+   *
+   * @param item the {@link ValuedItem} to copy.
+   * @param copier the {@link MutableObjecteCopier}.
+   */
+  protected ValuedItem(ValuedItem<SELF> item, MutableObjecteCopier copier) {
+
+    super();
+    this.value = item.value;
+    this.decorations = copier.copyListFlat(this.decorations);
+  }
+
+  @Override
+  public boolean isImmutable() {
+
+    return this.immutable;
+  }
+
+  @Override
+  public SELF makeImmutable() {
+
+    if (!this.immutable) {
+      this.decorations = MutableObjecteHelper.makeImmutableFlat(this.decorations);
+      this.immutable = true;
+    }
+    return self();
   }
 
   /**
@@ -58,11 +92,53 @@ public abstract class ValuedItem<SELF extends ValuedItem<SELF>> extends Abstract
   }
 
   /**
+   * @param value new value of {@link #getValue()}.
+   * @return an {@link ValuedItem item} with the given {@link #getValue() value} and all other properties like
+   *         {@code this} one. Will be a {@link #copy() copy} if {@link #isImmutable() immutable}.
+   */
+  public SELF setValue(MusicalValue value) {
+
+    if (this.value == value) {
+      return self();
+    }
+    SELF item = makeMutable();
+    item.value = value;
+    return item;
+  }
+
+  /**
+   * @param variation new value of {@link #getValue() value} {@link MusicalValue#getVariation() variation}.
+   * @return an {@link ValuedItem item} with the given {@link #getValue() value} and all other properties like
+   *         {@code this} one. Will be a {@link #copy() copy} if {@link #isImmutable() immutable}.
+   */
+  public SELF setValueVariation(MusicalValueVariation variation) {
+
+    if (this.value.getVariation() == variation) {
+      return self();
+    }
+    SELF item = makeMutable();
+    item.value = this.value.setVariation(variation);
+    return item;
+  }
+
+  /**
    * @return the {@link List} of {@link MusicalDecoration}s.
    */
   public List<MusicalDecoration> getDecorations() {
 
     return this.decorations;
+  }
+
+  /**
+   * @param decoration the {@link MusicalDecoration} to add to {@link #getDecorations() decorations}.
+   * @return an {@link ValuedItem item} with the given {@link MusicalDecoration} added and all other properties like
+   *         {@code this} one. Will be a {@link #copy() copy} if {@link #isImmutable() immutable}.
+   */
+  public SELF add(MusicalDecoration decoration) {
+
+    SELF item = makeMutable();
+    ((ValuedItem<?>) item).decorations.add(decoration);
+    return item;
   }
 
   @Override
@@ -85,6 +161,33 @@ public abstract class ValuedItem<SELF extends ValuedItem<SELF>> extends Abstract
       return false;
     }
     return true;
+  }
+
+  @Override
+  public final void toString(StringBuilder sb) {
+
+    for (MusicalDecoration decoration : this.decorations) {
+      if (!decoration.isItemSuffix()) {
+        decoration.toString(sb);
+      }
+    }
+    toStringItem(sb);
+    for (MusicalDecoration decoration : this.decorations) {
+      if (decoration.isItemSuffix()) {
+        decoration.toString(sb);
+      }
+    }
+  }
+
+  /**
+   * Called from {@link #toString(StringBuilder)} to format the raw item excluding the {@link #getDecorations()
+   * decorations} for simplified extension.
+   *
+   * @param sb the {@link StringBuilder} to append to.
+   */
+  protected void toStringItem(StringBuilder sb) {
+
+    this.value.toString(sb);
   }
 
 }

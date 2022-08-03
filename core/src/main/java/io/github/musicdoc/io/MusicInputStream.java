@@ -222,4 +222,31 @@ public interface MusicInputStream extends MusicStream {
    *         {@link #readPropertyStart() current property}.
    */
   String readPropertyValue();
+
+  @Override
+  default int getColumn() {
+
+    return getColumn(false);
+  }
+
+  /**
+   * @param relative - {@code true} for the relative position in current text (e.g. inside property), {@code false}
+   *        otherwise (absolute position).
+   * @return the relative or absolute {@link #getColumn() column number}
+   */
+  int getColumn(boolean relative);
+
+  @Override
+  default int getLine() {
+
+    return getLine(false);
+  }
+
+  /**
+   * @param relative - {@code true} for the relative position in current text (e.g. inside property), {@code false}
+   *        otherwise (absolute position).
+   * @return the relative or absolute {@link #getLine() line number}.
+   */
+  int getLine(boolean relative);
+
 }

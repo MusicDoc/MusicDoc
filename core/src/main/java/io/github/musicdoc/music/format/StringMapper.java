@@ -14,7 +14,7 @@ public class StringMapper extends AbstractMapper<String> {
   @Override
   public String read(MusicInputStream in, SongFormatContext context) {
 
-    String value = in.readPropertyValue();
+    String value = in.readUntil(NEWLINE_CHAR, true);
     return value;
   }
 

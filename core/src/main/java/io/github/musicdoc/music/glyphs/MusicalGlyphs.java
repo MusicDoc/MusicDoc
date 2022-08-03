@@ -1,9 +1,11 @@
 package io.github.musicdoc.music.glyphs;
 
+import io.github.musicdoc.MusicalObject;
+
 /**
  * Interface for a musical element that can be represented as {@link #getGlyphs() unicode symbol}.
  */
-public interface MusicalGlyphs {
+public interface MusicalGlyphs extends MusicalObject {
 
   /**
    * @return the glyph symbol(s) to render this musical element using a

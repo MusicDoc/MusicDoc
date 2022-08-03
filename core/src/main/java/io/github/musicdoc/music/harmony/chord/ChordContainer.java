@@ -1,5 +1,7 @@
 package io.github.musicdoc.music.harmony.chord;
 
+import java.util.Objects;
+
 import io.github.musicdoc.music.transpose.AbstractTransposable;
 import io.github.musicdoc.music.transpose.TransposeContext;
 
@@ -100,13 +102,43 @@ public class ChordContainer extends AbstractTransposable<ChordContainer> {
   }
 
   @Override
-  public String toString() {
+  public int hashCode() {
 
-    if (this.chord == null) {
-      return this.suffix;
-    } else {
-      return this.chord + this.suffix;
+    return Objects.hash(this.chord, this.suffix);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+
+    if (this == obj) {
+      return true;
+    } else if ((obj == null) || (getClass() != obj.getClass())) {
+      return false;
     }
+    ChordContainer other = (ChordContainer) obj;
+    return Objects.equals(this.chord, other.chord) && Objects.equals(this.next, other.next)
+        && Objects.equals(this.suffix, other.suffix);
+  }
+
+  @Override
+  public void toString(StringBuilder sb) {
+
+    if (this.chord != null) {
+      this.chord.toString(sb);
+    }
+    sb.append(this.suffix);
+  }
+
+  /**
+   * @param chord the {@link #getChord() chord}.
+   * @return the new {@link ChordContainer} or {@code null} if the given {@link Chord} is {@code null}.
+   */
+  public static ChordContainer of(Chord chord) {
+
+    if (chord == null) {
+      return null;
+    }
+    return new ChordContainer(chord);
   }
 
 }

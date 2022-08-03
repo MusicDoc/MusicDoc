@@ -133,8 +133,11 @@ public abstract class SongMapper extends AbstractMapper<Song> {
         in.addError("Unknown property '" + property + "' (skipping value: " + garbage + ").");
       } else {
         mapper.read(in, context);
+        String rest = in.readPropertyValue();
+        if (!rest.isBlank()) {
+          in.addWarning("Ignored garbage at the end of previous line.");
+        }
       }
-      in.expect(NEWLINE, true);
       return true;
     }
     return false;

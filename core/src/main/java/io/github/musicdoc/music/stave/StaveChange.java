@@ -10,7 +10,7 @@ import io.github.musicdoc.music.transpose.TransposeContext;
  * {@link AbstractStave} for changes of {@link #getClef() clef}, {@link #getKey() key}, and/or {@link #getBeat() beat}
  * within a {@link Stave}.
  *
- * @see io.github.musicdoc.music.score.voice.ScoreVoiceCell#getStaveChange()
+ * @see io.github.musicdoc.music.score.cell.ScoreCell#getStaveChange()
  */
 public class StaveChange extends AbstractStave<StaveChange> {
 

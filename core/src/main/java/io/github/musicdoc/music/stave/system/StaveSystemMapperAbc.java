@@ -37,12 +37,12 @@ public class StaveSystemMapperAbc extends StaveSystemMapper {
         state.setDisconnected(false);
       } else if (c == '*') {
         state.setFloating(true);
-        parseVoiceId(in, state);
+        readVoiceId(in, state);
       } else if (c == ' ') {
         state.handleVoice();
       } else if (ListCharFilter.LETTERS_AND_DIGITS.accept(c)) {
         state.appendVoiceId(c);
-        parseVoiceId(in, state);
+        readVoiceId(in, state);
       } else {
         in.addError("Unexpected character '" + c + "'");
       }
@@ -60,10 +60,9 @@ public class StaveSystemMapperAbc extends StaveSystemMapper {
     return group;
   }
 
-  private void parseVoiceId(MusicInputStream in, StaveSystemState state) {
+  private void readVoiceId(MusicInputStream in, StaveSystemState state) {
 
     String id = in.readWhile(ListCharFilter.LETTERS_AND_DIGITS);
-    assert (!id.isEmpty());
     state.appendVoiceId(id);
     state.handleVoice();
   }

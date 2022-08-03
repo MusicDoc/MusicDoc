@@ -20,7 +20,7 @@ public abstract class ToneMapper extends AbstractMapper<Tone> {
     if (pitch == null) {
       return null;
     }
-    return parseOctave(in, context, pitch);
+    return readOctave(in, context, pitch);
   }
 
   /**
@@ -29,7 +29,7 @@ public abstract class ToneMapper extends AbstractMapper<Tone> {
    * @param pitch the already parsed pitch.
    * @return the {@link Tone}.
    */
-  protected Tone parseOctave(MusicInputStream in, SongFormatContext context, TonePitch pitch) {
+  protected Tone readOctave(MusicInputStream in, SongFormatContext context, TonePitch pitch) {
 
     int octave = getOctave(context, pitch);
     while (true) {

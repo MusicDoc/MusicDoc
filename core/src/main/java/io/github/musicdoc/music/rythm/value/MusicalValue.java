@@ -4,6 +4,9 @@ package io.github.musicdoc.music.rythm.value;
 
 import java.util.Objects;
 
+import io.github.musicdoc.MutableObject;
+import io.github.musicdoc.MutableObjecteCopier;
+import io.github.musicdoc.music.rythm.AbstractFraction;
 import io.github.musicdoc.music.rythm.Fraction;
 import io.github.musicdoc.music.rythm.beat.Beat;
 import io.github.musicdoc.music.rythm.rest.Rest;
@@ -14,52 +17,65 @@ import io.github.musicdoc.music.tone.Tone;
  *
  * @see ValuedItem
  */
-public class MusicalValue implements Fraction {
+public class MusicalValue extends AbstractFraction implements MutableObject<MusicalValue> {
 
   /**
    * Whole (1/1). Unlike other predefined {@link MusicalValue}s this value does not have a fixed length in {@link #_1_4
    * quarters} but lasts a full bar whatever the {@link Beat} may be. This is used for a whole rest that lasts a full
    * bar (instead of {@link #_4_4}).
    */
-  public static final MusicalValue _1_1 = new MusicalValue(1, 1);
+  public static final MusicalValue _1_1 = ofInternal(1, 1);
 
   /**
    * Whole (4/4) tone also called <em>semibreve</em>.
    *
    * @see #_1_1
    */
-  public static final MusicalValue _4_4 = new MusicalValue(4, 4);
+  public static final MusicalValue _4_4 = ofInternal(4, 4);
 
   /**
    * Half (1/2) also called <em>minim</em>.
    */
-  public static final MusicalValue _1_2 = new MusicalValue(1, 2);
+  public static final MusicalValue _1_2 = ofInternal(1, 2);
+
+  /**
+   * {@link MusicalValueVariation#PUNCTURED Punctuated} {@link #_1_2 half} (1/2) so actually 3/4.
+   */
+  public static final MusicalValue _1_2p = ofInternal(1, 2, MusicalValueVariation.PUNCTURED);
 
   /**
    * Fourth (1/4) also called <em>quarter</em> or </em><em>crotchet</em>.
    */
-  public static final MusicalValue _1_4 = new MusicalValue(1, 4);
+  public static final MusicalValue _1_4 = ofInternal(1, 4);
+
+  /**
+   * {@link MusicalValueVariation#PUNCTURED Punctuated} {@link #_1_4 fourth} (1/4) so actually 3/8.
+   */
+  public static final MusicalValue _1_4p = ofInternal(1, 4, MusicalValueVariation.PUNCTURED);
 
   /**
    * Eighth (1/8) also called <em>quaver</em>.
    */
-  public static final MusicalValue _1_8 = new MusicalValue(1, 8);
+  public static final MusicalValue _1_8 = ofInternal(1, 8);
+
+  /**
+   * {@link MusicalValueVariation#PUNCTURED Punctuated} {@link #_1_8 eighth} (1/8) so actually 3/16.
+   */
+  public static final MusicalValue _1_8p = ofInternal(1, 8, MusicalValueVariation.PUNCTURED);
 
   /**
    * Sixteenth (1/16) also called <em>semiquaver</em>.
    */
-  public static final MusicalValue _1_16 = new MusicalValue(1, 16);
+  public static final MusicalValue _1_16 = ofInternal(1, 16);
 
   /**
    * Thirty-second fraction (1/32) also called <em>demi semi quaver</em>.
    */
-  public static final MusicalValue _1_32 = new MusicalValue(1, 32);
+  public static final MusicalValue _1_32 = ofInternal(1, 32);
 
-  private final int beats;
+  private MusicalValueVariation variation;
 
-  private final int fraction;
-
-  private final MusicalValueVariation variation;
+  private boolean immutable;
 
   /**
    * The constructor.
@@ -81,29 +97,34 @@ public class MusicalValue implements Fraction {
    */
   public MusicalValue(int beats, int fraction, MusicalValueVariation variation) {
 
-    super();
+    super(beats, fraction);
     Objects.requireNonNull(variation, "variation");
-    if (beats < 1) {
-      throw new IllegalArgumentException("Invalid beats value " + beats + " - must be positive!");
-    }
-    if (fraction < 1) {
-      throw new IllegalArgumentException("Invalid fraction value " + fraction + " - must be positive!");
-    }
-    this.beats = beats;
-    this.fraction = fraction;
     this.variation = variation;
   }
 
-  @Override
-  public int getBeats() {
+  private MusicalValue(MusicalValue value, MutableObjecteCopier copier) {
 
-    return this.beats;
+    super(value.beats, value.fraction);
+    this.variation = value.variation;
   }
 
   @Override
-  public int getFraction() {
+  public MusicalValue copy(MutableObjecteCopier copier) {
 
-    return this.fraction;
+    return new MusicalValue(this, copier);
+  }
+
+  @Override
+  public boolean isImmutable() {
+
+    return this.immutable;
+  }
+
+  @Override
+  public MusicalValue makeImmutable() {
+
+    this.immutable = true;
+    return this;
   }
 
   /**
@@ -112,6 +133,51 @@ public class MusicalValue implements Fraction {
   public MusicalValueVariation getVariation() {
 
     return this.variation;
+  }
+
+  /**
+   * @param variation the new value of {@link #getVariation() variation}.
+   * @return a {@link MusicalValue} with the given {@link #getVariation() variation} and all other properties like
+   *         {@code this} one. Will be a {@link #copy() copy} if {@link #isImmutable() immutable}.
+   */
+  public MusicalValue setVariation(MusicalValueVariation variation) {
+
+    if (this.variation == variation) {
+      return this;
+    }
+    MusicalValue value = makeMutable();
+    value.variation = variation;
+    return value;
+  }
+
+  /**
+   * @param beats the new value of {@link #getBeats() beats}.
+   * @return a {@link MusicalValue} with the given {@link #getBeats() beats} and all other properties like {@code this}
+   *         one. Will be a {@link #copy() copy} if {@link #isImmutable() immutable}.
+   */
+  public MusicalValue setBeats(int beats) {
+
+    if (this.beats == beats) {
+      return this;
+    }
+    MusicalValue value = makeMutable();
+    value.beats = beats;
+    return value;
+  }
+
+  /**
+   * @param fraction the new value of {@link #getFraction() fraction}.
+   * @return a {@link MusicalValue} with the given {@link #getFraction() fraction} and all other properties like
+   *         {@code this} one. Will be a {@link #copy() copy} if {@link #isImmutable() immutable}.
+   */
+  public MusicalValue setFraction(int fraction) {
+
+    if (this.fraction == fraction) {
+      return this;
+    }
+    MusicalValue value = makeMutable();
+    value.fraction = fraction;
+    return value;
   }
 
   @Override
@@ -128,7 +194,7 @@ public class MusicalValue implements Fraction {
    */
   public double getValue(boolean withVariation) {
 
-    double value = Fraction.super.getValue();
+    double value = super.getValue();
     if (withVariation) {
       value = value * this.variation.getValue();
     }
@@ -191,42 +257,29 @@ public class MusicalValue implements Fraction {
   }
 
   @Override
-  public int hashCode() {
+  protected boolean isEqualTo(AbstractFraction other) {
 
-    return 31 * this.beats + this.fraction;
+    if (super.isEqualTo(other)) {
+      return Objects.equals(this.variation, ((MusicalValue) other).variation);
+    }
+    return false;
   }
 
   @Override
-  public boolean equals(Object obj) {
+  public void toString(StringBuilder sb) {
 
-    if (this == obj) {
-      return true;
-    }
-    if ((obj == null) || (getClass() != obj.getClass())) {
-      return false;
-    }
-    MusicalValue other = (MusicalValue) obj;
-    if (this.beats != other.beats) {
-      return false;
-    }
-    if (this.fraction != other.fraction) {
-      return false;
-    }
-    if (!Objects.equals(this.variation, other.variation)) {
-      return false;
-    }
-    return true;
-  }
-
-  @Override
-  public String toString() {
-
-    StringBuilder sb = new StringBuilder(5);
-    sb.append(this.beats);
-    sb.append('/');
-    sb.append(this.fraction);
+    super.toString(sb);
     sb.append(this.variation);
-    return sb.toString();
+  }
+
+  private static MusicalValue ofInternal(int beats, int fraction) {
+
+    return new MusicalValue(beats, fraction, MusicalValueVariation.NONE).makeImmutable();
+  }
+
+  private static MusicalValue ofInternal(int beats, int fraction, MusicalValueVariation variation) {
+
+    return new MusicalValue(beats, fraction, variation).makeImmutable();
   }
 
 }

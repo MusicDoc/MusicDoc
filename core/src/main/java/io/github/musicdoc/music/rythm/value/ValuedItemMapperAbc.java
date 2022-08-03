@@ -1,12 +1,16 @@
 package io.github.musicdoc.music.rythm.value;
 
+import io.github.musicdoc.io.MusicInputStream;
+import io.github.musicdoc.music.decoration.MusicalDecoration;
 import io.github.musicdoc.music.format.SongFormat;
 import io.github.musicdoc.music.format.SongFormatAbc;
+import io.github.musicdoc.music.format.SongFormatContext;
+import io.github.musicdoc.music.rythm.Fraction;
 
 /**
  * {@link ValuedItemMapper} for {@link SongFormatAbc}.
  */
-public class ValuedItemMapperAbc extends ValuedItemMapper {
+public class ValuedItemMapperAbc extends ValuedItemMapperBase {
 
   /** The singleton instance. */
   public static final ValuedItemMapperAbc INSTANCE = new ValuedItemMapperAbc();
@@ -17,6 +21,33 @@ public class ValuedItemMapperAbc extends ValuedItemMapper {
   protected ValuedItemMapperAbc() {
 
     super();
+  }
+
+  @Override
+  protected Fraction readValuePrefix(MusicInputStream in, SongFormatContext context) {
+
+    if (in.expect('>')) {
+      return MusicalValue._1_2;
+    }
+    return super.readValuePrefix(in, context);
+  }
+
+  @Override
+  protected MusicalDecoration readItemPrefix(MusicInputStream in, SongFormatContext context) {
+
+    return super.readItemPrefix(in, context);
+  }
+
+  @Override
+  protected ValuedItem<?> readItemSuffix(ValuedItem<?> item, MusicInputStream in, SongFormatContext context) {
+
+    item = super.readItemSuffix(item, in, context);
+    if (in.peek() == '>') {
+      assert (item.getValue().getVariation() == MusicalValueVariation.NONE);
+      item = item.setValueVariation(MusicalValueVariation.PUNCTURED);
+
+    }
+    return item;
   }
 
   @Override

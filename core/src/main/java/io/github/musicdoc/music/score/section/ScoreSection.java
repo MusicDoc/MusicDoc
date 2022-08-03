@@ -17,7 +17,8 @@ import io.github.musicdoc.music.transpose.TransposeContext;
  * Represents a logical section of a {@link Score}. Each section has a {@link #getName() name} such as "Verse 1" and
  * multiple {@link #getRows() rows}.
  */
-public class ScoreSection extends AbstractTransposable<ScoreSection> implements StaveSystemContainer, MutableObject<ScoreSection> {
+public class ScoreSection extends AbstractTransposable<ScoreSection>
+    implements StaveSystemContainer, MutableObject<ScoreSection> {
 
   private ScoreSectionName name;
 
@@ -190,11 +191,14 @@ public class ScoreSection extends AbstractTransposable<ScoreSection> implements 
   }
 
   @Override
-  public String toString() {
+  public void toString(StringBuilder sb) {
 
-    if (this.name == null) {
-      return super.toString();
+    if (this.name != null) {
+      this.name.toString(sb);
+      sb.append('\n');
     }
-    return this.name.toString();
+    for (ScoreRow row : this.rows) {
+      row.toString(sb);
+    }
   }
 }

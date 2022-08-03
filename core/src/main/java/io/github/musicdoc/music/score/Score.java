@@ -137,4 +137,16 @@ public class Score extends AbstractTransposable<Score> implements StaveSystemCon
     }
     return score;
   }
+
+  @Override
+  public void toString(StringBuilder sb) {
+
+    if (this.staveSystem != null) {
+      this.staveSystem.toString(sb);
+      sb.append('\n');
+    }
+    for (ScoreSection section : this.sections) {
+      section.toString(sb);
+    }
+  }
 }

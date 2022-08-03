@@ -1,25 +1,20 @@
-package io.github.musicdoc.music.score.voice;
+package io.github.musicdoc.music.score.cell;
 
-import io.github.musicdoc.filter.CharFilter;
-import io.github.musicdoc.filter.ListCharFilter;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
 import io.github.musicdoc.music.bar.BarLine;
-import io.github.musicdoc.music.format.AbstractMapper;
 import io.github.musicdoc.music.format.SongFormatContext;
 import io.github.musicdoc.music.harmony.chord.ChordContainer;
 import io.github.musicdoc.music.rythm.value.ValuedItem;
 import io.github.musicdoc.music.stave.StaveChange;
 
 /**
- * {@link AbstractMapper Mapper} for {@link ScoreVoiceCell}.
+ * Basic implementation of {@link ScoreCellMapper}.
  */
-public abstract class ScoreVoiceCellMapper extends AbstractMapper<ScoreVoiceCell> {
-
-  static final CharFilter STOP_FILTER = ListCharFilter.NEWLINE.join(CHORD_START, ITEM_START, BAR_SINGLE, BAR_REPEAT, BAR_THICK_2);
+public abstract class ScoreCellMapperBase extends ScoreCellMapper {
 
   @Override
-  public ScoreVoiceCell read(MusicInputStream in, SongFormatContext context) {
+  public ScoreCell read(MusicInputStream in, SongFormatContext context) {
 
     StaveChange staveChange = getStaveChangeMapper().read(in, context);
     ValuedItem<?> item = getValuedItemMapper().read(in, context);
@@ -27,12 +22,12 @@ public abstract class ScoreVoiceCellMapper extends AbstractMapper<ScoreVoiceCell
     if ((item == null) && (chordContainer != null)) {
       item = getValuedItemMapper().read(in, context);
     }
-    String lyric = in.readUntil(STOP_FILTER, true);
+    String lyric = readLyric(in, context);
     BarLine bar = getBarLineMapper().read(in, context);
     if ((staveChange == null) && (item == null) && (chordContainer == null) && lyric.isEmpty() && (bar == null)) {
       return null;
     }
-    ScoreVoiceCell currentCell = new ScoreVoiceCell();
+    ScoreCell currentCell = new ScoreCell();
     currentCell.setStaveChange(staveChange);
     currentCell.setChordContainer(chordContainer);
     currentCell.setItem(item);
@@ -41,8 +36,19 @@ public abstract class ScoreVoiceCellMapper extends AbstractMapper<ScoreVoiceCell
     return currentCell;
   }
 
+  /**
+   * @param in tje {@link MusicInputStream} to read from.
+   * @param context the {@link SongFormatContext}.
+   * @return the {@link ScoreCell#getLyric() lyric}.
+   */
+  protected String readLyric(MusicInputStream in, SongFormatContext context) {
+
+    in.skipWhile(' ');
+    return "";
+  }
+
   @Override
-  public void write(ScoreVoiceCell cell, MusicOutputStream out, SongFormatContext context) {
+  public void write(ScoreCell cell, MusicOutputStream out, SongFormatContext context) {
 
     if (cell == null) {
       return;

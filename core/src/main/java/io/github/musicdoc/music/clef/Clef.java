@@ -4,6 +4,7 @@ package io.github.musicdoc.music.clef;
 
 import java.util.Objects;
 
+import io.github.musicdoc.AbstractMusicalObject;
 import io.github.musicdoc.MutableObject;
 import io.github.musicdoc.MutableObjecteCopier;
 import io.github.musicdoc.music.glyphs.MusicalGlyphs;
@@ -21,7 +22,7 @@ import io.github.musicdoc.music.transpose.TransposeContext;
  * The clef is the initial symbol of a {@link io.github.musicdoc.music.stave.Stave} that indicates which line is
  * identifying which {@link Tone}.
  */
-public class Clef implements MusicalGlyphs, ClefObject, MutableObject<Clef> {
+public class Clef extends AbstractMusicalObject implements MusicalGlyphs, ClefObject, MutableObject<Clef> {
 
   /** Regular {@link ClefSymbol#G G-clef}. */
   public static final Clef G = ofInteral(ClefSymbol.G, "g");
@@ -288,21 +289,20 @@ public class Clef implements MusicalGlyphs, ClefObject, MutableObject<Clef> {
   }
 
   @Override
-  public String toString() {
+  public void toString(StringBuilder sb) {
 
-    String result;
     if (this.symbol == null) {
-      result = "none";
+      sb.append("none");
     } else {
-      result = this.symbol.toString();
+      sb.append(this.symbol);
     }
     int steps = this.shift.getChromaticSteps(TonalSystem.MAJOR);
     if (steps > 0) {
-      result = result + "+" + steps;
+      sb.append('+');
+      sb.append(steps);
     } else if (steps < 0) {
-      result = result + steps;
+      sb.append(steps);
     }
-    return result;
   }
 
   private static Clef ofInteral(ClefSymbol type, String name) {

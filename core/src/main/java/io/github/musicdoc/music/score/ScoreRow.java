@@ -6,6 +6,7 @@ import java.util.List;
 import io.github.musicdoc.MutableObject;
 import io.github.musicdoc.MutableObjecteCopier;
 import io.github.musicdoc.MutableObjecteHelper;
+import io.github.musicdoc.music.score.line.ScoreLine;
 import io.github.musicdoc.music.score.section.ScoreSection;
 import io.github.musicdoc.music.transpose.AbstractTransposable;
 import io.github.musicdoc.music.transpose.TransposeContext;
@@ -18,7 +19,6 @@ import io.github.musicdoc.music.transpose.TransposeContext;
  */
 public class ScoreRow extends AbstractTransposable<ScoreRow> implements MutableObject<ScoreRow> {
 
-  @SuppressWarnings("rawtypes")
   private List<ScoreLine> lines;
 
   private boolean immutable;
@@ -32,7 +32,6 @@ public class ScoreRow extends AbstractTransposable<ScoreRow> implements MutableO
     this.lines = new ArrayList<>();
   }
 
-  @SuppressWarnings("unchecked")
   private ScoreRow(ScoreRow row, MutableObjecteCopier copier) {
 
     super();
@@ -51,7 +50,6 @@ public class ScoreRow extends AbstractTransposable<ScoreRow> implements MutableO
     return this.immutable;
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public ScoreRow makeImmutable() {
 
@@ -65,7 +63,6 @@ public class ScoreRow extends AbstractTransposable<ScoreRow> implements MutableO
   /**
    * @return the {@link List} of {@link ScoreLine}s.
    */
-  @SuppressWarnings("rawtypes")
   public List<ScoreLine> getLines() {
 
     return this.lines;
@@ -74,7 +71,7 @@ public class ScoreRow extends AbstractTransposable<ScoreRow> implements MutableO
   /**
    * @param line the {@link ScoreLine} to add.
    */
-  public void addLine(ScoreLine<?, ?> line) {
+  public void addLine(ScoreLine line) {
 
     this.lines.add(line);
   }
@@ -84,7 +81,7 @@ public class ScoreRow extends AbstractTransposable<ScoreRow> implements MutableO
    * @return the {@link ScoreLine} at the given index.
    * @see List#get(int)
    */
-  public ScoreLine<?, ?> getLine(int i) {
+  public ScoreLine getLine(int i) {
 
     if (i >= this.lines.size()) {
       return null;
@@ -99,7 +96,7 @@ public class ScoreRow extends AbstractTransposable<ScoreRow> implements MutableO
   public int getColumnCount() {
 
     int columnCount = 0;
-    for (ScoreLine<?, ?> line : this.lines) {
+    for (ScoreLine line : this.lines) {
       int cellCount = line.getCellCount();
       if (cellCount > columnCount) {
         columnCount = cellCount;
@@ -112,9 +109,18 @@ public class ScoreRow extends AbstractTransposable<ScoreRow> implements MutableO
   public ScoreRow transpose(int steps, boolean diatonic, TransposeContext context) {
 
     ScoreRow transposed = new ScoreRow();
-    for (ScoreLine<?, ?> line : this.lines) {
+    for (ScoreLine line : this.lines) {
       transposed.addLine(line.transpose(steps, diatonic, context));
     }
     return transposed;
+  }
+
+  @Override
+  public void toString(StringBuilder sb) {
+
+    for (ScoreLine line : this.lines) {
+      line.toString(sb);
+      sb.append('\n');
+    }
   }
 }

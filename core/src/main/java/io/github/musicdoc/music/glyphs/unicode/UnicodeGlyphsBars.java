@@ -27,7 +27,9 @@ public interface UnicodeGlyphsBars extends UnicodeGlyphs {
    */
   static String get(BarLineType barType) {
 
-    if (barType == BarLineType.SINGLE) {
+    if (barType == null) {
+      return null;
+    } else if (barType == BarLineType.SINGLE) {
       return SINGLE_BARLINE;
     } else if (barType == BarLineType.DOUBLE) {
       return DOUBLE_BARLINE;
@@ -43,7 +45,7 @@ public interface UnicodeGlyphsBars extends UnicodeGlyphs {
       return UnicodeGlyphsCodas.LEFT_REPEAT;
     } else if (barType == BarLineType.REPEAT_END) {
       return UnicodeGlyphsCodas.RIGHT_REPEAT;
-    } else if (barType == BarLineType.REPEAT_END_START) {
+    } else if (barType.isRepeatEndStart()) {
       return UnicodeGlyphsCodas.RIGHT_REPEAT + UnicodeGlyphsCodas.LEFT_REPEAT;
     }
     return null;

@@ -22,10 +22,11 @@ public abstract class MusicalValueMapper extends AbstractMapper<MusicalValue> {
     }
     Integer fractionInt = null;
     int fraction = 4;
+    boolean empty = false;
     if (in.expect(BEAT_SEPRATOR_STRING, false)) {
       fractionInt = in.readInteger(4, false);
     } else if (beatsInt == null) {
-      return null;
+      empty = true;
     }
     if (fractionInt == null) {
       if (beats == 2) {
@@ -42,6 +43,14 @@ public abstract class MusicalValueMapper extends AbstractMapper<MusicalValue> {
       }
     }
     MusicalValueVariation variation = getVariationMapper().read(in, context);
+    if (empty && (variation == null)) {
+      return null;
+    }
+    if ((variation == MusicalValueVariation.NONE) && (beats == 3)) {
+      beats = 1;
+      fraction = fraction / 2;
+      variation = MusicalValueVariation.PUNCTURED;
+    }
     return new MusicalValue(beats, fraction, variation);
   }
 

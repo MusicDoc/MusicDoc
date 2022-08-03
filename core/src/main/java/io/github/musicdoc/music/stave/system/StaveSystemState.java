@@ -149,7 +149,9 @@ public class StaveSystemState {
    */
   public void appendVoiceId(String id) {
 
-    this.voiceId.append(id);
+    if (id != null) {
+      this.voiceId.append(id);
+    }
   }
 
   /**

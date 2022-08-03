@@ -49,4 +49,14 @@ public interface MutableObjecteCopier {
     }
     return mutableList;
   }
+
+  /**
+   * @param <T> type of the {@link List} elements.
+   * @param list the {@link List} to create an immutable copy of.
+   * @return the immutable copy of the given {@link List}.
+   */
+  default <T> List<T> copyListFlat(List<T> list) {
+
+    return new ArrayList<>(list);
+  }
 }

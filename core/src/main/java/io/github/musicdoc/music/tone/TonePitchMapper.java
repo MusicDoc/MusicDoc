@@ -18,8 +18,9 @@ public abstract class TonePitchMapper extends AbstractMapper<TonePitch> {
 
   /** {@link CharFilter} that {@link CharFilter#accept(char) accepts} start characters of a {@link TonePitch}. */
   public static final ListCharFilter FILTER_TONE = FILTER_TONE_START.join('i', 'I', 's', 'S', '#', 'b',
-      UnicodeGlyphsAccidentals.NEUTRAL_CHAR, UnicodeGlyphsAccidentals.FLAT_1_CHAR, UnicodeGlyphsAccidentals.SHARP_1_CHAR,
-      UnicodeGlyphsAccidentals.SIGN_2_CHAR1, UnicodeGlyphsAccidentals.FLAT_2_CHAR2, UnicodeGlyphsAccidentals.SHARP_2_CHAR2);
+      UnicodeGlyphsAccidentals.NEUTRAL_CHAR, UnicodeGlyphsAccidentals.FLAT_1_CHAR,
+      UnicodeGlyphsAccidentals.SHARP_1_CHAR, UnicodeGlyphsAccidentals.SIGN_2_CHAR1,
+      UnicodeGlyphsAccidentals.FLAT_2_CHAR2, UnicodeGlyphsAccidentals.SHARP_2_CHAR2);
 
   @Override
   public TonePitch read(MusicInputStream in, SongFormatContext context) {

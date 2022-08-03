@@ -132,8 +132,11 @@ public class TextMusicInputStream extends AbstractTextMusicInputStream {
       throw new IllegalStateException("Parser not inside property.");
     }
     if (!hasNext()) {
-      addWarning("Property (" + this.rootProperty + ") not terminated.");
-      return null;
+      property.currentName = null;
+      this.currentProperty = property;
+      return "";
+      // addWarning("Property (" + this.rootProperty + ") not terminated.");
+      // return null;
     }
     int nextLine = this.line;
     int nextColumn = this.column;
@@ -156,7 +159,8 @@ public class TextMusicInputStream extends AbstractTextMusicInputStream {
         if (c == property.suffix) {
           endIndex = i;
           newIndex = i + 1;
-          while (property.isAcceptMultipleSuffix() && (newIndex <= this.end) && (this.string.charAt(newIndex) == property.suffix)) {
+          while (property.isAcceptMultipleSuffix() && (newIndex <= this.end)
+              && (this.string.charAt(newIndex) == property.suffix)) {
             newIndex++;
           }
           break;
@@ -242,7 +246,8 @@ public class TextMusicInputStream extends AbstractTextMusicInputStream {
    */
   public static TextMusicInputStream of(InputStream inStream, PropertyState propertyState) {
 
-    try (InputStreamReader isr = new InputStreamReader(inStream, ENCODING); BufferedReader reader = new BufferedReader(isr)) {
+    try (InputStreamReader isr = new InputStreamReader(inStream, ENCODING);
+        BufferedReader reader = new BufferedReader(isr)) {
       StringBuilder sb = new StringBuilder(2048);
       String line = null;
       do {

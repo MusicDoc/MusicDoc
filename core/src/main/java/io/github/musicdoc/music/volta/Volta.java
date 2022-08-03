@@ -2,6 +2,7 @@ package io.github.musicdoc.music.volta;
 
 import java.util.Objects;
 
+import io.github.musicdoc.AbstractMusicalObject;
 import io.github.musicdoc.number.NumberSet;
 
 /**
@@ -9,7 +10,7 @@ import io.github.musicdoc.number.NumberSet;
  * It is visualized as horizontal bracket above the stave containing {@link #getNumbers() numbers} explaining when the
  * {@link Volta} is played.
  */
-public class Volta {
+public class Volta extends AbstractMusicalObject {
 
   /** The empty {@link Volta}. */
   public static final Volta NONE = new Volta(NumberSet.EMPTY, 0);
@@ -46,6 +47,18 @@ public class Volta {
   public int getExtraBars() {
 
     return this.extraBars;
+  }
+
+  @Override
+  public void toString(StringBuilder sb) {
+
+    if (this.numbers != NumberSet.EMPTY) {
+      sb.append(this.numbers);
+    }
+    if (this.extraBars > 0) {
+      sb.append('+');
+      sb.append(this.extraBars);
+    }
   }
 
   /**

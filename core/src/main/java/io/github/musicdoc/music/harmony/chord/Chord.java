@@ -303,4 +303,57 @@ public class Chord extends AbstractTransposable<Chord> {
     return this.name;
   }
 
+  @Override
+  public void toString(StringBuilder sb) {
+
+    sb.append(this.name);
+  }
+
+  /**
+   * @param fundamental the {@link #getFundamental() fundamental tone}.
+   * @return the according major {@link Chord}.
+   */
+  public static Chord ofMajor(TonePitch fundamental) {
+
+    return new Chord(fundamental, TonalSystem.MAJOR_EMPTY);
+  }
+
+  /**
+   * @param fundamental the {@link #getFundamental() fundamental tone}.
+   * @param extensions - see {@link #getExtensions()}.
+   * @return the according major {@link Chord}.
+   */
+  public static Chord ofMajor(TonePitch fundamental, ChordExtension... extensions) {
+
+    return new Chord(fundamental, TonalSystem.MAJOR_EMPTY, extensions);
+  }
+
+  /**
+   * @param fundamental the {@link #getFundamental() fundamental tone}.
+   * @return the according major {@link Chord} with {@link ChordExtension#_7 7th}.
+   */
+  public static Chord ofMajorWith7(TonePitch fundamental) {
+
+    return ofMajor(fundamental, ChordExtension._7);
+  }
+
+  /**
+   * @param fundamental the {@link #getFundamental() fundamental tone}.
+   * @return the according minor {@link Chord}.
+   */
+  public static Chord ofMinor(TonePitch fundamental) {
+
+    return new Chord(fundamental, TonalSystem.MINOR_M);
+  }
+
+  /**
+   * @param fundamental the {@link #getFundamental() fundamental tone}.
+   * @param extensions - see {@link #getExtensions()}.
+   * @return the according minor {@link Chord}.
+   */
+  public static Chord ofMinor(TonePitch fundamental, ChordExtension... extensions) {
+
+    return new Chord(fundamental, TonalSystem.MINOR_M, extensions);
+  }
+
 }

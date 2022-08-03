@@ -3,15 +3,19 @@
 package io.github.musicdoc.music.note;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import io.github.musicdoc.MutableObjecteCopier;
 import io.github.musicdoc.music.clef.Clef;
 import io.github.musicdoc.music.decoration.MusicalDecoration;
 import io.github.musicdoc.music.glyphs.MusicalGlyphsContext;
 import io.github.musicdoc.music.glyphs.smufl.SmuflGlyphsNote;
 import io.github.musicdoc.music.glyphs.unicode.UnicodeGlyphsNotes;
 import io.github.musicdoc.music.rythm.value.MusicalValue;
+import io.github.musicdoc.music.rythm.value.MusicalValueVariation;
 import io.github.musicdoc.music.rythm.value.ValuedItem;
 import io.github.musicdoc.music.tone.Tone;
 import io.github.musicdoc.music.transpose.TransposeContext;
@@ -21,7 +25,7 @@ import io.github.musicdoc.music.transpose.TransposeContext;
  */
 public class Note extends ValuedItem<Note> {
 
-  private final Tone tone;
+  private Tone tone;
 
   /**
    * The constructor.
@@ -39,6 +43,31 @@ public class Note extends ValuedItem<Note> {
    *
    * @param tone - the {@link #getTone() tone}.
    * @param value - the {@link #getValue() value}.
+   * @param decoration - the {@link #getDecorations() decorations}.
+   */
+  public Note(Tone tone, MusicalValue value, MusicalDecoration decoration) {
+
+    this(tone, value, Collections.singletonList(decoration));
+    Objects.requireNonNull(decoration);
+  }
+
+  /**
+   * The constructor.
+   *
+   * @param tone - the {@link #getTone() tone}.
+   * @param value - the {@link #getValue() value}.
+   * @param decorations - the {@link #getDecorations() decorations}.
+   */
+  public Note(Tone tone, MusicalValue value, MusicalDecoration... decorations) {
+
+    this(tone, value, Arrays.asList(decorations));
+  }
+
+  /**
+   * The constructor.
+   *
+   * @param tone - the {@link #getTone() tone}.
+   * @param value - the {@link #getValue() value}.
    * @param decorations - the {@link #getDecorations() decorations}.
    */
   public Note(Tone tone, MusicalValue value, List<MusicalDecoration> decorations) {
@@ -48,10 +77,37 @@ public class Note extends ValuedItem<Note> {
     this.tone = tone;
   }
 
+  private Note(Note note, MutableObjecteCopier copier) {
+
+    super(note, copier);
+    this.tone = note.tone;
+  }
+
+  @Override
+  public Note copy(MutableObjecteCopier copier) {
+
+    return new Note(this, copier);
+  }
+
   @Override
   public Tone getTone() {
 
     return this.tone;
+  }
+
+  /**
+   * @param tone new value of {@link #getTone() tone}.
+   * @return a {@link Note} with the given {@link #getTone() tone} and all other properties like {@code this} one. Will
+   *         be a {@link #copy() copy} if {@link #isImmutable() immutable}.
+   */
+  public Note setTone(Tone tone) {
+
+    if (this.tone == tone) {
+      return this;
+    }
+    Note note = makeMutable();
+    note.tone = tone;
+    return note;
   }
 
   @Override
@@ -91,8 +147,111 @@ public class Note extends ValuedItem<Note> {
   }
 
   @Override
-  public String toString() {
+  protected void toStringItem(StringBuilder sb) {
 
-    return this.tone.toString() + ":" + this.value;
+    this.tone.toString(sb);
+    super.toStringItem(sb);
   }
+
+  /**
+   * @param tone the {@link #getTone() tone}.
+   * @param value the {@link #getValue() value}.
+   * @return the {@link Note} with the specified values.
+   */
+  public static Note of(Tone tone, MusicalValue value) {
+
+    return new Note(tone, value);
+  }
+
+  /**
+   * @param tone the {@link #getTone() tone}.
+   * @param value the {@link #getValue() value}.
+   * @param decorations the {@link #getDecorations() decorations}.
+   * @return the {@link Note} with the specified values.
+   */
+  public static Note of(Tone tone, MusicalValue value, MusicalDecoration... decorations) {
+
+    return new Note(tone, value, decorations);
+  }
+
+  /**
+   * @param tone the {@link #getTone() tone}.
+   * @return the {@link Note} with the specified {@link #getTone() tone} and a {@link #getValue() value} of
+   *         {@link MusicalValue#_1_1 1/1}.
+   */
+  public static Note of1_1(Tone tone) {
+
+    return of(tone, MusicalValue._1_1);
+  }
+
+  /**
+   * @param tone the {@link #getTone() tone}.
+   * @return the {@link Note} with the specified {@link #getTone() tone} and a {@link #getValue() value} of
+   *         {@link MusicalValue#_4_4 4/4}.
+   */
+  public static Note of4_4(Tone tone) {
+
+    return of(tone, MusicalValue._4_4);
+  }
+
+  /**
+   * @param tone the {@link #getTone() tone}.
+   * @return the {@link Note} with the specified {@link #getTone() tone} and a {@link #getValue() value} of
+   *         {@link MusicalValue#_1_2 1/2}.
+   */
+  public static Note of1_2(Tone tone) {
+
+    return of(tone, MusicalValue._1_2);
+  }
+
+  /**
+   * @param tone the {@link #getTone() tone}.
+   * @return the {@link Note} with the specified {@link #getTone() tone} and a {@link #getValue() value} of
+   *         {@link MusicalValue#_1_2 1/2} and {@link MusicalValueVariation#PUNCTURED punctuation}.
+   */
+  public static Note of1_2p(Tone tone) {
+
+    return of(tone, new MusicalValue(1, 2, MusicalValueVariation.PUNCTURED));
+  }
+
+  /**
+   * @param tone the {@link #getTone() tone}.
+   * @return the {@link Note} with the specified {@link #getTone() tone} and a {@link #getValue() value} of
+   *         {@link MusicalValue#_1_4 1/4}.
+   */
+  public static Note of1_4(Tone tone) {
+
+    return of(tone, MusicalValue._1_4);
+  }
+
+  /**
+   * @param tone the {@link #getTone() tone}.
+   * @return the {@link Note} with the specified {@link #getTone() tone} and a {@link #getValue() value} of
+   *         {@link MusicalValue#_1_4 1/4} and {@link MusicalValueVariation#PUNCTURED punctuation}.
+   */
+  public static Note of1_4p(Tone tone) {
+
+    return of(tone, new MusicalValue(1, 4, MusicalValueVariation.PUNCTURED));
+  }
+
+  /**
+   * @param tone the {@link #getTone() tone}.
+   * @return the {@link Note} with the specified {@link #getTone() tone} and a {@link #getValue() value} of
+   *         {@link MusicalValue#_1_8 1/8}.
+   */
+  public static Note of1_8(Tone tone) {
+
+    return of(tone, MusicalValue._1_8);
+  }
+
+  /**
+   * @param tone the {@link #getTone() tone}.
+   * @return the {@link Note} with the specified {@link #getTone() tone} and a {@link #getValue() value} of
+   *         {@link MusicalValue#_1_16 1/16}.
+   */
+  public static Note of1_16(Tone tone) {
+
+    return of(tone, MusicalValue._1_16);
+  }
+
 }

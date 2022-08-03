@@ -1,12 +1,14 @@
 package io.github.musicdoc.music.score.section;
 
+import io.github.musicdoc.AbstractMusicalObject;
+
 /**
  * Represents the name of a {@link ScoreSection} in a structured way with {@link #getType() type} and
  * {@link #getSuffix() suffix}.
  *
  * @see ScoreSection#getName()
  */
-public class ScoreSectionName {
+public class ScoreSectionName extends AbstractMusicalObject {
 
   private final String name;
 
@@ -101,5 +103,13 @@ public class ScoreSectionName {
   public String toString() {
 
     return this.name;
+  }
+
+  @Override
+  public void toString(StringBuilder sb) {
+
+    sb.append("#[");
+    sb.append(this.name);
+    sb.append(']');
   }
 }

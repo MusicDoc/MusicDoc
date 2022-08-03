@@ -415,9 +415,11 @@ public final class MusicalKey extends AbstractTransposable<MusicalKey> {
   }
 
   @Override
-  public String toString() {
+  public void toString(StringBuilder sb) {
 
-    return getName() + "-" + this.system.toString();
+    sb.append(this.name);
+    sb.append('-');
+    this.system.toString(sb);
   }
 
   private static MusicalKey create(TonePitch tonika, TonalSystem tonalSystem) {

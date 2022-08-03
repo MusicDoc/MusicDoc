@@ -6,7 +6,7 @@ import io.github.musicdoc.music.format.SongFormatOpenSong;
 /**
  * {@link BarLineTypeMapper} for {@link SongFormatOpenSong}.
  */
-public class BarLineTypeMapperOpenSong extends BarLineTypeMapper {
+public class BarLineTypeMapperOpenSong extends BarLineTypeMapperBase {
 
   /** The singleton instance. */
   public static final BarLineTypeMapperOpenSong INSTANCE = new BarLineTypeMapperOpenSong();

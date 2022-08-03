@@ -255,26 +255,17 @@ public final class Stave extends AbstractStave<Stave> implements StaveVoiceConta
   }
 
   @Override
-  public String toString() {
+  public void toString(StringBuilder sb) {
 
-    StringBuilder sb = new StringBuilder();
-    sb.append("§");
-    if (this.clef != null) {
-      sb.append(this.clef);
+    if (this.disconnected) {
+      sb.append('-');
     }
-    if (this.key != null) {
-      sb.append('K');
-      sb.append(this.key);
-    }
-    if (this.beat != null) {
-      sb.append('M');
-      sb.append(this.beat);
-    }
+    super.toString(sb);
     for (StaveVoice voice : this.voices) {
       sb.append('(');
       sb.append(voice);
       sb.append(')');
     }
-    return sb.toString();
   }
+
 }

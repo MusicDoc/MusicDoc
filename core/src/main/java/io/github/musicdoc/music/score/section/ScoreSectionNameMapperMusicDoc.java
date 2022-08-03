@@ -6,7 +6,7 @@ import io.github.musicdoc.music.format.SongFormatMusicDoc;
 /**
  * {@link ScoreSectionNameMapper} for {@link SongFormatMusicDoc}.
  */
-public class ScoreSectionNameMapperMusicDoc extends ScoreSectionNameMapper {
+public class ScoreSectionNameMapperMusicDoc extends ScoreSectionNameMapperBase {
 
   /** The singleton instance. */
   public static final ScoreSectionNameMapperMusicDoc INSTANCE = new ScoreSectionNameMapperMusicDoc();
@@ -16,7 +16,7 @@ public class ScoreSectionNameMapperMusicDoc extends ScoreSectionNameMapper {
    */
   protected ScoreSectionNameMapperMusicDoc() {
 
-    super("#" + SECTION_START);
+    super("#" + SECTION_START, SECTION_END);
   }
 
   @Override

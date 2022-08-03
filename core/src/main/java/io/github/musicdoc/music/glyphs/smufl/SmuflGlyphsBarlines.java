@@ -33,7 +33,9 @@ public interface SmuflGlyphsBarlines extends SmuflGlyphs {
    */
   static String get(BarLineType barType) {
 
-    if (barType == BarLineType.SINGLE) {
+    if (barType == null) {
+      return null;
+    } else if (barType == BarLineType.SINGLE) {
       return BAR_SINGLE;
     } else if (barType == BarLineType.DOUBLE) {
       return BAR_DOUBLE;
@@ -49,7 +51,7 @@ public interface SmuflGlyphsBarlines extends SmuflGlyphs {
       return SmuflGlyphsRepeats.REPEAT_LEFT;
     } else if (barType == BarLineType.REPEAT_END) {
       return SmuflGlyphsRepeats.REPEAT_RIGHT;
-    } else if (barType == BarLineType.REPEAT_END_START) {
+    } else if (barType.isRepeatEndStart()) {
       return SmuflGlyphsRepeats.REPEAT_RIGHT_LEFT;
     }
     return null;

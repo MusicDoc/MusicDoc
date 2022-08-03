@@ -110,4 +110,5 @@ public interface MutableObject<T extends MutableObject<T>> extends MusicalObject
       return self();
     }
   }
+
 }

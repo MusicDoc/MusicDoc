@@ -1,5 +1,8 @@
 package io.github.musicdoc.music.rythm.tempo;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 import io.github.musicdoc.music.rythm.Fraction;
 
 /**
@@ -102,6 +105,25 @@ public class Tempo {
   public String getSuffix() {
 
     return this.suffix;
+  }
+
+  @Override
+  public int hashCode() {
+
+    return 31 * this.bpm + Arrays.hashCode(this.fractions);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+
+    if (this == obj) {
+      return true;
+    } else if ((obj == null) || (getClass() != obj.getClass())) {
+      return false;
+    }
+    Tempo other = (Tempo) obj;
+    return this.bpm == other.bpm && Arrays.equals(this.fractions, other.fractions) && Objects.equals(this.prefix, other.prefix)
+        && Objects.equals(this.suffix, other.suffix);
   }
 
   @Override

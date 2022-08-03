@@ -5,6 +5,7 @@ package io.github.musicdoc.music.rythm.rest;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.github.musicdoc.MutableObjecteCopier;
 import io.github.musicdoc.music.decoration.MusicalDecoration;
 import io.github.musicdoc.music.format.FormatConstants;
 import io.github.musicdoc.music.glyphs.MusicalGlyphsContext;
@@ -37,7 +38,7 @@ public class Rest extends ValuedItem<Rest> {
   /** {@link Rest} lasting a {@link MusicalValue#_1_32 twenty-secondth note} (quaver). */
   public static final Rest _1_32 = new Rest(MusicalValue._1_32);
 
-  private final boolean invisible;
+  private boolean invisible;
 
   /**
    * The constructor.
@@ -64,13 +65,48 @@ public class Rest extends ValuedItem<Rest> {
    * The constructor.
    *
    * @param value - the {@link #getValue() value}.
-   * @param invisible - the invisible flag.
+   * @param invisible - the {@link #isInvisible() invisible} flag.
    * @param decorations - the {@link #getDecorations() decorations}.
    */
   public Rest(MusicalValue value, boolean invisible, List<MusicalDecoration> decorations) {
 
     super(value, decorations);
     this.invisible = invisible;
+  }
+
+  private Rest(Rest rest, MutableObjecteCopier copier) {
+
+    super(rest, copier);
+    this.invisible = rest.invisible;
+  }
+
+  @Override
+  public Rest copy(MutableObjecteCopier copier) {
+
+    return new Rest(this, copier);
+  }
+
+  /**
+   * @return {@code true} if invisible, {@code false} otherwise.
+   */
+  public boolean isInvisible() {
+
+    return this.invisible;
+  }
+
+  /**
+   * @param invisible the new value of {@link #isInvisible()}.
+   * @return a {@link Rest} with the given {@link #isInvisible() invisble flag} and all other properties like
+   *         {@code this} one. Will be a {@link #copy() copy} if {@link #isImmutable() immutable}.
+   */
+  public Rest setInvisible(boolean invisible) {
+
+    if (this.invisible == invisible) {
+      return this;
+    }
+    Rest rest = makeMutable();
+    rest.invisible = invisible;
+    return rest;
   }
 
   @Override
@@ -113,8 +149,9 @@ public class Rest extends ValuedItem<Rest> {
   }
 
   @Override
-  public String toString() {
+  protected void toStringItem(StringBuilder sb) {
 
-    return "" + getSymbol() + getValue();
+    sb.append(getSymbol());
+    super.toStringItem(sb);
   }
 }

@@ -24,12 +24,10 @@ import io.github.musicdoc.music.rythm.value.MusicalValueMapper;
 import io.github.musicdoc.music.rythm.value.MusicalValueVariationMapper;
 import io.github.musicdoc.music.rythm.value.ValuedItemMapper;
 import io.github.musicdoc.music.score.Score;
-import io.github.musicdoc.music.score.ScoreLineMapper;
 import io.github.musicdoc.music.score.ScoreMapper;
-import io.github.musicdoc.music.score.comment.ScoreCommentLineMapper;
+import io.github.musicdoc.music.score.cell.ScoreCellMapper;
+import io.github.musicdoc.music.score.line.ScoreLineMapper;
 import io.github.musicdoc.music.score.section.ScoreSectionNameMapper;
-import io.github.musicdoc.music.score.voice.ScoreVoiceCellMapper;
-import io.github.musicdoc.music.score.voice.ScoreVoiceLineMapper;
 import io.github.musicdoc.music.stave.StaveChangeMapper;
 import io.github.musicdoc.music.stave.StaveMapper;
 import io.github.musicdoc.music.stave.system.StaveSystemMapper;
@@ -321,27 +319,11 @@ public abstract class AbstractMapper<T> implements Mapper<T>, FormatConstants {
   }
 
   /**
-   * @return the {@link ScoreCommentLineMapper}.
+   * @return the {@link ScoreCellMapper}
    */
-  protected ScoreCommentLineMapper getCommentLineMapper() {
+  protected ScoreCellMapper getScoreCellMapper() {
 
-    return getFormat().getCommentLineMapper();
-  }
-
-  /**
-   * @return the {@link ScoreVoiceLineMapper}.
-   */
-  protected ScoreVoiceLineMapper getVoiceLineMapper() {
-
-    return getFormat().getVoiceLineMapper();
-  }
-
-  /**
-   * @return the {@link ScoreVoiceCellMapper}
-   */
-  protected ScoreVoiceCellMapper getVoiceCellMapper() {
-
-    return getFormat().getVoiceCellMapper();
+    return getFormat().getScoreCellMapper();
   }
 
   /**

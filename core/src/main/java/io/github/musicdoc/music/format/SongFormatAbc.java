@@ -37,17 +37,14 @@ import io.github.musicdoc.music.rythm.value.MusicalValueVariationMapper;
 import io.github.musicdoc.music.rythm.value.MusicalValueVariationMapperAbc;
 import io.github.musicdoc.music.rythm.value.ValuedItemMapper;
 import io.github.musicdoc.music.rythm.value.ValuedItemMapperAbc;
-import io.github.musicdoc.music.score.ScoreLineMapper;
-import io.github.musicdoc.music.score.ScoreLineMapperAbc;
 import io.github.musicdoc.music.score.ScoreMapper;
 import io.github.musicdoc.music.score.ScoreMapperAbc;
-import io.github.musicdoc.music.score.comment.ScoreCommentLineMapper;
-import io.github.musicdoc.music.score.comment.ScoreCommentLineMapperAbc;
+import io.github.musicdoc.music.score.cell.ScoreCellMapper;
+import io.github.musicdoc.music.score.cell.ScoreCellMapperAbc;
+import io.github.musicdoc.music.score.line.ScoreLineMapper;
+import io.github.musicdoc.music.score.line.ScoreLineMapperAbc;
 import io.github.musicdoc.music.score.section.ScoreSectionNameMapper;
-import io.github.musicdoc.music.score.voice.ScoreVoiceCellMapper;
-import io.github.musicdoc.music.score.voice.ScoreVoiceCellMapperAbc;
-import io.github.musicdoc.music.score.voice.ScoreVoiceLineMapper;
-import io.github.musicdoc.music.score.voice.ScoreVoiceLineMapperAbc;
+import io.github.musicdoc.music.score.section.ScoreSectionNameMapperAbc;
 import io.github.musicdoc.music.song.SongMapper;
 import io.github.musicdoc.music.song.SongMapperAbc;
 import io.github.musicdoc.music.stave.StaveChangeMapper;
@@ -243,7 +240,7 @@ public class SongFormatAbc extends SongFormatText {
   @Override
   protected ScoreSectionNameMapper getSectionNameMapper() {
 
-    return null;
+    return ScoreSectionNameMapperAbc.INSTANCE;
   }
 
   @Override
@@ -253,21 +250,9 @@ public class SongFormatAbc extends SongFormatText {
   }
 
   @Override
-  protected ScoreCommentLineMapper getCommentLineMapper() {
+  protected ScoreCellMapper getScoreCellMapper() {
 
-    return ScoreCommentLineMapperAbc.INSTANCE;
-  }
-
-  @Override
-  protected ScoreVoiceLineMapper getVoiceLineMapper() {
-
-    return ScoreVoiceLineMapperAbc.INSTANCE;
-  }
-
-  @Override
-  protected ScoreVoiceCellMapper getVoiceCellMapper() {
-
-    return ScoreVoiceCellMapperAbc.INSTANCE;
+    return ScoreCellMapperAbc.INSTANCE;
   }
 
   @Override

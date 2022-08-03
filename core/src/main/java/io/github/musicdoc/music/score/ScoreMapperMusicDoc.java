@@ -6,7 +6,7 @@ import io.github.musicdoc.music.format.SongFormatMusicDoc;
 /**
  * {@link ScoreMapper} for {@link SongFormatMusicDoc}.
  */
-public class ScoreMapperMusicDoc extends ScoreMapper {
+public class ScoreMapperMusicDoc extends ScoreMapperBase {
 
   /** The singleton instance. */
   public static final ScoreMapperMusicDoc INSTANCE = new ScoreMapperMusicDoc();

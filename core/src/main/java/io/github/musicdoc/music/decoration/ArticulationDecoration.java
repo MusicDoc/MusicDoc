@@ -19,59 +19,52 @@ import io.github.musicdoc.music.note.StemDirection;
 public final class ArticulationDecoration extends MusicalDecoration {
 
   /** Wege. */
-  public static final ArticulationDecoration WEDGE = create("wedge",
-      UnicodeGlyphsOrnaments.ORNAMENT_STROKE_5, "todo");
+  public static final ArticulationDecoration WEDGE = create("wedge", UnicodeGlyphsOrnaments.ORNAMENT_STROKE_5, "todo");
 
   /** Left-hand pizzicato, or rasp for French horns. */
-  public static final ArticulationDecoration PLUS = create("+", "+",
-      SmuflGlyphsBaroqueOrnaments.SHAKE, "plus");
+  public static final ArticulationDecoration PLUS = create("+", "+", SmuflGlyphsBaroqueOrnaments.SHAKE, "plus");
 
   /** cello thumb symbol. */
-  public static final ArticulationDecoration THUMB = create("thumb", "TODO",
-      SmuflGlyphsString.THUMB_POSITION);
+  public static final ArticulationDecoration THUMB = create("thumb", "TODO", SmuflGlyphsString.THUMB_POSITION);
 
   /** Snap. */
-  public static final ArticulationDecoration SNAP = create("snap",
-      UnicodeGlyphsInstrumentation.COMBINING_SNAP_PIZZICATO, SmuflGlyphsPlucked.SNAP_PIZZICATO_BELOW);
+  public static final ArticulationDecoration SNAP = create("snap", UnicodeGlyphsInstrumentation.COMBINING_SNAP_PIZZICATO,
+      SmuflGlyphsPlucked.SNAP_PIZZICATO_BELOW);
 
   /** Open string or harmonic. */
-  public static final ArticulationDecoration OPEN = create("open",
-      UnicodeGlyphsInstrumentation.COMBINING_HARMONIC, SmuflGlyphsString.HARMONIC);
+  public static final ArticulationDecoration OPEN = create("open", UnicodeGlyphsInstrumentation.COMBINING_HARMONIC,
+      SmuflGlyphsString.HARMONIC);
 
   /** Breathing mark. */
-  public static final ArticulationDecoration BREATH = create("'", UnicodeGlyphsHolds.BREATH_MARK,
-      SmuflGlyphsHolds.BREATH_MARK, "breath");
+  public static final ArticulationDecoration BREATH = create("'", UnicodeGlyphsHolds.BREATH_MARK, SmuflGlyphsHolds.BREATH_MARK, "breath");
 
   /**
    * The Irish roll. For whatever reason ABC has adopted this and even used '~' what we use for turn (gruppetto)
    * instead.
    */
-  public static final ArticulationDecoration ROLL = create("roll",
-      UnicodeGlyphsOrnaments.ORNAMENT_STROKE_9, SmuflGlyphsBaroqueOrnaments.CURVE_ABOVE);
+  public static final ArticulationDecoration ROLL = create("roll", UnicodeGlyphsOrnaments.ORNAMENT_STROKE_9,
+      SmuflGlyphsBaroqueOrnaments.CURVE_ABOVE);
 
   /** Accent. */
-  public static final ArticulationDecoration ACCENT = create(">",
-      UnicodeGlyphsArticulation.COMBINING_ACCENT,
+  public static final ArticulationDecoration ACCENT = create(">", UnicodeGlyphsArticulation.COMBINING_ACCENT,
       SmuflGlyphsArticulation.ACCENT_ABOVE + SmuflGlyphsArticulation.ACCENT_BELOW, "accent", "emphasis", "L");
 
   /** Fermata. */
-  public static final ArticulationDecoration FERMATA = create("H", UnicodeGlyphsHolds.FERMATA,
-      SmuflGlyphsHolds.FERMATA_ABOVE, "fermata");
+  public static final ArticulationDecoration FERMATA = create("H", UnicodeGlyphsHolds.FERMATA, SmuflGlyphsHolds.FERMATA_ABOVE, "fermata");
 
   /** Fermata below. */
-  public static final ArticulationDecoration INVERTED_FERMATA = create("invertedfermata",
-      UnicodeGlyphsHolds.FERMATA_BELOW, SmuflGlyphsHolds.FERMATA_BELOW);
+  public static final ArticulationDecoration INVERTED_FERMATA = create("invertedfermata", UnicodeGlyphsHolds.FERMATA_BELOW,
+      SmuflGlyphsHolds.FERMATA_BELOW);
 
   /** Tenuto. */
-  public static final ArticulationDecoration TENUTO = create("tenuto",
-      UnicodeGlyphsArticulation.COMBINING_TENUTO, SmuflGlyphsArticulation.TENUTO_ABOVE); // SmuflGlyphsArticulation.TENUTO_BELOW
+  public static final ArticulationDecoration TENUTO = create("tenuto", UnicodeGlyphsArticulation.COMBINING_TENUTO,
+      SmuflGlyphsArticulation.TENUTO_ABOVE); // SmuflGlyphsArticulation.TENUTO_BELOW
 
   /** Staccato. */
-  public static final ArticulationDecoration STACCATO = create(".",
-      UnicodeGlyphsArticulation.COMBINING_STACCATO, SmuflGlyphsArticulation.STACCATO_ABOVE, "staccato"); // SmuflGlyphsArticulation.STACCATO_BELOW
+  public static final ArticulationDecoration STACCATO = create("xxx", UnicodeGlyphsArticulation.COMBINING_STACCATO,
+      SmuflGlyphsArticulation.STACCATO_ABOVE, "staccato"); // SmuflGlyphsArticulation.STACCATO_BELOW
 
-  private ArticulationDecoration(String name, PeriodType period, String unicode, String smufl,
-      MusicalDecoration reference) {
+  private ArticulationDecoration(String name, PeriodType period, String unicode, String smufl, MusicalDecoration reference) {
 
     super(name, period, unicode, smufl, reference);
   }
@@ -109,8 +102,8 @@ public final class ArticulationDecoration extends MusicalDecoration {
     return create(name, MusicalDecorationPosition.TOP, unicode, smufl, altNames);
   }
 
-  private static ArticulationDecoration create(String name, MusicalDecorationPosition position, String unicode,
-      String smufl, String... altNames) {
+  private static ArticulationDecoration create(String name, MusicalDecorationPosition position, String unicode, String smufl,
+      String... altNames) {
 
     ArticulationDecoration decoration = new ArticulationDecoration(name, null, unicode, smufl, null);
     decoration.alias(altNames);

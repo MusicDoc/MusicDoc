@@ -16,6 +16,8 @@ import io.github.musicdoc.music.rythm.beat.Beat;
  */
 public abstract class TempoMapper extends AbstractMapper<Tempo> {
 
+  private static final ListCharFilter STOP_FILTER = ListCharFilter.DIGITS.join(NEWLINE_CHAR);
+
   /** Character to indicate start of {@link Tempo#getBpm() BPM} value after {@link Tempo#getFraction(int) fractions}. */
   protected static final char BPM_ASSIGN_CHAR = '=';
 
@@ -56,18 +58,18 @@ public abstract class TempoMapper extends AbstractMapper<Tempo> {
     return new Tempo(prefix, bpm, suffix, fractions.toArray(new Fraction[fractions.size()]));
   }
 
-  private String parseString(MusicInputStream chars) {
+  private String parseString(MusicInputStream in) {
 
-    String prefix;
-    if (chars.expect('"')) {
-      prefix = chars.readUntil('"', false);
-      if (prefix == null) {
-        chars.addError("Unterminated quoted string.");
+    String string;
+    if (in.expect('"')) {
+      string = in.readUntil('"', false);
+      if (string == null) {
+        in.addError("Unterminated quoted string.");
       }
     } else {
-      prefix = chars.readUntil(ListCharFilter.DIGITS, false);
+      string = in.readUntil(STOP_FILTER, false);
     }
-    return prefix;
+    return string;
   }
 
   private AbstractMapper<? extends Fraction> getFractionMapper() {

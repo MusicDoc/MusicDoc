@@ -1,5 +1,8 @@
 package io.github.musicdoc.music.bar;
 
+import java.util.Objects;
+
+import io.github.musicdoc.AbstractMusicalObject;
 import io.github.musicdoc.music.volta.Volta;
 
 /**
@@ -9,7 +12,7 @@ import io.github.musicdoc.music.volta.Volta;
  *
  * @see BarLineType
  */
-public class BarLine {
+public class BarLine extends AbstractMusicalObject {
 
   private final BarLineType type;
 
@@ -56,12 +59,28 @@ public class BarLine {
   }
 
   @Override
-  public String toString() {
+  public int hashCode() {
 
-    if (this.volta == Volta.NONE) {
-      return this.type.getSymbol();
+    return Objects.hash(this.type, this.volta);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+
+    if (this == obj) {
+      return true;
+    } else if ((obj == null) || (getClass() != obj.getClass())) {
+      return false;
     }
-    return this.type.getSymbol() + this.volta;
+    BarLine other = (BarLine) obj;
+    return Objects.equals(this.type, other.type) && Objects.equals(this.volta, other.volta);
+  }
+
+  @Override
+  public void toString(StringBuilder sb) {
+
+    this.type.toString(sb);
+    this.volta.toString(sb);
   }
 
 }

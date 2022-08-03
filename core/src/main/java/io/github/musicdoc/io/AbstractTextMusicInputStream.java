@@ -67,13 +67,13 @@ public abstract class AbstractTextMusicInputStream extends AbstractMusicStream i
   }
 
   @Override
-  public int getLine() {
+  public int getLine(boolean relative) {
 
     return this.line;
   }
 
   @Override
-  public int getColumn() {
+  public int getColumn(boolean relative) {
 
     return this.column;
   }
@@ -260,11 +260,11 @@ public abstract class AbstractTextMusicInputStream extends AbstractMusicStream i
       return "";
     }
     int newIndex = this.index;
-    int maxIndex = this.index + maxLength;
+    int maxIndex = this.index + maxLength - 1;
     if ((maxIndex >= this.end) || (maxIndex < this.index)) {
-      maxIndex = this.end - 1;
+      maxIndex = this.end;
     }
-    while (newIndex < maxIndex) {
+    while (newIndex <= maxIndex) {
       if (stopFilter.accept(this.string.charAt(newIndex))) {
         break;
       }
@@ -446,7 +446,7 @@ public abstract class AbstractTextMusicInputStream extends AbstractMusicStream i
   public boolean expect(String expected, boolean ignoreCase) {
 
     int expectedLength = expected.length();
-    if ((this.end - this.index) < expectedLength) {
+    if ((this.end + 1 - this.index) < expectedLength) {
       return false;
     }
     int newIndex = this.index;
@@ -488,7 +488,7 @@ public abstract class AbstractTextMusicInputStream extends AbstractMusicStream i
   @Override
   public String toString() {
 
-    if (this.index >= this.end) {
+    if (this.index > this.end) {
       return "";
     }
     return this.string.substring(this.index);

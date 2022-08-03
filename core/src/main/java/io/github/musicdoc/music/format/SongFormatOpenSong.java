@@ -27,17 +27,13 @@ import io.github.musicdoc.music.rythm.tempo.TempoMapperOpenSong;
 import io.github.musicdoc.music.rythm.value.MusicalValueMapper;
 import io.github.musicdoc.music.rythm.value.MusicalValueVariationMapper;
 import io.github.musicdoc.music.rythm.value.ValuedItemMapper;
-import io.github.musicdoc.music.score.ScoreLineMapper;
-import io.github.musicdoc.music.score.ScoreLineMapperOpenSong;
 import io.github.musicdoc.music.score.ScoreMapper;
 import io.github.musicdoc.music.score.ScoreMapperOpenSong;
-import io.github.musicdoc.music.score.comment.ScoreCommentLineMapper;
-import io.github.musicdoc.music.score.comment.ScoreCommentLineMapperOpenSong;
+import io.github.musicdoc.music.score.cell.ScoreCellMapper;
+import io.github.musicdoc.music.score.line.ScoreLineMapper;
+import io.github.musicdoc.music.score.line.ScoreLineMapperOpenSong;
 import io.github.musicdoc.music.score.section.ScoreSectionNameMapper;
 import io.github.musicdoc.music.score.section.ScoreSectionNameMapperOpenSong;
-import io.github.musicdoc.music.score.voice.ScoreVoiceCellMapper;
-import io.github.musicdoc.music.score.voice.ScoreVoiceLineMapper;
-import io.github.musicdoc.music.score.voice.ScoreVoiceLineMapperOpenSong;
 import io.github.musicdoc.music.song.SongMapper;
 import io.github.musicdoc.music.song.SongMapperOpenSong;
 import io.github.musicdoc.music.stave.StaveChangeMapper;
@@ -73,6 +69,12 @@ public class SongFormatOpenSong extends SongFormatXml {
   protected String getRootTag() {
 
     return "song";
+  }
+
+  @Override
+  protected boolean isSupportItem() {
+
+    return false;
   }
 
   @Override
@@ -238,19 +240,7 @@ public class SongFormatOpenSong extends SongFormatXml {
   }
 
   @Override
-  protected ScoreCommentLineMapper getCommentLineMapper() {
-
-    return ScoreCommentLineMapperOpenSong.INSTANCE;
-  }
-
-  @Override
-  protected ScoreVoiceLineMapper getVoiceLineMapper() {
-
-    return ScoreVoiceLineMapperOpenSong.INSTANCE;
-  }
-
-  @Override
-  protected ScoreVoiceCellMapper getVoiceCellMapper() {
+  protected ScoreCellMapper getScoreCellMapper() {
 
     return null;
   }

@@ -6,13 +6,13 @@ import io.github.musicdoc.music.harmony.TonalSystem;
 import io.github.musicdoc.music.harmony.chord.Chord;
 import io.github.musicdoc.music.harmony.chord.ChordExtension;
 import io.github.musicdoc.music.score.Score;
-import io.github.musicdoc.music.score.ScoreLine;
 import io.github.musicdoc.music.score.ScoreRow;
+import io.github.musicdoc.music.score.cell.ScoreCell;
+import io.github.musicdoc.music.score.line.ScoreLine;
+import io.github.musicdoc.music.score.line.ScoreVoiceLine;
 import io.github.musicdoc.music.score.section.ScoreSection;
 import io.github.musicdoc.music.score.section.ScoreSectionName;
 import io.github.musicdoc.music.score.section.ScoreSectionType;
-import io.github.musicdoc.music.score.voice.ScoreVoiceCell;
-import io.github.musicdoc.music.score.voice.ScoreVoiceLine;
 import io.github.musicdoc.music.song.Song;
 import io.github.musicdoc.music.tone.TonePitchEnglish;
 
@@ -22,8 +22,16 @@ import io.github.musicdoc.music.tone.TonePitchEnglish;
 public class SongFormatOpenSongTest extends SongFormatTest {
 
   private static final String LYRICS_WITH_CHORDS = "<?xml version=\"1.0\" ?><song><lyrics>" //
-      + "[Chorus 1]\n" + ".A Bm7 Cadd9        D\n" + " a b   c the caT is  dead.\n" //
+      + "[Chorus 1]\n" //
+      + ".A Bm7 Cadd9        D\n" //
+      + " a b   c the caT is  dead.\n" //
       + "</lyrics></song>";
+
+  @Override
+  protected SongFormat getFormat() {
+
+    return SongFormatOpenSong.INSTANCE;
+  }
 
   /**
    * Test of {@link SongFormatOpenSong#read(String)}.
@@ -52,11 +60,11 @@ public class SongFormatOpenSongTest extends SongFormatTest {
     assertThat(row).isNotNull();
     assertThat(row.getColumnCount()).isEqualTo(4);
     assertThat(row.getLines()).hasSize(1);
-    ScoreLine<?, ?> line = row.getLine(0);
+    ScoreLine line = row.getLine(0);
     assertThat(line).isInstanceOf(ScoreVoiceLine.class);
     ScoreVoiceLine voiceLine = (ScoreVoiceLine) line;
     assertThat(voiceLine.getCells()).hasSize(4);
-    ScoreVoiceCell cell = voiceLine.getCell(0);
+    ScoreCell cell = voiceLine.getCell(0);
     assertThat(cell).isNotNull();
     assertThat(cell.getStaveChange()).isNull();
     assertThat(cell.getItem()).isNull();
@@ -94,10 +102,11 @@ public class SongFormatOpenSongTest extends SongFormatTest {
     ScoreSection section = new ScoreSection(name);
     ScoreRow row = new ScoreRow();
     ScoreVoiceLine line = new ScoreVoiceLine();
-    line.addCell(new ScoreVoiceCell(new Chord(TonePitchEnglish.A, TonalSystem.MAJOR_EMPTY), "a "));
-    line.addCell(new ScoreVoiceCell(new Chord(TonePitchEnglish.B, TonalSystem.MINOR_M, ChordExtension._7), "b "));
-    line.addCell(new ScoreVoiceCell(new Chord(TonePitchEnglish.C, TonalSystem.MAJOR_EMPTY, ChordExtension.ADD_9), "c the caT is "));
-    line.addCell(new ScoreVoiceCell(new Chord(TonePitchEnglish.D, TonalSystem.MAJOR_EMPTY), " dead."));
+    line.add(new ScoreCell(new Chord(TonePitchEnglish.A, TonalSystem.MAJOR_EMPTY), "a "));
+    line.add(new ScoreCell(new Chord(TonePitchEnglish.B, TonalSystem.MINOR_M, ChordExtension._7), "b "));
+    line.add(
+        new ScoreCell(new Chord(TonePitchEnglish.C, TonalSystem.MAJOR_EMPTY, ChordExtension.ADD_9), "c the caT is "));
+    line.add(new ScoreCell(new Chord(TonePitchEnglish.D, TonalSystem.MAJOR_EMPTY), " dead."));
     row.addLine(line);
     section.getRows().add(row);
     score.getSections().add(section);

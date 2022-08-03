@@ -1,8 +1,8 @@
 package io.github.musicdoc.music.rythm.value;
 
+import io.github.musicdoc.music.glyphs.MusicalGlyphs;
 import io.github.musicdoc.music.glyphs.MusicalGlyphsContext;
 import io.github.musicdoc.music.glyphs.smufl.SmuflGlyphsNote;
-import io.github.musicdoc.music.glyphs.MusicalGlyphs;
 import io.github.musicdoc.music.rythm.Fraction;
 
 /**
@@ -79,5 +79,11 @@ public enum MusicalValueVariation implements Fraction, MusicalGlyphs {
   public String toString() {
 
     return this.text;
+  }
+
+  @Override
+  public void toString(StringBuilder sb) {
+
+    sb.append(this.text);
   }
 }

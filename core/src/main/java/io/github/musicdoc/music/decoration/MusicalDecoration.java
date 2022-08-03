@@ -176,6 +176,18 @@ public abstract class MusicalDecoration implements MusicalGlyphs {
     return FormatConstants.DECORATION_START + this.name + FormatConstants.DECORATION_END;
   }
 
+  @Override
+  public void toString(StringBuilder sb) {
+
+    if (this.name.length() == 1) {
+      sb.append(this.name);
+    } else {
+      sb.append(FormatConstants.DECORATION_START);
+      sb.append(this.name);
+      sb.append(FormatConstants.DECORATION_END);
+    }
+  }
+
   /**
    * @param name the {@link #getName() name}.
    * @return the {@link MarkerDecoration} with the given {@link #getName() name}.

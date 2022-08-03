@@ -11,6 +11,7 @@ import io.github.musicdoc.music.song.Song;
 import io.github.musicdoc.music.stave.AbstractStave;
 import io.github.musicdoc.music.stave.system.StaveSystem;
 import io.github.musicdoc.music.stave.voice.StaveVoice;
+import io.github.musicdoc.music.stave.voice.StaveVoiceContainer;
 import io.github.musicdoc.music.tone.ToneNameStyle;
 import io.github.musicdoc.music.tone.TonePitchEnglish;
 
@@ -45,6 +46,8 @@ public class SongFormatContext {
   private StaveVoice staveVoice;
 
   private StaveSystem staveSystem;
+
+  private StaveVoiceContainer staveVoiceContainer;
 
   private Song song;
 
@@ -214,6 +217,23 @@ public class SongFormatContext {
   public void setStaveSystem(StaveSystem staveSystem) {
 
     this.staveSystem = staveSystem;
+  }
+
+  /**
+   * @return the {@link StaveVoiceContainer} with the state to determine the next voice if no
+   *         {@link StaveVoiceContainer#getVoice(String) voice ID} is given.
+   */
+  public StaveVoiceContainer getStaveVoiceContainer() {
+
+    return this.staveVoiceContainer;
+  }
+
+  /**
+   * @param staveVoiceContainer new value of {@link #getStaveVoiceContainer()}.
+   */
+  public void setStaveVoiceContainer(StaveVoiceContainer staveVoiceContainer) {
+
+    this.staveVoiceContainer = staveVoiceContainer;
   }
 
   /**

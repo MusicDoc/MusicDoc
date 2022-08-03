@@ -33,7 +33,7 @@ public class ToneMapperMusicDoc extends ToneMapper {
   }
 
   @Override
-  protected Tone parseOctave(MusicInputStream in, SongFormatContext context, TonePitch pitch) {
+  protected Tone readOctave(MusicInputStream in, SongFormatContext context, TonePitch pitch) {
 
     if (in.expect(START_OCTAVE)) {
       Integer octaveInteger = in.readInteger(2, true);
@@ -47,7 +47,7 @@ public class ToneMapperMusicDoc extends ToneMapper {
       }
       return Tone.of(pitch, octave, true);
     }
-    return super.parseOctave(in, context, pitch);
+    return super.readOctave(in, context, pitch);
   }
 
   @Override
