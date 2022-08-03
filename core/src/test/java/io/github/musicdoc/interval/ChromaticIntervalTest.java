@@ -3,9 +3,6 @@ package io.github.musicdoc.interval;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import io.github.musicdoc.interval.ChromaticInterval;
-import io.github.musicdoc.interval.ToneInterval;
-
 /**
  * Test of {@link ChromaticInterval}.
  */

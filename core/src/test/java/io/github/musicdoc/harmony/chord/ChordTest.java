@@ -7,10 +7,6 @@ import org.junit.jupiter.api.Test;
 import io.github.musicdoc.AbstractTest;
 import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.harmony.TonalSystem;
-import io.github.musicdoc.harmony.chord.Chord;
-import io.github.musicdoc.harmony.chord.ChordExtension;
-import io.github.musicdoc.harmony.chord.ChordMapper;
-import io.github.musicdoc.harmony.chord.ChordMapperMusicDoc;
 import io.github.musicdoc.harmony.key.MusicalKey;
 import io.github.musicdoc.interval.ChromaticInterval;
 import io.github.musicdoc.interval.DiatonicInterval;
@@ -40,12 +36,13 @@ public class ChordTest extends AbstractTest {
     assertThat(mapper.read("C").getTonalSystem()).isSameAs(TonalSystem.MAJOR_EMPTY);
     assertThat(mapper.read("Cm")).isEqualTo(new Chord(TonePitchEnglish.C, TonalSystem.MINOR_M));
     assertThat(mapper.read("CMi")).isEqualTo(mapper.read("CmI"));
-    assertThat(mapper.read("C#maj7/E"))
-        .isEqualTo(new Chord(TonePitchEnglish.C_SHARP, TonalSystem.MAJOR_EMPTY, TonePitchEnglish.E, ChordExtension.MAJ_7));
+    assertThat(mapper.read("C#maj7/E")).isEqualTo(
+        new Chord(TonePitchEnglish.C_SHARP, TonalSystem.MAJOR_EMPTY, TonePitchEnglish.E, ChordExtension.MAJ_7));
     Chord AsSus4Add9OverFeses = mapper.read("a\u266Dsus4add9/F\uD834\uDD2B");
-    assertThat(AsSus4Add9OverFeses).isEqualTo(new Chord(TonePitchInternational.A_FLAT.with(ToneNameCase.LOWER_CASE), null,
-        TonePitchInternational.F_DOUBLE_FLAT, ChordExtension.SUS_4, ChordExtension.ADD_9));
-    assertThat(AsSus4Add9OverFeses.getFundamental()).isSameAs(TonePitchInternational.A_FLAT.with(ToneNameCase.LOWER_CASE));
+    assertThat(AsSus4Add9OverFeses).isEqualTo(new Chord(TonePitchInternational.A_FLAT.with(ToneNameCase.LOWER_CASE),
+        null, TonePitchInternational.F_DOUBLE_FLAT, ChordExtension.SUS_4, ChordExtension.ADD_9));
+    assertThat(AsSus4Add9OverFeses.getFundamental())
+        .isSameAs(TonePitchInternational.A_FLAT.with(ToneNameCase.LOWER_CASE));
     assertThat(AsSus4Add9OverFeses.getTonalSystem()).isNull();
     assertThat(AsSus4Add9OverFeses.getBase()).isSameAs(TonePitchInternational.F_DOUBLE_FLAT);
     assertThat(AsSus4Add9OverFeses.getExtensions()).containsExactly(ChordExtension.SUS_4, ChordExtension.ADD_9);
@@ -68,13 +65,18 @@ public class ChordTest extends AbstractTest {
   public void testNew() {
 
     ChordMapper mapper = ChordMapperMusicDoc.INSTANCE;
-    assertThat(new Chord(TonePitchGerman.FIS, TonalSystem.MAJOR_EMPTY, TonePitchEnglish.E)).isEqualTo(mapper.read("Fis/E"));
-    assertThat(new Chord(TonePitchEnglish.F_SHARP, TonalSystem.MAJOR_EMPTY, TonePitchEnglish.E)).isEqualTo(mapper.read("F#/E"));
-    assertThat(new Chord(TonePitchInternational.F_SHARP, TonalSystem.MAJOR_EMPTY, TonePitchEnglish.E)).isEqualTo(mapper.read("F\u266F/E"));
+    assertThat(new Chord(TonePitchGerman.FIS, TonalSystem.MAJOR_EMPTY, TonePitchEnglish.E))
+        .isEqualTo(mapper.read("Fis/E"));
+    assertThat(new Chord(TonePitchEnglish.F_SHARP, TonalSystem.MAJOR_EMPTY, TonePitchEnglish.E))
+        .isEqualTo(mapper.read("F#/E"));
+    assertThat(new Chord(TonePitchInternational.F_SHARP, TonalSystem.MAJOR_EMPTY, TonePitchEnglish.E))
+        .isEqualTo(mapper.read("F\u266F/E"));
     assertThat(new Chord(TonePitchGerman.ES, TonalSystem.MINOR_M, ChordExtension._7)).isEqualTo(mapper.read("Esm7"));
-    assertThat(new Chord(TonePitchEnglish.E_FLAT, TonalSystem.MINOR_M, ChordExtension._7)).isEqualTo(mapper.read("Ebm7"));
-    assertThat(new Chord(TonePitchInternational.E_FLAT.with(ToneNameCase.LOWER_CASE), TonalSystem.MINOR_M, ChordExtension._7))
-        .isEqualTo(mapper.read("e\u266Dm7"));
+    assertThat(new Chord(TonePitchEnglish.E_FLAT, TonalSystem.MINOR_M, ChordExtension._7))
+        .isEqualTo(mapper.read("Ebm7"));
+    assertThat(
+        new Chord(TonePitchInternational.E_FLAT.with(ToneNameCase.LOWER_CASE), TonalSystem.MINOR_M, ChordExtension._7))
+            .isEqualTo(mapper.read("e\u266Dm7"));
   }
 
   /** Test of {@link Chord#transposeChromatic(int)}. */
@@ -95,8 +97,9 @@ public class ChordTest extends AbstractTest {
     // chromatic
     ChordMapper mapper = ChordMapperMusicDoc.INSTANCE;
     assertThat(mapper.read("C\u266F7/B\u266D").transpose(ChromaticInterval.PERFECT_FOURTH,
-        new TransposeContext(MusicalKey.C_SHARP_MAJOR.transposeChromatic(ChromaticInterval.PERFECT_FOURTH.getChromaticSteps()))))
-            .isEqualTo(mapper.read("F\u266F7/D\u266F"));
+        new TransposeContext(
+            MusicalKey.C_SHARP_MAJOR.transposeChromatic(ChromaticInterval.PERFECT_FOURTH.getChromaticSteps()))))
+                .isEqualTo(mapper.read("F\u266F7/D\u266F"));
 
     assertThat(mapper.read("ebmadd9/A").transposeChromatic(-1).getName()).isEqualTo("dmadd9/G#");
     assertThat(mapper.read("E\u266Dmadd9/A").transposeChromatic(-1).getName()).isEqualTo("Dmadd9/G\u266F");
@@ -105,16 +108,18 @@ public class ChordTest extends AbstractTest {
     // diatonic
     TransposeContext context = new TransposeContext(MusicalKey.C_SHARP_MAJOR);
 
-    assertThat(mapper.read("C\u266F7/B\u266D").transpose(DiatonicInterval.THIRD, context)).isEqualTo(mapper.read("E\u266F7/D")); // MuseScore3
-                                                                                                                                 // is
-                                                                                                                                 // buggy
-                                                                                                                                 // and
-                                                                                                                                 // transposes
-                                                                                                                                 // to
-                                                                                                                                 // E#/D#
-                                                                                                                                 // instead
+    assertThat(mapper.read("C\u266F7/B\u266D").transpose(DiatonicInterval.THIRD, context))
+        .isEqualTo(mapper.read("E\u266F7/D")); // MuseScore3
+                                               // is
+                                               // buggy
+                                               // and
+                                               // transposes
+                                               // to
+                                               // E#/D#
+                                               // instead
     context.setNormalizeChords(true);
-    assertThat(mapper.read("C\u266F7/Bb").transpose(DiatonicInterval.THIRD, context)).isEqualTo(mapper.read("E\u266F7/D"));
+    assertThat(mapper.read("C\u266F7/Bb").transpose(DiatonicInterval.THIRD, context))
+        .isEqualTo(mapper.read("E\u266F7/D"));
   }
 
 }

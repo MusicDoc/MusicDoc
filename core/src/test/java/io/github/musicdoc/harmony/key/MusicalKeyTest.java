@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 import io.github.musicdoc.harmony.EnharmonicStyle;
 import io.github.musicdoc.harmony.TonalSystem;
-import io.github.musicdoc.harmony.key.MusicalKey;
 import io.github.musicdoc.interval.Solmization;
 import io.github.musicdoc.tone.TonePitchEnglish;
 
@@ -27,11 +26,11 @@ public class MusicalKeyTest extends Assertions {
     assertThat(key.getSystem()).isSameAs(TonalSystem.MAJOR);
     assertThat(key.getTonika()).isSameAs(TonePitchEnglish.C);
     assertThat(key.getEnharmonicStyle()).isSameAs(EnharmonicStyle.NORMAL);
-    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.C, TonePitchEnglish.D, TonePitchEnglish.E, TonePitchEnglish.F,
-        TonePitchEnglish.G, TonePitchEnglish.A, TonePitchEnglish.B);
-    assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.C, TonePitchEnglish.C_SHARP, TonePitchEnglish.D,
-        TonePitchEnglish.D_SHARP, TonePitchEnglish.E, TonePitchEnglish.F, TonePitchEnglish.F_SHARP, TonePitchEnglish.G,
-        TonePitchEnglish.G_SHARP, TonePitchEnglish.A, TonePitchEnglish.B_FLAT, TonePitchEnglish.B);
+    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.C, TonePitchEnglish.D, TonePitchEnglish.E,
+        TonePitchEnglish.F, TonePitchEnglish.G, TonePitchEnglish.A, TonePitchEnglish.B);
+    assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.C, TonePitchEnglish.C_SHARP,
+        TonePitchEnglish.D, TonePitchEnglish.D_SHARP, TonePitchEnglish.E, TonePitchEnglish.F, TonePitchEnglish.F_SHARP,
+        TonePitchEnglish.G, TonePitchEnglish.G_SHARP, TonePitchEnglish.A, TonePitchEnglish.B_FLAT, TonePitchEnglish.B);
     assertThat(key.getChromaticSignTones()).isEmpty();
   }
 
@@ -46,13 +45,16 @@ public class MusicalKeyTest extends Assertions {
     assertThat(key.getSystem()).isSameAs(TonalSystem.MAJOR);
     assertThat(key.getTonika()).isSameAs(TonePitchEnglish.C_SHARP);
     assertThat(key.getEnharmonicStyle()).isSameAs(EnharmonicStyle.SHARP);
-    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.C_SHARP, TonePitchEnglish.D_SHARP, TonePitchEnglish.E_SHARP,
-        TonePitchEnglish.F_SHARP, TonePitchEnglish.G_SHARP, TonePitchEnglish.A_SHARP, TonePitchEnglish.B_SHARP);
-    assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.C_SHARP, TonePitchEnglish.D, TonePitchEnglish.D_SHARP,
-        TonePitchEnglish.E, TonePitchEnglish.E_SHARP, TonePitchEnglish.F_SHARP, TonePitchEnglish.G, TonePitchEnglish.G_SHARP,
-        TonePitchEnglish.A, TonePitchEnglish.A_SHARP, TonePitchEnglish.B, TonePitchEnglish.B_SHARP);
-    assertThat(key.getChromaticSignTones()).containsExactly(TonePitchEnglish.F_SHARP, TonePitchEnglish.C_SHARP, TonePitchEnglish.G_SHARP,
-        TonePitchEnglish.D_SHARP, TonePitchEnglish.A_SHARP, TonePitchEnglish.E_SHARP, TonePitchEnglish.B_SHARP);
+    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.C_SHARP, TonePitchEnglish.D_SHARP,
+        TonePitchEnglish.E_SHARP, TonePitchEnglish.F_SHARP, TonePitchEnglish.G_SHARP, TonePitchEnglish.A_SHARP,
+        TonePitchEnglish.B_SHARP);
+    assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.C_SHARP, TonePitchEnglish.D,
+        TonePitchEnglish.D_SHARP, TonePitchEnglish.E, TonePitchEnglish.E_SHARP, TonePitchEnglish.F_SHARP,
+        TonePitchEnglish.G, TonePitchEnglish.G_SHARP, TonePitchEnglish.A, TonePitchEnglish.A_SHARP, TonePitchEnglish.B,
+        TonePitchEnglish.B_SHARP);
+    assertThat(key.getChromaticSignTones()).containsExactly(TonePitchEnglish.F_SHARP, TonePitchEnglish.C_SHARP,
+        TonePitchEnglish.G_SHARP, TonePitchEnglish.D_SHARP, TonePitchEnglish.A_SHARP, TonePitchEnglish.E_SHARP,
+        TonePitchEnglish.B_SHARP);
   }
 
   /**
@@ -66,13 +68,14 @@ public class MusicalKeyTest extends Assertions {
     assertThat(key.getSystem()).isSameAs(TonalSystem.MAJOR);
     assertThat(key.getTonika()).isSameAs(TonePitchEnglish.D_FLAT);
     assertThat(key.getEnharmonicStyle()).isSameAs(EnharmonicStyle.FLAT);
-    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.D_FLAT, TonePitchEnglish.E_FLAT, TonePitchEnglish.F,
-        TonePitchEnglish.G_FLAT, TonePitchEnglish.A_FLAT, TonePitchEnglish.B_FLAT, TonePitchEnglish.C);
-    assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.D_FLAT, TonePitchEnglish.D, TonePitchEnglish.E_FLAT,
-        TonePitchEnglish.E, TonePitchEnglish.F, TonePitchEnglish.G_FLAT, TonePitchEnglish.G, TonePitchEnglish.A_FLAT, TonePitchEnglish.A,
-        TonePitchEnglish.B_FLAT, TonePitchEnglish.B, TonePitchEnglish.C);
-    assertThat(key.getChromaticSignTones()).containsExactly(TonePitchEnglish.B_FLAT, TonePitchEnglish.E_FLAT, TonePitchEnglish.A_FLAT,
-        TonePitchEnglish.D_FLAT, TonePitchEnglish.G_FLAT);
+    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.D_FLAT, TonePitchEnglish.E_FLAT,
+        TonePitchEnglish.F, TonePitchEnglish.G_FLAT, TonePitchEnglish.A_FLAT, TonePitchEnglish.B_FLAT,
+        TonePitchEnglish.C);
+    assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.D_FLAT, TonePitchEnglish.D,
+        TonePitchEnglish.E_FLAT, TonePitchEnglish.E, TonePitchEnglish.F, TonePitchEnglish.G_FLAT, TonePitchEnglish.G,
+        TonePitchEnglish.A_FLAT, TonePitchEnglish.A, TonePitchEnglish.B_FLAT, TonePitchEnglish.B, TonePitchEnglish.C);
+    assertThat(key.getChromaticSignTones()).containsExactly(TonePitchEnglish.B_FLAT, TonePitchEnglish.E_FLAT,
+        TonePitchEnglish.A_FLAT, TonePitchEnglish.D_FLAT, TonePitchEnglish.G_FLAT);
   }
 
   /**
@@ -86,11 +89,11 @@ public class MusicalKeyTest extends Assertions {
     assertThat(key.getSystem()).isSameAs(TonalSystem.MAJOR);
     assertThat(key.getTonika()).isSameAs(TonePitchEnglish.D);
     assertThat(key.getEnharmonicStyle()).isSameAs(EnharmonicStyle.SHARP);
-    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.D, TonePitchEnglish.E, TonePitchEnglish.F_SHARP, TonePitchEnglish.G,
-        TonePitchEnglish.A, TonePitchEnglish.B, TonePitchEnglish.C_SHARP);
-    assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.D, TonePitchEnglish.D_SHARP, TonePitchEnglish.E,
-        TonePitchEnglish.F, TonePitchEnglish.F_SHARP, TonePitchEnglish.G, TonePitchEnglish.G_SHARP, TonePitchEnglish.A,
-        TonePitchEnglish.A_SHARP, TonePitchEnglish.B, TonePitchEnglish.C, TonePitchEnglish.C_SHARP);
+    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.D, TonePitchEnglish.E, TonePitchEnglish.F_SHARP,
+        TonePitchEnglish.G, TonePitchEnglish.A, TonePitchEnglish.B, TonePitchEnglish.C_SHARP);
+    assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.D, TonePitchEnglish.D_SHARP,
+        TonePitchEnglish.E, TonePitchEnglish.F, TonePitchEnglish.F_SHARP, TonePitchEnglish.G, TonePitchEnglish.G_SHARP,
+        TonePitchEnglish.A, TonePitchEnglish.A_SHARP, TonePitchEnglish.B, TonePitchEnglish.C, TonePitchEnglish.C_SHARP);
     assertThat(key.getChromaticSignTones()).containsExactly(TonePitchEnglish.F_SHARP, TonePitchEnglish.C_SHARP);
   }
 
@@ -108,9 +111,10 @@ public class MusicalKeyTest extends Assertions {
     assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.E_FLAT, TonePitchEnglish.F, TonePitchEnglish.G,
         TonePitchEnglish.A_FLAT, TonePitchEnglish.B_FLAT, TonePitchEnglish.C, TonePitchEnglish.D);
     assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.E_FLAT, TonePitchEnglish.E, TonePitchEnglish.F,
-        TonePitchEnglish.G_FLAT, TonePitchEnglish.G, TonePitchEnglish.A_FLAT, TonePitchEnglish.A, TonePitchEnglish.B_FLAT,
-        TonePitchEnglish.B, TonePitchEnglish.C, TonePitchEnglish.D_FLAT, TonePitchEnglish.D);
-    assertThat(key.getChromaticSignTones()).containsExactly(TonePitchEnglish.B_FLAT, TonePitchEnglish.E_FLAT, TonePitchEnglish.A_FLAT);
+        TonePitchEnglish.G_FLAT, TonePitchEnglish.G, TonePitchEnglish.A_FLAT, TonePitchEnglish.A,
+        TonePitchEnglish.B_FLAT, TonePitchEnglish.B, TonePitchEnglish.C, TonePitchEnglish.D_FLAT, TonePitchEnglish.D);
+    assertThat(key.getChromaticSignTones()).containsExactly(TonePitchEnglish.B_FLAT, TonePitchEnglish.E_FLAT,
+        TonePitchEnglish.A_FLAT);
   }
 
   /**
@@ -124,13 +128,15 @@ public class MusicalKeyTest extends Assertions {
     assertThat(key.getSystem()).isSameAs(TonalSystem.MAJOR);
     assertThat(key.getTonika()).isSameAs(TonePitchEnglish.E);
     assertThat(key.getEnharmonicStyle()).isSameAs(EnharmonicStyle.SHARP);
-    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.E, TonePitchEnglish.F_SHARP, TonePitchEnglish.G_SHARP,
-        TonePitchEnglish.A, TonePitchEnglish.B, TonePitchEnglish.C_SHARP, TonePitchEnglish.D_SHARP);
-    assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.E, TonePitchEnglish.F, TonePitchEnglish.F_SHARP,
-        TonePitchEnglish.G, TonePitchEnglish.G_SHARP, TonePitchEnglish.A, TonePitchEnglish.A_SHARP, TonePitchEnglish.B, TonePitchEnglish.C,
-        TonePitchEnglish.C_SHARP, TonePitchEnglish.D, TonePitchEnglish.D_SHARP);
-    assertThat(key.getChromaticSignTones()).containsExactly(TonePitchEnglish.F_SHARP, TonePitchEnglish.C_SHARP, TonePitchEnglish.G_SHARP,
+    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.E, TonePitchEnglish.F_SHARP,
+        TonePitchEnglish.G_SHARP, TonePitchEnglish.A, TonePitchEnglish.B, TonePitchEnglish.C_SHARP,
         TonePitchEnglish.D_SHARP);
+    assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.E, TonePitchEnglish.F,
+        TonePitchEnglish.F_SHARP, TonePitchEnglish.G, TonePitchEnglish.G_SHARP, TonePitchEnglish.A,
+        TonePitchEnglish.A_SHARP, TonePitchEnglish.B, TonePitchEnglish.C, TonePitchEnglish.C_SHARP, TonePitchEnglish.D,
+        TonePitchEnglish.D_SHARP);
+    assertThat(key.getChromaticSignTones()).containsExactly(TonePitchEnglish.F_SHARP, TonePitchEnglish.C_SHARP,
+        TonePitchEnglish.G_SHARP, TonePitchEnglish.D_SHARP);
   }
 
   /**
@@ -144,8 +150,8 @@ public class MusicalKeyTest extends Assertions {
     assertThat(key.getSystem()).isSameAs(TonalSystem.MAJOR);
     assertThat(key.getTonika()).isSameAs(TonePitchEnglish.F);
     assertThat(key.getEnharmonicStyle()).isSameAs(EnharmonicStyle.FLAT);
-    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.F, TonePitchEnglish.G, TonePitchEnglish.A, TonePitchEnglish.B_FLAT,
-        TonePitchEnglish.C, TonePitchEnglish.D, TonePitchEnglish.E);
+    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.F, TonePitchEnglish.G, TonePitchEnglish.A,
+        TonePitchEnglish.B_FLAT, TonePitchEnglish.C, TonePitchEnglish.D, TonePitchEnglish.E);
     assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.F, TonePitchEnglish.G_FLAT, TonePitchEnglish.G,
         TonePitchEnglish.A_FLAT, TonePitchEnglish.A, TonePitchEnglish.B_FLAT, TonePitchEnglish.B, TonePitchEnglish.C,
         TonePitchEnglish.D_FLAT, TonePitchEnglish.D, TonePitchEnglish.E_FLAT, TonePitchEnglish.E);
@@ -163,13 +169,15 @@ public class MusicalKeyTest extends Assertions {
     assertThat(key.getSystem()).isSameAs(TonalSystem.MAJOR);
     assertThat(key.getTonika()).isSameAs(TonePitchEnglish.F_SHARP);
     assertThat(key.getEnharmonicStyle()).isSameAs(EnharmonicStyle.SHARP);
-    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.F_SHARP, TonePitchEnglish.G_SHARP, TonePitchEnglish.A_SHARP,
-        TonePitchEnglish.B, TonePitchEnglish.C_SHARP, TonePitchEnglish.D_SHARP, TonePitchEnglish.E_SHARP);
-    assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.F_SHARP, TonePitchEnglish.G, TonePitchEnglish.G_SHARP,
-        TonePitchEnglish.A, TonePitchEnglish.A_SHARP, TonePitchEnglish.B, TonePitchEnglish.C, TonePitchEnglish.C_SHARP, TonePitchEnglish.D,
-        TonePitchEnglish.D_SHARP, TonePitchEnglish.E, TonePitchEnglish.E_SHARP);
-    assertThat(key.getChromaticSignTones()).containsExactly(TonePitchEnglish.F_SHARP, TonePitchEnglish.C_SHARP, TonePitchEnglish.G_SHARP,
-        TonePitchEnglish.D_SHARP, TonePitchEnglish.A_SHARP, TonePitchEnglish.E_SHARP);
+    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.F_SHARP, TonePitchEnglish.G_SHARP,
+        TonePitchEnglish.A_SHARP, TonePitchEnglish.B, TonePitchEnglish.C_SHARP, TonePitchEnglish.D_SHARP,
+        TonePitchEnglish.E_SHARP);
+    assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.F_SHARP, TonePitchEnglish.G,
+        TonePitchEnglish.G_SHARP, TonePitchEnglish.A, TonePitchEnglish.A_SHARP, TonePitchEnglish.B, TonePitchEnglish.C,
+        TonePitchEnglish.C_SHARP, TonePitchEnglish.D, TonePitchEnglish.D_SHARP, TonePitchEnglish.E,
+        TonePitchEnglish.E_SHARP);
+    assertThat(key.getChromaticSignTones()).containsExactly(TonePitchEnglish.F_SHARP, TonePitchEnglish.C_SHARP,
+        TonePitchEnglish.G_SHARP, TonePitchEnglish.D_SHARP, TonePitchEnglish.A_SHARP, TonePitchEnglish.E_SHARP);
   }
 
   /**
@@ -183,13 +191,15 @@ public class MusicalKeyTest extends Assertions {
     assertThat(key.getSystem()).isSameAs(TonalSystem.MAJOR);
     assertThat(key.getTonika()).isSameAs(TonePitchEnglish.G_FLAT);
     assertThat(key.getEnharmonicStyle()).isSameAs(EnharmonicStyle.FLAT);
-    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.G_FLAT, TonePitchEnglish.A_FLAT, TonePitchEnglish.B_FLAT,
-        TonePitchEnglish.C_FLAT, TonePitchEnglish.D_FLAT, TonePitchEnglish.E_FLAT, TonePitchEnglish.F);
-    assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.G_FLAT, TonePitchEnglish.G, TonePitchEnglish.A_FLAT,
-        TonePitchEnglish.A, TonePitchEnglish.B_FLAT, TonePitchEnglish.C_FLAT, TonePitchEnglish.C, TonePitchEnglish.D_FLAT,
-        TonePitchEnglish.D, TonePitchEnglish.E_FLAT, TonePitchEnglish.E, TonePitchEnglish.F);
-    assertThat(key.getChromaticSignTones()).containsExactly(TonePitchEnglish.B_FLAT, TonePitchEnglish.E_FLAT, TonePitchEnglish.A_FLAT,
-        TonePitchEnglish.D_FLAT, TonePitchEnglish.G_FLAT, TonePitchEnglish.C_FLAT);
+    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.G_FLAT, TonePitchEnglish.A_FLAT,
+        TonePitchEnglish.B_FLAT, TonePitchEnglish.C_FLAT, TonePitchEnglish.D_FLAT, TonePitchEnglish.E_FLAT,
+        TonePitchEnglish.F);
+    assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.G_FLAT, TonePitchEnglish.G,
+        TonePitchEnglish.A_FLAT, TonePitchEnglish.A, TonePitchEnglish.B_FLAT, TonePitchEnglish.C_FLAT,
+        TonePitchEnglish.C, TonePitchEnglish.D_FLAT, TonePitchEnglish.D, TonePitchEnglish.E_FLAT, TonePitchEnglish.E,
+        TonePitchEnglish.F);
+    assertThat(key.getChromaticSignTones()).containsExactly(TonePitchEnglish.B_FLAT, TonePitchEnglish.E_FLAT,
+        TonePitchEnglish.A_FLAT, TonePitchEnglish.D_FLAT, TonePitchEnglish.G_FLAT, TonePitchEnglish.C_FLAT);
   }
 
   /**
@@ -203,11 +213,11 @@ public class MusicalKeyTest extends Assertions {
     assertThat(key.getSystem()).isSameAs(TonalSystem.MAJOR);
     assertThat(key.getTonika()).isSameAs(TonePitchEnglish.G);
     assertThat(key.getEnharmonicStyle()).isSameAs(EnharmonicStyle.SHARP);
-    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.G, TonePitchEnglish.A, TonePitchEnglish.B, TonePitchEnglish.C,
-        TonePitchEnglish.D, TonePitchEnglish.E, TonePitchEnglish.F_SHARP);
-    assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.G, TonePitchEnglish.G_SHARP, TonePitchEnglish.A,
-        TonePitchEnglish.A_SHARP, TonePitchEnglish.B, TonePitchEnglish.C, TonePitchEnglish.C_SHARP, TonePitchEnglish.D,
-        TonePitchEnglish.D_SHARP, TonePitchEnglish.E, TonePitchEnglish.F, TonePitchEnglish.F_SHARP);
+    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.G, TonePitchEnglish.A, TonePitchEnglish.B,
+        TonePitchEnglish.C, TonePitchEnglish.D, TonePitchEnglish.E, TonePitchEnglish.F_SHARP);
+    assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.G, TonePitchEnglish.G_SHARP,
+        TonePitchEnglish.A, TonePitchEnglish.A_SHARP, TonePitchEnglish.B, TonePitchEnglish.C, TonePitchEnglish.C_SHARP,
+        TonePitchEnglish.D, TonePitchEnglish.D_SHARP, TonePitchEnglish.E, TonePitchEnglish.F, TonePitchEnglish.F_SHARP);
     assertThat(key.getChromaticSignTones()).containsExactly(TonePitchEnglish.F_SHARP);
   }
 
@@ -222,13 +232,13 @@ public class MusicalKeyTest extends Assertions {
     assertThat(key.getSystem()).isSameAs(TonalSystem.MAJOR);
     assertThat(key.getTonika()).isSameAs(TonePitchEnglish.A_FLAT);
     assertThat(key.getEnharmonicStyle()).isSameAs(EnharmonicStyle.FLAT);
-    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.A_FLAT, TonePitchEnglish.B_FLAT, TonePitchEnglish.C,
-        TonePitchEnglish.D_FLAT, TonePitchEnglish.E_FLAT, TonePitchEnglish.F, TonePitchEnglish.G);
-    assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.A_FLAT, TonePitchEnglish.A, TonePitchEnglish.B_FLAT,
-        TonePitchEnglish.B, TonePitchEnglish.C, TonePitchEnglish.D_FLAT, TonePitchEnglish.D, TonePitchEnglish.E_FLAT, TonePitchEnglish.E,
-        TonePitchEnglish.F, TonePitchEnglish.G_FLAT, TonePitchEnglish.G);
-    assertThat(key.getChromaticSignTones()).containsExactly(TonePitchEnglish.B_FLAT, TonePitchEnglish.E_FLAT, TonePitchEnglish.A_FLAT,
-        TonePitchEnglish.D_FLAT);
+    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.A_FLAT, TonePitchEnglish.B_FLAT,
+        TonePitchEnglish.C, TonePitchEnglish.D_FLAT, TonePitchEnglish.E_FLAT, TonePitchEnglish.F, TonePitchEnglish.G);
+    assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.A_FLAT, TonePitchEnglish.A,
+        TonePitchEnglish.B_FLAT, TonePitchEnglish.B, TonePitchEnglish.C, TonePitchEnglish.D_FLAT, TonePitchEnglish.D,
+        TonePitchEnglish.E_FLAT, TonePitchEnglish.E, TonePitchEnglish.F, TonePitchEnglish.G_FLAT, TonePitchEnglish.G);
+    assertThat(key.getChromaticSignTones()).containsExactly(TonePitchEnglish.B_FLAT, TonePitchEnglish.E_FLAT,
+        TonePitchEnglish.A_FLAT, TonePitchEnglish.D_FLAT);
   }
 
   /**
@@ -242,12 +252,13 @@ public class MusicalKeyTest extends Assertions {
     assertThat(key.getSystem()).isSameAs(TonalSystem.MAJOR);
     assertThat(key.getTonika()).isSameAs(TonePitchEnglish.A);
     assertThat(key.getEnharmonicStyle()).isSameAs(EnharmonicStyle.SHARP);
-    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.A, TonePitchEnglish.B, TonePitchEnglish.C_SHARP, TonePitchEnglish.D,
-        TonePitchEnglish.E, TonePitchEnglish.F_SHARP, TonePitchEnglish.G_SHARP);
-    assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.A, TonePitchEnglish.A_SHARP, TonePitchEnglish.B,
-        TonePitchEnglish.C, TonePitchEnglish.C_SHARP, TonePitchEnglish.D, TonePitchEnglish.D_SHARP, TonePitchEnglish.E, TonePitchEnglish.F,
-        TonePitchEnglish.F_SHARP, TonePitchEnglish.G, TonePitchEnglish.G_SHARP);
-    assertThat(key.getChromaticSignTones()).containsExactly(TonePitchEnglish.F_SHARP, TonePitchEnglish.C_SHARP, TonePitchEnglish.G_SHARP);
+    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.A, TonePitchEnglish.B, TonePitchEnglish.C_SHARP,
+        TonePitchEnglish.D, TonePitchEnglish.E, TonePitchEnglish.F_SHARP, TonePitchEnglish.G_SHARP);
+    assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.A, TonePitchEnglish.A_SHARP,
+        TonePitchEnglish.B, TonePitchEnglish.C, TonePitchEnglish.C_SHARP, TonePitchEnglish.D, TonePitchEnglish.D_SHARP,
+        TonePitchEnglish.E, TonePitchEnglish.F, TonePitchEnglish.F_SHARP, TonePitchEnglish.G, TonePitchEnglish.G_SHARP);
+    assertThat(key.getChromaticSignTones()).containsExactly(TonePitchEnglish.F_SHARP, TonePitchEnglish.C_SHARP,
+        TonePitchEnglish.G_SHARP);
   }
 
   /**
@@ -280,13 +291,15 @@ public class MusicalKeyTest extends Assertions {
     assertThat(key.getSystem()).isSameAs(TonalSystem.MAJOR);
     assertThat(key.getTonika()).isSameAs(TonePitchEnglish.B);
     assertThat(key.getEnharmonicStyle()).isSameAs(EnharmonicStyle.SHARP);
-    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.B, TonePitchEnglish.C_SHARP, TonePitchEnglish.D_SHARP,
-        TonePitchEnglish.E, TonePitchEnglish.F_SHARP, TonePitchEnglish.G_SHARP, TonePitchEnglish.A_SHARP);
-    assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.B, TonePitchEnglish.C, TonePitchEnglish.C_SHARP,
-        TonePitchEnglish.D, TonePitchEnglish.D_SHARP, TonePitchEnglish.E, TonePitchEnglish.F, TonePitchEnglish.F_SHARP, TonePitchEnglish.G,
-        TonePitchEnglish.G_SHARP, TonePitchEnglish.A, TonePitchEnglish.A_SHARP);
-    assertThat(key.getChromaticSignTones()).containsExactly(TonePitchEnglish.F_SHARP, TonePitchEnglish.C_SHARP, TonePitchEnglish.G_SHARP,
-        TonePitchEnglish.D_SHARP, TonePitchEnglish.A_SHARP);
+    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.B, TonePitchEnglish.C_SHARP,
+        TonePitchEnglish.D_SHARP, TonePitchEnglish.E, TonePitchEnglish.F_SHARP, TonePitchEnglish.G_SHARP,
+        TonePitchEnglish.A_SHARP);
+    assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.B, TonePitchEnglish.C,
+        TonePitchEnglish.C_SHARP, TonePitchEnglish.D, TonePitchEnglish.D_SHARP, TonePitchEnglish.E, TonePitchEnglish.F,
+        TonePitchEnglish.F_SHARP, TonePitchEnglish.G, TonePitchEnglish.G_SHARP, TonePitchEnglish.A,
+        TonePitchEnglish.A_SHARP);
+    assertThat(key.getChromaticSignTones()).containsExactly(TonePitchEnglish.F_SHARP, TonePitchEnglish.C_SHARP,
+        TonePitchEnglish.G_SHARP, TonePitchEnglish.D_SHARP, TonePitchEnglish.A_SHARP);
   }
 
   /**
@@ -300,12 +313,13 @@ public class MusicalKeyTest extends Assertions {
     assertThat(key.getSystem()).isSameAs(TonalSystem.MINOR);
     assertThat(key.getTonika()).isSameAs(TonePitchEnglish.C);
     assertThat(key.getEnharmonicStyle()).isSameAs(EnharmonicStyle.FLAT);
-    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.C, TonePitchEnglish.D, TonePitchEnglish.E_FLAT, TonePitchEnglish.F,
-        TonePitchEnglish.G, TonePitchEnglish.A_FLAT, TonePitchEnglish.B_FLAT);
+    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.C, TonePitchEnglish.D, TonePitchEnglish.E_FLAT,
+        TonePitchEnglish.F, TonePitchEnglish.G, TonePitchEnglish.A_FLAT, TonePitchEnglish.B_FLAT);
     assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.C, TonePitchEnglish.D_FLAT, TonePitchEnglish.D,
         TonePitchEnglish.E_FLAT, TonePitchEnglish.E, TonePitchEnglish.F, TonePitchEnglish.G_FLAT, TonePitchEnglish.G,
         TonePitchEnglish.A_FLAT, TonePitchEnglish.A, TonePitchEnglish.B_FLAT, TonePitchEnglish.B);
-    assertThat(key.getChromaticSignTones()).containsExactly(TonePitchEnglish.B_FLAT, TonePitchEnglish.E_FLAT, TonePitchEnglish.A_FLAT);
+    assertThat(key.getChromaticSignTones()).containsExactly(TonePitchEnglish.B_FLAT, TonePitchEnglish.E_FLAT,
+        TonePitchEnglish.A_FLAT);
   }
 
   /**
@@ -319,13 +333,13 @@ public class MusicalKeyTest extends Assertions {
     assertThat(key.getSystem()).isSameAs(TonalSystem.MINOR);
     assertThat(key.getTonika()).isSameAs(TonePitchEnglish.C_SHARP);
     assertThat(key.getEnharmonicStyle()).isSameAs(EnharmonicStyle.SHARP);
-    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.C_SHARP, TonePitchEnglish.D_SHARP, TonePitchEnglish.E,
-        TonePitchEnglish.F_SHARP, TonePitchEnglish.G_SHARP, TonePitchEnglish.A, TonePitchEnglish.B);
-    assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.C_SHARP, TonePitchEnglish.D, TonePitchEnglish.D_SHARP,
-        TonePitchEnglish.E, TonePitchEnglish.F, TonePitchEnglish.F_SHARP, TonePitchEnglish.G, TonePitchEnglish.G_SHARP, TonePitchEnglish.A,
-        TonePitchEnglish.A_SHARP, TonePitchEnglish.B, TonePitchEnglish.C);
-    assertThat(key.getChromaticSignTones()).containsExactly(TonePitchEnglish.F_SHARP, TonePitchEnglish.C_SHARP, TonePitchEnglish.G_SHARP,
-        TonePitchEnglish.D_SHARP);
+    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.C_SHARP, TonePitchEnglish.D_SHARP,
+        TonePitchEnglish.E, TonePitchEnglish.F_SHARP, TonePitchEnglish.G_SHARP, TonePitchEnglish.A, TonePitchEnglish.B);
+    assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.C_SHARP, TonePitchEnglish.D,
+        TonePitchEnglish.D_SHARP, TonePitchEnglish.E, TonePitchEnglish.F, TonePitchEnglish.F_SHARP, TonePitchEnglish.G,
+        TonePitchEnglish.G_SHARP, TonePitchEnglish.A, TonePitchEnglish.A_SHARP, TonePitchEnglish.B, TonePitchEnglish.C);
+    assertThat(key.getChromaticSignTones()).containsExactly(TonePitchEnglish.F_SHARP, TonePitchEnglish.C_SHARP,
+        TonePitchEnglish.G_SHARP, TonePitchEnglish.D_SHARP);
   }
 
   /**
@@ -339,11 +353,11 @@ public class MusicalKeyTest extends Assertions {
     assertThat(key.getSystem()).isSameAs(TonalSystem.MINOR);
     assertThat(key.getTonika()).isSameAs(TonePitchEnglish.D);
     assertThat(key.getEnharmonicStyle()).isSameAs(EnharmonicStyle.FLAT);
-    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.D, TonePitchEnglish.E, TonePitchEnglish.F, TonePitchEnglish.G,
-        TonePitchEnglish.A, TonePitchEnglish.B_FLAT, TonePitchEnglish.C);
-    assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.D, TonePitchEnglish.E_FLAT, TonePitchEnglish.E, TonePitchEnglish.F,
-        TonePitchEnglish.G_FLAT, TonePitchEnglish.G, TonePitchEnglish.A_FLAT, TonePitchEnglish.A, TonePitchEnglish.B_FLAT,
-        TonePitchEnglish.B, TonePitchEnglish.C, TonePitchEnglish.D_FLAT);
+    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.D, TonePitchEnglish.E, TonePitchEnglish.F,
+        TonePitchEnglish.G, TonePitchEnglish.A, TonePitchEnglish.B_FLAT, TonePitchEnglish.C);
+    assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.D, TonePitchEnglish.E_FLAT, TonePitchEnglish.E,
+        TonePitchEnglish.F, TonePitchEnglish.G_FLAT, TonePitchEnglish.G, TonePitchEnglish.A_FLAT, TonePitchEnglish.A,
+        TonePitchEnglish.B_FLAT, TonePitchEnglish.B, TonePitchEnglish.C, TonePitchEnglish.D_FLAT);
     assertThat(key.getChromaticSignTones()).containsExactly(TonePitchEnglish.B_FLAT);
   }
 
@@ -358,13 +372,15 @@ public class MusicalKeyTest extends Assertions {
     assertThat(key.getSystem()).isSameAs(TonalSystem.MINOR);
     assertThat(key.getTonika()).isSameAs(TonePitchEnglish.D_SHARP);
     assertThat(key.getEnharmonicStyle()).isSameAs(EnharmonicStyle.SHARP);
-    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.D_SHARP, TonePitchEnglish.E_SHARP, TonePitchEnglish.F_SHARP,
-        TonePitchEnglish.G_SHARP, TonePitchEnglish.A_SHARP, TonePitchEnglish.B, TonePitchEnglish.C_SHARP);
-    assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.D_SHARP, TonePitchEnglish.E, TonePitchEnglish.E_SHARP,
-        TonePitchEnglish.F_SHARP, TonePitchEnglish.G, TonePitchEnglish.G_SHARP, TonePitchEnglish.A, TonePitchEnglish.A_SHARP,
-        TonePitchEnglish.B, TonePitchEnglish.C, TonePitchEnglish.C_SHARP, TonePitchEnglish.D);
-    assertThat(key.getChromaticSignTones()).containsExactly(TonePitchEnglish.F_SHARP, TonePitchEnglish.C_SHARP, TonePitchEnglish.G_SHARP,
-        TonePitchEnglish.D_SHARP, TonePitchEnglish.A_SHARP, TonePitchEnglish.E_SHARP);
+    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.D_SHARP, TonePitchEnglish.E_SHARP,
+        TonePitchEnglish.F_SHARP, TonePitchEnglish.G_SHARP, TonePitchEnglish.A_SHARP, TonePitchEnglish.B,
+        TonePitchEnglish.C_SHARP);
+    assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.D_SHARP, TonePitchEnglish.E,
+        TonePitchEnglish.E_SHARP, TonePitchEnglish.F_SHARP, TonePitchEnglish.G, TonePitchEnglish.G_SHARP,
+        TonePitchEnglish.A, TonePitchEnglish.A_SHARP, TonePitchEnglish.B, TonePitchEnglish.C, TonePitchEnglish.C_SHARP,
+        TonePitchEnglish.D);
+    assertThat(key.getChromaticSignTones()).containsExactly(TonePitchEnglish.F_SHARP, TonePitchEnglish.C_SHARP,
+        TonePitchEnglish.G_SHARP, TonePitchEnglish.D_SHARP, TonePitchEnglish.A_SHARP, TonePitchEnglish.E_SHARP);
   }
 
   /**
@@ -378,13 +394,15 @@ public class MusicalKeyTest extends Assertions {
     assertThat(key.getSystem()).isSameAs(TonalSystem.MINOR);
     assertThat(key.getTonika()).isSameAs(TonePitchEnglish.E_FLAT);
     assertThat(key.getEnharmonicStyle()).isSameAs(EnharmonicStyle.FLAT);
-    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.E_FLAT, TonePitchEnglish.F, TonePitchEnglish.G_FLAT,
-        TonePitchEnglish.A_FLAT, TonePitchEnglish.B_FLAT, TonePitchEnglish.C_FLAT, TonePitchEnglish.D_FLAT);
+    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.E_FLAT, TonePitchEnglish.F,
+        TonePitchEnglish.G_FLAT, TonePitchEnglish.A_FLAT, TonePitchEnglish.B_FLAT, TonePitchEnglish.C_FLAT,
+        TonePitchEnglish.D_FLAT);
     assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.E_FLAT, TonePitchEnglish.E, TonePitchEnglish.F,
-        TonePitchEnglish.G_FLAT, TonePitchEnglish.G, TonePitchEnglish.A_FLAT, TonePitchEnglish.A, TonePitchEnglish.B_FLAT,
-        TonePitchEnglish.C_FLAT, TonePitchEnglish.C, TonePitchEnglish.D_FLAT, TonePitchEnglish.D);
-    assertThat(key.getChromaticSignTones()).containsExactly(TonePitchEnglish.B_FLAT, TonePitchEnglish.E_FLAT, TonePitchEnglish.A_FLAT,
-        TonePitchEnglish.D_FLAT, TonePitchEnglish.G_FLAT, TonePitchEnglish.C_FLAT);
+        TonePitchEnglish.G_FLAT, TonePitchEnglish.G, TonePitchEnglish.A_FLAT, TonePitchEnglish.A,
+        TonePitchEnglish.B_FLAT, TonePitchEnglish.C_FLAT, TonePitchEnglish.C, TonePitchEnglish.D_FLAT,
+        TonePitchEnglish.D);
+    assertThat(key.getChromaticSignTones()).containsExactly(TonePitchEnglish.B_FLAT, TonePitchEnglish.E_FLAT,
+        TonePitchEnglish.A_FLAT, TonePitchEnglish.D_FLAT, TonePitchEnglish.G_FLAT, TonePitchEnglish.C_FLAT);
   }
 
   /**
@@ -398,11 +416,12 @@ public class MusicalKeyTest extends Assertions {
     assertThat(key.getSystem()).isSameAs(TonalSystem.MINOR);
     assertThat(key.getTonika()).isSameAs(TonePitchEnglish.E);
     assertThat(key.getEnharmonicStyle()).isSameAs(EnharmonicStyle.SHARP);
-    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.E, TonePitchEnglish.F_SHARP, TonePitchEnglish.G, TonePitchEnglish.A,
-        TonePitchEnglish.B, TonePitchEnglish.C, TonePitchEnglish.D);
-    assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.E, TonePitchEnglish.F, TonePitchEnglish.F_SHARP,
-        TonePitchEnglish.G, TonePitchEnglish.G_SHARP, TonePitchEnglish.A, TonePitchEnglish.A_SHARP, TonePitchEnglish.B, TonePitchEnglish.C,
-        TonePitchEnglish.C_SHARP, TonePitchEnglish.D, TonePitchEnglish.D_SHARP);
+    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.E, TonePitchEnglish.F_SHARP, TonePitchEnglish.G,
+        TonePitchEnglish.A, TonePitchEnglish.B, TonePitchEnglish.C, TonePitchEnglish.D);
+    assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.E, TonePitchEnglish.F,
+        TonePitchEnglish.F_SHARP, TonePitchEnglish.G, TonePitchEnglish.G_SHARP, TonePitchEnglish.A,
+        TonePitchEnglish.A_SHARP, TonePitchEnglish.B, TonePitchEnglish.C, TonePitchEnglish.C_SHARP, TonePitchEnglish.D,
+        TonePitchEnglish.D_SHARP);
     assertThat(key.getChromaticSignTones()).containsExactly(TonePitchEnglish.F_SHARP);
   }
 
@@ -422,8 +441,8 @@ public class MusicalKeyTest extends Assertions {
     assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.F, TonePitchEnglish.G_FLAT, TonePitchEnglish.G,
         TonePitchEnglish.A_FLAT, TonePitchEnglish.A, TonePitchEnglish.B_FLAT, TonePitchEnglish.B, TonePitchEnglish.C,
         TonePitchEnglish.D_FLAT, TonePitchEnglish.D, TonePitchEnglish.E_FLAT, TonePitchEnglish.E);
-    assertThat(key.getChromaticSignTones()).containsExactly(TonePitchEnglish.B_FLAT, TonePitchEnglish.E_FLAT, TonePitchEnglish.A_FLAT,
-        TonePitchEnglish.D_FLAT);
+    assertThat(key.getChromaticSignTones()).containsExactly(TonePitchEnglish.B_FLAT, TonePitchEnglish.E_FLAT,
+        TonePitchEnglish.A_FLAT, TonePitchEnglish.D_FLAT);
   }
 
   /**
@@ -437,12 +456,13 @@ public class MusicalKeyTest extends Assertions {
     assertThat(key.getSystem()).isSameAs(TonalSystem.MINOR);
     assertThat(key.getTonika()).isSameAs(TonePitchEnglish.F_SHARP);
     assertThat(key.getEnharmonicStyle()).isSameAs(EnharmonicStyle.SHARP);
-    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.F_SHARP, TonePitchEnglish.G_SHARP, TonePitchEnglish.A,
-        TonePitchEnglish.B, TonePitchEnglish.C_SHARP, TonePitchEnglish.D, TonePitchEnglish.E);
-    assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.F_SHARP, TonePitchEnglish.G, TonePitchEnglish.G_SHARP,
-        TonePitchEnglish.A, TonePitchEnglish.A_SHARP, TonePitchEnglish.B, TonePitchEnglish.C, TonePitchEnglish.C_SHARP, TonePitchEnglish.D,
-        TonePitchEnglish.D_SHARP, TonePitchEnglish.E, TonePitchEnglish.F);
-    assertThat(key.getChromaticSignTones()).containsExactly(TonePitchEnglish.F_SHARP, TonePitchEnglish.C_SHARP, TonePitchEnglish.G_SHARP);
+    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.F_SHARP, TonePitchEnglish.G_SHARP,
+        TonePitchEnglish.A, TonePitchEnglish.B, TonePitchEnglish.C_SHARP, TonePitchEnglish.D, TonePitchEnglish.E);
+    assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.F_SHARP, TonePitchEnglish.G,
+        TonePitchEnglish.G_SHARP, TonePitchEnglish.A, TonePitchEnglish.A_SHARP, TonePitchEnglish.B, TonePitchEnglish.C,
+        TonePitchEnglish.C_SHARP, TonePitchEnglish.D, TonePitchEnglish.D_SHARP, TonePitchEnglish.E, TonePitchEnglish.F);
+    assertThat(key.getChromaticSignTones()).containsExactly(TonePitchEnglish.F_SHARP, TonePitchEnglish.C_SHARP,
+        TonePitchEnglish.G_SHARP);
   }
 
   /**
@@ -456,8 +476,8 @@ public class MusicalKeyTest extends Assertions {
     assertThat(key.getSystem()).isSameAs(TonalSystem.MINOR);
     assertThat(key.getTonika()).isSameAs(TonePitchEnglish.G);
     assertThat(key.getEnharmonicStyle()).isSameAs(EnharmonicStyle.FLAT);
-    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.G, TonePitchEnglish.A, TonePitchEnglish.B_FLAT, TonePitchEnglish.C,
-        TonePitchEnglish.D, TonePitchEnglish.E_FLAT, TonePitchEnglish.F);
+    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.G, TonePitchEnglish.A, TonePitchEnglish.B_FLAT,
+        TonePitchEnglish.C, TonePitchEnglish.D, TonePitchEnglish.E_FLAT, TonePitchEnglish.F);
     assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.G, TonePitchEnglish.A_FLAT, TonePitchEnglish.A,
         TonePitchEnglish.B_FLAT, TonePitchEnglish.B, TonePitchEnglish.C, TonePitchEnglish.D_FLAT, TonePitchEnglish.D,
         TonePitchEnglish.E_FLAT, TonePitchEnglish.E, TonePitchEnglish.F, TonePitchEnglish.G_FLAT);
@@ -475,13 +495,14 @@ public class MusicalKeyTest extends Assertions {
     assertThat(key.getSystem()).isSameAs(TonalSystem.MINOR);
     assertThat(key.getTonika()).isSameAs(TonePitchEnglish.G_SHARP);
     assertThat(key.getEnharmonicStyle()).isSameAs(EnharmonicStyle.SHARP);
-    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.G_SHARP, TonePitchEnglish.A_SHARP, TonePitchEnglish.B,
-        TonePitchEnglish.C_SHARP, TonePitchEnglish.D_SHARP, TonePitchEnglish.E, TonePitchEnglish.F_SHARP);
-    assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.G_SHARP, TonePitchEnglish.A, TonePitchEnglish.A_SHARP,
-        TonePitchEnglish.B, TonePitchEnglish.C, TonePitchEnglish.C_SHARP, TonePitchEnglish.D, TonePitchEnglish.D_SHARP, TonePitchEnglish.E,
-        TonePitchEnglish.F, TonePitchEnglish.F_SHARP, TonePitchEnglish.G);
-    assertThat(key.getChromaticSignTones()).containsExactly(TonePitchEnglish.F_SHARP, TonePitchEnglish.C_SHARP, TonePitchEnglish.G_SHARP,
-        TonePitchEnglish.D_SHARP, TonePitchEnglish.A_SHARP);
+    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.G_SHARP, TonePitchEnglish.A_SHARP,
+        TonePitchEnglish.B, TonePitchEnglish.C_SHARP, TonePitchEnglish.D_SHARP, TonePitchEnglish.E,
+        TonePitchEnglish.F_SHARP);
+    assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.G_SHARP, TonePitchEnglish.A,
+        TonePitchEnglish.A_SHARP, TonePitchEnglish.B, TonePitchEnglish.C, TonePitchEnglish.C_SHARP, TonePitchEnglish.D,
+        TonePitchEnglish.D_SHARP, TonePitchEnglish.E, TonePitchEnglish.F, TonePitchEnglish.F_SHARP, TonePitchEnglish.G);
+    assertThat(key.getChromaticSignTones()).containsExactly(TonePitchEnglish.F_SHARP, TonePitchEnglish.C_SHARP,
+        TonePitchEnglish.G_SHARP, TonePitchEnglish.D_SHARP, TonePitchEnglish.A_SHARP);
   }
 
   /**
@@ -495,13 +516,16 @@ public class MusicalKeyTest extends Assertions {
     assertThat(key.getSystem()).isSameAs(TonalSystem.MINOR);
     assertThat(key.getTonika()).isSameAs(TonePitchEnglish.A_FLAT);
     assertThat(key.getEnharmonicStyle()).isSameAs(EnharmonicStyle.FLAT);
-    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.A_FLAT, TonePitchEnglish.B_FLAT, TonePitchEnglish.C_FLAT,
-        TonePitchEnglish.D_FLAT, TonePitchEnglish.E_FLAT, TonePitchEnglish.F_FLAT, TonePitchEnglish.G_FLAT);
-    assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.A_FLAT, TonePitchEnglish.A, TonePitchEnglish.B_FLAT,
-        TonePitchEnglish.C_FLAT, TonePitchEnglish.C, TonePitchEnglish.D_FLAT, TonePitchEnglish.D, TonePitchEnglish.E_FLAT,
-        TonePitchEnglish.F_FLAT, TonePitchEnglish.F, TonePitchEnglish.G_FLAT, TonePitchEnglish.G);
-    assertThat(key.getChromaticSignTones()).containsExactly(TonePitchEnglish.B_FLAT, TonePitchEnglish.E_FLAT, TonePitchEnglish.A_FLAT,
-        TonePitchEnglish.D_FLAT, TonePitchEnglish.G_FLAT, TonePitchEnglish.C_FLAT, TonePitchEnglish.F_FLAT);
+    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.A_FLAT, TonePitchEnglish.B_FLAT,
+        TonePitchEnglish.C_FLAT, TonePitchEnglish.D_FLAT, TonePitchEnglish.E_FLAT, TonePitchEnglish.F_FLAT,
+        TonePitchEnglish.G_FLAT);
+    assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.A_FLAT, TonePitchEnglish.A,
+        TonePitchEnglish.B_FLAT, TonePitchEnglish.C_FLAT, TonePitchEnglish.C, TonePitchEnglish.D_FLAT,
+        TonePitchEnglish.D, TonePitchEnglish.E_FLAT, TonePitchEnglish.F_FLAT, TonePitchEnglish.F,
+        TonePitchEnglish.G_FLAT, TonePitchEnglish.G);
+    assertThat(key.getChromaticSignTones()).containsExactly(TonePitchEnglish.B_FLAT, TonePitchEnglish.E_FLAT,
+        TonePitchEnglish.A_FLAT, TonePitchEnglish.D_FLAT, TonePitchEnglish.G_FLAT, TonePitchEnglish.C_FLAT,
+        TonePitchEnglish.F_FLAT);
   }
 
   /**
@@ -515,11 +539,11 @@ public class MusicalKeyTest extends Assertions {
     assertThat(key.getSystem()).isSameAs(TonalSystem.MINOR);
     assertThat(key.getTonika()).isSameAs(TonePitchEnglish.A);
     assertThat(key.getEnharmonicStyle()).isSameAs(EnharmonicStyle.NORMAL);
-    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.A, TonePitchEnglish.B, TonePitchEnglish.C, TonePitchEnglish.D,
-        TonePitchEnglish.E, TonePitchEnglish.F, TonePitchEnglish.G);
-    assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.A, TonePitchEnglish.B_FLAT, TonePitchEnglish.B, TonePitchEnglish.C,
-        TonePitchEnglish.C_SHARP, TonePitchEnglish.D, TonePitchEnglish.D_SHARP, TonePitchEnglish.E, TonePitchEnglish.F,
-        TonePitchEnglish.F_SHARP, TonePitchEnglish.G, TonePitchEnglish.G_SHARP);
+    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.A, TonePitchEnglish.B, TonePitchEnglish.C,
+        TonePitchEnglish.D, TonePitchEnglish.E, TonePitchEnglish.F, TonePitchEnglish.G);
+    assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.A, TonePitchEnglish.B_FLAT, TonePitchEnglish.B,
+        TonePitchEnglish.C, TonePitchEnglish.C_SHARP, TonePitchEnglish.D, TonePitchEnglish.D_SHARP, TonePitchEnglish.E,
+        TonePitchEnglish.F, TonePitchEnglish.F_SHARP, TonePitchEnglish.G, TonePitchEnglish.G_SHARP);
     assertThat(key.getChromaticSignTones()).isEmpty();
   }
 
@@ -534,13 +558,16 @@ public class MusicalKeyTest extends Assertions {
     assertThat(key.getSystem()).isSameAs(TonalSystem.MINOR);
     assertThat(key.getTonika()).isSameAs(TonePitchEnglish.A_SHARP);
     assertThat(key.getEnharmonicStyle()).isSameAs(EnharmonicStyle.SHARP);
-    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.A_SHARP, TonePitchEnglish.B_SHARP, TonePitchEnglish.C_SHARP,
-        TonePitchEnglish.D_SHARP, TonePitchEnglish.E_SHARP, TonePitchEnglish.F_SHARP, TonePitchEnglish.G_SHARP);
-    assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.A_SHARP, TonePitchEnglish.B, TonePitchEnglish.B_SHARP,
-        TonePitchEnglish.C_SHARP, TonePitchEnglish.D, TonePitchEnglish.D_SHARP, TonePitchEnglish.E, TonePitchEnglish.E_SHARP,
-        TonePitchEnglish.F_SHARP, TonePitchEnglish.G, TonePitchEnglish.G_SHARP, TonePitchEnglish.A);
-    assertThat(key.getChromaticSignTones()).containsExactly(TonePitchEnglish.F_SHARP, TonePitchEnglish.C_SHARP, TonePitchEnglish.G_SHARP,
-        TonePitchEnglish.D_SHARP, TonePitchEnglish.A_SHARP, TonePitchEnglish.E_SHARP, TonePitchEnglish.B_SHARP);
+    assertThat(key.getDiatonicScale()).containsExactly(TonePitchEnglish.A_SHARP, TonePitchEnglish.B_SHARP,
+        TonePitchEnglish.C_SHARP, TonePitchEnglish.D_SHARP, TonePitchEnglish.E_SHARP, TonePitchEnglish.F_SHARP,
+        TonePitchEnglish.G_SHARP);
+    assertThat(key.getChromaticScale()).containsExactly(TonePitchEnglish.A_SHARP, TonePitchEnglish.B,
+        TonePitchEnglish.B_SHARP, TonePitchEnglish.C_SHARP, TonePitchEnglish.D, TonePitchEnglish.D_SHARP,
+        TonePitchEnglish.E, TonePitchEnglish.E_SHARP, TonePitchEnglish.F_SHARP, TonePitchEnglish.G,
+        TonePitchEnglish.G_SHARP, TonePitchEnglish.A);
+    assertThat(key.getChromaticSignTones()).containsExactly(TonePitchEnglish.F_SHARP, TonePitchEnglish.C_SHARP,
+        TonePitchEnglish.G_SHARP, TonePitchEnglish.D_SHARP, TonePitchEnglish.A_SHARP, TonePitchEnglish.E_SHARP,
+        TonePitchEnglish.B_SHARP);
   }
 
   /**

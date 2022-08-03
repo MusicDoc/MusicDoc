@@ -3,8 +3,6 @@ package io.github.musicdoc.format;
 import org.junit.jupiter.api.Test;
 
 import io.github.musicdoc.clef.Clef;
-import io.github.musicdoc.format.SongFormat;
-import io.github.musicdoc.format.SongFormatMusicDoc;
 import io.github.musicdoc.harmony.TonalSystem;
 import io.github.musicdoc.harmony.chord.Chord;
 import io.github.musicdoc.harmony.chord.ChordExtension;

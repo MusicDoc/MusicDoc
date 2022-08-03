@@ -9,8 +9,6 @@ import org.junit.jupiter.api.Test;
 import io.github.musicdoc.bar.BarLine;
 import io.github.musicdoc.bar.BarLineType;
 import io.github.musicdoc.decoration.SlurDecoration;
-import io.github.musicdoc.format.SongFormat;
-import io.github.musicdoc.format.SongFormatOpenSong;
 import io.github.musicdoc.harmony.chord.Chord;
 import io.github.musicdoc.harmony.chord.ChordContainer;
 import io.github.musicdoc.harmony.key.MusicalKey;

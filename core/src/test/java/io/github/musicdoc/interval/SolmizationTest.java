@@ -5,8 +5,6 @@ package io.github.musicdoc.interval;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import io.github.musicdoc.interval.Solmization;
-
 /**
  * Test of {@link Solmization}.
  */

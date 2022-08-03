@@ -1,8 +1,5 @@
 package io.github.musicdoc.format;
 
-import io.github.musicdoc.format.SongFormat;
-import io.github.musicdoc.format.SongFormatAbc;
-
 /**
  * Test of {@link SongFormatAbc}.
  */
