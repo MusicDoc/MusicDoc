@@ -7,7 +7,7 @@ import java.nio.charset.StandardCharsets;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import io.github.musicdoc.music.song.Song;
+import io.github.musicdoc.song.Song;
 
 /**
  * Test of {@link TextMusicInputStream}.

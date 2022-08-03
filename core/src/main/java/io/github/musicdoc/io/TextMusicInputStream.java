@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 
 import io.github.musicdoc.filter.CharFilter;
 import io.github.musicdoc.filter.ListCharFilter;
-import io.github.musicdoc.music.format.FormatConstants;
+import io.github.musicdoc.format.FormatConstants;
 
 /**
  * Implementation of {@link MusicInputStream} for plain {@link String}.

@@ -3,7 +3,7 @@ package io.github.musicdoc.io;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import io.github.musicdoc.music.format.TextPosition;
+import io.github.musicdoc.format.TextPosition;
 
 /**
  * Wrapper for {@link OutputStream} that tracks the {@link TextPosition}.

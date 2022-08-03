@@ -5,7 +5,7 @@ import java.io.Flushable;
 import java.io.IOException;
 import java.io.Writer;
 
-import io.github.musicdoc.music.format.TextPosition;
+import io.github.musicdoc.format.TextPosition;
 
 /**
  * Wrapper for {@link Appendable} that tracks the {@link TextPosition}.

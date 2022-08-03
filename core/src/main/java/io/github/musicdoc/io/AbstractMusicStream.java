@@ -3,9 +3,9 @@ package io.github.musicdoc.io;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.github.musicdoc.music.format.FormatConstants;
-import io.github.musicdoc.music.format.SongFormatMessage;
-import io.github.musicdoc.music.format.SongFormatMessageType;
+import io.github.musicdoc.format.FormatConstants;
+import io.github.musicdoc.format.SongFormatMessage;
+import io.github.musicdoc.format.SongFormatMessageType;
 
 /**
  * Abstract base implementation of {@link MusicStream}.

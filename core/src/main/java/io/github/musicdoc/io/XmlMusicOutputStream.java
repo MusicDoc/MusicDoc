@@ -6,7 +6,7 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import io.github.musicdoc.music.format.TextPosition;
+import io.github.musicdoc.format.TextPosition;
 
 /**
  * Implementation of {@link MusicOutputStream} for XML based formats such as MusicXML.

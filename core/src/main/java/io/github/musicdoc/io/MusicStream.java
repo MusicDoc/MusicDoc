@@ -1,8 +1,8 @@
 package io.github.musicdoc.io;
 
-import io.github.musicdoc.music.format.SongFormatMessage;
-import io.github.musicdoc.music.format.SongFormatMessageType;
-import io.github.musicdoc.music.format.TextPosition;
+import io.github.musicdoc.format.SongFormatMessage;
+import io.github.musicdoc.format.SongFormatMessageType;
+import io.github.musicdoc.format.TextPosition;
 
 /**
  * A stream of characters with method to consume and of the underlying text. Data may come from any source like a
