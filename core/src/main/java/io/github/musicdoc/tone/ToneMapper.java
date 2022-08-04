@@ -17,11 +17,16 @@ public abstract class ToneMapper extends AbstractMapper<Tone> {
   @Override
   public Tone read(MusicInputStream in, SongFormatContext context) {
 
-    TonePitch pitch = getTonePitchMapper().read(in, context);
+    TonePitch pitch = readPitch(in, context);
     if (pitch == null) {
       return null;
     }
     return readOctave(in, context, pitch);
+  }
+
+  protected TonePitch readPitch(MusicInputStream in, SongFormatContext context) {
+
+    return getTonePitchMapper().read(in, context);
   }
 
   /**

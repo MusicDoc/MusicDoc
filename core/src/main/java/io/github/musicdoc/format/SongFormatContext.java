@@ -13,6 +13,8 @@ import io.github.musicdoc.stave.system.StaveSystem;
 import io.github.musicdoc.stave.voice.StaveVoice;
 import io.github.musicdoc.stave.voice.StaveVoiceContainer;
 import io.github.musicdoc.tone.ToneNameStyle;
+import io.github.musicdoc.tone.pitch.TonePitch;
+import io.github.musicdoc.tone.pitch.TonePitchChange;
 import io.github.musicdoc.tone.pitch.TonePitchEnglish;
 
 /**
@@ -49,6 +51,8 @@ public class SongFormatContext {
 
   private StaveVoiceContainer staveVoiceContainer;
 
+  private final TonePitchChange tonePitchChange;
+
   private Song song;
 
   private Map<String, Object> properties;
@@ -64,6 +68,7 @@ public class SongFormatContext {
     Objects.requireNonNull(format);
     this.format = format;
     this.toneNameStyle = TonePitchEnglish.STYLE;
+    this.tonePitchChange = new TonePitchChange();
   }
 
   /**
@@ -99,8 +104,8 @@ public class SongFormatContext {
   }
 
   /**
-   * @return {@code true} to normalize {@link io.github.musicdoc.harmony.chord.Chord#getExtensions() chord
-   *         extensions}, {@code false} otherwise.
+   * @return {@code true} to normalize {@link io.github.musicdoc.harmony.chord.Chord#getExtensions() chord extensions},
+   *         {@code false} otherwise.
    */
   public boolean isNormalizeChordExtensions() {
 
@@ -133,8 +138,7 @@ public class SongFormatContext {
   }
 
   /**
-   * @return {@code true} to normalize {@link io.github.musicdoc.score.section.ScoreSection}s, {@code false}
-   *         otherwise.
+   * @return {@code true} to normalize {@link io.github.musicdoc.score.section.ScoreSection}s, {@code false} otherwise.
    */
   public boolean isNormalizeSections() {
 
@@ -150,8 +154,7 @@ public class SongFormatContext {
   }
 
   /**
-   * @return {@code true} to normalize {@link io.github.musicdoc.harmony.key.MusicalKey}s, {@code false}
-   *         otherwise.
+   * @return {@code true} to normalize {@link io.github.musicdoc.harmony.key.MusicalKey}s, {@code false} otherwise.
    */
   public boolean isNormalizeMusicalKeys() {
 
@@ -237,6 +240,15 @@ public class SongFormatContext {
   }
 
   /**
+   * @return the {@link TonePitchChange} used to {@link TonePitchChange#resolve(io.github.musicdoc.tone.pitch.TonePitch)
+   *         resolve} relative {@link TonePitch}es.
+   */
+  public TonePitchChange getTonePitchChange() {
+
+    return this.tonePitchChange;
+  }
+
+  /**
    * @return the current {@link Clef}.
    */
   public Clef getClef() {
@@ -266,6 +278,9 @@ public class SongFormatContext {
   public void setKey(MusicalKey key) {
 
     this.key = key;
+    if (key != null) {
+      this.tonePitchChange.setKey(key);
+    }
   }
 
   /**

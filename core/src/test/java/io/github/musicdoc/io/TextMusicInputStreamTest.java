@@ -40,7 +40,7 @@ public class TextMusicInputStreamTest extends Assertions {
     assertThat(in.readPropertyValue())
         .isEqualTo("A-las, my lo-ve, you do me wro-ng, to cast me o-ff dis-cour-teous-ly. And");
     assertThat(in.readLine()).isEqualTo(
-        "\"Am\"c2 d | \"D7\"(e>fe) | \"G\"d2 B | \"Em\"(G>A)B | \"F\"(c>B)A | \"E7\"(^G>^F)^G | \"Am\"A2 A | A3 ||");
+        "\"Am\"c2 d | \"D7\"(e>fe) | \"G\"d2 B | \"Em\"(G>A)B | \"F\"(c>B)A | \"E7\"(^G>^F)G | \"Am\"A2 A | A3 ||");
     assertThat(in.readPropertyStart()).isEqualTo("w");
     assertThat(in.readPropertyValue()).isEqualTo("I have lo-ved_ you so lo-ng, de-ligh-_ ting in_ your com-pa-ny.");
     assertThat(in.readLine()).isEqualTo("%%text C");
