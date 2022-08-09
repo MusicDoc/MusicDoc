@@ -6,7 +6,7 @@ import io.github.musicdoc.format.SongFormatAbc;
 /**
  * {@link TonePitchMapper} for {@link SongFormatAbc}.
  */
-public class TonePitchMapperAbc extends TonePitchMapper {
+public class TonePitchMapperAbc extends TonePitchMapperBase {
 
   /** The singleton instance. */
   public static final TonePitchMapperAbc INSTANCE = new TonePitchMapperAbc();

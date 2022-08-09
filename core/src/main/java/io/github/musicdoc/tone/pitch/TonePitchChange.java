@@ -112,6 +112,47 @@ public class TonePitchChange {
   }
 
   /**
+   * Inverse operation of {@link #resolve(TonePitch)} for writing.
+   *
+   * @param pitch the {@link TonePitch} to change.
+   * @return the unresolved {@link EnharmonicType}. Will be {@code null} to write {@link TonePitch} as is,
+   *         {@link EnharmonicType#NORMAL} to neutralize, {@link EnharmonicType#SINGLE_SHARP} to sharpen, and
+   *         {@link EnharmonicType#SINGLE_FLAT} to flatten.
+   */
+  public EnharmonicType unresolve(TonePitch pitch) {
+
+    if (pitch == null) {
+      return null;
+    }
+    TonePitch source = pitch;
+    TonePitch newTarget = pitch;
+    EnharmonicType type = pitch.getEnharmonicType();
+    if (type == EnharmonicType.NORMAL) {
+      newTarget = null;
+    } else if (type == EnharmonicType.SINGLE_SHARP) {
+      source = pitch.flatten();
+    } else if (type == EnharmonicType.SINGLE_FLAT) {
+      source = pitch.sharpen();
+    } else {
+      // TODO
+      throw new IllegalStateException();
+    }
+    int step = source.getStep().get();
+    TonePitchMapping tpm = this.mapping[step];
+    boolean matchTarget;
+    if (newTarget == null) {
+      matchTarget = (tpm.targetCurrent != null) && (tpm.targetCurrent.getStep().get() != step);
+    } else {
+      matchTarget = (tpm.targetCurrent == null);
+    }
+    if (matchTarget) {
+      tpm.targetCurrent = newTarget;
+      return type;
+    }
+    return null;
+  }
+
+  /**
    * Clears the current pitch changes that have been added on top of the {@link #getKey() current key} due to
    * {@link #resolve(TonePitch, EnharmonicType) accidental signs in current bar}. Shall be called at the end of each
    * {@link io.github.musicdoc.bar.BarLine bar}.

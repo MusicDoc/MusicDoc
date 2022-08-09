@@ -6,7 +6,7 @@ import io.github.musicdoc.format.SongFormatOpenSong;
 /**
  * {@link TonePitchMapper} for {@link SongFormatOpenSong}.
  */
-public class TonePitchMapperOpenSong extends TonePitchMapper {
+public class TonePitchMapperOpenSong extends TonePitchMapperBase {
 
   /** The singleton instance. */
   public static final TonePitchMapperOpenSong INSTANCE = new TonePitchMapperOpenSong();

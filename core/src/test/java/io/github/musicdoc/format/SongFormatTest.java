@@ -66,10 +66,8 @@ public abstract class SongFormatTest extends Assertions {
     }
     // first section (1. verse)
     ScoreSection section = sections.get(0);
-    if (format.isSupportSection()) {
-      assertThat(section.getName().getName()).isEqualTo("V1");
-      assertThat(section.getStaveSystem()).isNull();
-    }
+    assertThat(section.getName().getName()).isEqualTo("V1");
+    assertThat(section.getStaveSystem()).isNull();
     List<ScoreRow> rows = section.getRows();
     assertThat(rows).hasSize(2);
     int rowIndex = 0;
@@ -129,6 +127,55 @@ public abstract class SongFormatTest extends Assertions {
     section = sections.get(1);
     assertThat(section.getName().getName()).isEqualTo("C");
     assertThat(section.getStaveSystem()).isNull();
+    rows = section.getRows();
+    assertThat(rows).hasSize(2);
+    rowIndex = 0;
+    row = rows.get(rowIndex++);
+    lines = row.getLines();
+    assertThat(lines).hasSize(1);
+    checkLine(lines.get(0), new ScoreVoiceLine() //
+        .setVoice(voice) //
+        .add(Chord.ofMajor(TonePitchEnglish.C), Note.of1_2p(Tone.G5), "Green-", BarLineType.SINGLE) //
+        .add(Note.of1_4p(Tone.G5).add(SlurDecoration.SLUR_START), "slee-") //
+        .add(Note.of1_8(Tone.F5).add(SlurDecoration.SLUR_END), "ves ") //
+        .add(Note.of1_4(Tone.E5), "was ", BarLineType.SINGLE) //
+        .add(Chord.ofMinor(TonePitchEnglish.B), Note.of1_2(Tone.D5), "all ") //
+        .add(Note.of1_4(Tone.B4), "my ", BarLineType.SINGLE) //
+        .add(Chord.ofMinor(TonePitchEnglish.E), Note.of1_4(Tone.G4).add(SlurDecoration.SLUR_START), "joy,") //
+        .add(Note.of1_4(Tone.A4), "_") //
+        .add(Note.of1_4(Tone.B4).add(SlurDecoration.SLUR_END), "_ ", BarLineType.SINGLE) //
+        .add(Chord.ofMinor(TonePitchEnglish.A), Note.of1_2(Tone.C5).add(SlurDecoration.SLUR_START), "Gre-") //
+        .add(Note.of1_4(Tone.A4).add(SlurDecoration.SLUR_END), "en-", BarLineType.SINGLE) //
+        .add(Chord.ofMajor(TonePitchEnglish.F), Note.of1_4p(Tone.A4).add(SlurDecoration.SLUR_START), "sle-") //
+        .add(Note.of1_8(Tone.GS4).add(SlurDecoration.SLUR_END), "eves ") //
+        .add(Note.of1_4(Tone.A4), "was ", BarLineType.SINGLE) //
+        .add(Chord.ofMajor(TonePitchEnglish.E), Note.of1_2(Tone.B4), "my ") //
+        .add(Note.of1_4(Tone.GS4), "de-", BarLineType.SINGLE) //
+        .add(Note.of1_2p(Tone.E4), "light,", BarLineType.SINGLE) //
+    );
+    row = rows.get(rowIndex++);
+    lines = row.getLines();
+    assertThat(lines).hasSize(1);
+    checkLine(lines.get(0), new ScoreVoiceLine() //
+        .setVoice(voice) //
+        .add(Chord.ofMajor(TonePitchEnglish.C), Note.of1_2p(Tone.G5), "Green-", BarLineType.SINGLE) //
+        .add(Note.of1_4p(Tone.G5).add(SlurDecoration.SLUR_START), "sleeves ") //
+        .add(Note.of1_8(Tone.F5).add(SlurDecoration.SLUR_END), "was ") //
+        .add(Note.of1_4(Tone.E5), "my ", BarLineType.SINGLE) //
+        .add(Chord.ofMajor(TonePitchEnglish.G), Note.of1_2(Tone.D5), "heart ") //
+        .add(Note.of1_4(Tone.B4), "of ", BarLineType.SINGLE) //
+        .add(Chord.ofMinor(TonePitchEnglish.E), Note.of1_4p(Tone.G4).add(SlurDecoration.SLUR_START), "go-") //
+        .add(Note.of1_8(Tone.A4).add(SlurDecoration.SLUR_END), "ld, ") //
+        .add(Note.of1_4(Tone.B4), "and ", BarLineType.SINGLE) //
+        .add(Chord.ofMajor(TonePitchEnglish.F), Note.of1_4(Tone.C5), "who ") //
+        .add(Note.of1_4(Tone.B4), "but ") //
+        .add(Note.of1_4(Tone.A4), "my ", BarLineType.SINGLE) //
+        .add(Chord.ofMajorWith7(TonePitchEnglish.E), Note.of1_4(Tone.GS4).add(SlurDecoration.SLUR_START), "la-") //
+        .add(Note.of1_4(Tone.FS4), "dy") //
+        .add(Note.of1_4(Tone.GS4).add(SlurDecoration.SLUR_END), "_ ", BarLineType.SINGLE) //
+        .add(Chord.ofMinor(TonePitchEnglish.A), Note.of1_2p(Tone.A4), "Green-", BarLineType.SINGLE) //
+        .add(Note.of1_2(Tone.A4), "sleeves.", BarLineType.THIN_THICK) //
+    );
 
   }
 

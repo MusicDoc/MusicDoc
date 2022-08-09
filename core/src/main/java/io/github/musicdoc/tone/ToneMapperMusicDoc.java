@@ -10,7 +10,7 @@ import io.github.musicdoc.tone.pitch.TonePitch;
 /**
  * {@link ToneMapper} for {@link SongFormatMusicDoc}.
  */
-public class ToneMapperMusicDoc extends ToneMapper {
+public class ToneMapperMusicDoc extends ToneMapperBase {
 
   private static final char START_OCTAVE = ':';
 

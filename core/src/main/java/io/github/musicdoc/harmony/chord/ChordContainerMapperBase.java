@@ -4,7 +4,7 @@ import io.github.musicdoc.filter.ListCharFilter;
 import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
-import io.github.musicdoc.tone.pitch.TonePitchMapper;
+import io.github.musicdoc.tone.pitch.TonePitchMapperBase;
 
 /**
  * Basic implementation of {@link ChordContainerMapper}.
@@ -28,7 +28,7 @@ public abstract class ChordContainerMapperBase extends ChordContainerMapper {
     super();
     this.chordStart = chordStart;
     this.chordEnd = chordEnd;
-    this.stopFilter = TonePitchMapper.FILTER_TONE_START.join(NEWLINE_CHAR, chordStart, chordEnd);
+    this.stopFilter = TonePitchMapperBase.FILTER_TONE_START.join(NEWLINE_CHAR, chordStart, chordEnd);
   }
 
   @Override

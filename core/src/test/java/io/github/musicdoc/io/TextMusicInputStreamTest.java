@@ -49,7 +49,7 @@ public class TextMusicInputStreamTest extends Assertions {
     assertThat(in.readPropertyStart()).isEqualTo("w");
     assertThat(in.readPropertyValue()).isEqualTo("Green-slee-ves was all my joy,__ Gre-en-sle-eves was my de-light,");
     assertThat(in.readLine())
-        .isEqualTo("\"C\"g3 | g>fe | \"G\"d2 B | \"Em\"(G>A)B | \"F\"cBA | \"E7\"(^G^FG) | \"Am\"A3 | A2 |]");
+        .isEqualTo("\"C\"g3 | (g>f)e | \"G\"d2 B | \"Em\"(G>A)B | \"F\"cBA | \"E7\"(^G^FG) | \"Am\"A3 | A2 |]");
     assertThat(in.readPropertyStart()).isEqualTo("w");
     assertThat(in.readPropertyValue())
         .isEqualTo("Green-sleeves was my heart of go-ld, and who but my la-dy_ Green-sleeves.");

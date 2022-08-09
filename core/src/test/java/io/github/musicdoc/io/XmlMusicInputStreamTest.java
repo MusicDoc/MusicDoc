@@ -35,11 +35,11 @@ public class XmlMusicInputStreamTest extends Assertions {
     assertThat(in.readLine()).isEqualTo(".Am      D7       G       Em         F            E7        Am");
     assertThat(in.readLine()).isEqualTo(" I have |lo-ved_ |you so |lo-ng, de-|ligh-_ ting |in_ your |com-pa-|ny.||");
     assertThat(in.readLine()).isEqualTo("[C]");
-    assertThat(in.readLine()).isEqualTo(".C                   Bm     Em     Am      F            E");
-    assertThat(in.readLine()).isEqualTo(" Green-|slee-ves was|all my|joy,__|Gre-en-|sle-eves was|my de-|light,|");
-    assertThat(in.readLine()).isEqualTo(".C                     G        Em         F          E7      Am");
+    assertThat(in.readLine()).isEqualTo(".C                    Bm      Em      Am      F             E");
+    assertThat(in.readLine()).isEqualTo(" Green-|slee-ves was |all my |joy,__ |Gre-en-|sle-eves was |my de-|light,|");
+    assertThat(in.readLine()).isEqualTo(".C                      G         Em          F           E7      Am");
     assertThat(in.readLine())
-        .isEqualTo(" Green-|sleeves was my|heart of|go-ld, and|who but my|la-_dy_|Green-|sleeves.||*");
+        .isEqualTo(" Green-|sleeves was my |heart of |go-ld, and |who but my |la-dy_ |Green-|sleeves.||*");
     assertThat(in.readPropertyValue()).isEqualTo("");
     assertThat(in.hasNext()).isFalse();
   }

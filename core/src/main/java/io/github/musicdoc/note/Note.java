@@ -150,6 +150,7 @@ public class Note extends ValuedItem<Note> {
   protected void toStringItem(StringBuilder sb) {
 
     this.tone.toString(sb);
+    sb.append(':');
     super.toStringItem(sb);
   }
 
