@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import io.github.musicdoc.MusicalObject;
 import io.github.musicdoc.harmony.key.MusicalKey;
@@ -217,12 +218,12 @@ public class TonalSystem implements MusicalObject {
   }
 
   /**
-   * @param chromaticSteps the number of {@link io.github.musicdoc.interval.ToneInterval#getChromaticSteps()
-   *        chromatic steps}.
+   * @param chromaticSteps the number of {@link io.github.musicdoc.interval.ToneInterval#getChromaticSteps() chromatic
+   *        steps}.
    * @param strict - {@code true} to return {@link Integer#MIN_VALUE} if the chromatic steps do not fit properly into
    *        this {@link TonalSystem}, {@code false} otherwise (to always return the diatonic steps).
-   * @return the according number of {@link io.github.musicdoc.interval.ToneInterval#getDiatonicSteps() diatonic
-   *         steps}. May be {@link Integer#MIN_VALUE} if {@code strict} is {@code true}.
+   * @return the according number of {@link io.github.musicdoc.interval.ToneInterval#getDiatonicSteps() diatonic steps}.
+   *         May be {@link Integer#MIN_VALUE} if {@code strict} is {@code true}.
    */
   public int getDiatonicSteps(int chromaticSteps, boolean strict) {
 
@@ -253,10 +254,10 @@ public class TonalSystem implements MusicalObject {
   }
 
   /**
-   * @param diatonicSteps the number of {@link io.github.musicdoc.interval.ToneInterval#getDiatonicSteps()
-   *        diatonic steps}.
-   * @return the according the number of {@link io.github.musicdoc.interval.ToneInterval#getChromaticSteps()
-   *         chromatic steps} within this {@link TonalSystem} starting from {@link MusicalKey#getTonika() tonika}.
+   * @param diatonicSteps the number of {@link io.github.musicdoc.interval.ToneInterval#getDiatonicSteps() diatonic
+   *        steps}.
+   * @return the according the number of {@link io.github.musicdoc.interval.ToneInterval#getChromaticSteps() chromatic
+   *         steps} within this {@link TonalSystem} starting from {@link MusicalKey#getTonika() tonika}.
    */
   public int getChromaticSteps(int diatonicSteps) {
 
@@ -278,6 +279,25 @@ public class TonalSystem implements MusicalObject {
       chromaticSteps = -chromaticSteps;
     }
     return chromaticSteps;
+  }
+
+  @Override
+  public int hashCode() {
+
+    return Objects.hash(this.empty, this.firstSemitone, this.name, this.reference, this.secondSemitone,
+        this.signPitches);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+
+    if (this == obj) {
+      return true;
+    } else if ((obj == null) || (getClass() != obj.getClass())) {
+      return false;
+    }
+    TonalSystem other = (TonalSystem) obj;
+    return isEqualTo(other);
   }
 
   /**

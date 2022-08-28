@@ -6,6 +6,7 @@ import io.github.musicdoc.property.IntProperty;
 import io.github.musicdoc.property.StringProperty;
 import io.github.musicdoc.rythm.beat.Beat;
 import io.github.musicdoc.rythm.beat.BeatProperty;
+import io.github.musicdoc.rythm.fraction.PlainFractionProperty;
 import io.github.musicdoc.rythm.tempo.TempoProperty;
 import io.github.musicdoc.score.ScoreProperty;
 
@@ -39,7 +40,7 @@ public class Song extends Bean {
   public final BeatProperty beat;
 
   /** The optional <a href="https://abcnotation.com/wiki/abc:standard:v2.1#lunit_note_length">unit note length</a>. */
-  public final BeatProperty unitNoteLength;
+  public final PlainFractionProperty unitNoteLength;
 
   /** The pre delay in seconds before the song starts scrolling. */
   public final IntProperty preDelay;
@@ -73,7 +74,7 @@ public class Song extends Bean {
     this.key = register(new MusicalKeyProperty("key"));
     this.beat = register(new BeatProperty("beat"));
     this.tempo = register(new TempoProperty("tempo"));
-    this.unitNoteLength = register(new BeatProperty("unitNoteLength"));
+    this.unitNoteLength = register(new PlainFractionProperty("unitNoteLength"));
     this.preDelay = register(new IntProperty("preDelay"));
     this.duration = register(new IntProperty("duration"));
     this.capo = register(new IntProperty("capo"));

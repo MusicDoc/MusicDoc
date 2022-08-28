@@ -27,13 +27,16 @@ public abstract class ScoreCellMapperBase extends ScoreCellMapper {
     if ((staveChange == null) && (item == null) && (chordContainer == null) && lyric.isEmpty() && (bar == null)) {
       return null;
     }
-    ScoreCell currentCell = new ScoreCell();
-    currentCell.setStaveChange(staveChange);
-    currentCell.setChordContainer(chordContainer);
-    currentCell.setItem(item);
-    currentCell.setLyric(lyric);
-    currentCell.setBar(bar);
-    return currentCell;
+    ScoreCell cell = new ScoreCell();
+    cell.setStaveChange(staveChange);
+    cell.setChordContainer(chordContainer);
+    cell.setItem(item);
+    cell.setLyric(lyric);
+    cell.setBar(bar);
+    if (bar != null) {
+      context.getTonePitchChange().clear();
+    }
+    return cell;
   }
 
   /**
@@ -54,8 +57,8 @@ public abstract class ScoreCellMapperBase extends ScoreCellMapper {
       return;
     }
     getStaveChangeMapper().write(cell.getStaveChange(), out, context);
-    getValuedItemMapper().write(cell.getItem(), out, context);
     getChordContainerMapper().write(cell.getChordContainer(), out, context);
+    getValuedItemMapper().write(cell.getItem(), out, context);
     out.write(cell.getLyric());
     getBarLineMapper().write(cell.getBar(), out, context);
   }

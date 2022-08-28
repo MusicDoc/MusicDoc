@@ -56,7 +56,10 @@ public abstract class ScoreSectionNameMapperBase extends ScoreSectionNameMapper 
 
     out.write(this.sectionStart);
     out.write(object.getName());
-    out.write(SECTION_END);
+    out.write(this.sectionEnd);
+    if (this.sectionEnd != NEWLINE_CHAR) {
+      out.write(NEWLINE_CHAR);
+    }
   }
 
 }

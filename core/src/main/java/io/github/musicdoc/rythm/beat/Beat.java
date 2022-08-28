@@ -1,95 +1,84 @@
 package io.github.musicdoc.rythm.beat;
 
-import java.util.Objects;
-
-import io.github.musicdoc.rythm.AbstractFraction;
+import io.github.musicdoc.MutableObjecteCopier;
+import io.github.musicdoc.rythm.fraction.AbstractFraction;
 
 /**
  * A {@link Beat} indicates the {@link io.github.musicdoc.rythm.value.MusicalValue} of a single bar in a
  * {@link io.github.musicdoc.stave.Stave}. E.g. a {@link #_4_4 4/4} beat allows to fit 4
  * {@link io.github.musicdoc.rythm.value.MusicalValue#_1_4 quarters} into one bar.<br/>
- * The {@link #getFraction() fraction} indicates the unit of a regular beat. Therefore a {@link #_4_4 4/4} beat is not
- * the same as a {@link #_2_2 2/2} beat even though they can cover the same
+ * The {@link #getUnit() fraction} indicates the unit of a regular beat. Therefore a {@link #_4_4 4/4} beat is not the
+ * same as a {@link #_2_2 2/2} beat even though they can cover the same
  * {@link io.github.musicdoc.rythm.value.MusicalValue}s per bar.
  */
-public class Beat extends AbstractFraction {
+public class Beat extends AbstractFraction<Beat> {
 
   /** A 3/4 beat. */
-  public static final Beat _3_4 = new Beat(3, 4);
+  public static final Beat _3_4 = create(3, 4);
 
   /** A 4/4 beat. */
-  public static final Beat _4_4 = new Beat(4, 4);
+  public static final Beat _4_4 = create(4, 4);
 
   /** A 2/2 beat. */
-  public static final Beat _2_2 = new Beat(2, 2);
+  public static final Beat _2_2 = create(2, 2);
 
   /** A 3/4 beat. */
-  public static final Beat _6_8 = new Beat(6, 8);
+  public static final Beat _6_8 = create(6, 8);
 
   /** A 4/4 beat as common time (C glyph). */
-  public static final Beat COMMON_TIME = new Beat(4, 4, "C");
+  public static final Beat COMMON_TIME = create(4, 4, "C");
 
   /** A 2/2 beat as cut time (C glyph with vertical bar through it). Also called "alla breve". */
-  public static final Beat CUT_TIME = new Beat(2, 2, "C|");
+  public static final Beat CUT_TIME = create(2, 2, "C|");
 
   /** No beat. */
-  public static final Beat NONE = new Beat(0, 1, "none");
-
-  private final String text;
+  public static final Beat NONE = create(0, 1, "none");
 
   private Beat(int beats, int fraction) {
 
-    this(beats, fraction, beats + "/" + fraction);
+    this(beats, fraction, null);
   }
 
   private Beat(int beats, int fraction, String text) {
 
-    super(beats, fraction);
-    this.text = text;
+    super(beats, fraction, text);
+  }
+
+  private Beat(Beat beat, MutableObjecteCopier copier) {
+
+    super(beat, copier);
   }
 
   @Override
-  protected boolean isEqualTo(AbstractFraction other) {
+  public Beat copy(MutableObjecteCopier copier) {
 
-    if (super.isEqualTo(other)) {
-      return Objects.equals(this.text, ((Beat) other).text);
-    }
-    return false;
+    return new Beat(this, copier);
   }
 
   @Override
-  public boolean equals(Object obj) {
+  public String toString() {
 
-    if (this == obj) {
-      return true;
-    }
-    if ((obj == null) || (getClass() != obj.getClass())) {
-      return false;
-    }
-    Beat other = (Beat) obj;
-    if (this.beats != other.beats) {
-      return false;
-    }
-    if (this.fraction != other.fraction) {
-      return false;
-    }
-    return true;
+    return getText();
   }
 
-  @Override
-  public void toString(StringBuilder sb) {
+  private static Beat create(int beats, int unit) {
 
-    sb.append(this.text);
+    return create(beats, unit, null);
+  }
+
+  private static Beat create(int beats, int unit, String text) {
+
+    return new Beat(beats, unit, text).makeImmutable();
   }
 
   /**
    * @param beats the number of {@link #getBeats() beats}.
-   * @param fraction the {@link #getFraction() fraction}.
+   * @param unit the {@link #getUnit() unit}.
    * @return the according {@link Beat} instance.
    */
-  public static Beat of(int beats, int fraction) {
+  public static Beat of(int beats, int unit) {
 
-    return new Beat(beats, fraction);
+    return new Beat(beats, unit);
   }
 
 }

@@ -228,6 +228,16 @@ public class Note extends ValuedItem<Note> {
   /**
    * @param tone the {@link #getTone() tone}.
    * @return the {@link Note} with the specified {@link #getTone() tone} and a {@link #getValue() value} of
+   *         {@link MusicalValue#_1_4 1/4}.
+   */
+  public static Note of3_4(Tone tone) {
+
+    return of(tone, MusicalValue._3_4);
+  }
+
+  /**
+   * @param tone the {@link #getTone() tone}.
+   * @return the {@link Note} with the specified {@link #getTone() tone} and a {@link #getValue() value} of
    *         {@link MusicalValue#_1_4 1/4} and {@link MusicalValueVariation#PUNCTURED punctuation}.
    */
   public static Note of1_4p(Tone tone) {

@@ -1,6 +1,8 @@
 package io.github.musicdoc.song;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import io.github.musicdoc.format.AbstractMapper;
@@ -21,7 +23,9 @@ public abstract class SongMapper extends AbstractMapper<Song> {
 
   private final Map<String, SongPropertyMapper> propertyKeyMap;
 
-  private final Map<String, SongPropertyMapper> propertyNameMap;
+  private final List<SongPropertyMapper> properties;
+
+  private final boolean scoreMapped;
 
   /**
    * The constructor.
@@ -32,7 +36,8 @@ public abstract class SongMapper extends AbstractMapper<Song> {
 
     int capacity = TEMPLATE.getProperties().size();
     this.propertyKeyMap = new HashMap<>(capacity);
-    this.propertyNameMap = new HashMap<>(capacity);
+    this.properties = new ArrayList<>();
+    this.scoreMapped = getPropertyKey(TEMPLATE.score.getName()) != null;
 
     add(TEMPLATE.referenceNumber, IntegerMapper.INSTANCE);
     add(TEMPLATE.title, StringMapper.INSTANCE);
@@ -41,11 +46,11 @@ public abstract class SongMapper extends AbstractMapper<Song> {
     add(TEMPLATE.origin, StringMapper.INSTANCE);
     add(TEMPLATE.key, getKeyMapper());
     add(TEMPLATE.beat, getBeatMapper());
-    add(TEMPLATE.score, getScoreMapper());
     add(TEMPLATE.tempo, getTempoMapper());
+    add(TEMPLATE.unitNoteLength, getPlainFractionMapper());
+    add(TEMPLATE.score, getScoreMapper());
     add(TEMPLATE.capo, IntegerMapper.INSTANCE);
     // add fraction mapper?
-    add(TEMPLATE.unitNoteLength, getBeatMapper());
 
   }
 
@@ -64,10 +69,7 @@ public abstract class SongMapper extends AbstractMapper<Song> {
     if (duplicate != null) {
       throw new IllegalStateException("Duplicate property key: " + propertyKey);
     }
-    duplicate = this.propertyNameMap.put(mapper.getName(), mapper);
-    if (duplicate != null) {
-      throw new IllegalStateException("Duplicate property name: " + propertyKey);
-    }
+    this.properties.add(mapper);
   }
 
   /**
@@ -81,24 +83,20 @@ public abstract class SongMapper extends AbstractMapper<Song> {
   @Override
   public void write(Song song, MusicOutputStream out, SongFormatContext context) {
 
+    context.setSong(song);
     boolean writeScore = true;
-    for (Property<?> property : song.getProperties()) {
-      String name = property.getName();
-      SongPropertyMapper mapper = this.propertyNameMap.get(name);
-      if (mapper == null) {
-        // log warning
-      } else {
-        String key = mapper.getKey();
-        if (!key.isEmpty()) {
-          if (property == song.score) {
-            writeScore = false;
-          }
-          Object value = property.getValue();
-          if ((value != null) && (!"".equals(value))) {
-            out.writePropertyStart(key);
-            mapper.write(song, out, context);
-            out.writePropertyEnd(key);
-          }
+    for (SongPropertyMapper mapper : this.properties) {
+      Property<?> property = song.getProperty(mapper.getName());
+      String key = mapper.getKey();
+      if (!key.isEmpty()) {
+        if (property == song.score) {
+          writeScore = false;
+        }
+        Object value = property.getValue();
+        if ((value != null) && (!"".equals(value))) {
+          out.writePropertyStart(key);
+          mapper.write(song, out, context);
+          out.writePropertyEnd(key);
         }
       }
     }
@@ -116,7 +114,7 @@ public abstract class SongMapper extends AbstractMapper<Song> {
     while (readProperty(in, context)) {
       // nothing else to do
     }
-    if (!this.propertyNameMap.containsKey(toLowerCase(TEMPLATE.score.getName()))) {
+    if (!this.scoreMapped) {
       Score score = getScoreMapper().read(in, context);
       song.score.setValue(score);
     }

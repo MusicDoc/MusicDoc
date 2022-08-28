@@ -356,4 +356,13 @@ public class Chord extends AbstractTransposable<Chord> {
     return new Chord(fundamental, TonalSystem.MINOR_M, extensions);
   }
 
+  /**
+   * @param fundamental the {@link #getFundamental() fundamental tone}.
+   * @return the according minor {@link Chord} with {@link ChordExtension#_7 7th}.
+   */
+  public static Chord ofMinorWith7(TonePitch fundamental) {
+
+    return ofMinor(fundamental, ChordExtension._7);
+  }
+
 }

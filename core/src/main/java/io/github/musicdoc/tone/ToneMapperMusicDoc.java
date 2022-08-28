@@ -1,18 +1,16 @@
 package io.github.musicdoc.tone;
 
+import io.github.musicdoc.filter.ListCharFilter;
 import io.github.musicdoc.format.SongFormat;
 import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.format.SongFormatMusicDoc;
 import io.github.musicdoc.io.MusicInputStream;
-import io.github.musicdoc.io.MusicOutputStream;
 import io.github.musicdoc.tone.pitch.TonePitch;
 
 /**
  * {@link ToneMapper} for {@link SongFormatMusicDoc}.
  */
 public class ToneMapperMusicDoc extends ToneMapperBase {
-
-  private static final char START_OCTAVE = ':';
 
   private static final char END_OCTAVE = ':';
 
@@ -36,31 +34,22 @@ public class ToneMapperMusicDoc extends ToneMapperBase {
   @Override
   protected Tone readOctave(MusicInputStream in, SongFormatContext context, TonePitch pitch) {
 
-    if (in.expect(START_OCTAVE)) {
-      Integer octaveInteger = in.readInteger(2, true);
-      if (octaveInteger == null) {
-        in.addError("Missing octave");
+    String lookahead = in.peek(3);
+    int length = lookahead.length();
+    if (length > 0) {
+      char c0 = lookahead.charAt(0);
+      if (ListCharFilter.DIGITS.accept(c0) && (length >= 2)) {
+        char c1 = lookahead.charAt(1);
+        if ((c1 == END_OCTAVE)
+            || (ListCharFilter.DIGITS.accept(c1) && (length == 3) && (lookahead.charAt(2) == END_OCTAVE))) {
+          Integer octaveInteger = in.readInteger(2, true);
+          assert (octaveInteger != null);
+          in.expect(END_OCTAVE, true);
+          return Tone.of(pitch, octaveInteger.intValue(), true);
+        }
       }
-      in.expect(END_OCTAVE, true);
-      int octave = 4; // fallback
-      if (octaveInteger != null) {
-        octave = octaveInteger.intValue();
-      }
-      return Tone.of(pitch, octave, true);
     }
     return super.readOctave(in, context, pitch);
-  }
-
-  @Override
-  public void write(Tone tone, MusicOutputStream out, SongFormatContext context) {
-
-    if ((tone != null) && tone.isAbsolute()) {
-      getTonePitchMapper().write(tone.getPitch());
-      out.write(START_OCTAVE);
-      out.write(Integer.toString(tone.getOctave()));
-      out.write(END_OCTAVE);
-    }
-    super.write(tone, out, context);
   }
 
 }

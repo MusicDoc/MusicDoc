@@ -102,11 +102,10 @@ public class SongFormatOpenSongTest extends SongFormatTest {
     ScoreSection section = new ScoreSection(name);
     ScoreRow row = new ScoreRow();
     ScoreVoiceLine line = new ScoreVoiceLine();
-    line.add(new ScoreCell(new Chord(TonePitchEnglish.A, TonalSystem.MAJOR_EMPTY), "a "));
-    line.add(new ScoreCell(new Chord(TonePitchEnglish.B, TonalSystem.MINOR_M, ChordExtension._7), "b "));
-    line.add(
-        new ScoreCell(new Chord(TonePitchEnglish.C, TonalSystem.MAJOR_EMPTY, ChordExtension.ADD_9), "c the caT is "));
-    line.add(new ScoreCell(new Chord(TonePitchEnglish.D, TonalSystem.MAJOR_EMPTY), " dead."));
+    line.add(new ScoreCell(Chord.ofMajor(TonePitchEnglish.A), "a "));
+    line.add(new ScoreCell(Chord.ofMinorWith7(TonePitchEnglish.B), "b "));
+    line.add(new ScoreCell(Chord.ofMajor(TonePitchEnglish.C, ChordExtension.ADD_9), "c the caT is "));
+    line.add(new ScoreCell(Chord.ofMajor(TonePitchEnglish.D), " dead."));
     row.addLine(line);
     section.getRows().add(row);
     score.getSections().add(section);

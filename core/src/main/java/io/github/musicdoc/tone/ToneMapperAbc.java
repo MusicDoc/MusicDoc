@@ -68,6 +68,14 @@ public class ToneMapperAbc extends ToneMapperBase {
   }
 
   @Override
+  protected void writePitch(TonePitch pitch, int octave, boolean absolute, MusicOutputStream out,
+      SongFormatContext context) {
+
+    // ABC does not support absolute octaves
+    super.writePitch(pitch, octave, false, out, context);
+  }
+
+  @Override
   protected void writePitch(TonePitch pitch, MusicOutputStream out, SongFormatContext context) {
 
     TonePitchChange tonePitchChange = context.getTonePitchChange();
@@ -76,10 +84,10 @@ public class ToneMapperAbc extends ToneMapperBase {
       out.write(NEUTRALIZE);
     } else if (type == EnharmonicType.SINGLE_SHARP) {
       out.write(SHARPEN);
-      pitch = pitch.flatten();
+      // pitch = pitch.flatten();
     } else if (type == EnharmonicType.SINGLE_FLAT) {
       out.write(FLATTEN);
-      pitch = pitch.sharpen();
+      // pitch = pitch.sharpen();
     }
     super.writePitch(pitch, out, context);
   }

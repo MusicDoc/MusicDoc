@@ -88,33 +88,48 @@ public abstract class ToneMapperBase extends ToneMapper {
       return;
     }
     TonePitch pitch = tone.getPitch();
-    int baseOctave = getOctave(context, pitch);
-    int delta = tone.getOctave() - baseOctave;
-    writePitch(pitch, delta, out, context);
+    boolean absolute = tone.isAbsolute();
+    int octave = tone.getOctave();
+    if (!absolute) {
+      int baseOctave = getOctave(context, pitch);
+      octave = octave - baseOctave;
+    }
+    writePitch(pitch, octave, absolute, out, context);
   }
 
   /**
    * @param pitch the {@link TonePitch} to write.
-   * @param octaveDelta the delta of the {@link Tone#getOctave() tone's octave} to the base-octave.
+   * @param octave the absolute or relative {@link Tone#getOctave() tone's octave}.
+   * @param absolute a flag indicating if the given {@code octave} is {@link Tone#isAbsolute() absolute} or relative to
+   *        the base-octave of the current stave and clef.
    * @param out the {@link MusicOutputStream}.
    * @param context the {@link SongFormatContext}.
    */
-  protected void writePitch(TonePitch pitch, int octaveDelta, MusicOutputStream out, SongFormatContext context) {
+  protected void writePitch(TonePitch pitch, int octave, boolean absolute, MusicOutputStream out,
+      SongFormatContext context) {
 
-    if (octaveDelta > 0) {
-      pitch = pitch.with(ToneNameCase.LOWER_CASE);
-      writePitch(pitch, out, context);
-      while (octaveDelta > 1) {
-        octaveDelta--;
-        out.write(Tone.OCTAVE_UP);
-      }
-    } else {
+    if (absolute) {
       pitch = pitch.with(ToneNameCase.CAPITAL_CASE);
       writePitch(pitch, out, context);
-      while (octaveDelta < 0) {
-        octaveDelta++;
-        out.write(Tone.OCTAVE_DOWN);
+      out.write(Integer.toString(octave));
+      out.write(':');
+    } else {
+      if (octave > 0) {
+        pitch = pitch.with(ToneNameCase.LOWER_CASE);
+        writePitch(pitch, out, context);
+        while (octave > 1) {
+          octave--;
+          out.write(Tone.OCTAVE_UP);
+        }
+      } else {
+        pitch = pitch.with(ToneNameCase.CAPITAL_CASE);
+        writePitch(pitch, out, context);
+        while (octave < 0) {
+          octave++;
+          out.write(Tone.OCTAVE_DOWN);
+        }
       }
+
     }
   }
 
@@ -125,7 +140,7 @@ public abstract class ToneMapperBase extends ToneMapper {
    */
   protected void writePitch(TonePitch pitch, MusicOutputStream out, SongFormatContext context) {
 
-    getTonePitchMapper().write(pitch);
+    getTonePitchMapper().write(pitch, out, context);
   }
 
 }

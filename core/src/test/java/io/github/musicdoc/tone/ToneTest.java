@@ -6,10 +6,6 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import io.github.musicdoc.harmony.EnharmonicStyle;
-import io.github.musicdoc.tone.Tone;
-import io.github.musicdoc.tone.ToneMapper;
-import io.github.musicdoc.tone.ToneMapperMusicDoc;
-import io.github.musicdoc.tone.ToneNameStyle;
 import io.github.musicdoc.tone.pitch.TonePitch;
 import io.github.musicdoc.tone.pitch.TonePitchEnglish;
 import io.github.musicdoc.transpose.TransposeContext;
@@ -43,6 +39,7 @@ public class ToneTest extends Assertions {
 
     ToneMapper mapper = ToneMapperMusicDoc.INSTANCE;
     Tone tone = mapper.read(ascii);
+    assertThat(tone).isNotNull();
     assertThat(tone.getNameAbc(TonePitchEnglish.STYLE)).isEqualTo(ascii);
     assertThat(tone.getPitch()).isSameAs(pitch);
     assertThat(tone.getOctave()).isEqualTo(octave);
@@ -84,7 +81,8 @@ public class ToneTest extends Assertions {
     checkTransposeChromaticNormalStyle(0, pitch, step, newPitch, octaveStep);
   }
 
-  private void checkTransposeChromaticNormalStyle(int octave, TonePitch pitch, int step, TonePitch newPitch, int octaveStep) {
+  private void checkTransposeChromaticNormalStyle(int octave, TonePitch pitch, int step, TonePitch newPitch,
+      int octaveStep) {
 
     // given
     Tone tone = Tone.of(pitch, octave);

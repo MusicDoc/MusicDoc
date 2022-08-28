@@ -3,7 +3,7 @@ package io.github.musicdoc.rythm.tempo;
 import java.util.Arrays;
 import java.util.Objects;
 
-import io.github.musicdoc.rythm.Fraction;
+import io.github.musicdoc.rythm.fraction.Fraction;
 
 /**
  * The tempo indicates how fast the song shall be played. See

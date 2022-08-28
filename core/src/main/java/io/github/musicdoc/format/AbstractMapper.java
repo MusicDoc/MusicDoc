@@ -18,6 +18,7 @@ import io.github.musicdoc.io.MusicOutputStream;
 import io.github.musicdoc.note.NoteMapper;
 import io.github.musicdoc.note.StemDirectionMapper;
 import io.github.musicdoc.rythm.beat.BeatMapper;
+import io.github.musicdoc.rythm.fraction.PlainFractionMapper;
 import io.github.musicdoc.rythm.rest.RestMapper;
 import io.github.musicdoc.rythm.tempo.TempoMapper;
 import io.github.musicdoc.rythm.value.MusicalValueMapper;
@@ -164,6 +165,14 @@ public abstract class AbstractMapper<T> implements Mapper<T>, FormatConstants {
   protected BeatMapper getBeatMapper() {
 
     return getFormat().getBeatMapper();
+  }
+
+  /**
+   * @return the {@link PlainFractionMapper}.
+   */
+  protected PlainFractionMapper getPlainFractionMapper() {
+
+    return getFormat().getPlainFractionMapper();
   }
 
   /**

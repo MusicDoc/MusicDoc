@@ -16,8 +16,8 @@ import io.github.musicdoc.tone.Tone;
 import io.github.musicdoc.transpose.AbstractTransposable;
 
 /**
- * A valued item is a single item of a musical notation system such as {@link io.github.musicdoc.stave.Stave}. It
- * always has a {@link #getValue() value} defining its duration.
+ * A valued item is a single item of a musical notation system such as {@link io.github.musicdoc.stave.Stave}. It always
+ * has a {@link #getValue() value} defining its duration.
  *
  * @param <SELF> type of the class itself.
  */
@@ -54,8 +54,8 @@ public abstract class ValuedItem<SELF extends ValuedItem<SELF>> extends Abstract
   protected ValuedItem(ValuedItem<SELF> item, MutableObjecteCopier copier) {
 
     super();
-    this.value = item.value;
-    this.decorations = copier.copyListFlat(this.decorations);
+    this.value = item.value.copy();
+    this.decorations = copier.copyListFlat(item.decorations);
   }
 
   @Override
@@ -127,6 +127,21 @@ public abstract class ValuedItem<SELF extends ValuedItem<SELF>> extends Abstract
   public List<MusicalDecoration> getDecorations() {
 
     return this.decorations;
+  }
+
+  /**
+   * @param itemSuffix the {@link MusicalDecoration#isItemSuffix() item suffix} flag.
+   * @return {@code true} if this item {@link #getDecorations() has a decoration} with the given
+   *         {@link MusicalDecoration#isItemSuffix() item suffix} flag.
+   */
+  public boolean hasDecorationsWithSuffix(boolean itemSuffix) {
+
+    for (MusicalDecoration decoration : this.decorations) {
+      if (decoration.isItemSuffix() == itemSuffix) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /**

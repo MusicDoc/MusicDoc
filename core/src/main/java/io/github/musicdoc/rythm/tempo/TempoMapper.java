@@ -8,8 +8,8 @@ import io.github.musicdoc.format.AbstractMapper;
 import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
-import io.github.musicdoc.rythm.Fraction;
 import io.github.musicdoc.rythm.beat.Beat;
+import io.github.musicdoc.rythm.fraction.Fraction;
 
 /**
  * {@link AbstractMapper Mapper} for {@link Tempo}.

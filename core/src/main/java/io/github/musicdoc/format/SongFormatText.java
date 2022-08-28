@@ -2,6 +2,7 @@ package io.github.musicdoc.format;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.StringWriter;
 
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
@@ -47,6 +48,15 @@ public abstract class SongFormatText extends SongFormat {
 
     TextMusicOutputStream tmos = TextMusicOutputStream.of(outStream, newPropertyState());
     getSongMapper().write(song, tmos, new SongFormatContext(this));
+  }
+
+  @Override
+  public String write(Song song) {
+
+    StringWriter sw = new StringWriter(128);
+    TextMusicOutputStream tmos = TextMusicOutputStream.of(sw, newPropertyState());
+    getSongMapper().write(song, tmos, new SongFormatContext(this));
+    return sw.toString();
   }
 
 }

@@ -23,6 +23,8 @@ import io.github.musicdoc.note.NoteMapper;
 import io.github.musicdoc.note.StemDirectionMapper;
 import io.github.musicdoc.rythm.beat.Beat;
 import io.github.musicdoc.rythm.beat.BeatMapper;
+import io.github.musicdoc.rythm.fraction.PlainFraction;
+import io.github.musicdoc.rythm.fraction.PlainFractionMapper;
 import io.github.musicdoc.rythm.rest.RestMapper;
 import io.github.musicdoc.rythm.tempo.TempoMapper;
 import io.github.musicdoc.rythm.value.MusicalValueMapper;
@@ -116,6 +118,11 @@ public abstract class SongFormat {
    * @return the {@link BeatMapper}.
    */
   protected abstract BeatMapper getBeatMapper();
+
+  /**
+   * @return the {@link PlainFractionMapper}.
+   */
+  protected abstract PlainFractionMapper getPlainFractionMapper();
 
   /**
    * @return the {@link TempoMapper}.
@@ -248,6 +255,12 @@ public abstract class SongFormat {
   public abstract void write(Song song, OutputStream outStream);
 
   /**
+   * @param song the song to write.
+   * @return the written {@link Song} as {@link String}.
+   */
+  public abstract String write(Song song);
+
+  /**
    * @param name the {@link #getName() name} of the requested {@link SongFormat}.
    * @return the {@link SongFormat} with the given {@link #getName() name} or {@code null} if not exists.
    */
@@ -257,12 +270,12 @@ public abstract class SongFormat {
   }
 
   /**
-   * @param beat
-   * @return
+   * @param beat the current beat.
+   * @return the default for {@link Song#unitNoteLength}.
    */
-  Beat getUnitNoteLength(Beat beat) {
+  PlainFraction getUnitNoteLength(Beat beat) {
 
-    return Beat.of(1, 4);
+    return PlainFraction._1_4;
   }
 
   /**
@@ -275,8 +288,8 @@ public abstract class SongFormat {
   }
 
   /**
-   * @return {@code true} if {@link io.github.musicdoc.score.Score#getSections() sections} are supported,
-   *         {@code false} otherwise. If not supported there will always be a single
+   * @return {@code true} if {@link io.github.musicdoc.score.Score#getSections() sections} are supported, {@code false}
+   *         otherwise. If not supported there will always be a single
    *         {@link io.github.musicdoc.score.section.ScoreSection} without a
    *         {@link io.github.musicdoc.score.section.ScoreSection#getName() name}.
    */

@@ -233,6 +233,18 @@ public abstract class TonePitch extends AbstractTransposable<TonePitch> {
   }
 
   /**
+   * @return the plain {@link TonePitch} with all {@link #getEnharmonicType() enharmonic signs} removed.
+   */
+  public TonePitch getPlainPitch() {
+
+    if (this.enharmonicType == EnharmonicType.NORMAL) {
+      return this;
+    }
+    int plainStep = this.step.get() - this.enharmonicType.getSignCount();
+    return getNameStyle().pitch(ChromaticStep.of(plainStep), EnharmonicType.NORMAL, this.nameCase);
+  }
+
+  /**
    * @return {@code true} if this is the {@link #getNormalForm() normal form} (that would be used in
    *         {@link MusicalKey#C_MAJOR}), {@code false} in case of an <em>enharmonic change</em>.
    */

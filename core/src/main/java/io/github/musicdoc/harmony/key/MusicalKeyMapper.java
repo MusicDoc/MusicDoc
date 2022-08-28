@@ -24,9 +24,9 @@ public abstract class MusicalKeyMapper extends AbstractMapper<MusicalKey> {
     TonalSystem tonalSystem = getTonalSystemMapper().read(in, context);
     if (tonalSystem == null) {
       if (tonika.isLowercase()) {
-        tonalSystem = TonalSystem.MINOR;
+        tonalSystem = TonalSystem.MINOR_M;
       } else {
-        tonalSystem = TonalSystem.MAJOR;
+        tonalSystem = TonalSystem.MAJOR_EMPTY;
       }
     }
     return MusicalKey.of(tonika, tonalSystem);
@@ -43,7 +43,8 @@ public abstract class MusicalKeyMapper extends AbstractMapper<MusicalKey> {
       tonika = tonika.with(context.getToneNameStyle());
     }
     getTonePitchMapper().write(tonika, out, context);
-    getTonalSystemMapper().write(key.getSystem(), out, context);
+    TonalSystem system = key.getSystem();
+    getTonalSystemMapper().write(system, out, context);
   }
 
 }

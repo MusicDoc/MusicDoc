@@ -1,6 +1,6 @@
 package io.github.musicdoc.glyphs.unicode;
 
-import io.github.musicdoc.rythm.Fraction;
+import io.github.musicdoc.rythm.fraction.Fraction;
 
 /**
  * {@link UnicodeGlyphs} for {@link android.provider.ContactsContract.CommonDataKinds.Note}s.
@@ -66,7 +66,7 @@ public interface UnicodeGlyphsNotes extends UnicodeGlyphs {
   static String get(Fraction value, boolean down) {
 
     int beats = value.getBeats();
-    int fract = value.getFraction();
+    int fract = value.getUnit();
     if (beats == fract) { // 4/4 case
       beats = 1;
       fract = 1;

@@ -1,7 +1,7 @@
 package io.github.musicdoc.glyphs.smufl;
 
 import io.github.musicdoc.glyphs.unicode.UnicodeGlyphs;
-import io.github.musicdoc.rythm.Fraction;
+import io.github.musicdoc.rythm.fraction.Fraction;
 
 /**
  * {@link UnicodeGlyphs} for {@link io.github.musicdoc.rythm.rest.Rest}s.
@@ -48,7 +48,7 @@ public interface SmuflGlyphsRest extends UnicodeGlyphs {
   static String get(Fraction value) {
 
     int beats = value.getBeats();
-    int fract = value.getFraction();
+    int fract = value.getUnit();
     if (beats == fract) { // 4/4 case
       beats = 1;
       fract = 1;

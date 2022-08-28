@@ -21,6 +21,8 @@ import io.github.musicdoc.note.NoteMapper;
 import io.github.musicdoc.note.StemDirectionMapper;
 import io.github.musicdoc.rythm.beat.BeatMapper;
 import io.github.musicdoc.rythm.beat.BeatMapperOpenSong;
+import io.github.musicdoc.rythm.fraction.PlainFractionMapper;
+import io.github.musicdoc.rythm.fraction.PlainFractionMapperOpenSong;
 import io.github.musicdoc.rythm.rest.RestMapper;
 import io.github.musicdoc.rythm.tempo.TempoMapper;
 import io.github.musicdoc.rythm.tempo.TempoMapperOpenSong;
@@ -117,6 +119,12 @@ public class SongFormatOpenSong extends SongFormatXml {
   protected MusicalKeyMapper getKeyMapper() {
 
     return MusicalKeyMapperOpenSong.INSTANCE;
+  }
+
+  @Override
+  protected PlainFractionMapper getPlainFractionMapper() {
+
+    return PlainFractionMapperOpenSong.INSTANCE;
   }
 
   @Override

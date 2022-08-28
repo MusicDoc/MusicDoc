@@ -1,6 +1,9 @@
 package io.github.musicdoc.format;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
@@ -14,6 +17,7 @@ import io.github.musicdoc.harmony.chord.ChordContainer;
 import io.github.musicdoc.harmony.key.MusicalKey;
 import io.github.musicdoc.note.Note;
 import io.github.musicdoc.rythm.beat.Beat;
+import io.github.musicdoc.rythm.fraction.PlainFraction;
 import io.github.musicdoc.rythm.tempo.Tempo;
 import io.github.musicdoc.rythm.value.ValuedItem;
 import io.github.musicdoc.score.Score;
@@ -54,10 +58,10 @@ public abstract class SongFormatTest extends Assertions {
     assertThat(song.composer.getValue()).isEqualTo("Traditional");
     assertThat(song.beat.getValue()).isEqualTo(Beat._3_4);
     if (format != SongFormatOpenSong.INSTANCE) {
-      assertThat(song.unitNoteLength.getValue()).isEqualTo(Beat.of(1, 4));
+      assertThat(song.unitNoteLength.getValue()).isEqualTo(PlainFraction._1_4);
       assertThat(song.tempo.getValue()).isEqualTo(new Tempo("", 100, "", Beat.of(1, 4)));
     }
-    assertThat(song.key.getValue()).isSameAs(MusicalKey.C_MAJOR);
+    assertThat(song.key.getValue()).isEqualTo(MusicalKey.C_MAJOR);
     Score score = song.score.getValue();
     StaveVoice voice = StaveVoice.EMPTY;
     List<ScoreSection> sections = score.getSections();
@@ -105,7 +109,7 @@ public abstract class SongFormatTest extends Assertions {
         .add(Chord.ofMinor(TonePitchEnglish.A), Note.of1_2(Tone.C5), "I ") //
         .add(Note.of1_4(Tone.D5), "have ", BarLineType.SINGLE) //
         .add(Chord.ofMajorWith7(TonePitchEnglish.D), Note.of1_4p(Tone.E5).add(SlurDecoration.SLUR_START), "lo-") //
-        .add(Note.of1_8(Tone.F5), "ved") //
+        .add(Note.of1_8(Tone.F5), "ved ") //
         .add(Note.of1_4(Tone.E5).add(SlurDecoration.SLUR_END), "_ ", BarLineType.SINGLE) //
         .add(Chord.ofMajor(TonePitchEnglish.G), Note.of1_2(Tone.D5), "you ") //
         .add(Note.of1_4(Tone.B4), "so ", BarLineType.SINGLE) //
@@ -115,7 +119,7 @@ public abstract class SongFormatTest extends Assertions {
         .add(Chord.ofMajor(TonePitchEnglish.F), Note.of1_4p(Tone.C5).add(SlurDecoration.SLUR_START), "ligh-") //
         .add(Note.of1_8(Tone.B4).add(SlurDecoration.SLUR_END), "_ ") //
         .add(Note.of1_4(Tone.A4), "ting ", BarLineType.SINGLE) //
-        .add(Chord.ofMajorWith7(TonePitchEnglish.E), Note.of1_4p(Tone.GS4).add(SlurDecoration.SLUR_START), "in") //
+        .add(Chord.ofMajorWith7(TonePitchEnglish.E), Note.of1_4p(Tone.GS4).add(SlurDecoration.SLUR_START), "in ") //
         .add(Note.of1_8(Tone.FS4).add(SlurDecoration.SLUR_END), "_ ") //
         .add(Note.of1_4(Tone.GS4), "your ", BarLineType.SINGLE) //
         .add(Chord.ofMinor(TonePitchEnglish.A), Note.of1_2(Tone.A4), "com-") //
@@ -141,8 +145,8 @@ public abstract class SongFormatTest extends Assertions {
         .add(Note.of1_4(Tone.E5), "was ", BarLineType.SINGLE) //
         .add(Chord.ofMinor(TonePitchEnglish.B), Note.of1_2(Tone.D5), "all ") //
         .add(Note.of1_4(Tone.B4), "my ", BarLineType.SINGLE) //
-        .add(Chord.ofMinor(TonePitchEnglish.E), Note.of1_4(Tone.G4).add(SlurDecoration.SLUR_START), "joy,") //
-        .add(Note.of1_4(Tone.A4), "_") //
+        .add(Chord.ofMinor(TonePitchEnglish.E), Note.of1_4(Tone.G4).add(SlurDecoration.SLUR_START), "joy, ") //
+        .add(Note.of1_4(Tone.A4), "_ ") //
         .add(Note.of1_4(Tone.B4).add(SlurDecoration.SLUR_END), "_ ", BarLineType.SINGLE) //
         .add(Chord.ofMinor(TonePitchEnglish.A), Note.of1_2(Tone.C5).add(SlurDecoration.SLUR_START), "Gre-") //
         .add(Note.of1_4(Tone.A4).add(SlurDecoration.SLUR_END), "en-", BarLineType.SINGLE) //
@@ -171,12 +175,27 @@ public abstract class SongFormatTest extends Assertions {
         .add(Note.of1_4(Tone.B4), "but ") //
         .add(Note.of1_4(Tone.A4), "my ", BarLineType.SINGLE) //
         .add(Chord.ofMajorWith7(TonePitchEnglish.E), Note.of1_4(Tone.GS4).add(SlurDecoration.SLUR_START), "la-") //
-        .add(Note.of1_4(Tone.FS4), "dy") //
+        .add(Note.of1_4(Tone.FS4), "dy ") //
         .add(Note.of1_4(Tone.GS4).add(SlurDecoration.SLUR_END), "_ ", BarLineType.SINGLE) //
         .add(Chord.ofMinor(TonePitchEnglish.A), Note.of1_2p(Tone.A4), "Green-", BarLineType.SINGLE) //
         .add(Note.of1_2(Tone.A4), "sleeves.", BarLineType.THIN_THICK) //
     );
 
+    // and when
+    String data = format.write(song);
+    inputStream = Song.class.getResourceAsStream("greensleeves." + format.getExtension());
+    try (ByteArrayOutputStream baos = new ByteArrayOutputStream();) {
+      inputStream.transferTo(baos);
+      String expectedData = baos.toString(StandardCharsets.UTF_8);
+      assertThat(normalize(data)).isEqualTo(normalize(expectedData));
+    } catch (IOException e) {
+      org.junit.jupiter.api.Assertions.fail(e);
+    }
+  }
+
+  private String normalize(String data) {
+
+    return data.replace("\r\n", "\n").replaceAll(" *<", "<").replaceAll("><", ">\n<");
   }
 
   protected void checkLine(ScoreLine line, ScoreLine expectedLine) {

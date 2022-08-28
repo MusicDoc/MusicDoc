@@ -7,7 +7,7 @@ import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
 import io.github.musicdoc.note.Note;
-import io.github.musicdoc.rythm.Fraction;
+import io.github.musicdoc.rythm.fraction.Fraction;
 import io.github.musicdoc.rythm.rest.Rest;
 
 /**
@@ -37,7 +37,7 @@ public abstract class ValuedItemMapperBase extends ValuedItemMapper {
           assert (value.getVariation() == MusicalValueVariation.NONE);
           value = value.setVariation((MusicalValueVariation) variation);
         } else if (variation.getBeats() == 1) {
-          value = value.setFraction(value.getFraction() * variation.getFraction());
+          value = value.setUnit(value.getUnit() * variation.getUnit());
         }
         item = item.setValue(value);
       }
@@ -49,7 +49,7 @@ public abstract class ValuedItemMapperBase extends ValuedItemMapper {
   /**
    * @param in the {@link MusicInputStream} to read from.
    * @param context the {@link SongFormatContext}.
-   * @return the {@link MusicalDecoration} to add or {@code null} for none.
+   * @return the {@link Fraction} to add to value or {@code null} for none.
    */
   protected Fraction readValuePrefix(MusicInputStream in, SongFormatContext context) {
 

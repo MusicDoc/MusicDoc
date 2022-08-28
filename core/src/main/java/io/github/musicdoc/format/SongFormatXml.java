@@ -3,6 +3,7 @@ package io.github.musicdoc.format;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringReader;
+import java.io.StringWriter;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -48,6 +49,16 @@ public abstract class SongFormatXml extends SongFormat {
 
     XmlMusicOutputStream out = XmlMusicOutputStream.of(outStream, getRootTag());
     getSongMapper().write(song, out, new SongFormatContext(this));
+  }
+
+  @Override
+  public String write(Song song) {
+
+    StringWriter sw = new StringWriter(128);
+    try (XmlMusicOutputStream out = XmlMusicOutputStream.of(sw, getRootTag())) {
+      getSongMapper().write(song, out, new SongFormatContext(this));
+    }
+    return sw.toString();
   }
 
   /**

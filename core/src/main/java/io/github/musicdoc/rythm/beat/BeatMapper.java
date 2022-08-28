@@ -47,11 +47,9 @@ public abstract class BeatMapper extends AbstractMapper<Beat> {
     } else {
       int beats = beat.getBeats();
       out.write(Integer.toString(beats));
-      int fraction = beat.getFraction();
-      if (fraction != 4) {
-        out.write(BEAT_SEPARATOR);
-        out.write(Integer.toString(fraction));
-      }
+      int fraction = beat.getUnit();
+      out.write(BEAT_SEPARATOR);
+      out.write(Integer.toString(fraction));
     }
   }
 }

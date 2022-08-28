@@ -4,6 +4,7 @@ import io.github.musicdoc.format.AbstractMapper;
 import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
+import io.github.musicdoc.rythm.fraction.PlainFraction;
 
 /**
  * {@link AbstractMapper Mapper} for {@link MusicalValue}.
@@ -60,12 +61,32 @@ public abstract class MusicalValueMapper extends AbstractMapper<MusicalValue> {
     if (value == null) {
       return;
     }
-    int beats = value.getBeats();
+    PlainFraction unitNoteLength = context.getUnitNoteLength();
+    PlainFraction outValue = value.asPlain().divide(unitNoteLength);
+    MusicalValueVariation variation = value.getVariation();
+    if ((variation != MusicalValueVariation.NONE) && !isSupportVariation()) {
+      outValue = outValue.multiply(variation);
+      variation = MusicalValueVariation.NONE;
+    }
+    outValue = outValue.normalize();
+    int beats = outValue.getBeats();
+    int fraction = outValue.getUnit();
     if (beats > 1) {
       out.write(Integer.toString(beats));
-      out.write(BEAT_SEPARATOR);
     }
-    out.write(Integer.toString(value.getFraction()));
-    getVariationMapper().write(value.getVariation(), out, context);
+    if (fraction > 1) {
+      out.write(BEAT_SEPARATOR);
+      out.write(Integer.toString(fraction));
+    }
+    getVariationMapper().write(variation, out, context);
+  }
+
+  /**
+   * @return {@code true} if {@link MusicalValueVariation} is supported as specific syntax of this format, {@code false}
+   *         otherwise.
+   */
+  protected boolean isSupportVariation() {
+
+    return true;
   }
 }

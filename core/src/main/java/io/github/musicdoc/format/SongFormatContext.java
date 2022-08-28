@@ -7,6 +7,7 @@ import java.util.Objects;
 import io.github.musicdoc.clef.Clef;
 import io.github.musicdoc.harmony.key.MusicalKey;
 import io.github.musicdoc.rythm.beat.Beat;
+import io.github.musicdoc.rythm.fraction.PlainFraction;
 import io.github.musicdoc.song.Song;
 import io.github.musicdoc.stave.AbstractStave;
 import io.github.musicdoc.stave.system.StaveSystem;
@@ -302,12 +303,12 @@ public class SongFormatContext {
   /**
    * @return the {@link Song#unitNoteLength}.
    */
-  public Beat getUnitNoteLength() {
+  public PlainFraction getUnitNoteLength() {
 
     if (this.song == null) {
       return this.format.getUnitNoteLength(null);
     }
-    Beat unitNoteLength = this.song.unitNoteLength.getValue();
+    PlainFraction unitNoteLength = this.song.unitNoteLength.getValue();
     if (unitNoteLength == null) {
       Beat songBeat = this.song.beat.getValue();
       unitNoteLength = this.format.getUnitNoteLength(songBeat);

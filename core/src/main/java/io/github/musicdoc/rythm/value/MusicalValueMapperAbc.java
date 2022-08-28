@@ -25,4 +25,10 @@ public class MusicalValueMapperAbc extends MusicalValueMapper {
     return SongFormatAbc.INSTANCE;
   }
 
+  @Override
+  protected boolean isSupportVariation() {
+
+    return false;
+  }
+
 }

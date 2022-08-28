@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import io.github.musicdoc.harmony.EnharmonicStyle;
 import io.github.musicdoc.harmony.TonalSystem;
@@ -209,7 +210,15 @@ public final class MusicalKey extends AbstractTransposable<MusicalKey> {
 
     this.tonika = tonika;
     this.system = tonalSystem;
-    this.name = name;
+    if (name == null) {
+      if (tonalSystem.isMinor()) {
+        this.name = tonika.with(ToneNameCase.LOWER_CASE).getName();
+      } else {
+        this.name = tonika.getName();
+      }
+    } else {
+      this.name = name;
+    }
 
     // determine chromaticSignTones
     EnharmonicStyle style;
@@ -259,7 +268,6 @@ public final class MusicalKey extends AbstractTransposable<MusicalKey> {
     this.tonesChromatic = Collections.unmodifiableList(chromatic);
     assert (diatonic.size() == 7);
     this.tonesDiatonic = Collections.unmodifiableList(diatonic);
-    NAME2KEY_MAP.put(name, this);
   }
 
   private TonePitch getEnharmonicChange(TonePitch pitch) {
@@ -415,6 +423,24 @@ public final class MusicalKey extends AbstractTransposable<MusicalKey> {
   }
 
   @Override
+  public int hashCode() {
+
+    return Objects.hash(this.system, this.tonika);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+
+    if (this == obj) {
+      return true;
+    } else if ((obj == null) || (getClass() != obj.getClass())) {
+      return false;
+    }
+    MusicalKey other = (MusicalKey) obj;
+    return Objects.equals(this.system, other.system) && Objects.equals(this.tonika, other.tonika);
+  }
+
+  @Override
   public void toString(StringBuilder sb) {
 
     sb.append(this.name);
@@ -424,13 +450,9 @@ public final class MusicalKey extends AbstractTransposable<MusicalKey> {
 
   private static MusicalKey create(TonePitch tonika, TonalSystem tonalSystem) {
 
-    String name;
-    if (tonalSystem.isMinor()) {
-      name = tonika.with(ToneNameCase.LOWER_CASE).getName();
-    } else {
-      name = tonika.getName();
-    }
-    return new MusicalKey(tonika, tonalSystem, name);
+    MusicalKey key = new MusicalKey(tonika, tonalSystem, null);
+    NAME2KEY_MAP.put(key.getName(), key);
+    return key;
   }
 
   /**
@@ -458,8 +480,7 @@ public final class MusicalKey extends AbstractTransposable<MusicalKey> {
         }
       }
     }
-    // throw new IllegalStateException();
-    return null;
+    return new MusicalKey(tonika, tonalSystem, null);
   }
 
   /**

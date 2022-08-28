@@ -121,31 +121,39 @@ public class ScoreLineMapperOpenSong extends ScoreLineMapper {
       StringBuilder lyrics = new StringBuilder();
       lyrics.append(BEGIN_LYRICS);
       List<ScoreCell> cells = line.getCells();
+      int spaces = 0;
       int cellMax = cells.size() - 1;
       for (int i = 0; i <= cellMax; i++) {
         ScoreCell cell = cells.get(i);
         int chordLength = 0;
         ChordContainer chordContainer = cell.getChordContainer();
         if (chordContainer != null) {
-          int col = out.getColumn();
-          getChordContainerMapper().write(chordContainer, out, context);
-          chordLength = out.getColumn() - col;
-          assert (chordLength > 0);
-          if (i < cellMax) {
+          if ((spaces == 0) && (i > 0)) {
             out.write(' ');
-            chordLength++;
+            lyrics.append(' ');
+          } else if (spaces < 0) {
+            spaces += 2;
+            if (spaces > 0) {
+              StringHelper.appendSpaces(lyrics, 2);
+            }
           }
-        }
-        String lyric = cell.getLyric();
-        lyrics.append(lyric);
-        if (i < cellMax) {
-          int spaces = lyric.length() - chordLength;
           if (spaces > 0) {
             StringHelper.appendSpaces(out, spaces);
           } else if (spaces < 0) {
             StringHelper.appendSpaces(lyrics, -spaces);
           }
+          spaces = 0;
+          int col = out.getColumn();
+          getChordContainerMapper().write(chordContainer, out, context);
+          chordLength = out.getColumn() - col;
         }
+        String lyric = cell.getLyric();
+        BarLine bar = cell.getBar();
+        if (bar != null) {
+          lyric = lyric + bar;
+        }
+        lyrics.append(lyric);
+        spaces += lyric.length() - chordLength;
       }
       out.write(NEWLINE_CHAR);
       out.write(lyrics);

@@ -56,7 +56,6 @@ public abstract class ScoreMapperBase extends ScoreMapper {
       ScoreSectionName name = section.getName();
       if (name != null) {
         getSectionNameMapper().write(name, out, context);
-        out.write(NEWLINE);
       }
       for (ScoreRow row : section.getRows()) {
         for (ScoreLine line : row.getLines()) {
