@@ -7,7 +7,6 @@ import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
 import io.github.musicdoc.note.Note;
-import io.github.musicdoc.rythm.fraction.Fraction;
 import io.github.musicdoc.rythm.rest.Rest;
 
 /**
@@ -19,41 +18,19 @@ public abstract class ValuedItemMapperBase extends ValuedItemMapper {
   public ValuedItem<?> read(MusicInputStream in, SongFormatContext context) {
 
     MusicalDecoration decoration = readItemPrefix(in, context);
-    Fraction variation = readValuePrefix(in, context);
     ValuedItem<?> item = getNoteMapper().read(in, context);
     if (item == null) {
       item = getRestMapper().read(in, context);
     }
     if (item == null) {
       assert (decoration == null);
-      assert (variation == null);
     } else {
       if (decoration != null) {
         item.getDecorations().add(decoration);
       }
-      if (variation != null) {
-        MusicalValue value = item.getValue();
-        if (variation instanceof MusicalValueVariation) {
-          assert (value.getVariation() == MusicalValueVariation.NONE);
-          value = value.setVariation((MusicalValueVariation) variation);
-        } else if (variation.getBeats() == 1) {
-          value = value.setUnit(value.getUnit() * variation.getUnit());
-        }
-        item = item.setValue(value);
-      }
       item = readItemSuffix(item, in, context);
     }
     return item;
-  }
-
-  /**
-   * @param in the {@link MusicInputStream} to read from.
-   * @param context the {@link SongFormatContext}.
-   * @return the {@link Fraction} to add to value or {@code null} for none.
-   */
-  protected Fraction readValuePrefix(MusicInputStream in, SongFormatContext context) {
-
-    return null;
   }
 
   /**

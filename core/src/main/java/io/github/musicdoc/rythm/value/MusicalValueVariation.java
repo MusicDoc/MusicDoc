@@ -124,4 +124,23 @@ public enum MusicalValueVariation implements Fraction, MusicalGlyphs {
 
     sb.append(this.text);
   }
+
+  /**
+   * @param punctuation the {@link #getPunctuationCount() punctuation count}.
+   * @return the according {@link MusicalValueVariation} or {@code null} if no such variation exists.
+   */
+  public static MusicalValueVariation ofPunctuaion(int punctuation) {
+
+    switch (punctuation) {
+      case 0:
+        return NONE;
+      case 1:
+        return PUNCTURED;
+      case 2:
+        return DOUBLE_PUNCTURED;
+      case 3:
+        return TRIPPLE_PUNCTURED;
+    }
+    return null;
+  }
 }

@@ -154,6 +154,9 @@ public class MusicalValue extends AbstractFraction<MusicalValue> {
    */
   public MusicalValue setVariation(MusicalValueVariation variation) {
 
+    if (variation == null) {
+      variation = MusicalValueVariation.NONE;
+    }
     if (this.variation == variation) {
       return this;
     }

@@ -91,6 +91,50 @@ public class ScoreLineMapperAbc extends ScoreLineMapperBase {
   }
 
   @Override
+  protected void readCells(ScoreVoiceLine line, MusicInputStream in, SongFormatContext context) {
+
+    int previousBrokenRythmCount = 0;
+    while (in.hasNext() && !in.skipNewline()) {
+      ScoreCell cell = readCell(line, in, context);
+      if (cell != null) {
+        in.skipWhile(' ');
+        int brokenRythmCount = 0;
+        while ((brokenRythmCount < 3) && in.expect('>')) {
+          brokenRythmCount++;
+        }
+        while ((brokenRythmCount > -3) && (brokenRythmCount <= 0) && in.expect('<')) {
+          brokenRythmCount--;
+        }
+        ValuedItem<?> item = cell.getItem();
+        if (brokenRythmCount == 0) {
+          applyBrokenRythm(-previousBrokenRythmCount, item, in);
+        } else {
+          applyBrokenRythm(brokenRythmCount, item, in);
+        }
+        previousBrokenRythmCount = brokenRythmCount;
+        line.add(cell);
+      }
+    }
+  }
+
+  private void applyBrokenRythm(int brokenRythmCount, ValuedItem<?> item, MusicInputStream in) {
+
+    if (brokenRythmCount > 0) {
+      if (item == null) {
+        in.addError("broken rythmn requires item.");
+      } else {
+        MusicalValueVariation variation = MusicalValueVariation.ofPunctuaion(brokenRythmCount);
+        assert (variation != null);
+        item.getValue().setVariation(variation);
+      }
+    } else if (brokenRythmCount < 0) {
+      int fraction = 1 << (-brokenRythmCount);
+      MusicalValue value = item.getValue();
+      value.setUnit(value.getUnit() * fraction);
+    }
+  }
+
+  @Override
   protected void writeCells(ScoreLine line, MusicOutputStream out, SongFormatContext context) {
 
     super.writeCells(line, out, context);
