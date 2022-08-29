@@ -36,6 +36,7 @@ public class SongFormatMusicDocTest extends SongFormatTest {
 
   private static final String LYRICS_WITH_SCORE = "T:Dead cat\n" //
       + "C:Insane Composer\n" //
+      + "L:1/4\n" //
       + "#[C1]\n" //
       // + "$:[G(S=Sporano)(A=Alto)F(T=Tenor)(B=Bass)]-{G(P1=}(P2=)}\n" //
       + "$:[G(S=Soprano)(A=Alto)F(T=Tenor)(B=Bass)]\n" //
@@ -50,7 +51,7 @@ public class SongFormatMusicDocTest extends SongFormatTest {
     return SongFormatMusicDoc.INSTANCE;
   }
 
-  /** Test of {@link SongFormatMusicDoc#read(String)}. */
+  /** Test of {@link SongFormatMusicDoc#read(java.io.InputStream)} with just lyrics and chords. */
   @Test
   public void testReadLyricsWithChords() {
 
@@ -105,7 +106,7 @@ public class SongFormatMusicDocTest extends SongFormatTest {
     assertThat(cell.getLyric()).isEqualTo(" dead.");
   }
 
-  /** Test of {@link SongFormatMusicDoc#format(Song)}. */
+  /** Test of {@link SongFormatMusicDoc} writing a simple {@link Score} with only lyrics and chords. */
   @Test
   public void testWriteLyricsWithChords() {
 
@@ -130,7 +131,7 @@ public class SongFormatMusicDocTest extends SongFormatTest {
     assertThat(lyrics).isEqualTo(LYRICS_WITH_CHORDS);
   }
 
-  /** Test of {@link SongFormatMusicDoc#read(String)} with full score. */
+  /** Test of {@link SongFormatMusicDoc#read(java.io.InputStream)} of {@link Song} with full score. */
   @Test
   public void testReadLyricsWithScore() {
 

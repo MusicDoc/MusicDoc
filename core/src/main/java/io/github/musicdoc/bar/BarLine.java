@@ -7,7 +7,8 @@ import io.github.musicdoc.volta.Volta;
 
 /**
  * A {@link BarLine} is a border in a stave as vertical bar(s). It terminates a couple of
- * {@link io.github.musicdoc.note.Note}s or {@link io.github.musicdoc.rythm.rest.Rest}s that complete a full
+ * {@link io.github.musicdoc.rythm.value.ValuedItem}s ({@link io.github.musicdoc.note.Note}s or
+ * {@link io.github.musicdoc.rythm.rest.Rest}s) that typically complete a full
  * {@link io.github.musicdoc.rythm.beat.Beat}.
  *
  * @see BarLineType

@@ -1,6 +1,9 @@
 package io.github.musicdoc.glyphs.smufl;
 
+import io.github.musicdoc.clef.Clef;
 import io.github.musicdoc.clef.ClefSymbol;
+import io.github.musicdoc.harmony.TonalSystem;
+import io.github.musicdoc.interval.ToneInterval;
 
 /**
  * {@link SmuflGlyphs} for <a href="https://w3c.github.io/smufl/latest/tables/clefs.html">clefs</a>.
@@ -46,19 +49,31 @@ public interface SmuflGlyphsClefs extends SmuflGlyphs {
   String C_CLEV_DOWN_8 = "\uE05D";
 
   /** The {@link ClefSymbol#PERCUSSION_1 percussion clef 1} symbol: {@value}. */
-  String PERCUSSION_CLEV_1 = "\uD834\uDD25";
+  String UNPITCHED_PERCUSSION_CLEV_1 = "\uE069";
 
   /** The {@link ClefSymbol#PERCUSSION_2 percussion clef 2} symbol: {@value}. */
-  String PERCUSSION_CLEV_2 = "\uD834\uDD26";
+  String UNPITCHED_PERCUSSION_CLEV_2 = "\uE06A";
+
+  /** The 6-string {@link ClefSymbol#TAB tab clef} symbol: {@value}. */
+  String TAB_CLEV_6 = "\uE06D";
+
+  /** The 4-string {@link ClefSymbol#TAB tab clef} symbol: {@value}. */
+  String TAB_CLEV_4 = "\uE06E";
 
   /**
-   * @param clefType the {@link ClefSymbol}.
-   * @param chromaticShift the {@link io.github.musicdoc.clef.Clef#getShift() shift} as chromatic steps.
+   * @param clef the {@link Clef}.
    * @return the according glyph.
    */
-  static String get(ClefSymbol clefType, int chromaticShift) {
+  static String get(Clef clef) {
 
-    switch (clefType) {
+    ToneInterval shift = clef.getShift();
+    int chromaticShift = 0;
+    if (shift != null) {
+      shift.getChromaticSteps(TonalSystem.MAJOR);
+      assert (chromaticShift != Integer.MIN_VALUE);
+    }
+    ClefSymbol symbol = clef.getSymbol();
+    switch (symbol) {
       case G:
         if (chromaticShift == 12) {
           return G_CLEV_UP_8;
@@ -90,9 +105,16 @@ public interface SmuflGlyphsClefs extends SmuflGlyphs {
           return C_CLEV;
         }
       case PERCUSSION_1:
-        return PERCUSSION_CLEV_1;
+        return UNPITCHED_PERCUSSION_CLEV_1;
       case PERCUSSION_2:
-        return PERCUSSION_CLEV_2;
+        return UNPITCHED_PERCUSSION_CLEV_2;
+      case TAB:
+        int stringCount = clef.getStrings().size();
+        if ((stringCount > 0) && (stringCount <= 4)) {
+          return TAB_CLEV_4;
+        } else {
+          return TAB_CLEV_6;
+        }
     }
     return null;
   }

@@ -12,12 +12,7 @@ public abstract class FrettedStringInstrument extends StringInstrument {
     this.maxFret = maxFret;
   }
 
-  /**
-   * @return the maximum fret number that can be played (comfortably) on this instrument. Will depend e.g. on
-   *         {@link #isElectric() electric} vs. {@link #isAcoustic() acoustic} instruments as well as on features like
-   *         <em>cutaway</em>. Every reasonable {@link FrettedStringInstrument} should at least support 12 frets (one
-   *         octave).
-   */
+  @Override
   public int getMaxFret() {
 
     return this.maxFret;

@@ -58,7 +58,7 @@ public class Tab {
 
   public static Tab of(StringInstrument instrument) {
 
-    List<Tone> tuning = instrument.getTuning();
+    List<Tone> tuning = instrument.getStrings();
     List<TabString> strings = new ArrayList<>(tuning.size());
     for (Tone tone : tuning) {
       TabString string = new TabString(tone);

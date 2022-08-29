@@ -39,6 +39,9 @@ public interface MutableObjecteCopier {
    */
   default <T extends MutableObject<T>> List<T> copyList(List<T> list, Consumer<T> postProcessor) {
 
+    if (list == null) {
+      return null;
+    }
     List<T> mutableList = new ArrayList<>(list.size());
     for (T mutable : list) {
       T copy = copy(mutable);
@@ -57,6 +60,9 @@ public interface MutableObjecteCopier {
    */
   default <T> List<T> copyListFlat(List<T> list) {
 
+    if (list == null) {
+      return null;
+    }
     return new ArrayList<>(list);
   }
 }

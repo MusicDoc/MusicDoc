@@ -12,7 +12,7 @@ public abstract class PlainFractionMapper extends FractionMapper<PlainFraction> 
   @Override
   public PlainFraction read(int beats, Integer unit, MusicInputStream in, SongFormatContext context) {
 
-    return PlainFraction.of(beats, unit.intValue());
+    return PlainFraction.of(beats, unit.intValue()).normalize();
   }
 
 }

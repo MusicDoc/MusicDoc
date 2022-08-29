@@ -275,7 +275,7 @@ public abstract class SongFormat {
    */
   PlainFraction getUnitNoteLength(Beat beat) {
 
-    return PlainFraction._1_4;
+    return PlainFraction._1_1;
   }
 
   /**

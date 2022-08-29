@@ -6,7 +6,7 @@ import io.github.musicdoc.format.SongFormatMusicDoc;
 /**
  * {@link MusicalValueMapper} for {@link SongFormatMusicDoc}.
  */
-public class MusicalValueMapperMusicDoc extends MusicalValueMapper {
+public class MusicalValueMapperMusicDoc extends MusicalValueMapperBase {
 
   /** The singleton instance. */
   public static final MusicalValueMapperMusicDoc INSTANCE = new MusicalValueMapperMusicDoc();

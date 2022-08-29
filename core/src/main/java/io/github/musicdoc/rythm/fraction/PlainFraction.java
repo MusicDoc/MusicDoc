@@ -10,8 +10,20 @@ import io.github.musicdoc.MutableObjecteCopier;
  */
 public class PlainFraction extends AbstractFraction<PlainFraction> {
 
-  /** Fourth (1/4). */
+  /** Whole (1/1) also called semi-breve. */
+  public static final PlainFraction _1_1 = create(1, 1);
+
+  /** Half (1/2) also called minim. */
+  public static final PlainFraction _1_2 = create(1, 2);
+
+  /** Fourth (1/4) also called quarter or crotchet . */
   public static final PlainFraction _1_4 = create(1, 4);
+
+  /** Eighth (1/8) also called quaver. */
+  public static final PlainFraction _1_8 = create(1, 8);
+
+  /** Sixteenth (1/16) also called semi-quaver. */
+  public static final PlainFraction _1_16 = create(1, 16);
 
   /**
    * The constructor.

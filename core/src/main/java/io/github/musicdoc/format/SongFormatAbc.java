@@ -25,8 +25,10 @@ import io.github.musicdoc.note.NoteMapper;
 import io.github.musicdoc.note.NoteMapperAbc;
 import io.github.musicdoc.note.StemDirectionMapper;
 import io.github.musicdoc.note.StemDirectionMapperAbc;
+import io.github.musicdoc.rythm.beat.Beat;
 import io.github.musicdoc.rythm.beat.BeatMapper;
 import io.github.musicdoc.rythm.beat.BeatMapperAbc;
+import io.github.musicdoc.rythm.fraction.PlainFraction;
 import io.github.musicdoc.rythm.fraction.PlainFractionMapper;
 import io.github.musicdoc.rythm.fraction.PlainFractionMapperAbc;
 import io.github.musicdoc.rythm.rest.RestMapper;
@@ -87,6 +89,19 @@ public class SongFormatAbc extends SongFormatText {
   protected PropertyState newPropertyState() {
 
     return PropertyState.of("+:");
+  }
+
+  @Override
+  PlainFraction getUnitNoteLength(Beat beat) {
+
+    PlainFraction unitNoteLength = PlainFraction._1_8;
+    if (beat != null) {
+      double value = beat.getValue();
+      if (value < 0.75) {
+        unitNoteLength = PlainFraction._1_16;
+      }
+    }
+    return unitNoteLength;
   }
 
   @Override

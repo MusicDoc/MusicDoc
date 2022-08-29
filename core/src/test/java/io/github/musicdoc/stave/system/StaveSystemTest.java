@@ -9,9 +9,6 @@ import io.github.musicdoc.harmony.key.MusicalKey;
 import io.github.musicdoc.rythm.beat.Beat;
 import io.github.musicdoc.stave.Stave;
 import io.github.musicdoc.stave.StaveBracket;
-import io.github.musicdoc.stave.system.StaveSystem;
-import io.github.musicdoc.stave.system.StaveSystemMultiple;
-import io.github.musicdoc.stave.system.StaveSystemSingle;
 import io.github.musicdoc.stave.voice.StaveVoice;
 import io.github.musicdoc.stave.voice.StaveVoiceContainer;
 
@@ -67,8 +64,8 @@ public class StaveSystemTest extends Assertions {
     if (object == null) {
       return;
     }
-    assertThat(object.isImmutable()).as(immutable ? "IsImmutable " : "isMutable " + object.toString()).isEqualTo(immutable)
-        .isEqualTo(!object.isMutable());
+    assertThat(object.isImmutable()).as(immutable ? "IsImmutable " : "isMutable " + object.toString())
+        .isEqualTo(immutable).isEqualTo(!object.isMutable());
     if (!immutable) {
       assertThat(object.makeMutable()).isSameAs(object);
     }

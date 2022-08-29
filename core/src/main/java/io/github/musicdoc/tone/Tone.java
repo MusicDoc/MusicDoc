@@ -400,10 +400,10 @@ public class Tone extends AbstractTransposable<Tone> implements Comparable<Tone>
 
   /**
    * @return the octave the {@link #getPitch() pitch} is located. A value of {@code 0} is the lowest octave on a piano
-   *         (starting with {@link #A0}). The regular octave in {@link Clef#TREBLE treble-clef} is {@code 4} starting
-   *         with the {@link #C4 low C} (below the scale) and ending with {@link #B4 B♯4} in the middle of the scale. A
-   *         higher value is used to go up an octave and a lower value is used to go down (e.g. {@code 3} and {@code 2}
-   *         for {@link Clef#BASS bass-clef}).
+   *         (starting with {@link #A0}). The regular octave in {@link io.github.musicdoc.clef.Clef#TREBLE treble-clef}
+   *         is {@code 4} starting with the {@link #C4 low C} (below the scale) and ending with {@link #B4 B♯4} in the
+   *         middle of the scale. A higher value is used to go up an octave and a lower value is used to go down (e.g.
+   *         {@code 3} and {@code 2} for {@link io.github.musicdoc.clef.Clef#BASS bass-clef}).
    */
   public int getOctave() {
 
@@ -582,9 +582,9 @@ public class Tone extends AbstractTransposable<Tone> implements Comparable<Tone>
 
   /**
    * @param style the {@link ToneNameStyle}.
-   * @param clefOctave the octave of the stave {@link io.github.musicdoc.clef.Clef}. After this octave the
-   *        {@link Tone} case changes ("B" -> "c"). For {@link Clef#TREBLE treble clef} this value is {@code 4} ( C" =
-   *        "C4" and "c" = "C5").
+   * @param clefOctave the octave of the stave {@link io.github.musicdoc.clef.Clef}. After this octave the {@link Tone}
+   *        case changes ("B" -> "c"). For {@link io.github.musicdoc.clef.Clef#TREBLE treble clef} this value is
+   *        {@code 4} ( C" = "C4" and "c" = "C5").
    * @return the name of this {@link Tone} using the given {@link ToneNameStyle} and {@code clefOctave}
    */
   public String getNameAbc(ToneNameStyle<?> style, int clefOctave) {

@@ -9,7 +9,6 @@ import java.util.Objects;
 import io.github.musicdoc.MutableObjecteCopier;
 import io.github.musicdoc.MutableObjecteHelper;
 import io.github.musicdoc.clef.Clef;
-import io.github.musicdoc.format.FormatConstants;
 import io.github.musicdoc.harmony.key.MusicalKey;
 import io.github.musicdoc.rythm.beat.Beat;
 import io.github.musicdoc.stave.system.StaveSystem;
@@ -31,8 +30,6 @@ public final class Stave extends AbstractStave<Stave> implements StaveVoiceConta
 
   /** The default {@link Stave}. */
   public static final Stave DEFAULT = new Stave(Clef.TREBLE, MusicalKey.C_MAJOR, Beat.COMMON_TIME).makeImmutable();
-
-  private static final String SEPARATOR = FormatConstants.PROPERTIES_SEPARATOR;
 
   private boolean disconnected;
 

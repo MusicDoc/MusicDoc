@@ -3,8 +3,6 @@
 package io.github.musicdoc.note;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -27,6 +25,8 @@ public class Note extends ValuedItem<Note> {
 
   private Tone tone;
 
+  private List<Tone> tones;
+
   /**
    * The constructor.
    *
@@ -35,7 +35,7 @@ public class Note extends ValuedItem<Note> {
    */
   public Note(Tone tone, MusicalValue value) {
 
-    this(tone, value, new ArrayList<MusicalDecoration>());
+    this(tone, value, new ArrayList<>());
   }
 
   /**
@@ -47,7 +47,7 @@ public class Note extends ValuedItem<Note> {
    */
   public Note(Tone tone, MusicalValue value, MusicalDecoration decoration) {
 
-    this(tone, value, Collections.singletonList(decoration));
+    this(tone, value, asList(decoration));
     Objects.requireNonNull(decoration);
   }
 
@@ -60,7 +60,7 @@ public class Note extends ValuedItem<Note> {
    */
   public Note(Tone tone, MusicalValue value, MusicalDecoration... decorations) {
 
-    this(tone, value, Arrays.asList(decorations));
+    this(tone, value, asList(decorations));
   }
 
   /**
@@ -72,15 +72,30 @@ public class Note extends ValuedItem<Note> {
    */
   public Note(Tone tone, MusicalValue value, List<MusicalDecoration> decorations) {
 
+    this(tone, value, decorations, null);
+  }
+
+  /**
+   * The constructor.
+   *
+   * @param tone - the {@link #getTone() tone}.
+   * @param value - the {@link #getValue() value}.
+   * @param decorations - the {@link #getDecorations() decorations}.
+   * @param tones the {@link #getTone(int) extra tones}.
+   */
+  public Note(Tone tone, MusicalValue value, List<MusicalDecoration> decorations, List<Tone> tones) {
+
     super(value, decorations);
     Objects.requireNonNull(tone, "tone");
     this.tone = tone;
+    this.tones = tones;
   }
 
   private Note(Note note, MutableObjecteCopier copier) {
 
     super(note, copier);
     this.tone = note.tone;
+    this.tones = copier.copyListFlat(note.tones);
   }
 
   @Override
@@ -110,11 +125,64 @@ public class Note extends ValuedItem<Note> {
     return note;
   }
 
+  /**
+   * @return the number of {@link #getTone(int) tones} contained in this {@link Note}. Typically {@code 1} but may be
+   *         higher in case of a chord or unison.
+   */
+  @Override
+  public int getToneCount() {
+
+    int count = 1;
+    if (this.tones != null) {
+      count += this.tones.size();
+    }
+    return count;
+  }
+
+  /**
+   * @param i the index of the requested {@link Tone}.
+   * @return the {@link Tone} at the given index.
+   */
+  @Override
+  public Tone getTone(int i) {
+
+    if (i < 0) {
+      return null;
+    } else if (i == 0) {
+      return this.tone;
+    } else if ((this.tones == null) || (i >= this.tones.size())) {
+      return null;
+    } else {
+      return this.tones.get(i - 1);
+    }
+  }
+
+  /**
+   * @param extraTone the {@link Tone} to add.
+   * @return this {@link Note} or a {@link #copy()} if {@link #isImmutable() immutable}.
+   */
+  public Note addTone(Tone extraTone) {
+
+    Note note = makeMutable();
+    if (note.tones == null) {
+      note.tones = new ArrayList<>();
+    }
+    note.tones.add(extraTone);
+    return note;
+  }
+
   @Override
   public Note transpose(int steps, boolean diatonic, TransposeContext context) {
 
     Tone newTone = this.tone.transpose(steps, diatonic, context);
-    return new Note(newTone, getValue(), new ArrayList<>(getDecorations()));
+    List<Tone> extraTones = null;
+    if (this.tones != null) {
+      extraTones = new ArrayList<>(this.tones.size());
+      for (Tone t : this.tones) {
+        extraTones.add(t.transpose(steps, diatonic, context));
+      }
+    }
+    return new Note(newTone, getValue(), new ArrayList<>(getDecorations()), extraTones);
   }
 
   @Override
@@ -124,11 +192,18 @@ public class Note extends ValuedItem<Note> {
     StemDirection stemDirection = context.getStemDirection();
     if ((stemDirection == null) || (stemDirection == StemDirection.AUTO)) {
       Clef clef = context.getClef();
-      Tone lowTone = clef.getMiddleTone();
-      // TODO compute stem direction from clef low tone
+      if (clef == null) {
+        clef = Clef.G;
+      }
+      // TODO for beams this is incorrect and needs to be computed for entire sequences of notes.
+      Tone middleTone = clef.getMiddleTone();
+      if (this.tone.isLower(middleTone)) {
+        stemDirection = StemDirection.DOWN;
+      } else {
+        stemDirection = StemDirection.UP;
+      }
     }
     boolean down = StemDirection.DOWN == stemDirection;
-    // lowTone.get
     if (context.isEnforceUnicode()) {
       glyphs = UnicodeGlyphsNotes.get(this.value, down);
     } else {
@@ -150,6 +225,11 @@ public class Note extends ValuedItem<Note> {
   protected void toStringItem(StringBuilder sb) {
 
     this.tone.toString(sb);
+    if (this.tones != null) {
+      for (Tone t : this.tones) {
+        t.toString(sb);
+      }
+    }
     sb.append(':');
     super.toStringItem(sb);
   }

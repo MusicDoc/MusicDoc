@@ -25,7 +25,7 @@ public class MusicalValue extends AbstractFraction<MusicalValue> {
   public static final MusicalValue _1_1 = create(1, 1);
 
   /**
-   * Whole (4/4) tone also called <em>semibreve</em>.
+   * Whole (4/4) tone also called <em>semi-breve</em>.
    *
    * @see #_1_1
    */
@@ -47,7 +47,7 @@ public class MusicalValue extends AbstractFraction<MusicalValue> {
   public static final MusicalValue _1_4 = create(1, 4);
 
   /**
-   * Fourth (3/4) what is as long as a {@link #_1_2p punctuated half}.
+   * Three fourth (3/4) what is as long as a {@link #_1_2p punctuated half}.
    */
   public static final MusicalValue _3_4 = create(3, 4);
 
@@ -67,12 +67,12 @@ public class MusicalValue extends AbstractFraction<MusicalValue> {
   public static final MusicalValue _1_8p = create(1, 8, MusicalValueVariation.PUNCTURED);
 
   /**
-   * Sixteenth (1/16) also called <em>semiquaver</em>.
+   * Sixteenth (1/16) also called <em>semi-quaver</em>.
    */
   public static final MusicalValue _1_16 = create(1, 16);
 
   /**
-   * Thirty-second fraction (1/32) also called <em>demi semi quaver</em>.
+   * Thirty-second fraction (1/32) also called <em>demi-semi-quaver</em>.
    */
   public static final MusicalValue _1_32 = create(1, 32);
 
@@ -242,7 +242,7 @@ public class MusicalValue extends AbstractFraction<MusicalValue> {
     MusicalValue normalized = makeMutable();
     normalized.multiply(this.variation);
     normalized.variation = MusicalValueVariation.NONE;
-    return normalized.normalize();
+    return normalized;
   }
 
   @Override

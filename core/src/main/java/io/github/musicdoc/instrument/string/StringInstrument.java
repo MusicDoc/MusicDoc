@@ -7,7 +7,7 @@ import java.util.List;
 import io.github.musicdoc.instrument.Instrument;
 import io.github.musicdoc.tone.Tone;
 
-public abstract class StringInstrument extends Instrument {
+public abstract class StringInstrument extends Instrument implements StringTuning {
 
   private final List<Tone> tuning;
 
@@ -26,7 +26,8 @@ public abstract class StringInstrument extends Instrument {
     this.lowestTone = lowest;
   }
 
-  public List<Tone> getTuning() {
+  @Override
+  public List<Tone> getStrings() {
 
     return this.tuning;
   }

@@ -1,6 +1,9 @@
 package io.github.musicdoc.glyphs.unicode;
 
+import io.github.musicdoc.clef.Clef;
 import io.github.musicdoc.clef.ClefSymbol;
+import io.github.musicdoc.harmony.TonalSystem;
+import io.github.musicdoc.interval.ToneInterval;
 
 /**
  * {@link UnicodeGlyphs} for <a href="https://www.htmlsymbols.xyz/musical-symbols/clefs">clefs</a>
@@ -37,13 +40,19 @@ public interface UnicodeGlyphsClefs extends UnicodeGlyphs {
   String PERCUSSION_CLEV_2 = "\uD834\uDD26";
 
   /**
-   * @param clefType the {@link ClefSymbol}.
-   * @param chromaticShift the {@link io.github.musicdoc.clef.Clef#getShift() shift} as chromatic steps.
+   * @param clef the {@link Clef}.
    * @return the according glyph.
    */
-  static String get(ClefSymbol clefType, int chromaticShift) {
+  static String get(Clef clef) {
 
-    switch (clefType) {
+    ToneInterval shift = clef.getShift();
+    int chromaticShift = 0;
+    if (shift != null) {
+      shift.getChromaticSteps(TonalSystem.MAJOR);
+      assert (chromaticShift != Integer.MIN_VALUE);
+    }
+    ClefSymbol symbol = clef.getSymbol();
+    switch (symbol) {
       case G:
         if (chromaticShift == 0) {
           return G_CLEV;
@@ -71,6 +80,8 @@ public interface UnicodeGlyphsClefs extends UnicodeGlyphs {
         return PERCUSSION_CLEV_1;
       case PERCUSSION_2:
         return PERCUSSION_CLEV_2;
+      case TAB:
+        return "T\nA\nB";
     }
     return null;
   }

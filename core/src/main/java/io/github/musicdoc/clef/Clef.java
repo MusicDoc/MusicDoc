@@ -2,27 +2,33 @@
  * http://www.apache.org/licenses/LICENSE-2.0 */
 package io.github.musicdoc.clef;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 import io.github.musicdoc.AbstractMusicalObject;
 import io.github.musicdoc.MutableObject;
 import io.github.musicdoc.MutableObjecteCopier;
+import io.github.musicdoc.MutableObjecteHelper;
 import io.github.musicdoc.glyphs.MusicalGlyphs;
 import io.github.musicdoc.glyphs.MusicalGlyphsContext;
 import io.github.musicdoc.glyphs.smufl.SmuflGlyphsClefs;
 import io.github.musicdoc.glyphs.unicode.UnicodeGlyphsClefs;
 import io.github.musicdoc.harmony.TonalSystem;
 import io.github.musicdoc.harmony.key.MusicalKey;
+import io.github.musicdoc.instrument.string.StringTuning;
 import io.github.musicdoc.interval.ChromaticInterval;
 import io.github.musicdoc.interval.ToneInterval;
 import io.github.musicdoc.tone.Tone;
 import io.github.musicdoc.transpose.TransposeContext;
 
 /**
- * The clef is the initial symbol of a {@link io.github.musicdoc.stave.Stave} that indicates which line is
- * identifying which {@link Tone}.
+ * The clef is the initial symbol of a {@link io.github.musicdoc.stave.Stave} that indicates which line is identifying
+ * which {@link Tone}.
  */
-public class Clef extends AbstractMusicalObject implements MusicalGlyphs, ClefObject, MutableObject<Clef> {
+public class Clef extends AbstractMusicalObject
+    implements MusicalGlyphs, ClefObject, MutableObject<Clef>, StringTuning {
 
   /** Regular {@link ClefSymbol#G G-clef}. */
   public static final Clef G = ofInteral(ClefSymbol.G, "g");
@@ -58,13 +64,16 @@ public class Clef extends AbstractMusicalObject implements MusicalGlyphs, ClefOb
   /** {@link ClefSymbol#C C-clef} for tenor ({@link #ALTO} moved down 2 diatonic tones). */
   public static final Clef MEZZO_SOPRANO = ofInteral(ClefSymbol.C, "mezzosoprano", ChromaticInterval.MAJOR_THIRD);
 
-  /** Regular {@link ClefSymbol#PERCUSSION_1 percussion clef 1}. */
+  /** {@link ClefSymbol#PERCUSSION_1 percussion clef 1}. */
   public static final Clef PERCUSSION_1 = ofInteral(ClefSymbol.PERCUSSION_1, "prec");
 
-  /** Regular {@link ClefSymbol#PERCUSSION_2 percussion clef 2}. */
+  /** {@link ClefSymbol#PERCUSSION_2 percussion clef 2}. */
   public static final Clef PERCUSSION_2 = ofInteral(ClefSymbol.PERCUSSION_2, "perc2");
 
-  /** Regular {@link ClefSymbol#PERCUSSION_2 percussion clef 2}. */
+  /** {@link ClefSymbol#TAB tablature clef}. */
+  public static final Clef TAB = ofInteral(ClefSymbol.TAB, "tab");
+
+  /** Empty clef with no {@link #getSymbol() symbol}. */
   public static final Clef NONE = ofInteral(null, "none");
 
   private ClefSymbol symbol;
@@ -76,6 +85,8 @@ public class Clef extends AbstractMusicalObject implements MusicalGlyphs, ClefOb
   private Tone middleTone;
 
   private Tone referenceTone;
+
+  private List<Tone> strings;
 
   private boolean immutable;
 
@@ -100,6 +111,7 @@ public class Clef extends AbstractMusicalObject implements MusicalGlyphs, ClefOb
     this.name = clef.name;
     this.middleTone = clef.middleTone;
     this.referenceTone = clef.referenceTone;
+    this.strings = copier.copyListFlat(clef.strings);
   }
 
   @Override
@@ -238,6 +250,18 @@ public class Clef extends AbstractMusicalObject implements MusicalGlyphs, ClefOb
   }
 
   @Override
+  public List<Tone> getStrings() {
+
+    if (this.strings == null) {
+      if ((this.symbol != ClefSymbol.TAB) || this.immutable) {
+        return Collections.emptyList();
+      }
+      this.strings = new ArrayList<>();
+    }
+    return this.strings;
+  }
+
+  @Override
   public boolean isImmutable() {
 
     return this.immutable;
@@ -246,20 +270,22 @@ public class Clef extends AbstractMusicalObject implements MusicalGlyphs, ClefOb
   @Override
   public Clef makeImmutable() {
 
-    this.immutable = true;
+    if (!this.immutable) {
+      if (this.strings != null) {
+        this.strings = MutableObjecteHelper.makeImmutableFlat(this.strings);
+      }
+      this.immutable = true;
+    }
     return this;
   }
 
   @Override
   public String getGlyphs(MusicalGlyphsContext context) {
 
-    // should we actually combine the clef with the key to resolve this perfectly?
-    int chromaticShift = this.shift.getChromaticSteps(TonalSystem.MAJOR);
-    assert (chromaticShift != Integer.MIN_VALUE);
     if (context.isEnforceUnicode()) {
-      return UnicodeGlyphsClefs.get(this.symbol, chromaticShift);
+      return UnicodeGlyphsClefs.get(this);
     } else {
-      return SmuflGlyphsClefs.get(this.symbol, chromaticShift);
+      return SmuflGlyphsClefs.get(this);
     }
   }
 
@@ -291,16 +317,20 @@ public class Clef extends AbstractMusicalObject implements MusicalGlyphs, ClefOb
   @Override
   public void toString(StringBuilder sb) {
 
-    if (this.symbol == null) {
-      sb.append("none");
-    } else {
-      sb.append(this.symbol);
+    sb.append(this.name);
+    if (this.symbol != null) {
+      String symbolString = this.symbol.toString();
+      if (!symbolString.equalsIgnoreCase(this.name)) {
+        sb.append('[');
+        sb.append(symbolString);
+        sb.append(']');
+      }
     }
     int steps = this.shift.getChromaticSteps(TonalSystem.MAJOR);
-    if (steps > 0) {
-      sb.append('+');
-      sb.append(steps);
-    } else if (steps < 0) {
+    if (steps != 0) {
+      if (steps > 0) {
+        sb.append('+');
+      }
       sb.append(steps);
     }
   }

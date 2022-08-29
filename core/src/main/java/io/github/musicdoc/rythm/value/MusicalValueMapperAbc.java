@@ -6,7 +6,7 @@ import io.github.musicdoc.format.SongFormatAbc;
 /**
  * {@link MusicalValueMapper} for {@link SongFormatAbc}.
  */
-public class MusicalValueMapperAbc extends MusicalValueMapper {
+public class MusicalValueMapperAbc extends MusicalValueMapperBase {
 
   /** The singleton instance. */
   public static final MusicalValueMapperAbc INSTANCE = new MusicalValueMapperAbc();

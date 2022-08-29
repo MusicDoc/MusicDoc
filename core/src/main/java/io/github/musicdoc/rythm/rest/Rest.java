@@ -47,7 +47,7 @@ public class Rest extends ValuedItem<Rest> {
    */
   public Rest(MusicalValue value) {
 
-    this(value, false, new ArrayList<MusicalDecoration>());
+    this(value, false, new ArrayList<>());
   }
 
   /**

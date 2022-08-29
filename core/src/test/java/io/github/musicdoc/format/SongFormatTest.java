@@ -198,6 +198,10 @@ public abstract class SongFormatTest extends Assertions {
     return data.replace("\r\n", "\n").replaceAll(" *<", "<").replaceAll("><", ">\n<");
   }
 
+  /**
+   * @param line the {@link ScoreLine} to check.
+   * @param expectedLine the expected {@link ScoreLine} to compare with.
+   */
   protected void checkLine(ScoreLine line, ScoreLine expectedLine) {
 
     ScoreLine expected = expectedLine;
@@ -246,42 +250,92 @@ public abstract class SongFormatTest extends Assertions {
     return cell2;
   }
 
+  /**
+   * @param cell the {@link ScoreCell} to check.
+   * @param item the expected {@link ScoreCell#getItem() item}.
+   */
   protected void checkCell(ScoreCell cell, ValuedItem<?> item) {
 
     checkCell(cell, "", null, item);
   }
 
+  /**
+   * @param cell the {@link ScoreCell} to check.
+   * @param lyric the expected {@link ScoreCell#getLyric() lyric}.
+   * @param item the expected {@link ScoreCell#getItem() item}.
+   */
   protected void checkCell(ScoreCell cell, String lyric, ValuedItem<?> item) {
 
     checkCell(cell, lyric, null, item);
   }
 
+  /**
+   * @param cell the {@link ScoreCell} to check.
+   * @param lyric the expected {@link ScoreCell#getLyric() lyric}.
+   * @param chord the expected {@link ScoreCell#getChord() chord}.
+   */
   protected void checkCell(ScoreCell cell, String lyric, Chord chord) {
 
     checkCell(cell, lyric, chord, null);
   }
 
+  /**
+   * @param cell the {@link ScoreCell} to check.
+   * @param lyric the expected {@link ScoreCell#getLyric() lyric}.
+   * @param chord the expected {@link ScoreCell#getChord() chord}.
+   * @param item the expected {@link ScoreCell#getItem() item}.
+   */
   protected void checkCell(ScoreCell cell, String lyric, Chord chord, ValuedItem<?> item) {
 
     checkCell(cell, lyric, chord, item, (BarLine) null);
   }
 
+  /**
+   * @param cell the {@link ScoreCell} to check.
+   * @param lyric the expected {@link ScoreCell#getLyric() lyric}.
+   * @param chord the expected {@link ScoreCell#getChord() chord}.
+   * @param item the expected {@link ScoreCell#getItem() item}.
+   * @param bar the expected {@link ScoreCell#getBar() bar}.
+   */
   protected void checkCell(ScoreCell cell, String lyric, Chord chord, ValuedItem<?> item, BarLine bar) {
 
     checkCell(cell, lyric, chord, item, bar, null);
   }
 
+  /**
+   * @param cell the {@link ScoreCell} to check.
+   * @param lyric the expected {@link ScoreCell#getLyric() lyric}.
+   * @param chord the expected {@link ScoreCell#getChord() chord}.
+   * @param item the expected {@link ScoreCell#getItem() item}.
+   * @param barType the expected {@link ScoreCell#getBar() bar} {@link BarLine#getType() type}.
+   */
   protected void checkCell(ScoreCell cell, String lyric, Chord chord, ValuedItem<?> item, BarLineType barType) {
 
     checkCell(cell, lyric, chord, item, new BarLine(barType), null);
   }
 
+  /**
+   * @param cell the {@link ScoreCell} to check.
+   * @param lyric the expected {@link ScoreCell#getLyric() lyric}.
+   * @param chord the expected {@link ScoreCell#getChord() chord}.
+   * @param item the expected {@link ScoreCell#getItem() item}.
+   * @param barType the expected {@link ScoreCell#getBar() bar} {@link BarLine#getType() type}.
+   * @param staveChange the expected {@link ScoreCell#getStaveChange() stave change}.
+   */
   protected void checkCell(ScoreCell cell, String lyric, Chord chord, ValuedItem<?> item, BarLineType barType,
       StaveChange staveChange) {
 
     checkCell(cell, lyric, chord, item, new BarLine(barType), staveChange);
   }
 
+  /**
+   * @param cell the {@link ScoreCell} to check.
+   * @param lyric the expected {@link ScoreCell#getLyric() lyric}.
+   * @param chord the expected {@link ScoreCell#getChord() chord}.
+   * @param item the expected {@link ScoreCell#getItem() item}.
+   * @param bar the expected {@link ScoreCell#getBar() bar}.
+   * @param staveChange the expected {@link ScoreCell#getStaveChange() stave change}.
+   */
   protected void checkCell(ScoreCell cell, String lyric, Chord chord, ValuedItem<?> item, BarLine bar,
       StaveChange staveChange) {
 

@@ -6,7 +6,7 @@ package io.github.musicdoc.note;
  */
 public enum StemDirection {
 
-  /** Automatically determine the stem direction from the {@link io.github.musicdoc.music.tone.Tone}. */
+  /** Automatically determine the stem direction from the {@link io.github.musicdoc.tone.Tone}. */
   AUTO,
 
   /** Always draw the stem up from the note-head towards the top of the score. */

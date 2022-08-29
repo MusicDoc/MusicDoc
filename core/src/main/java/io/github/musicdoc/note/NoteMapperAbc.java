@@ -6,7 +6,7 @@ import io.github.musicdoc.format.SongFormatAbc;
 /**
  * {@link NoteMapper} for {@link SongFormatAbc}.
  */
-public class NoteMapperAbc extends NoteMapper {
+public class NoteMapperAbc extends NoteMapperBase {
 
   /** The singleton instance. */
   public static final NoteMapperAbc INSTANCE = new NoteMapperAbc();
@@ -16,7 +16,7 @@ public class NoteMapperAbc extends NoteMapper {
    */
   protected NoteMapperAbc() {
 
-    super();
+    super('[', ']');
   }
 
   @Override

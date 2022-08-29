@@ -84,6 +84,24 @@ public abstract class ValuedItem<SELF extends ValuedItem<SELF>> extends Abstract
   }
 
   /**
+   * @return the number of {@link #getTone(int) tones} contained in this {@link Note}. Typically {@code 1} but may be
+   *         higher in case of a chord or unison.
+   */
+  public int getToneCount() {
+
+    return 0;
+  }
+
+  /**
+   * @param i the index of the requested {@link Tone}.
+   * @return the {@link Tone} at the given index.
+   */
+  public Tone getTone(int i) {
+
+    return null;
+  }
+
+  /**
    * @return the {@link MusicalValue} that defines the duration of this item.
    */
   public MusicalValue getValue() {
@@ -171,9 +189,23 @@ public abstract class ValuedItem<SELF extends ValuedItem<SELF>> extends Abstract
       return false;
     }
     ValuedItem<?> other = (ValuedItem<?>) obj;
-    if (!Objects.equals(this.value, other.value) || !Objects.equals(getTone(), other.getTone())
-        || !Objects.equals(this.decorations, other.decorations)) {
+    if (!Objects.equals(this.value, other.value)) {
       return false;
+    } else if (!Objects.equals(this.decorations, other.decorations)) {
+      return false;
+    } else {
+      int tc = getToneCount();
+      int otc = other.getToneCount();
+      if (tc != otc) {
+        return false;
+      }
+      for (int i = 0; i < tc; i++) {
+        Tone t = getTone(i);
+        Tone ot = other.getTone(i);
+        if (!Objects.equals(t, ot)) {
+          return false;
+        }
+      }
     }
     return true;
   }

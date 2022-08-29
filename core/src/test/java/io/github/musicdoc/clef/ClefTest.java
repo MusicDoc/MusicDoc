@@ -3,8 +3,6 @@ package io.github.musicdoc.clef;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import io.github.musicdoc.clef.Clef;
-import io.github.musicdoc.clef.ClefSymbol;
 import io.github.musicdoc.glyphs.smufl.SmuflGlyphsClefs;
 import io.github.musicdoc.interval.ChromaticInterval;
 import io.github.musicdoc.interval.ToneInterval;
@@ -15,6 +13,7 @@ import io.github.musicdoc.tone.Tone;
  */
 public class ClefTest extends Assertions {
 
+  /** Test of {@link Clef#TREBLE}. */
   @Test
   public void testTreble() {
 
@@ -26,6 +25,7 @@ public class ClefTest extends Assertions {
     assertThat(clef.getGlyphs()).isSameAs(SmuflGlyphsClefs.G_CLEV);
   }
 
+  /** Test of {@link Clef#BASS}. */
   @Test
   public void testBass() {
 
@@ -37,6 +37,7 @@ public class ClefTest extends Assertions {
     assertThat(clef.getGlyphs()).isSameAs(SmuflGlyphsClefs.F_CLEV);
   }
 
+  /** Test of {@link Clef#ALTO}. */
   @Test
   public void testAlto() {
 
@@ -48,6 +49,7 @@ public class ClefTest extends Assertions {
     assertThat(clef.getGlyphs()).isSameAs(SmuflGlyphsClefs.C_CLEV);
   }
 
+  /** Test of {@link Clef#TENOR}. */
   @Test
   public void testTenor() {
 
@@ -61,6 +63,7 @@ public class ClefTest extends Assertions {
     checkIsAltoShift(clef, interval);
   }
 
+  /** Test of {@link Clef#SOPRANO}. */
   @Test
   public void testSoprano() {
 
@@ -74,6 +77,7 @@ public class ClefTest extends Assertions {
     checkIsAltoShift(clef, interval);
   }
 
+  /** Test of {@link Clef#BARITONE}. */
   @Test
   public void testBariton() {
 
@@ -87,6 +91,7 @@ public class ClefTest extends Assertions {
     checkIsAltoShift(clef, interval);
   }
 
+  /** Test of {@link Clef#MEZZO_SOPRANO}. */
   @Test
   public void testMezzoSoprano() {
 

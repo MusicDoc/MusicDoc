@@ -34,7 +34,7 @@ public class SongFormatOpenSongTest extends SongFormatTest {
   }
 
   /**
-   * Test of {@link SongFormatOpenSong#read(String)}.
+   * Test of {@link SongFormatOpenSong#read(java.io.InputStream)} with just lyrics and chords.
    */
   @Test
   public void testParseLyricsWithChords() {

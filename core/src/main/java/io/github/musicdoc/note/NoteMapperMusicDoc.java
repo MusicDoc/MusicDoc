@@ -6,7 +6,7 @@ import io.github.musicdoc.format.SongFormatMusicDoc;
 /**
  * {@link NoteMapper} for {@link SongFormatMusicDoc}.
  */
-public class NoteMapperMusicDoc extends NoteMapper {
+public class NoteMapperMusicDoc extends NoteMapperBase {
 
   /** The singleton instance. */
   public static final NoteMapperMusicDoc INSTANCE = new NoteMapperMusicDoc();
@@ -16,7 +16,7 @@ public class NoteMapperMusicDoc extends NoteMapper {
    */
   protected NoteMapperMusicDoc() {
 
-    super();
+    super('\0', '\0');
   }
 
   @Override

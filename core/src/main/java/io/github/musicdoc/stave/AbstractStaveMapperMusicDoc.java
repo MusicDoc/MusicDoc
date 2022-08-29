@@ -1,7 +1,6 @@
 package io.github.musicdoc.stave;
 
 import io.github.musicdoc.clef.Clef;
-import io.github.musicdoc.filter.ListCharFilter;
 import io.github.musicdoc.format.SongFormat;
 import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.format.SongFormatMusicDoc;
@@ -14,8 +13,6 @@ import io.github.musicdoc.rythm.beat.Beat;
  * {@link AbstractStaveMapper} for {@link SongFormatMusicDoc}.
  */
 public abstract class AbstractStaveMapperMusicDoc<T extends AbstractStave<T>> extends AbstractStaveMapper<T> {
-
-  private static final ListCharFilter STOP_FILTER = ListCharFilter.NEWLINE.join(STAVE_END);
 
   /**
    * The constructor.

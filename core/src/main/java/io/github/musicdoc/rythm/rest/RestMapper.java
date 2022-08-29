@@ -28,9 +28,6 @@ public abstract class RestMapper extends AbstractValuedItemMapper<Rest> {
     }
     in.next();
     MusicalValue value = getValueMapper().read(in, context);
-    if (value == null) {
-      value = MusicalValue._1_1;
-    }
     return new Rest(value, invisible, decorations);
   }
 

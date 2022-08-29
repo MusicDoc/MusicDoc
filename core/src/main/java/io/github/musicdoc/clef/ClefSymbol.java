@@ -39,7 +39,35 @@ public enum ClefSymbol implements ClefObject {
    * The percussion clef 2 is used for additional percussion instruments. If you have proper unicode support you can see
    * it here: &#119078;
    */
-  PERCUSSION_2;
+  PERCUSSION_2,
+
+  /**
+   * The tablature clef is used for string instruments. Instead of showing regular notes, it displays the strings of the
+   * instrument with numbers on it for the fret to be played on that string. Typically the tablature is a redundant
+   * information displayed in addition to a regular stave to increase readability. However, it is also possible to enter
+   * music data in form of tablature and compute regular stave notes from it. While tablature can be written as simple
+   * ASCII there is no easy or standardized way to express the {@link io.github.musicdoc.note.Note#getValue() value} of
+   * a {@link io.github.musicdoc.note.Note}.
+   */
+  TAB;
+
+  /**
+   * @return {@code true} if this is a percussion {@link Clef#getSymbol() clef-symbol} ({@link #PERCUSSION_1} or
+   *         {@link #PERCUSSION_2}), {@code false} otherwise.
+   */
+  public boolean isPercussion() {
+
+    return (this == PERCUSSION_1) || (this == PERCUSSION_2);
+  }
+
+  /**
+   * @return {@code true} if this is a regular {@link Tone}-based {@link Clef#getSymbol() clef-symbol} ({@link #G},
+   *         {@link #F}, or {@link #C}), {@code false} otherwise.
+   */
+  public boolean isTone() {
+
+    return (this == G) || (this == F) || (this == C);
+  }
 
   /**
    * @return the number of the {@link io.github.musicdoc.stave.Stave} line (starting with the first line from the

@@ -134,7 +134,7 @@ public abstract class AbstractFraction<T extends AbstractFraction<T>> extends Ab
   public T multiply(Fraction fract) {
 
     fract = fract.normalize();
-    return setBeats(this.beats * fract.getBeats()).setUnit(this.unit * fract.getUnit());
+    return normalize(this.beats * fract.getBeats(), this.unit * fract.getUnit());
   }
 
   /**
@@ -144,7 +144,7 @@ public abstract class AbstractFraction<T extends AbstractFraction<T>> extends Ab
   public T divide(Fraction fract) {
 
     fract = fract.normalize();
-    return setBeats(this.beats * fract.getUnit()).setUnit(this.unit * fract.getBeats());
+    return normalize(this.beats * fract.getUnit(), this.unit * fract.getBeats());
   }
 
   @Override

@@ -6,7 +6,7 @@ import io.github.musicdoc.format.SongFormatMusicDoc;
 /**
  * {@link ClefMapper} for {@link SongFormatMusicDoc}.
  */
-public class ClefMapperMusicDoc extends ClefMapperAbc {
+public class ClefMapperMusicDoc extends ClefMapperBase {
 
   /** The singleton instance. */
   public static final ClefMapperMusicDoc INSTANCE = new ClefMapperMusicDoc();
