@@ -33,7 +33,7 @@ public class SongMapperOpenSong extends SongMapper {
       return "hymn_number";
     } else if (TEMPLATE.key.getName().equals(propertyName)) {
       return "key";
-    } else if (TEMPLATE.beat.getName().equals(propertyName)) {
+    } else if (TEMPLATE.metre.getName().equals(propertyName)) {
       return "timesig";
     } else if (TEMPLATE.tempo.getName().equals(propertyName)) {
       return "tempo";

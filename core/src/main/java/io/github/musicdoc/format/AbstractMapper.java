@@ -17,16 +17,15 @@ import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
 import io.github.musicdoc.note.NoteMapper;
 import io.github.musicdoc.note.StemDirectionMapper;
-import io.github.musicdoc.rythm.beat.BeatMapper;
-import io.github.musicdoc.rythm.fraction.PlainFractionMapper;
-import io.github.musicdoc.rythm.rest.RestMapper;
-import io.github.musicdoc.rythm.tempo.TempoMapper;
-import io.github.musicdoc.rythm.value.MusicalValueMapper;
-import io.github.musicdoc.rythm.value.MusicalValueVariationMapper;
-import io.github.musicdoc.rythm.value.ValuedItemMapper;
+import io.github.musicdoc.rhythm.fraction.PlainFractionMapper;
+import io.github.musicdoc.rhythm.item.ValuedItemMapper;
+import io.github.musicdoc.rhythm.metre.MetreMapper;
+import io.github.musicdoc.rhythm.rest.RestMapper;
+import io.github.musicdoc.rhythm.tempo.TempoMapper;
+import io.github.musicdoc.rhythm.value.MusicalValueMapper;
+import io.github.musicdoc.rhythm.value.variation.MusicalValueVariationMapper;
 import io.github.musicdoc.score.Score;
 import io.github.musicdoc.score.ScoreMapper;
-import io.github.musicdoc.score.cell.ScoreCellMapper;
 import io.github.musicdoc.score.line.ScoreLineMapper;
 import io.github.musicdoc.score.section.ScoreSectionNameMapper;
 import io.github.musicdoc.stave.StaveChangeMapper;
@@ -160,9 +159,9 @@ public abstract class AbstractMapper<T> implements Mapper<T>, FormatConstants {
   }
 
   /**
-   * @return the {@link BeatMapper}.
+   * @return the {@link MetreMapper}.
    */
-  protected BeatMapper getBeatMapper() {
+  protected MetreMapper getBeatMapper() {
 
     return getFormat().getBeatMapper();
   }
@@ -325,14 +324,6 @@ public abstract class AbstractMapper<T> implements Mapper<T>, FormatConstants {
   protected ScoreLineMapper getScoreLineMapper() {
 
     return getFormat().getScoreLineMapper();
-  }
-
-  /**
-   * @return the {@link ScoreCellMapper}
-   */
-  protected ScoreCellMapper getScoreCellMapper() {
-
-    return getFormat().getScoreCellMapper();
   }
 
   /**

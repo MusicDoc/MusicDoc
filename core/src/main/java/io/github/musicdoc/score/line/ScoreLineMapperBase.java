@@ -4,19 +4,18 @@ import java.util.List;
 
 import io.github.musicdoc.bar.BarLine;
 import io.github.musicdoc.filter.ListCharFilter;
-import io.github.musicdoc.format.SongFormatAbc;
 import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.harmony.chord.ChordContainer;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
-import io.github.musicdoc.rythm.value.ValuedItem;
+import io.github.musicdoc.rhythm.item.ValuedItem;
 import io.github.musicdoc.score.cell.ScoreCell;
 import io.github.musicdoc.stave.StaveChange;
 import io.github.musicdoc.stave.voice.StaveVoice;
 import io.github.musicdoc.stave.voice.StaveVoiceContainer;
 
 /**
- * {@link ScoreLineMapper} for {@link SongFormatAbc}.
+ * Abstract base implementation of {@link ScoreLineMapper}.
  */
 public abstract class ScoreLineMapperBase extends ScoreLineMapper {
 
@@ -194,12 +193,12 @@ public abstract class ScoreLineMapperBase extends ScoreLineMapper {
     for (int i = 1; i < size; i++) {
       ScoreCell next = cells.get(i);
       if (cell != null) { // should never be null...
-        writeCell(cell, previous, next, out, context);
+        writeCell(cell, previous, next, line, i, out, context);
       }
       previous = cell;
       cell = next;
     }
-    writeCell(cell, previous, null, out, context);
+    writeCell(cell, previous, null, line, size - 1, out, context);
     out.write(NEWLINE_CHAR);
   }
 
@@ -208,11 +207,13 @@ public abstract class ScoreLineMapperBase extends ScoreLineMapper {
    * @param previous the {@link ScoreCell} from the previous call of thie method or {@code null} if this is the first
    *        cell in the current line.
    * @param next the {@link ScoreCell} that will come next or {@code null} if this is the last {@link ScoreCell}.
+   * @param line the {@link ScoreLine} containing the {@link ScoreCell} to write.
+   * @param cellIndexx the current index of the {@link ScoreCell} to write.
    * @param out the {@link MusicOutputStream}.
    * @param context the {@link SongFormatContext}.
    */
-  protected void writeCell(ScoreCell cell, ScoreCell previous, ScoreCell next, MusicOutputStream out,
-      SongFormatContext context) {
+  protected void writeCell(ScoreCell cell, ScoreCell previous, ScoreCell next, ScoreLine line, int cellIndexx,
+      MusicOutputStream out, SongFormatContext context) {
 
     writeCell(cell, cell.getStaveChange(), cell.getChordContainer(), cell.getItem(), cell.getLyric(), cell.getBar(),
         out, context);

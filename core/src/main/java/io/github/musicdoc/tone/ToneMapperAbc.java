@@ -68,11 +68,9 @@ public class ToneMapperAbc extends ToneMapperBase {
   }
 
   @Override
-  protected void writePitch(TonePitch pitch, int octave, boolean absolute, MusicOutputStream out,
-      SongFormatContext context) {
+  protected boolean isSupportAbsoluteOctave() {
 
-    // ABC does not support absolute octaves
-    super.writePitch(pitch, octave, false, out, context);
+    return false;
   }
 
   @Override

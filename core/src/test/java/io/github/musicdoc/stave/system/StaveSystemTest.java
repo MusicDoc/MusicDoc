@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import io.github.musicdoc.MutableObject;
 import io.github.musicdoc.clef.Clef;
 import io.github.musicdoc.harmony.key.MusicalKey;
-import io.github.musicdoc.rythm.beat.Beat;
+import io.github.musicdoc.rhythm.metre.Metre;
 import io.github.musicdoc.stave.Stave;
 import io.github.musicdoc.stave.StaveBracket;
 import io.github.musicdoc.stave.voice.StaveVoice;
@@ -24,7 +24,7 @@ public class StaveSystemTest extends Assertions {
     StaveSystem root = StaveSystemMultiple.of(StaveBracket.NONE);
     StaveSystem choir = root.addChild(StaveBracket.SQUARE);
     MusicalKey key = MusicalKey.C_MAJOR;
-    Beat beat = Beat.COMMON_TIME;
+    Metre beat = Metre.COMMON_TIME;
     Stave treble = new Stave(Clef.TREBLE, key, beat);
     StaveVoice voiceS = StaveVoice.SOPRANO.makeMutable();
     treble.addVoice(voiceS);

@@ -25,26 +25,24 @@ import io.github.musicdoc.note.NoteMapper;
 import io.github.musicdoc.note.NoteMapperAbc;
 import io.github.musicdoc.note.StemDirectionMapper;
 import io.github.musicdoc.note.StemDirectionMapperAbc;
-import io.github.musicdoc.rythm.beat.Beat;
-import io.github.musicdoc.rythm.beat.BeatMapper;
-import io.github.musicdoc.rythm.beat.BeatMapperAbc;
-import io.github.musicdoc.rythm.fraction.PlainFraction;
-import io.github.musicdoc.rythm.fraction.PlainFractionMapper;
-import io.github.musicdoc.rythm.fraction.PlainFractionMapperAbc;
-import io.github.musicdoc.rythm.rest.RestMapper;
-import io.github.musicdoc.rythm.rest.RestMapperAbc;
-import io.github.musicdoc.rythm.tempo.TempoMapper;
-import io.github.musicdoc.rythm.tempo.TempoMapperAbc;
-import io.github.musicdoc.rythm.value.MusicalValueMapper;
-import io.github.musicdoc.rythm.value.MusicalValueMapperAbc;
-import io.github.musicdoc.rythm.value.MusicalValueVariationMapper;
-import io.github.musicdoc.rythm.value.MusicalValueVariationMapperAbc;
-import io.github.musicdoc.rythm.value.ValuedItemMapper;
-import io.github.musicdoc.rythm.value.ValuedItemMapperAbc;
+import io.github.musicdoc.rhythm.fraction.PlainFraction;
+import io.github.musicdoc.rhythm.fraction.PlainFractionMapper;
+import io.github.musicdoc.rhythm.fraction.PlainFractionMapperAbc;
+import io.github.musicdoc.rhythm.item.ValuedItemMapper;
+import io.github.musicdoc.rhythm.item.ValuedItemMapperAbc;
+import io.github.musicdoc.rhythm.metre.Metre;
+import io.github.musicdoc.rhythm.metre.MetreMapper;
+import io.github.musicdoc.rhythm.metre.MetreMapperAbc;
+import io.github.musicdoc.rhythm.rest.RestMapper;
+import io.github.musicdoc.rhythm.rest.RestMapperAbc;
+import io.github.musicdoc.rhythm.tempo.TempoMapper;
+import io.github.musicdoc.rhythm.tempo.TempoMapperAbc;
+import io.github.musicdoc.rhythm.value.MusicalValueMapper;
+import io.github.musicdoc.rhythm.value.MusicalValueMapperAbc;
+import io.github.musicdoc.rhythm.value.variation.MusicalValueVariationMapper;
+import io.github.musicdoc.rhythm.value.variation.MusicalValueVariationMapperAbc;
 import io.github.musicdoc.score.ScoreMapper;
 import io.github.musicdoc.score.ScoreMapperAbc;
-import io.github.musicdoc.score.cell.ScoreCellMapper;
-import io.github.musicdoc.score.cell.ScoreCellMapperAbc;
 import io.github.musicdoc.score.line.ScoreLineMapper;
 import io.github.musicdoc.score.line.ScoreLineMapperAbc;
 import io.github.musicdoc.score.section.ScoreSectionNameMapper;
@@ -92,7 +90,7 @@ public class SongFormatAbc extends SongFormatText {
   }
 
   @Override
-  PlainFraction getUnitNoteLength(Beat beat) {
+  PlainFraction getUnitNoteLength(Metre beat) {
 
     PlainFraction unitNoteLength = PlainFraction._1_8;
     if (beat != null) {
@@ -189,9 +187,9 @@ public class SongFormatAbc extends SongFormatText {
   }
 
   @Override
-  protected BeatMapper getBeatMapper() {
+  protected MetreMapper getBeatMapper() {
 
-    return BeatMapperAbc.INSTANCE;
+    return MetreMapperAbc.INSTANCE;
   }
 
   @Override
@@ -270,12 +268,6 @@ public class SongFormatAbc extends SongFormatText {
   protected ScoreLineMapper getScoreLineMapper() {
 
     return ScoreLineMapperAbc.INSTANCE;
-  }
-
-  @Override
-  protected ScoreCellMapper getScoreCellMapper() {
-
-    return ScoreCellMapperAbc.INSTANCE;
   }
 
   @Override

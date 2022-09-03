@@ -45,7 +45,7 @@ public abstract class SongMapper extends AbstractMapper<Song> {
     add(TEMPLATE.album, StringMapper.INSTANCE);
     add(TEMPLATE.origin, StringMapper.INSTANCE);
     add(TEMPLATE.key, getKeyMapper());
-    add(TEMPLATE.beat, getBeatMapper());
+    add(TEMPLATE.metre, getBeatMapper());
     add(TEMPLATE.tempo, getTempoMapper());
     add(TEMPLATE.unitNoteLength, getPlainFractionMapper());
     add(TEMPLATE.score, getScoreMapper());

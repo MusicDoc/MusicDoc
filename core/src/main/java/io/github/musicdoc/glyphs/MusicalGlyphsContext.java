@@ -6,7 +6,7 @@ import io.github.musicdoc.clef.Clef;
 import io.github.musicdoc.glyphs.smufl.SmuflGlyphs;
 import io.github.musicdoc.glyphs.unicode.UnicodeGlyphs;
 import io.github.musicdoc.note.StemDirection;
-import io.github.musicdoc.rythm.value.ValuedItem;
+import io.github.musicdoc.rhythm.item.ValuedItem;
 
 /**
  * Interface for the context to customize {@link MusicalGlyphs#getGlyphs(MusicalGlyphsContext) glyphs}.

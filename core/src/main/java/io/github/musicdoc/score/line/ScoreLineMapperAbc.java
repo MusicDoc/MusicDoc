@@ -7,9 +7,12 @@ import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.harmony.chord.ChordContainer;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
-import io.github.musicdoc.rythm.value.MusicalValue;
-import io.github.musicdoc.rythm.value.MusicalValueVariation;
-import io.github.musicdoc.rythm.value.ValuedItem;
+import io.github.musicdoc.rhythm.fraction.SimpleFraction;
+import io.github.musicdoc.rhythm.item.ValuedItem;
+import io.github.musicdoc.rhythm.value.MusicalValue;
+import io.github.musicdoc.rhythm.value.variation.MusicalValueVariation;
+import io.github.musicdoc.rhythm.value.variation.Punctuation;
+import io.github.musicdoc.rhythm.value.variation.TupletContext;
 import io.github.musicdoc.score.cell.ScoreCell;
 import io.github.musicdoc.stave.StaveChange;
 
@@ -123,14 +126,14 @@ public class ScoreLineMapperAbc extends ScoreLineMapperBase {
       if (item == null) {
         in.addError("broken rythmn requires item.");
       } else {
-        MusicalValueVariation variation = MusicalValueVariation.ofPunctuaion(brokenRythmCount);
+        MusicalValueVariation variation = Punctuation.of(brokenRythmCount);
         assert (variation != null);
         item.getValue().setVariation(variation);
       }
     } else if (brokenRythmCount < 0) {
       int fraction = 1 << (-brokenRythmCount);
-      MusicalValue value = item.getValue();
-      value.setUnit(value.getUnit() * fraction);
+      SimpleFraction<?> plain = item.getValue().getPlain();
+      plain.setUnit(plain.getUnit() * fraction);
     }
   }
 
@@ -162,8 +165,8 @@ public class ScoreLineMapperAbc extends ScoreLineMapperBase {
   }
 
   @Override
-  protected void writeCell(ScoreCell cell, ScoreCell previous, ScoreCell next, MusicOutputStream out,
-      SongFormatContext context) {
+  protected void writeCell(ScoreCell cell, ScoreCell previous, ScoreCell next, ScoreLine line, int cellIndexx,
+      MusicOutputStream out, SongFormatContext context) {
 
     StaveChange staveChange = cell.getStaveChange();
     ChordContainer chordContainer = cell.getChordContainer();
@@ -171,6 +174,7 @@ public class ScoreLineMapperAbc extends ScoreLineMapperBase {
     String lyric = cell.getLyric();
     BarLine bar = cell.getBar();
     String suffix = "";
+    TupletContext tc = context.getTupletContext();
     if (next != null) {
       // proper alignment to increase reability
       if ((bar != null) || ((item == null) || (!item.hasDecorationsWithSuffix(true)))) {
@@ -182,19 +186,19 @@ public class ScoreLineMapperAbc extends ScoreLineMapperBase {
         MusicalValue nextValue = nextItem.getValue();
         int punctuation = value.getVariation().getPunctuationCount();
         int nextPunctuation = nextValue.getVariation().getPunctuationCount();
-        if ((punctuation != 0) && (nextValue.getVariation() == MusicalValueVariation.NONE)) {
-          if (value.getValue(false) == (nextValue.getValue(false) * (1 << punctuation))) {
+        if ((punctuation != 0) && (nextPunctuation == 0)) {
+          if (value.getPlain().getValue() == (nextValue.getPlain().getValue() * (1 << punctuation))) {
             item = item.copy();
             value = item.getValue();
             value.setVariation(MusicalValueVariation.NONE);
             suffix = getBrokenRythmInfix(true, punctuation);
           }
-        } else if ((item.getValue().getVariation() == MusicalValueVariation.NONE) && (nextPunctuation != 0)) {
+        } else if ((punctuation == 0) && (nextPunctuation != 0)) {
           int fraction = 1 << nextPunctuation;
-          if ((value.getValue(false) * fraction) == nextValue.getValue(false)) {
+          if ((value.getPlain().getValue() * fraction) == nextValue.getPlain().getValue()) {
             item = item.copy();
-            value = item.getValue();
-            value.setUnit(value.getUnit() / fraction);
+            SimpleFraction<?> plain = item.getValue().getPlain();
+            plain.setUnit(plain.getUnit() / fraction);
             suffix = getBrokenRythmInfix(false, nextPunctuation);
           }
         }
@@ -207,19 +211,19 @@ public class ScoreLineMapperAbc extends ScoreLineMapperBase {
         MusicalValue previousValue = previousItem.getValue();
         int punctuation = value.getVariation().getPunctuationCount();
         int previousPunctuation = previousValue.getVariation().getPunctuationCount();
-        if ((value.getVariation() == MusicalValueVariation.NONE) && (previousPunctuation != 0)) {
+        if ((punctuation == 0) && (previousPunctuation != 0)) {
           int fraction = 1 << previousPunctuation;
-          if (previousValue.getValue(false) == (value.getValue(false) * fraction)) {
+          if (previousValue.getPlain().getValue() == (value.getPlain().getValue() * fraction)) {
             item = item.copy();
-            value = item.getValue();
-            value.setUnit(value.getUnit() / fraction);
+            SimpleFraction<?> plain = item.getValue().getPlain();
+            plain.setUnit(value.getUnit() / fraction);
           }
-        } else if ((previousItem.getValue().getVariation() == MusicalValueVariation.NONE) && (punctuation != 0)) {
+        } else if ((previousPunctuation == 0) && (punctuation != 0)) {
           int fraction = 1 << punctuation;
-          if ((previousValue.getValue(false) * fraction) == value.getValue(false)) {
+          if ((previousValue.getPlain().getValue() * fraction) == value.getPlain().getValue()) {
             item = item.copy();
-            value = item.getValue();
-            value.setUnit(value.getUnit() / fraction);
+            SimpleFraction<?> plain = item.getValue().getPlain();
+            plain.setUnit(value.getUnit() / fraction);
           }
         }
       }

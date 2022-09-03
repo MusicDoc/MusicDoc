@@ -4,10 +4,10 @@ import io.github.musicdoc.bean.Bean;
 import io.github.musicdoc.harmony.key.MusicalKeyProperty;
 import io.github.musicdoc.property.IntProperty;
 import io.github.musicdoc.property.StringProperty;
-import io.github.musicdoc.rythm.beat.Beat;
-import io.github.musicdoc.rythm.beat.BeatProperty;
-import io.github.musicdoc.rythm.fraction.PlainFractionProperty;
-import io.github.musicdoc.rythm.tempo.TempoProperty;
+import io.github.musicdoc.rhythm.fraction.PlainFractionProperty;
+import io.github.musicdoc.rhythm.metre.Metre;
+import io.github.musicdoc.rhythm.metre.MetreProperty;
+import io.github.musicdoc.rhythm.tempo.TempoProperty;
 import io.github.musicdoc.score.ScoreProperty;
 
 /**
@@ -33,11 +33,11 @@ public class Song extends Bean {
   /** The optional {@link io.github.musicdoc.harmony.key.MusicalKey}. */
   public final MusicalKeyProperty key;
 
-  /** The optional {@link io.github.musicdoc.rythm.tempo.Tempo}. */
+  /** The optional {@link io.github.musicdoc.rhythm.tempo.Tempo}. */
   public final TempoProperty tempo;
 
-  /** The optional {@link Beat}. */
-  public final BeatProperty beat;
+  /** The optional {@link Metre}. */
+  public final MetreProperty metre;
 
   /** The optional <a href="https://abcnotation.com/wiki/abc:standard:v2.1#lunit_note_length">unit note length</a>. */
   public final PlainFractionProperty unitNoteLength;
@@ -72,7 +72,7 @@ public class Song extends Bean {
     this.copyright = register(new StringProperty("copyright"));
     this.score = register(new ScoreProperty("score"));
     this.key = register(new MusicalKeyProperty("key"));
-    this.beat = register(new BeatProperty("beat"));
+    this.metre = register(new MetreProperty("beat"));
     this.tempo = register(new TempoProperty("tempo"));
     this.unitNoteLength = register(new PlainFractionProperty("unitNoteLength"));
     this.preDelay = register(new IntProperty("preDelay"));

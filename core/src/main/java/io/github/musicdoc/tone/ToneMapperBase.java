@@ -1,6 +1,7 @@
 package io.github.musicdoc.tone;
 
 import io.github.musicdoc.clef.Clef;
+import io.github.musicdoc.filter.ListCharFilter;
 import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
@@ -12,6 +13,8 @@ import io.github.musicdoc.tone.pitch.TonePitch;
  * Base implementation of {@link ToneMapper}.
  */
 public abstract class ToneMapperBase extends ToneMapper {
+
+  private static final char END_OCTAVE = ':';
 
   @Override
   public Tone read(MusicInputStream in, SongFormatContext context) {
@@ -41,19 +44,39 @@ public abstract class ToneMapperBase extends ToneMapper {
    */
   protected Tone readOctave(MusicInputStream in, SongFormatContext context, TonePitch pitch) {
 
-    int octave = getOctave(context, pitch);
-    while (true) {
-      char c = in.peek();
-      if (c == Tone.OCTAVE_UP) {
-        octave++;
-      } else if (c == Tone.OCTAVE_DOWN) {
-        octave--;
-      } else {
-        break;
+    int octave = -1;
+    boolean absolute = false;
+    if (isSupportAbsoluteOctave()) {
+      String lookahead = in.peek(3);
+      int length = lookahead.length();
+      if (length > 0) {
+        char c0 = lookahead.charAt(0);
+        if (ListCharFilter.DIGITS.accept(c0) && (length >= 2)) {
+          char c1 = lookahead.charAt(1);
+          if ((c1 == END_OCTAVE)
+              || (ListCharFilter.DIGITS.accept(c1) && (length == 3) && (lookahead.charAt(2) == END_OCTAVE))) {
+            Integer octaveInteger = in.readInteger(2, true);
+            assert (octaveInteger != null);
+            in.expect(END_OCTAVE, true);
+          }
+        }
       }
-      in.next();
     }
-    return Tone.of(pitch, octave);
+    if (octave == -1) {
+      octave = getOctave(context, pitch);
+      while (true) {
+        char c = in.peek();
+        if (c == Tone.OCTAVE_UP) {
+          octave++;
+        } else if (c == Tone.OCTAVE_DOWN) {
+          octave--;
+        } else {
+          break;
+        }
+        in.next();
+      }
+    }
+    return Tone.of(pitch, octave, absolute);
   }
 
   private int getOctave(SongFormatContext context, TonePitch pitch) {
@@ -90,11 +113,20 @@ public abstract class ToneMapperBase extends ToneMapper {
     TonePitch pitch = tone.getPitch();
     boolean absolute = tone.isAbsolute();
     int octave = tone.getOctave();
-    if (!absolute) {
+    if (!absolute || !isSupportAbsoluteOctave()) {
       int baseOctave = getOctave(context, pitch);
       octave = octave - baseOctave;
     }
     writePitch(pitch, octave, absolute, out, context);
+  }
+
+  /**
+   * @return {@code true} if {@link Tone#isAbsolute() absolute} {@link Tone#getOctave() octaves} are supported,
+   *         {@code false} otherwise.
+   */
+  protected boolean isSupportAbsoluteOctave() {
+
+    return true;
   }
 
   /**
@@ -112,7 +144,7 @@ public abstract class ToneMapperBase extends ToneMapper {
       pitch = pitch.with(ToneNameCase.CAPITAL_CASE);
       writePitch(pitch, out, context);
       out.write(Integer.toString(octave));
-      out.write(':');
+      out.write(END_OCTAVE);
     } else {
       if (octave > 0) {
         pitch = pitch.with(ToneNameCase.LOWER_CASE);

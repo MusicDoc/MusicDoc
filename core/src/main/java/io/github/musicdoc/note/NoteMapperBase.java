@@ -7,7 +7,7 @@ import io.github.musicdoc.decoration.MusicalDecoration;
 import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
-import io.github.musicdoc.rythm.value.MusicalValue;
+import io.github.musicdoc.rhythm.value.MusicalValue;
 import io.github.musicdoc.tone.Tone;
 import io.github.musicdoc.tone.ToneMapper;
 

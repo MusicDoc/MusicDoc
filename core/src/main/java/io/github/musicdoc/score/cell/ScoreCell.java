@@ -7,7 +7,7 @@ import io.github.musicdoc.MutableObjecteCopier;
 import io.github.musicdoc.bar.BarLine;
 import io.github.musicdoc.harmony.chord.Chord;
 import io.github.musicdoc.harmony.chord.ChordContainer;
-import io.github.musicdoc.rythm.value.ValuedItem;
+import io.github.musicdoc.rhythm.item.ValuedItem;
 import io.github.musicdoc.stave.Stave;
 import io.github.musicdoc.stave.StaveChange;
 import io.github.musicdoc.transpose.AbstractTransposable;
@@ -15,7 +15,10 @@ import io.github.musicdoc.transpose.TransposeContext;
 
 /**
  * A cell of a {@link io.github.musicdoc.score.line.ScoreLine}. So for each {@link #getItem() item} (tone, rest),
- * {@link #getChord() chord}, {@link #getLyric() lyric segment}, etc. there is a particular {@link ScoreCell}.
+ * {@link #getChord() chord}, {@link #getLyric() lyric segment}, etc. there is a particular {@link ScoreCell}.<br>
+ * <b>Note:</b> There is no {@code ScoreCellMapper} due to the complex stateful design of ABC notation. It is only
+ * possible to read or write a {@link ScoreCell#getItem() cell item} if you track state information from previous
+ * processing due to broken rhythm and tuplet notations in ABC.
  *
  * @see io.github.musicdoc.score.line.ScoreLine#getCells()
  */
@@ -210,7 +213,7 @@ public class ScoreCell extends AbstractTransposable<ScoreCell> implements Mutabl
 
   /**
    * @return the optional {@link StaveChange} to change the current {@link io.github.musicdoc.stave.Stave} properties
-   *         (e.g. its {@link Stave#getKey() key} or {@link Stave#getBeat() beat}) at the beginning of this cell.
+   *         (e.g. its {@link Stave#getKey() key} or {@link Stave#getMetre() beat}) at the beginning of this cell.
    *         Otherwise {@code null}.
    */
   public StaveChange getStaveChange() {
@@ -261,7 +264,7 @@ public class ScoreCell extends AbstractTransposable<ScoreCell> implements Mutabl
 
   /**
    * @return the {@link ValuedItem} of this cell that is the {@link io.github.musicdoc.tone.Tone} or
-   *         {@link io.github.musicdoc.rythm.rest.Rest} to be played at this cell. May be {@code null} for none.
+   *         {@link io.github.musicdoc.rhythm.rest.Rest} to be played at this cell. May be {@code null} for none.
    */
   public ValuedItem<?> getItem() {
 

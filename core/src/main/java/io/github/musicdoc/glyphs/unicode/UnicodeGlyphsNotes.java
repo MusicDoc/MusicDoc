@@ -1,6 +1,6 @@
 package io.github.musicdoc.glyphs.unicode;
 
-import io.github.musicdoc.rythm.fraction.Fraction;
+import io.github.musicdoc.rhythm.fraction.Fraction;
 
 /**
  * {@link UnicodeGlyphs} for {@link android.provider.ContactsContract.CommonDataKinds.Note}s.

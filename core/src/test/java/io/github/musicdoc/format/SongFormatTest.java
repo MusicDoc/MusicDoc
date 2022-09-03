@@ -16,10 +16,10 @@ import io.github.musicdoc.harmony.chord.Chord;
 import io.github.musicdoc.harmony.chord.ChordContainer;
 import io.github.musicdoc.harmony.key.MusicalKey;
 import io.github.musicdoc.note.Note;
-import io.github.musicdoc.rythm.beat.Beat;
-import io.github.musicdoc.rythm.fraction.PlainFraction;
-import io.github.musicdoc.rythm.tempo.Tempo;
-import io.github.musicdoc.rythm.value.ValuedItem;
+import io.github.musicdoc.rhythm.fraction.PlainFraction;
+import io.github.musicdoc.rhythm.item.ValuedItem;
+import io.github.musicdoc.rhythm.metre.Metre;
+import io.github.musicdoc.rhythm.tempo.Tempo;
 import io.github.musicdoc.score.Score;
 import io.github.musicdoc.score.ScoreRow;
 import io.github.musicdoc.score.cell.ScoreCell;
@@ -56,10 +56,10 @@ public abstract class SongFormatTest extends Assertions {
     assertThat(song).isNotNull();
     assertThat(song.title.getValue()).isEqualTo("Greensleeves");
     assertThat(song.composer.getValue()).isEqualTo("Traditional");
-    assertThat(song.beat.getValue()).isEqualTo(Beat._3_4);
+    assertThat(song.metre.getValue()).isEqualTo(Metre._3_4);
     if (format != SongFormatOpenSong.INSTANCE) {
       assertThat(song.unitNoteLength.getValue()).isEqualTo(PlainFraction._1_4);
-      assertThat(song.tempo.getValue()).isEqualTo(new Tempo("", 100, "", Beat.of(1, 4)));
+      assertThat(song.tempo.getValue()).isEqualTo(new Tempo("", 100, "", Metre.of(1, 4)));
     }
     assertThat(song.key.getValue()).isEqualTo(MusicalKey.C_MAJOR);
     Score score = song.score.getValue();

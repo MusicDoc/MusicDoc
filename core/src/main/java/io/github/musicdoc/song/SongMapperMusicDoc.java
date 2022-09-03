@@ -32,8 +32,8 @@ public class SongMapperMusicDoc extends SongMapper {
       return PROPERTY_REFERENCE_NUMBER;
     } else if (TEMPLATE.key.getName().equals(propertyName)) {
       return PROPERTY_KEY;
-    } else if (TEMPLATE.beat.getName().equals(propertyName)) {
-      return PROPERTY_METER;
+    } else if (TEMPLATE.metre.getName().equals(propertyName)) {
+      return PROPERTY_METRE;
     } else if (TEMPLATE.tempo.getName().equals(propertyName)) {
       return PROPERTY_TEMPO;
     } else if (TEMPLATE.unitNoteLength.getName().equals(propertyName)) {

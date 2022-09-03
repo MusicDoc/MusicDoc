@@ -3,7 +3,7 @@ package io.github.musicdoc.rythm;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import io.github.musicdoc.rythm.fraction.PlainFraction;
+import io.github.musicdoc.rhythm.fraction.PlainFraction;
 
 /**
  * Test of {@link PlainFraction}.

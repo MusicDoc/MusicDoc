@@ -1,6 +1,6 @@
 package io.github.musicdoc.glyphs.smufl;
 
-import io.github.musicdoc.rythm.fraction.Fraction;
+import io.github.musicdoc.rhythm.fraction.Fraction;
 
 /**
  * {@link SmuflGlyphs} for {@link io.github.musicdoc.note.Note}s.

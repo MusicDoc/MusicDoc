@@ -3,6 +3,10 @@ package io.github.musicdoc.rythm.value;
 import org.junit.jupiter.api.Test;
 
 import io.github.musicdoc.AbstractTest;
+import io.github.musicdoc.rhythm.value.MusicalValue;
+import io.github.musicdoc.rhythm.value.MusicalValueMapper;
+import io.github.musicdoc.rhythm.value.MusicalValueMapperAbc;
+import io.github.musicdoc.rhythm.value.MusicalValueMapperMusicDoc;
 
 /**
  * Test of {@link MusicalValueMapper}.

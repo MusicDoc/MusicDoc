@@ -19,19 +19,18 @@ import io.github.musicdoc.harmony.key.MusicalKeyMapperOpenSong;
 import io.github.musicdoc.instrument.InstrumentMapper;
 import io.github.musicdoc.note.NoteMapper;
 import io.github.musicdoc.note.StemDirectionMapper;
-import io.github.musicdoc.rythm.beat.BeatMapper;
-import io.github.musicdoc.rythm.beat.BeatMapperOpenSong;
-import io.github.musicdoc.rythm.fraction.PlainFractionMapper;
-import io.github.musicdoc.rythm.fraction.PlainFractionMapperOpenSong;
-import io.github.musicdoc.rythm.rest.RestMapper;
-import io.github.musicdoc.rythm.tempo.TempoMapper;
-import io.github.musicdoc.rythm.tempo.TempoMapperOpenSong;
-import io.github.musicdoc.rythm.value.MusicalValueMapper;
-import io.github.musicdoc.rythm.value.MusicalValueVariationMapper;
-import io.github.musicdoc.rythm.value.ValuedItemMapper;
+import io.github.musicdoc.rhythm.fraction.PlainFractionMapper;
+import io.github.musicdoc.rhythm.fraction.PlainFractionMapperOpenSong;
+import io.github.musicdoc.rhythm.item.ValuedItemMapper;
+import io.github.musicdoc.rhythm.metre.MetreMapper;
+import io.github.musicdoc.rhythm.metre.MetreMapperOpenSong;
+import io.github.musicdoc.rhythm.rest.RestMapper;
+import io.github.musicdoc.rhythm.tempo.TempoMapper;
+import io.github.musicdoc.rhythm.tempo.TempoMapperOpenSong;
+import io.github.musicdoc.rhythm.value.MusicalValueMapper;
+import io.github.musicdoc.rhythm.value.variation.MusicalValueVariationMapper;
 import io.github.musicdoc.score.ScoreMapper;
 import io.github.musicdoc.score.ScoreMapperOpenSong;
-import io.github.musicdoc.score.cell.ScoreCellMapper;
 import io.github.musicdoc.score.line.ScoreLineMapper;
 import io.github.musicdoc.score.line.ScoreLineMapperOpenSong;
 import io.github.musicdoc.score.section.ScoreSectionNameMapper;
@@ -128,9 +127,9 @@ public class SongFormatOpenSong extends SongFormatXml {
   }
 
   @Override
-  protected BeatMapper getBeatMapper() {
+  protected MetreMapper getBeatMapper() {
 
-    return BeatMapperOpenSong.INSTANCE;
+    return MetreMapperOpenSong.INSTANCE;
   }
 
   @Override
@@ -245,12 +244,6 @@ public class SongFormatOpenSong extends SongFormatXml {
   protected ScoreLineMapper getScoreLineMapper() {
 
     return ScoreLineMapperOpenSong.INSTANCE;
-  }
-
-  @Override
-  protected ScoreCellMapper getScoreCellMapper() {
-
-    return null;
   }
 
   @Override

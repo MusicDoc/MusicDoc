@@ -21,18 +21,17 @@ import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
 import io.github.musicdoc.note.NoteMapper;
 import io.github.musicdoc.note.StemDirectionMapper;
-import io.github.musicdoc.rythm.beat.Beat;
-import io.github.musicdoc.rythm.beat.BeatMapper;
-import io.github.musicdoc.rythm.fraction.PlainFraction;
-import io.github.musicdoc.rythm.fraction.PlainFractionMapper;
-import io.github.musicdoc.rythm.rest.RestMapper;
-import io.github.musicdoc.rythm.tempo.TempoMapper;
-import io.github.musicdoc.rythm.value.MusicalValueMapper;
-import io.github.musicdoc.rythm.value.MusicalValueVariationMapper;
-import io.github.musicdoc.rythm.value.ValuedItemMapper;
+import io.github.musicdoc.rhythm.fraction.PlainFraction;
+import io.github.musicdoc.rhythm.fraction.PlainFractionMapper;
+import io.github.musicdoc.rhythm.item.ValuedItemMapper;
+import io.github.musicdoc.rhythm.metre.Metre;
+import io.github.musicdoc.rhythm.metre.MetreMapper;
+import io.github.musicdoc.rhythm.rest.RestMapper;
+import io.github.musicdoc.rhythm.tempo.TempoMapper;
+import io.github.musicdoc.rhythm.value.MusicalValueMapper;
+import io.github.musicdoc.rhythm.value.variation.MusicalValueVariationMapper;
 import io.github.musicdoc.score.Score;
 import io.github.musicdoc.score.ScoreMapper;
-import io.github.musicdoc.score.cell.ScoreCellMapper;
 import io.github.musicdoc.score.line.ScoreLineMapper;
 import io.github.musicdoc.score.section.ScoreSectionNameMapper;
 import io.github.musicdoc.song.Song;
@@ -115,9 +114,9 @@ public abstract class SongFormat {
   protected abstract MusicalKeyMapper getKeyMapper();
 
   /**
-   * @return the {@link BeatMapper}.
+   * @return the {@link MetreMapper}.
    */
-  protected abstract BeatMapper getBeatMapper();
+  protected abstract MetreMapper getBeatMapper();
 
   /**
    * @return the {@link PlainFractionMapper}.
@@ -225,11 +224,6 @@ public abstract class SongFormat {
   protected abstract ScoreLineMapper getScoreLineMapper();
 
   /**
-   * @return the {@link ScoreCellMapper}
-   */
-  protected abstract ScoreCellMapper getScoreCellMapper();
-
-  /**
    * @return the name of this formatSection.
    */
   public abstract String getName();
@@ -273,7 +267,7 @@ public abstract class SongFormat {
    * @param beat the current beat.
    * @return the default for {@link Song#unitNoteLength}.
    */
-  PlainFraction getUnitNoteLength(Beat beat) {
+  PlainFraction getUnitNoteLength(Metre beat) {
 
     return PlainFraction._1_1;
   }

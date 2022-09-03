@@ -1,10 +1,10 @@
 package io.github.musicdoc.glyphs.smufl;
 
 import io.github.musicdoc.glyphs.unicode.UnicodeGlyphs;
-import io.github.musicdoc.rythm.fraction.Fraction;
+import io.github.musicdoc.rhythm.fraction.Fraction;
 
 /**
- * {@link UnicodeGlyphs} for {@link io.github.musicdoc.rythm.rest.Rest}s.
+ * {@link UnicodeGlyphs} for {@link io.github.musicdoc.rhythm.rest.Rest}s.
  */
 public interface SmuflGlyphsRest extends UnicodeGlyphs {
 

@@ -5,7 +5,7 @@ import io.github.musicdoc.glyphs.smufl.SmuflGlyphsDynamics;
 import io.github.musicdoc.glyphs.unicode.UnicodeGlyphs;
 import io.github.musicdoc.glyphs.unicode.UnicodeGlyphsArticulation;
 import io.github.musicdoc.glyphs.unicode.UnicodeGlyphsDynamics;
-import io.github.musicdoc.rythm.value.ValuedItem;
+import io.github.musicdoc.rhythm.item.ValuedItem;
 
 /**
  * {@link MusicalDecoration} for the dynamics.

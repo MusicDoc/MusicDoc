@@ -45,7 +45,7 @@ public interface FormatConstants {
   String PROPERTY_TEMPO = "Q";
 
   /** Property key for <a href="https://abcnotation.com/wiki/abc:standard:v2.1#mmeter">meter</a>. */
-  String PROPERTY_METER = "M"; // Beat is M for Meter in ABC
+  String PROPERTY_METRE = "M"; // Beat is M for metre (meter) in ABC
 
   /** Property key for <a href="https://abcnotation.com/wiki/abc:standard:v2.1#multiple_voices">voice</a>. */
   String PROPERTY_VOICE = "V";

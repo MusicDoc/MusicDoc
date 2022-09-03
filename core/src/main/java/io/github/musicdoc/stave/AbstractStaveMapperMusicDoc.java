@@ -7,7 +7,7 @@ import io.github.musicdoc.format.SongFormatMusicDoc;
 import io.github.musicdoc.harmony.key.MusicalKey;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
-import io.github.musicdoc.rythm.beat.Beat;
+import io.github.musicdoc.rhythm.metre.Metre;
 
 /**
  * {@link AbstractStaveMapper} for {@link SongFormatMusicDoc}.
@@ -35,7 +35,7 @@ public abstract class AbstractStaveMapperMusicDoc<T extends AbstractStave<T>> ex
     // TODO separator for key on parse and format?
     MusicalKey key = getKeyMapper().read(in, context);
     // TODO separator for beat on parse and format?
-    Beat beat = getBeatMapper().read(in, context);
+    Metre beat = getBeatMapper().read(in, context);
     if ((clef == null) && (key == null) && (beat == null)) {
       return null;
     }
@@ -46,7 +46,7 @@ public abstract class AbstractStaveMapperMusicDoc<T extends AbstractStave<T>> ex
       key = context.getKey();
     }
     if (beat == null) {
-      beat = context.getBeat();
+      beat = context.getMetre();
     }
     return createStave(clef, key, beat);
   }
@@ -65,8 +65,8 @@ public abstract class AbstractStaveMapperMusicDoc<T extends AbstractStave<T>> ex
     if (key != context.getKey()) {
       getKeyMapper().write(key, out, context);
     }
-    Beat beat = stave.getBeat();
-    if (beat != context.getBeat()) {
+    Metre beat = stave.getMetre();
+    if (beat != context.getMetre()) {
       getBeatMapper().write(beat, out, context);
     }
     context.setStave(stave);

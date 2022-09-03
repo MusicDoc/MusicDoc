@@ -24,24 +24,22 @@ import io.github.musicdoc.note.NoteMapper;
 import io.github.musicdoc.note.NoteMapperMusicDoc;
 import io.github.musicdoc.note.StemDirectionMapper;
 import io.github.musicdoc.note.StemDirectionMapperMusicDoc;
-import io.github.musicdoc.rythm.beat.BeatMapper;
-import io.github.musicdoc.rythm.beat.BeatMapperMusicDoc;
-import io.github.musicdoc.rythm.fraction.PlainFractionMapper;
-import io.github.musicdoc.rythm.fraction.PlainFractionMapperMusicDoc;
-import io.github.musicdoc.rythm.rest.RestMapper;
-import io.github.musicdoc.rythm.rest.RestMapperMusicDoc;
-import io.github.musicdoc.rythm.tempo.TempoMapper;
-import io.github.musicdoc.rythm.tempo.TempoMapperMusicDoc;
-import io.github.musicdoc.rythm.value.MusicalValueMapper;
-import io.github.musicdoc.rythm.value.MusicalValueMapperMusicDoc;
-import io.github.musicdoc.rythm.value.MusicalValueVariationMapper;
-import io.github.musicdoc.rythm.value.MusicalValueVariationMapperMusicDoc;
-import io.github.musicdoc.rythm.value.ValuedItemMapper;
-import io.github.musicdoc.rythm.value.ValuedItemMapperMusicDoc;
+import io.github.musicdoc.rhythm.fraction.PlainFractionMapper;
+import io.github.musicdoc.rhythm.fraction.PlainFractionMapperMusicDoc;
+import io.github.musicdoc.rhythm.item.ValuedItemMapper;
+import io.github.musicdoc.rhythm.item.ValuedItemMapperMusicDoc;
+import io.github.musicdoc.rhythm.metre.MetreMapper;
+import io.github.musicdoc.rhythm.metre.MetreMapperMusicDoc;
+import io.github.musicdoc.rhythm.rest.RestMapper;
+import io.github.musicdoc.rhythm.rest.RestMapperMusicDoc;
+import io.github.musicdoc.rhythm.tempo.TempoMapper;
+import io.github.musicdoc.rhythm.tempo.TempoMapperMusicDoc;
+import io.github.musicdoc.rhythm.value.MusicalValueMapper;
+import io.github.musicdoc.rhythm.value.MusicalValueMapperMusicDoc;
+import io.github.musicdoc.rhythm.value.variation.MusicalValueVariationMapper;
+import io.github.musicdoc.rhythm.value.variation.MusicalValueVariationMapperMusicDoc;
 import io.github.musicdoc.score.ScoreMapper;
 import io.github.musicdoc.score.ScoreMapperMusicDoc;
-import io.github.musicdoc.score.cell.ScoreCellMapper;
-import io.github.musicdoc.score.cell.ScoreCellMapperMusicDoc;
 import io.github.musicdoc.score.line.ScoreLineMapper;
 import io.github.musicdoc.score.line.ScoreLineMapperMusicDoc;
 import io.github.musicdoc.score.section.ScoreSectionNameMapper;
@@ -131,9 +129,9 @@ public class SongFormatMusicDoc extends SongFormatText {
   }
 
   @Override
-  protected BeatMapper getBeatMapper() {
+  protected MetreMapper getBeatMapper() {
 
-    return BeatMapperMusicDoc.INSTANCE;
+    return MetreMapperMusicDoc.INSTANCE;
   }
 
   @Override
@@ -248,12 +246,6 @@ public class SongFormatMusicDoc extends SongFormatText {
   protected ScoreLineMapper getScoreLineMapper() {
 
     return ScoreLineMapperMusicDoc.INSTANCE;
-  }
-
-  @Override
-  protected ScoreCellMapper getScoreCellMapper() {
-
-    return ScoreCellMapperMusicDoc.INSTANCE;
   }
 
   @Override

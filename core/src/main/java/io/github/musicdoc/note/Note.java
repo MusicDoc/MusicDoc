@@ -12,14 +12,18 @@ import io.github.musicdoc.decoration.MusicalDecoration;
 import io.github.musicdoc.glyphs.MusicalGlyphsContext;
 import io.github.musicdoc.glyphs.smufl.SmuflGlyphsNote;
 import io.github.musicdoc.glyphs.unicode.UnicodeGlyphsNotes;
-import io.github.musicdoc.rythm.value.MusicalValue;
-import io.github.musicdoc.rythm.value.MusicalValueVariation;
-import io.github.musicdoc.rythm.value.ValuedItem;
+import io.github.musicdoc.rhythm.item.ValuedItem;
+import io.github.musicdoc.rhythm.value.MusicalValue;
+import io.github.musicdoc.rhythm.value.variation.Punctuation;
 import io.github.musicdoc.tone.Tone;
 import io.github.musicdoc.transpose.TransposeContext;
 
 /**
- * A {@link Note} is a musical object that has a {@link #getTone() tone} and a {@link #getValue() value}.
+ * A {@link Note} is a musical object that has {@link #getTone() one} or {@link #getTone(int) multiple} {@link Tone}s
+ * with a {@link #getValue() value}.<br>
+ * So e.g. the {@link Tone#C4} played with the length of a {@link MusicalValue#_1_4 quarter} can be expressed
+ * accordingly. Also chords with {@link #getToneCount() multiple} {@link Tone}s of the same {@link #getValue() value}
+ * (length) are possible. Even the same {@link Tone} can be contained twice what is called a <em>unison</em>.
  */
 public class Note extends ValuedItem<Note> {
 
@@ -288,11 +292,11 @@ public class Note extends ValuedItem<Note> {
   /**
    * @param tone the {@link #getTone() tone}.
    * @return the {@link Note} with the specified {@link #getTone() tone} and a {@link #getValue() value} of
-   *         {@link MusicalValue#_1_2 1/2} and {@link MusicalValueVariation#PUNCTURED punctuation}.
+   *         {@link MusicalValue#_1_2 1/2} and {@link Punctuation#P1 punctuation}.
    */
   public static Note of1_2p(Tone tone) {
 
-    return of(tone, new MusicalValue(1, 2, MusicalValueVariation.PUNCTURED));
+    return of(tone, new MusicalValue(1, 2, Punctuation.P1));
   }
 
   /**
@@ -318,11 +322,11 @@ public class Note extends ValuedItem<Note> {
   /**
    * @param tone the {@link #getTone() tone}.
    * @return the {@link Note} with the specified {@link #getTone() tone} and a {@link #getValue() value} of
-   *         {@link MusicalValue#_1_4 1/4} and {@link MusicalValueVariation#PUNCTURED punctuation}.
+   *         {@link MusicalValue#_1_4 1/4} and {@link Punctuation#P1 punctuation}.
    */
   public static Note of1_4p(Tone tone) {
 
-    return of(tone, new MusicalValue(1, 4, MusicalValueVariation.PUNCTURED));
+    return of(tone, new MusicalValue(1, 4, Punctuation.P1));
   }
 
   /**

@@ -1,11 +1,11 @@
 package io.github.musicdoc.stave;
 
-import io.github.musicdoc.rythm.beat.Beat;
+import io.github.musicdoc.rhythm.metre.Metre;
 
 /**
- * {@link StaveProperty} for the {@link Stave#getBeat() beat property}.
+ * {@link StaveProperty} for the {@link Stave#getMetre() beat property}.
  */
-class StavePropertyBeat extends StaveProperty<Beat> {
+class StavePropertyBeat extends StaveProperty<Metre> {
 
   public static final StavePropertyBeat INSTANCE = new StavePropertyBeat();
 
@@ -15,19 +15,19 @@ class StavePropertyBeat extends StaveProperty<Beat> {
   }
 
   @Override
-  public Beat get(AbstractStave<?> stave) {
+  public Metre get(AbstractStave<?> stave) {
 
     if (stave == null) {
       return null;
     }
-    return stave.getBeat();
+    return stave.getMetre();
   }
 
   @Override
-  public AbstractStave<?> set(AbstractStave<?> stave, Beat beat) {
+  public AbstractStave<?> set(AbstractStave<?> stave, Metre beat) {
 
     if (stave != null) {
-      stave = stave.setBeat(beat);
+      stave = stave.setMetre(beat);
     }
     return stave;
   }

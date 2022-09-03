@@ -10,7 +10,7 @@ import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.harmony.key.MusicalKeyMapper;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
-import io.github.musicdoc.rythm.beat.BeatMapper;
+import io.github.musicdoc.rhythm.metre.MetreMapper;
 import io.github.musicdoc.stave.voice.StaveVoiceMapper;
 
 /**
@@ -48,7 +48,7 @@ public abstract class AbstractStaveMapperProperties<T extends AbstractStave<T>> 
         found = false;
       } else {
         if (stave == null) {
-          stave = createStave(context.getClef(), context.getKey(), context.getBeat());
+          stave = createStave(context.getClef(), context.getKey(), context.getMetre());
           context.setStave(stave);
         }
         found = parseProperty(property, in, context);
@@ -148,18 +148,18 @@ public abstract class AbstractStaveMapperProperties<T extends AbstractStave<T>> 
 
     private final Map<String, StavePropertyMapper<?>> map;
 
-    public StaveProperties(ClefMapper clefMapper, MusicalKeyMapper keyMapper, BeatMapper beatMapper) {
+    public StaveProperties(ClefMapper clefMapper, MusicalKeyMapper keyMapper, MetreMapper beatMapper) {
 
       this(new StavePropertyMapper<>(StavePropertyClef.INSTANCE, clefMapper, PROPERTY_CLEF),
           new StavePropertyMapper<>(StavePropertyKey.INSTANCE, keyMapper, PROPERTY_KEY),
-          new StavePropertyMapper<>(StavePropertyBeat.INSTANCE, beatMapper, PROPERTY_METER));
+          new StavePropertyMapper<>(StavePropertyBeat.INSTANCE, beatMapper, PROPERTY_METRE));
     }
 
-    public StaveProperties(ClefMapper clefMapper, MusicalKeyMapper keyMapper, BeatMapper beatMapper, StaveVoiceMapper voiceMapper) {
+    public StaveProperties(ClefMapper clefMapper, MusicalKeyMapper keyMapper, MetreMapper beatMapper, StaveVoiceMapper voiceMapper) {
 
       this(new StavePropertyMapper<>(StavePropertyClef.INSTANCE, clefMapper, PROPERTY_CLEF),
           new StavePropertyMapper<>(StavePropertyKey.INSTANCE, keyMapper, PROPERTY_KEY),
-          new StavePropertyMapper<>(StavePropertyBeat.INSTANCE, beatMapper, PROPERTY_METER),
+          new StavePropertyMapper<>(StavePropertyBeat.INSTANCE, beatMapper, PROPERTY_METRE),
           new StavePropertyMapper<>(StavePropertyVoice.INSTANCE, voiceMapper, PROPERTY_VOICE));
     }
 

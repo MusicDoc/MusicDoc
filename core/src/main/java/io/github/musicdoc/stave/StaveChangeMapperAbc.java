@@ -2,7 +2,7 @@ package io.github.musicdoc.stave;
 
 import io.github.musicdoc.clef.Clef;
 import io.github.musicdoc.harmony.key.MusicalKey;
-import io.github.musicdoc.rythm.beat.Beat;
+import io.github.musicdoc.rhythm.metre.Metre;
 
 /**
  * {@link StaveMapper} for {@link io.github.musicdoc.format.SongFormatMusicDoc}.
@@ -27,7 +27,7 @@ public class StaveChangeMapperAbc extends AbstractStaveMapperAbc<StaveChange> im
   }
 
   @Override
-  protected StaveChange createStave(Clef clef, MusicalKey key, Beat beat) {
+  protected StaveChange createStave(Clef clef, MusicalKey key, Metre beat) {
 
     return new StaveChange(clef, key, beat);
   }

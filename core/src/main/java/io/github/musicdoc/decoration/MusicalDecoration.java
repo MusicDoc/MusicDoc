@@ -9,7 +9,7 @@ import io.github.musicdoc.PeriodType;
 import io.github.musicdoc.format.FormatConstants;
 import io.github.musicdoc.glyphs.MusicalGlyphs;
 import io.github.musicdoc.glyphs.MusicalGlyphsContext;
-import io.github.musicdoc.rythm.value.ValuedItem;
+import io.github.musicdoc.rhythm.item.ValuedItem;
 
 /**
  * Decoration of a {@link ValuedItem}.

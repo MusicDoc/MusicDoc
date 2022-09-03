@@ -3,11 +3,11 @@ package io.github.musicdoc.stave;
 import io.github.musicdoc.MutableObjecteCopier;
 import io.github.musicdoc.clef.Clef;
 import io.github.musicdoc.harmony.key.MusicalKey;
-import io.github.musicdoc.rythm.beat.Beat;
+import io.github.musicdoc.rhythm.metre.Metre;
 import io.github.musicdoc.transpose.TransposeContext;
 
 /**
- * {@link AbstractStave} for changes of {@link #getClef() clef}, {@link #getKey() key}, and/or {@link #getBeat() beat}
+ * {@link AbstractStave} for changes of {@link #getClef() clef}, {@link #getKey() key}, and/or {@link #getMetre() beat}
  * within a {@link Stave}.
  *
  * @see io.github.musicdoc.score.cell.ScoreCell#getStaveChange()
@@ -27,9 +27,9 @@ public class StaveChange extends AbstractStave<StaveChange> {
    *
    * @param clef the {@link #getClef() clef}.
    * @param key the {@link #getKey() key}.
-   * @param beat the {@link #getBeat() beat}.
+   * @param beat the {@link #getMetre() beat}.
    */
-  public StaveChange(Clef clef, MusicalKey key, Beat beat) {
+  public StaveChange(Clef clef, MusicalKey key, Metre beat) {
 
     super(clef, key, beat);
   }

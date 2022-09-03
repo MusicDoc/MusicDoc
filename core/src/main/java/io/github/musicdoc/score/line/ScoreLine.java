@@ -7,7 +7,7 @@ import io.github.musicdoc.bar.BarLine;
 import io.github.musicdoc.bar.BarLineType;
 import io.github.musicdoc.harmony.chord.Chord;
 import io.github.musicdoc.harmony.chord.ChordContainer;
-import io.github.musicdoc.rythm.value.ValuedItem;
+import io.github.musicdoc.rhythm.item.ValuedItem;
 import io.github.musicdoc.score.cell.ScoreCell;
 import io.github.musicdoc.stave.voice.StaveVoice;
 import io.github.musicdoc.transpose.Transposable;

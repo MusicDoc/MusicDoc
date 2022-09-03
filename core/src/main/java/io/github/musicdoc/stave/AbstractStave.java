@@ -4,13 +4,13 @@ import io.github.musicdoc.MutableObject;
 import io.github.musicdoc.MutableObjecteCopier;
 import io.github.musicdoc.clef.Clef;
 import io.github.musicdoc.harmony.key.MusicalKey;
-import io.github.musicdoc.rythm.beat.Beat;
+import io.github.musicdoc.rhythm.metre.Metre;
 import io.github.musicdoc.transpose.AbstractTransposable;
 import io.github.musicdoc.transpose.TransposeContext;
 
 /**
  * Abstract base class for {@link Stave} and {@link StaveChange}. Or in other words a container for {@link #getClef()
- * clef}, {@link #getKey() key}, and {@link #getBeat() beat}.
+ * clef}, {@link #getKey() key}, and {@link #getMetre() metre}.
  *
  * @param <T> type of this class itself.
  */
@@ -23,8 +23,8 @@ public abstract class AbstractStave<T extends AbstractStave<T>> extends Abstract
   /** Property name of {@link #getKey() key}. */
   public static final String PROPERTY_KEY = "key";
 
-  /** Property name of {@link #getBeat() beat}. */
-  public static final String PROPERTY_BEAT = "beat";
+  /** Property name of {@link #getMetre() metre}. */
+  public static final String PROPERTY_METRE = "metre";
 
   /** @see #getClef() */
   protected Clef clef;
@@ -32,8 +32,8 @@ public abstract class AbstractStave<T extends AbstractStave<T>> extends Abstract
   /** @see #getKey() */
   protected MusicalKey key;
 
-  /** @see #getBeat() */
-  protected Beat beat;
+  /** @see #getMetre() */
+  protected Metre metre;
 
   /** @see #isImmutable() */
   protected boolean immutable;
@@ -51,14 +51,14 @@ public abstract class AbstractStave<T extends AbstractStave<T>> extends Abstract
    *
    * @param clef the {@link #getClef() clef}.
    * @param key the {@link #getKey() key}.
-   * @param beat the {@link #getBeat() beat}.
+   * @param metre the {@link #getMetre() metre}.
    */
-  public AbstractStave(Clef clef, MusicalKey key, Beat beat) {
+  public AbstractStave(Clef clef, MusicalKey key, Metre metre) {
 
     super();
     this.clef = clef;
     this.key = key;
-    this.beat = beat;
+    this.metre = metre;
   }
 
   /**
@@ -72,7 +72,7 @@ public abstract class AbstractStave<T extends AbstractStave<T>> extends Abstract
     super();
     this.clef = stave.clef.copy(copier);
     this.key = stave.key;
-    this.beat = stave.beat;
+    this.metre = stave.metre;
   }
 
   /**
@@ -101,7 +101,7 @@ public abstract class AbstractStave<T extends AbstractStave<T>> extends Abstract
   /**
    * @return the optional {@link MusicalKey}. If {@code null} or the same {@link MusicalKey} as the previous
    *         {@link Stave} on the same line, no enharmonic signs will be displayed (e.g. the new {@link Stave} might
-   *         only change the {@link Beat}).
+   *         only change the {@link Metre}).
    */
   public MusicalKey getKey() {
 
@@ -124,28 +124,28 @@ public abstract class AbstractStave<T extends AbstractStave<T>> extends Abstract
   }
 
   /**
-   * @return the optional {@link Beat}. If {@code null} or the same {@link Beat} as the previous {@link Stave} on the
-   *         same line, no beat will be displayed (e.g. the new {@link Stave} might only change the {@link Clef}). If
-   *         this is the first {@link Stave} of a {@link io.github.musicdoc.score.Score} and no {@link Beat} is
-   *         defined then {@link Beat#_4_4 4/4} is assumed (but not displayed).
+   * @return the optional {@link Metre}. If {@code null} or the same {@link Metre} as the previous {@link Stave} on the
+   *         same line, no metre will be displayed (e.g. the new {@link Stave} might only change the {@link Clef}). If
+   *         this is the first {@link Stave} of a {@link io.github.musicdoc.score.Score} and no {@link Metre} is defined
+   *         then {@link Metre#_4_4 4/4} is assumed (but not displayed).
    */
-  public Beat getBeat() {
+  public Metre getMetre() {
 
-    return this.beat;
+    return this.metre;
   }
 
   /**
-   * @param newBeat the new {@link #getBeat() beat}.
-   * @return a new {@link Stave} with the given {@link #getBeat() beat} and all other properties like {@code this} one.
-   *         Will be a {@link #copy()} if {@link #isImmutable() immutable}.
+   * @param newMetre the new {@link #getMetre() metre}.
+   * @return a new {@link Stave} with the given {@link #getMetre() metre} and all other properties like {@code this}
+   *         one. Will be a {@link #copy()} if {@link #isImmutable() immutable}.
    */
-  public T setBeat(Beat newBeat) {
+  public T setMetre(Metre newMetre) {
 
-    if (newBeat == this.beat) {
+    if (newMetre == this.metre) {
       return self();
     }
     T stave = makeMutable();
-    stave.beat = newBeat;
+    stave.metre = newMetre;
     return stave;
   }
 
@@ -184,9 +184,9 @@ public abstract class AbstractStave<T extends AbstractStave<T>> extends Abstract
       sb.append('$');
       sb.append(this.key);
     }
-    if (this.beat != null) {
+    if (this.metre != null) {
       sb.append('%');
-      sb.append(this.beat);
+      sb.append(this.metre);
     }
   }
 

@@ -1,13 +1,13 @@
 package io.github.musicdoc.format;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 import io.github.musicdoc.clef.Clef;
 import io.github.musicdoc.harmony.key.MusicalKey;
-import io.github.musicdoc.rythm.beat.Beat;
-import io.github.musicdoc.rythm.fraction.PlainFraction;
+import io.github.musicdoc.rhythm.fraction.PlainFraction;
+import io.github.musicdoc.rhythm.metre.Metre;
+import io.github.musicdoc.rhythm.value.variation.Tuplet;
+import io.github.musicdoc.rhythm.value.variation.TupletContext;
 import io.github.musicdoc.song.Song;
 import io.github.musicdoc.stave.AbstractStave;
 import io.github.musicdoc.stave.system.StaveSystem;
@@ -40,7 +40,7 @@ public class SongFormatContext {
 
   private MusicalKey key;
 
-  private Beat beat;
+  private Metre metre;
 
   private Clef clef;
 
@@ -52,11 +52,11 @@ public class SongFormatContext {
 
   private StaveVoiceContainer staveVoiceContainer;
 
+  private TupletContext tupletContext;
+
   private final TonePitchChange tonePitchChange;
 
   private Song song;
-
-  private Map<String, Object> properties;
 
   /**
    * The constructor.
@@ -185,9 +185,18 @@ public class SongFormatContext {
 
     this.stave = stave;
     if (stave != null) {
-      setClef(stave.getClef());
-      setKey(stave.getKey());
-      setBeat(stave.getBeat());
+      Clef newClef = stave.getClef();
+      if (newClef != null) {
+        setClef(newClef);
+      }
+      MusicalKey newKey = stave.getKey();
+      if (newKey != null) {
+        setKey(newKey);
+      }
+      Metre newMetre = stave.getMetre();
+      if (newMetre != null) {
+        setMetre(newMetre);
+      }
     }
   }
 
@@ -285,19 +294,19 @@ public class SongFormatContext {
   }
 
   /**
-   * @return the current {@link Beat}.
+   * @return the current {@link Metre}.
    */
-  public Beat getBeat() {
+  public Metre getMetre() {
 
-    return this.beat;
+    return this.metre;
   }
 
   /**
-   * @param beat new value of {@link #getBeat()}.
+   * @param beat new value of {@link #getMetre()}.
    */
-  public void setBeat(Beat beat) {
+  public void setMetre(Metre beat) {
 
-    this.beat = beat;
+    this.metre = beat;
   }
 
   /**
@@ -310,7 +319,7 @@ public class SongFormatContext {
     }
     PlainFraction unitNoteLength = this.song.unitNoteLength.getValue();
     if (unitNoteLength == null) {
-      Beat songBeat = this.song.beat.getValue();
+      Metre songBeat = this.song.metre.getValue();
       unitNoteLength = this.format.getUnitNoteLength(songBeat);
     }
     return unitNoteLength;
@@ -333,53 +342,27 @@ public class SongFormatContext {
   }
 
   /**
+   * @return the {@link TupletContext} for parsing {@link Tuplet}s.
+   */
+  public TupletContext getTupletContext() {
+
+    return this.tupletContext;
+  }
+
+  /**
+   * @param tupletContext new value of {@link #getTupletContext()}.
+   */
+  public void setTupletContext(TupletContext tupletContext) {
+
+    this.tupletContext = tupletContext;
+  }
+
+  /**
    * @return the {@link SongFormat}.
    */
   public SongFormat getFormat() {
 
     return this.format;
-  }
-
-  /**
-   * @return a generic {@link Map} of current properties.
-   */
-  public Map<String, Object> getProperties() {
-
-    if (this.properties == null) {
-      this.properties = new HashMap<>();
-    }
-    return this.properties;
-  }
-
-  /**
-   * @param <T> type of the property value.
-   * @param name the name of the requested property.
-   * @param defaultValue the default value to return if the property is undefined ({@code null}). May be {@code null}.
-   * @param type the {@link Class} reflecting the property value. May be {@code null}.
-   * @return the value of the specified property.
-   */
-  @SuppressWarnings("unchecked")
-  public <T> T getProperty(String name, T defaultValue, Class<T> type) {
-
-    Object value = getProperties().get(name);
-    if (value == null) {
-      return defaultValue;
-    }
-    if (type == null) {
-      return (T) value;
-    } else {
-      return type.cast(value);
-    }
-  }
-
-  /**
-   * @param name the name of the property to set.
-   * @param value the new value of the specified property.
-   * @return the previous value of the property.
-   */
-  public Object setProperty(String name, Object value) {
-
-    return getProperties().put(name, value);
   }
 
 }

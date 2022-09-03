@@ -10,7 +10,7 @@ import io.github.musicdoc.MutableObjecteCopier;
 import io.github.musicdoc.MutableObjecteHelper;
 import io.github.musicdoc.clef.Clef;
 import io.github.musicdoc.harmony.key.MusicalKey;
-import io.github.musicdoc.rythm.beat.Beat;
+import io.github.musicdoc.rhythm.metre.Metre;
 import io.github.musicdoc.stave.system.StaveSystem;
 import io.github.musicdoc.stave.voice.StaveVoice;
 import io.github.musicdoc.stave.voice.StaveVoiceContainer;
@@ -18,7 +18,7 @@ import io.github.musicdoc.stave.voice.StaveVoiceContainer;
 /**
  * Represents the configuration and intro of a musical <em>stave</em> (also known as <em>staff</em>), what in general
  * refers to the five lines used in classic music notation. Here a {@link Stave} contains the {@link #getClef() clef},
- * {@link #getKey() key} and {@link #getBeat() beat} as well as the {@link #getVoices() voices} related to the stave. It
+ * {@link #getKey() key} and {@link #getMetre() beat} as well as the {@link #getVoices() voices} related to the stave. It
  * is used for the initial definition and configuration of a stave as well as for changes to a stave within the line (to
  * change the key or beat).<br>
  * <br>
@@ -29,7 +29,7 @@ import io.github.musicdoc.stave.voice.StaveVoiceContainer;
 public final class Stave extends AbstractStave<Stave> implements StaveVoiceContainer {
 
   /** The default {@link Stave}. */
-  public static final Stave DEFAULT = new Stave(Clef.TREBLE, MusicalKey.C_MAJOR, Beat.COMMON_TIME).makeImmutable();
+  public static final Stave DEFAULT = new Stave(Clef.TREBLE, MusicalKey.C_MAJOR, Metre.COMMON_TIME).makeImmutable();
 
   private boolean disconnected;
 
@@ -50,9 +50,9 @@ public final class Stave extends AbstractStave<Stave> implements StaveVoiceConta
    *
    * @param clef the {@link #getClef() clef}.
    * @param key the {@link #getKey() key}.
-   * @param beat the {@link #getBeat() beat}.
+   * @param beat the {@link #getMetre() beat}.
    */
-  public Stave(Clef clef, MusicalKey key, Beat beat) {
+  public Stave(Clef clef, MusicalKey key, Metre beat) {
 
     this(clef, key, beat, false);
   }
@@ -62,10 +62,10 @@ public final class Stave extends AbstractStave<Stave> implements StaveVoiceConta
    *
    * @param clef the {@link #getClef() clef}.
    * @param key the {@link #getKey() key}.
-   * @param beat the {@link #getBeat() beat}.
+   * @param beat the {@link #getMetre() beat}.
    * @param disconnected the {@link #isDisconnected() disconnected} flag.
    */
-  public Stave(Clef clef, MusicalKey key, Beat beat, boolean disconnected) {
+  public Stave(Clef clef, MusicalKey key, Metre beat, boolean disconnected) {
 
     super(clef, key, beat);
     this.disconnected = disconnected;
@@ -227,7 +227,7 @@ public final class Stave extends AbstractStave<Stave> implements StaveVoiceConta
   @Override
   public int hashCode() {
 
-    return Objects.hash(this.clef, this.key, this.beat);
+    return Objects.hash(this.clef, this.key, this.metre);
   }
 
   @Override
@@ -243,7 +243,7 @@ public final class Stave extends AbstractStave<Stave> implements StaveVoiceConta
       return false;
     } else if (!Objects.equals(this.key, other.key)) {
       return false;
-    } else if (!Objects.equals(this.beat, other.beat)) {
+    } else if (!Objects.equals(this.metre, other.metre)) {
       return false;
     } else if (!Objects.equals(this.voices, other.voices)) {
       return false;

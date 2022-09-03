@@ -7,7 +7,7 @@ import java.util.Set;
 import io.github.musicdoc.harmony.TonalSystem;
 import io.github.musicdoc.interval.ToneInterval;
 import io.github.musicdoc.note.Note;
-import io.github.musicdoc.rythm.value.MusicalValue;
+import io.github.musicdoc.rhythm.value.MusicalValue;
 import io.github.musicdoc.tone.Tone;
 
 /**

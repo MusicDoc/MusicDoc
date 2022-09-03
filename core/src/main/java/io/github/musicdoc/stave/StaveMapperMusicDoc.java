@@ -5,7 +5,7 @@ import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.harmony.key.MusicalKey;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
-import io.github.musicdoc.rythm.beat.Beat;
+import io.github.musicdoc.rhythm.metre.Metre;
 import io.github.musicdoc.stave.voice.StaveVoice;
 import io.github.musicdoc.stave.voice.StaveVoiceMapper;
 
@@ -58,7 +58,7 @@ public class StaveMapperMusicDoc extends AbstractStaveMapperMusicDoc<Stave> impl
   }
 
   @Override
-  protected Stave createStave(Clef clef, MusicalKey key, Beat beat) {
+  protected Stave createStave(Clef clef, MusicalKey key, Metre beat) {
 
     return new Stave(clef, key, beat);
   }
