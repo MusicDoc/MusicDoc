@@ -1,4 +1,4 @@
-package io.github.musicdoc.rhythm.value.variation;
+package io.github.musicdoc.rhythm.tuplet;
 
 import io.github.musicdoc.rhythm.fraction.PlainFraction;
 

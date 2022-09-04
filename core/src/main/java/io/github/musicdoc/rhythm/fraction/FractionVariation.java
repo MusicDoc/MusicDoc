@@ -1,40 +1,52 @@
 package io.github.musicdoc.rhythm.fraction;
 
+import io.github.musicdoc.MutableObjecteCopier;
 import io.github.musicdoc.glyphs.MusicalGlyphs;
-import io.github.musicdoc.rhythm.value.variation.MusicalValueVariation;
-import io.github.musicdoc.rhythm.value.variation.Punctuation;
-import io.github.musicdoc.rhythm.value.variation.Tuplet;
+import io.github.musicdoc.rhythm.punctuation.Punctuation;
+import io.github.musicdoc.rhythm.tuplet.Tuplet;
+import io.github.musicdoc.rhythm.value.MusicalValue;
 
 /**
- * Interface for a {@link #getVariation() variation} that modifies the {@link #getPlain() plain fraction} of a
- * {@link Fraction} like a {@link io.github.musicdoc.rhythm.value.MusicalValue}.
+ * A {@link FractionVariation} is a {@link SimpleFraction} that modifies the {@link #getPlain() plain fraction} of a
+ * {@link MusicalValue}. There are particular symbols to visualize a {@link FractionVariation} in a score.
  *
- * @see #getVariation()
- * @see MusicalValueVariation
+ * @see Punctuation
+ * @see Tuplet
  */
-public interface FractionVariation extends Fraction, MusicalGlyphs {
+public abstract class FractionVariation extends SimpleFraction<FractionVariation> implements MusicalGlyphs {
 
-  @Override
-  MusicalValueVariation getPlain();
+  private final String text;
 
   /**
-   * @return the number of {@link Punctuation} dots or {@code 0} for none.
+   * The constructor.
+   *
+   * @param beats the {@link #getBeats() beats}.
+   * @param unit the {@link #getUnit() unit}.
+   * @param text the {@link #toString() string representation}
    */
-  default int getPunctuationCount() {
+  protected FractionVariation(int beats, int unit, String text) {
 
-    return 0;
+    super(beats, unit);
+    this.text = text;
+    makeImmutable();
   }
 
-  /**
-   * @return the {@link Tuplet} variation or {@code null} for none.
-   */
-  default Tuplet getTuplet() {
+  @Override
+  public FractionVariation copy(MutableObjecteCopier copier) {
 
-    Tuplet tuplet = getPlain().getTuplet();
-    if (tuplet == null) {
-      tuplet = getVariation().getTuplet();
-    }
-    return tuplet;
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public FractionVariation getPlain() {
+
+    return this;
+  }
+
+  @Override
+  protected String getText() {
+
+    return this.text;
   }
 
 }

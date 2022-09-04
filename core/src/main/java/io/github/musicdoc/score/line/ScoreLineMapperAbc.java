@@ -9,10 +9,9 @@ import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
 import io.github.musicdoc.rhythm.fraction.SimpleFraction;
 import io.github.musicdoc.rhythm.item.ValuedItem;
+import io.github.musicdoc.rhythm.punctuation.Punctuation;
+import io.github.musicdoc.rhythm.tuplet.TupletContext;
 import io.github.musicdoc.rhythm.value.MusicalValue;
-import io.github.musicdoc.rhythm.value.variation.MusicalValueVariation;
-import io.github.musicdoc.rhythm.value.variation.Punctuation;
-import io.github.musicdoc.rhythm.value.variation.TupletContext;
 import io.github.musicdoc.score.cell.ScoreCell;
 import io.github.musicdoc.stave.StaveChange;
 
@@ -126,9 +125,9 @@ public class ScoreLineMapperAbc extends ScoreLineMapperBase {
       if (item == null) {
         in.addError("broken rythmn requires item.");
       } else {
-        MusicalValueVariation variation = Punctuation.of(brokenRythmCount);
-        assert (variation != null);
-        item.getValue().setVariation(variation);
+        Punctuation punctuation = Punctuation.of(brokenRythmCount);
+        assert (punctuation != null);
+        item.getValue().setPunctuation(punctuation);
       }
     } else if (brokenRythmCount < 0) {
       int fraction = 1 << (-brokenRythmCount);
@@ -184,13 +183,13 @@ public class ScoreLineMapperAbc extends ScoreLineMapperBase {
       if ((item != null) && (nextItem != null) && (bar == null)) {
         MusicalValue value = item.getValue();
         MusicalValue nextValue = nextItem.getValue();
-        int punctuation = value.getVariation().getPunctuationCount();
-        int nextPunctuation = nextValue.getVariation().getPunctuationCount();
+        int punctuation = value.getPunctuationCount();
+        int nextPunctuation = nextValue.getPunctuationCount();
         if ((punctuation != 0) && (nextPunctuation == 0)) {
           if (value.getPlain().getValue() == (nextValue.getPlain().getValue() * (1 << punctuation))) {
             item = item.copy();
             value = item.getValue();
-            value.setVariation(MusicalValueVariation.NONE);
+            value.setPunctuation(null);
             suffix = getBrokenRythmInfix(true, punctuation);
           }
         } else if ((punctuation == 0) && (nextPunctuation != 0)) {
@@ -209,8 +208,8 @@ public class ScoreLineMapperAbc extends ScoreLineMapperBase {
       if ((item != null) && (previousItem != null)) {
         MusicalValue value = item.getValue();
         MusicalValue previousValue = previousItem.getValue();
-        int punctuation = value.getVariation().getPunctuationCount();
-        int previousPunctuation = previousValue.getVariation().getPunctuationCount();
+        int punctuation = value.getPunctuationCount();
+        int previousPunctuation = previousValue.getPunctuationCount();
         if ((punctuation == 0) && (previousPunctuation != 0)) {
           int fraction = 1 << previousPunctuation;
           if (previousValue.getPlain().getValue() == (value.getPlain().getValue() * fraction)) {

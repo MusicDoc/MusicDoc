@@ -7,8 +7,8 @@ import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
 import io.github.musicdoc.note.Note;
 import io.github.musicdoc.rhythm.rest.Rest;
-import io.github.musicdoc.rhythm.value.variation.MusicalValueVariationMapperBase;
-import io.github.musicdoc.rhythm.value.variation.TupletContext;
+import io.github.musicdoc.rhythm.tuplet.TupletContext;
+import io.github.musicdoc.rhythm.tuplet.TupletMapperBase;
 
 /**
  * Abstract base implementation of {@link ValuedItemMapper}.
@@ -34,6 +34,8 @@ public abstract class ValuedItemMapperBase extends ValuedItemMapper {
     return item;
   }
 
+  // TODO support multiple slur start/end
+
   /**
    * @param in the {@link MusicInputStream} to read from.
    * @param context the {@link SongFormatContext}.
@@ -45,7 +47,7 @@ public abstract class ValuedItemMapperBase extends ValuedItemMapper {
       // "(abc)" annotates a slur for the notes a b c.
       // in "(3a(bc)" the first ( is not a slur but annotates a triplet for the following 3 notes.
       // such tuplets are not closed via ")" in ABC what can cause slight confusions for the reader.
-      TupletContext tc = MusicalValueVariationMapperBase.readTuplet(in, context, true);
+      TupletContext tc = TupletMapperBase.readTupletContext(in, context, true);
       if (tc == null) {
         return SlurDecoration.SLUR_START;
       }

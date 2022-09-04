@@ -30,14 +30,16 @@ import io.github.musicdoc.rhythm.item.ValuedItemMapper;
 import io.github.musicdoc.rhythm.item.ValuedItemMapperMusicDoc;
 import io.github.musicdoc.rhythm.metre.MetreMapper;
 import io.github.musicdoc.rhythm.metre.MetreMapperMusicDoc;
+import io.github.musicdoc.rhythm.punctuation.PunctuationMapper;
+import io.github.musicdoc.rhythm.punctuation.PunctuationMapperMusicDoc;
 import io.github.musicdoc.rhythm.rest.RestMapper;
 import io.github.musicdoc.rhythm.rest.RestMapperMusicDoc;
 import io.github.musicdoc.rhythm.tempo.TempoMapper;
 import io.github.musicdoc.rhythm.tempo.TempoMapperMusicDoc;
+import io.github.musicdoc.rhythm.tuplet.TupletMapper;
+import io.github.musicdoc.rhythm.tuplet.TupletMapperMusicDoc;
 import io.github.musicdoc.rhythm.value.MusicalValueMapper;
 import io.github.musicdoc.rhythm.value.MusicalValueMapperMusicDoc;
-import io.github.musicdoc.rhythm.value.variation.MusicalValueVariationMapper;
-import io.github.musicdoc.rhythm.value.variation.MusicalValueVariationMapperMusicDoc;
 import io.github.musicdoc.score.ScoreMapper;
 import io.github.musicdoc.score.ScoreMapperMusicDoc;
 import io.github.musicdoc.score.line.ScoreLineMapper;
@@ -189,9 +191,15 @@ public class SongFormatMusicDoc extends SongFormatText {
   }
 
   @Override
-  protected MusicalValueVariationMapper getVariationMapper() {
+  protected PunctuationMapper getPunctuationMapper() {
 
-    return MusicalValueVariationMapperMusicDoc.INSTANCE;
+    return PunctuationMapperMusicDoc.INSTANCE;
+  }
+
+  @Override
+  protected TupletMapper getTupletMapper() {
+
+    return TupletMapperMusicDoc.INSTANCE;
   }
 
   @Override

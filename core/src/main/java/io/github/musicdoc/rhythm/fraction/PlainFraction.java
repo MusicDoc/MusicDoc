@@ -3,12 +3,12 @@ package io.github.musicdoc.rhythm.fraction;
 import io.github.musicdoc.MutableObjecteCopier;
 
 /**
- * A plain implementation of {@link Fraction}. It represents nothing more as a {@link Fraction} consisting of
+ * A plain implementation of {@link Fraction}. It represents nothing more than a {@link Fraction} consisting of
  * {@link #getBeats() beats} per {@link #getUnit() fraction}. In contrast e.g. a
- * {@link io.github.musicdoc.rhythm.value.MusicalValue} may have a
- * {@link io.github.musicdoc.rhythm.value.MusicalValue#getVariation() variation}.
+ * {@link io.github.musicdoc.rhythm.value.MusicalValue} may
+ * {@link io.github.musicdoc.rhythm.value.MusicalValue#hasVariation() have variations}.
  */
-public class PlainFraction extends SimpleFraction<PlainFraction> {
+public final class PlainFraction extends SimpleFraction<PlainFraction> {
 
   /** Whole (1/1) also called semi-breve. */
   public static final PlainFraction _1_1 = create(1, 1);
@@ -46,7 +46,13 @@ public class PlainFraction extends SimpleFraction<PlainFraction> {
     super(fraction);
   }
 
-  private PlainFraction(PlainFraction fraction, MutableObjecteCopier copier) {
+  /**
+   * The constructor.
+   *
+   * @param fraction the {@link PlainFraction} to copy.
+   * @param copier the {@link MutableObjecteCopier}.
+   */
+  protected PlainFraction(PlainFraction fraction, MutableObjecteCopier copier) {
 
     super(fraction, copier);
   }

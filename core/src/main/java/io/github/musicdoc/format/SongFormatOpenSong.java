@@ -24,11 +24,12 @@ import io.github.musicdoc.rhythm.fraction.PlainFractionMapperOpenSong;
 import io.github.musicdoc.rhythm.item.ValuedItemMapper;
 import io.github.musicdoc.rhythm.metre.MetreMapper;
 import io.github.musicdoc.rhythm.metre.MetreMapperOpenSong;
+import io.github.musicdoc.rhythm.punctuation.PunctuationMapper;
 import io.github.musicdoc.rhythm.rest.RestMapper;
 import io.github.musicdoc.rhythm.tempo.TempoMapper;
 import io.github.musicdoc.rhythm.tempo.TempoMapperOpenSong;
+import io.github.musicdoc.rhythm.tuplet.TupletMapper;
 import io.github.musicdoc.rhythm.value.MusicalValueMapper;
-import io.github.musicdoc.rhythm.value.variation.MusicalValueVariationMapper;
 import io.github.musicdoc.score.ScoreMapper;
 import io.github.musicdoc.score.ScoreMapperOpenSong;
 import io.github.musicdoc.score.line.ScoreLineMapper;
@@ -187,7 +188,13 @@ public class SongFormatOpenSong extends SongFormatXml {
   }
 
   @Override
-  protected MusicalValueVariationMapper getVariationMapper() {
+  protected PunctuationMapper getPunctuationMapper() {
+
+    return null;
+  }
+
+  @Override
+  protected TupletMapper getTupletMapper() {
 
     return null;
   }

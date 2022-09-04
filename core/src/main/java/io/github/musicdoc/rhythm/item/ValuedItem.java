@@ -13,7 +13,6 @@ import io.github.musicdoc.glyphs.MusicalGlyphs;
 import io.github.musicdoc.note.Note;
 import io.github.musicdoc.rhythm.rest.Rest;
 import io.github.musicdoc.rhythm.value.MusicalValue;
-import io.github.musicdoc.rhythm.value.variation.MusicalValueVariation;
 import io.github.musicdoc.tone.Tone;
 import io.github.musicdoc.transpose.AbstractTransposable;
 
@@ -123,21 +122,6 @@ public abstract class ValuedItem<SELF extends ValuedItem<SELF>> extends Abstract
     }
     SELF item = makeMutable();
     item.value = value;
-    return item;
-  }
-
-  /**
-   * @param variation new value of {@link #getValue() value} {@link MusicalValue#getVariation() variation}.
-   * @return an {@link ValuedItem item} with the given {@link #getValue() value} and all other properties like
-   *         {@code this} one. Will be a {@link #copy() copy} if {@link #isImmutable() immutable}.
-   */
-  public SELF setValueVariation(MusicalValueVariation variation) {
-
-    if (this.value.getVariation() == variation) {
-      return self();
-    }
-    SELF item = makeMutable();
-    item.value = this.value.setVariation(variation);
     return item;
   }
 

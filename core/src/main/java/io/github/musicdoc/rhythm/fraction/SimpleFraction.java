@@ -1,14 +1,21 @@
 package io.github.musicdoc.rhythm.fraction;
 
+import java.util.Objects;
+
+import io.github.musicdoc.AbstractMusicalObject;
+import io.github.musicdoc.MutableObject;
 import io.github.musicdoc.MutableObjecteCopier;
-import io.github.musicdoc.rhythm.value.variation.MusicalValueVariation;
 
 /**
- * Extends {@link AbstractFraction} for simple fractions that can never have a {@link #getVariation() variation}.
+ * Simple implementation of {@link Fraction} for {@link #getPlain() plain} fraction.
  *
  * @param <T> type of this class itself.
  */
-public abstract class SimpleFraction<T extends SimpleFraction<T>> extends AbstractFraction<T> {
+public abstract class SimpleFraction<T extends SimpleFraction<T>> extends AbstractMusicalObject
+    implements Fraction, MutableObject<T> {
+
+  /** @see #isImmutable() */
+  protected boolean immutable;
 
   /** @see #getBeats() */
   protected int beats;
@@ -53,9 +60,31 @@ public abstract class SimpleFraction<T extends SimpleFraction<T>> extends Abstra
    */
   protected SimpleFraction(SimpleFraction<T> fraction, MutableObjecteCopier copier) {
 
-    super(fraction, copier);
+    super();
     this.beats = fraction.beats;
     this.unit = fraction.unit;
+  }
+
+  /**
+   * @return the explicit {@link #toString() string representation} of the {@link #getPlain() plain fraction} or
+   *         {@code null} to use the default ({@link #getBeats()} + "/" + {@link #getUnit()}).
+   */
+  protected String getText() {
+
+    return null;
+  }
+
+  @Override
+  public boolean isImmutable() {
+
+    return this.immutable;
+  }
+
+  @Override
+  public T makeImmutable() {
+
+    this.immutable = true;
+    return self();
   }
 
   @Override
@@ -142,18 +171,49 @@ public abstract class SimpleFraction<T extends SimpleFraction<T>> extends Abstra
     return setBeats(beat).setUnit(unt);
   }
 
-  // for documentation and enforcement
-
-  @Override
-  public final MusicalValueVariation getVariation() {
-
-    return MusicalValueVariation.NONE;
-  }
-
   @Override
   public SimpleFraction<?> getPlain() {
 
     return this;
+  }
+
+  @Override
+  public int hashCode() {
+
+    return 31 * getBeats() + getUnit();
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+
+    if (this == obj) {
+      return true;
+    }
+    if ((obj == null) || (getClass() != obj.getClass())) {
+      return false;
+    }
+    SimpleFraction<?> other = (SimpleFraction<?>) obj;
+    if (this.beats != other.beats) {
+      return false;
+    } else if (this.unit != other.unit) {
+      return false;
+    } else if (!Objects.equals(getText(), other.getText())) {
+      return false;
+    }
+    return true;
+  }
+
+  @Override
+  public void toString(StringBuilder sb) {
+
+    String text = getText();
+    if (text == null) {
+      sb.append(this.beats);
+      sb.append("/");
+      sb.append(this.unit);
+    } else {
+      sb.append(text);
+    }
   }
 
 }

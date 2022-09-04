@@ -26,10 +26,11 @@ import io.github.musicdoc.rhythm.fraction.PlainFractionMapper;
 import io.github.musicdoc.rhythm.item.ValuedItemMapper;
 import io.github.musicdoc.rhythm.metre.Metre;
 import io.github.musicdoc.rhythm.metre.MetreMapper;
+import io.github.musicdoc.rhythm.punctuation.PunctuationMapper;
 import io.github.musicdoc.rhythm.rest.RestMapper;
 import io.github.musicdoc.rhythm.tempo.TempoMapper;
+import io.github.musicdoc.rhythm.tuplet.TupletMapper;
 import io.github.musicdoc.rhythm.value.MusicalValueMapper;
-import io.github.musicdoc.rhythm.value.variation.MusicalValueVariationMapper;
 import io.github.musicdoc.score.Score;
 import io.github.musicdoc.score.ScoreMapper;
 import io.github.musicdoc.score.line.ScoreLineMapper;
@@ -164,9 +165,14 @@ public abstract class SongFormat {
   protected abstract MusicalValueMapper getValueMapper();
 
   /**
-   * @return the {@link MusicalValueVariationMapper}.
+   * @return the {@link PunctuationMapper}.
    */
-  protected abstract MusicalValueVariationMapper getVariationMapper();
+  protected abstract PunctuationMapper getPunctuationMapper();
+
+  /**
+   * @return the {@link TupletMapper}.
+   */
+  protected abstract TupletMapper getTupletMapper();
 
   /**
    * @return the {@link ValuedItemMapper}.

@@ -37,6 +37,10 @@ public abstract class RestMapper extends AbstractValuedItemMapper<Rest> {
     if (item == null) {
       return;
     }
-    out.write(item.getSymbol());
+    if (item.isInvisible()) {
+      out.write(REST_INVISIBLE);
+    } else {
+      out.write(REST_VISIBLE);
+    }
   }
 }

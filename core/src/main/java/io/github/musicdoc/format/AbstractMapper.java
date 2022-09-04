@@ -20,10 +20,11 @@ import io.github.musicdoc.note.StemDirectionMapper;
 import io.github.musicdoc.rhythm.fraction.PlainFractionMapper;
 import io.github.musicdoc.rhythm.item.ValuedItemMapper;
 import io.github.musicdoc.rhythm.metre.MetreMapper;
+import io.github.musicdoc.rhythm.punctuation.PunctuationMapper;
 import io.github.musicdoc.rhythm.rest.RestMapper;
 import io.github.musicdoc.rhythm.tempo.TempoMapper;
+import io.github.musicdoc.rhythm.tuplet.TupletMapper;
 import io.github.musicdoc.rhythm.value.MusicalValueMapper;
-import io.github.musicdoc.rhythm.value.variation.MusicalValueVariationMapper;
 import io.github.musicdoc.score.Score;
 import io.github.musicdoc.score.ScoreMapper;
 import io.github.musicdoc.score.line.ScoreLineMapper;
@@ -247,11 +248,19 @@ public abstract class AbstractMapper<T> implements Mapper<T>, FormatConstants {
   }
 
   /**
-   * @return the {@link MusicalValueVariationMapper}.
+   * @return the {@link PunctuationMapper}.
    */
-  protected MusicalValueVariationMapper getVariationMapper() {
+  protected PunctuationMapper getPunctuationMapper() {
 
-    return getFormat().getVariationMapper();
+    return getFormat().getPunctuationMapper();
+  }
+
+  /**
+   * @return the {@link TupletMapper}.
+   */
+  protected TupletMapper getTupletMapper() {
+
+    return getFormat().getTupletMapper();
   }
 
   /**

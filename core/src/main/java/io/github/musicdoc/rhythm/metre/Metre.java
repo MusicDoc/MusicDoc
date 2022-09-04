@@ -12,7 +12,7 @@ import io.github.musicdoc.rhythm.fraction.SimpleFraction;
  * {@link io.github.musicdoc.rhythm.value.MusicalValue}s per bar. For details see
  * <a href="https://en.wikipedia.org/wiki/Metre_(music)">metre@wikipedia</a>.
  */
-public class Metre extends SimpleFraction<Metre> {
+public final class Metre extends SimpleFraction<Metre> {
 
   private String text;
 

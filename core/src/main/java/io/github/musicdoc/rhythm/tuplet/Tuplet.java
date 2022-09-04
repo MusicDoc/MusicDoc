@@ -1,19 +1,20 @@
-package io.github.musicdoc.rhythm.value.variation;
+package io.github.musicdoc.rhythm.tuplet;
 
 import io.github.musicdoc.glyphs.MusicalGlyphsContext;
 import io.github.musicdoc.glyphs.smufl.SmuflGlyphsTuplets;
+import io.github.musicdoc.rhythm.fraction.FractionVariation;
 import io.github.musicdoc.rhythm.metre.Metre;
 import io.github.musicdoc.rhythm.value.MusicalValue;
 
 /**
- * {@link MusicalValueVariation} for a tuplet. A tuplet marks a group of notes that is played at a speed of a different
+ * {@link FractionVariation} for a tuplet. A tuplet marks a group of notes that is played at a speed of a different
  * number of notes (irregular rhythm). The most famous variant is the {@link #TRIPLET triplet} where three notes of the
  * same value are played is long as if only two such notes would have been played. A tuplet is visualized by a bracket
  * above or below the grouped tones. The bracket is annotated with a centered digit indicating the number of regular
  * notes to play. If the grouped notes are all connected with a beam, the bracket can be omitted and the number can be
  * centered above or below that beam.
  */
-public final class Tuplet extends MusicalValueVariation {
+public final class Tuplet extends FractionVariation {
 
   /**
    * Variation for the {@link MusicalValue value} such that two tones of that value actually last as long as three
@@ -90,12 +91,6 @@ public final class Tuplet extends MusicalValueVariation {
   }
 
   @Override
-  public Tuplet getTuplet() {
-
-    return this;
-  }
-
-  @Override
   public String getGlyphs(MusicalGlyphsContext context) {
 
     if (!context.isEnforceUnicode()) {
@@ -105,6 +100,16 @@ public final class Tuplet extends MusicalValueVariation {
       }
     }
     return Integer.toString(this.unit);
+  }
+
+  /**
+   * @param metere the {@link Metre}.
+   * @return {@code true} if this {@link Tuplet} has the default number of {@link #getBeats() beats} for its
+   *         {@link #getUnit() unit} and the given {@link Metre}.
+   */
+  public boolean hasDefaultBeats(Metre metere) {
+
+    return (this.beats == getBeats(metere, this.unit));
   }
 
   /**

@@ -1,13 +1,23 @@
-package io.github.musicdoc.rhythm.value.variation;
+package io.github.musicdoc.rhythm.punctuation;
 
 import io.github.musicdoc.glyphs.MusicalGlyphsContext;
 import io.github.musicdoc.glyphs.smufl.SmuflGlyphsNote;
+import io.github.musicdoc.rhythm.fraction.FractionVariation;
+import io.github.musicdoc.rhythm.tuplet.Tuplet;
 import io.github.musicdoc.rhythm.value.MusicalValue;
 
 /**
- * {@link MusicalValueVariation} for a punctuation.
+ * {@link FractionVariation} for a punctuation.
+ *
+ * So e.g. a {@link io.github.musicdoc.rhythm.value.MusicalValue} with a {@link #getPlain() plain value} of {@code 1/2}
+ * (half note or minim) can have a {@link #P1 single}
+ * {@link io.github.musicdoc.rhythm.value.MusicalValue#getPunctuation() punctuation} what results in the actual
+ * {@link #getValue() value} of {@code 3/4}.
+ *
+ * @see io.github.musicdoc.rhythm.value.MusicalValue#getPunctuation()
+ * @see Tuplet
  */
-public class Punctuation extends MusicalValueVariation {
+public class Punctuation extends FractionVariation {
 
   /**
    * Increases the {@link MusicalValue} by adding half of its value. Visualized as a single dot right to the musical
@@ -54,7 +64,6 @@ public class Punctuation extends MusicalValueVariation {
    * @return the number of punctiations (dots behind the notehead). Will return {@code 1} for {@link #P1}, {@code 2} for
    *         {@link #P2}, {@code 3} for {@link #P3}.
    */
-  @Override
   public int getPunctuationCount() {
 
     if (this == P1) {
@@ -69,13 +78,11 @@ public class Punctuation extends MusicalValueVariation {
 
   /**
    * @param punctuation the {@link #getPunctuationCount() punctuation count}.
-   * @return the according {@link MusicalValueVariation} or {@code null} if no such variation exists.
+   * @return the according {@link Punctuation} or {@code null} if no such {@link Punctuation} exists.
    */
-  public static MusicalValueVariation of(int punctuation) {
+  public static Punctuation of(int punctuation) {
 
     switch (punctuation) {
-      case 0:
-        return NONE;
       case 1:
         return P1;
       case 2:

@@ -2,6 +2,8 @@ package io.github.musicdoc.rhythm.value;
 
 import io.github.musicdoc.format.SongFormat;
 import io.github.musicdoc.format.SongFormatAbc;
+import io.github.musicdoc.rhythm.fraction.SimpleFraction;
+import io.github.musicdoc.rhythm.punctuation.Punctuation;
 
 /**
  * {@link MusicalValueMapper} for {@link SongFormatAbc}.
@@ -26,9 +28,10 @@ public class MusicalValueMapperAbc extends MusicalValueMapperBase {
   }
 
   @Override
-  protected boolean isSupportVariation() {
+  protected Punctuation normalizePunctuation(Punctuation punctuation, SimpleFraction<?> outValue) {
 
-    return false;
+    outValue.multiply(punctuation);
+    return null;
   }
 
 }

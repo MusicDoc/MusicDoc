@@ -6,9 +6,8 @@ import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
 import io.github.musicdoc.rhythm.fraction.PlainFraction;
 import io.github.musicdoc.rhythm.fraction.SimpleFraction;
-import io.github.musicdoc.rhythm.value.variation.AbstractFractionVariation;
-import io.github.musicdoc.rhythm.value.variation.MusicalValueVariation;
-import io.github.musicdoc.rhythm.value.variation.Punctuation;
+import io.github.musicdoc.rhythm.punctuation.Punctuation;
+import io.github.musicdoc.rhythm.tuplet.Tuplet;
 
 /**
  * {@link AbstractMapper Mapper} for {@link MusicalValue}.
@@ -28,11 +27,8 @@ public abstract class MusicalValueMapperBase extends MusicalValueMapper {
     }
     Integer unitInt = null;
     int unit = unitNoteLength.getUnit();
-    boolean empty = false;
     if (in.expect(BEAT_SEPRATOR_STRING, false)) {
       unitInt = in.readInteger(4, false);
-    } else if (beatsInt == null) {
-      empty = true;
     }
     if (unitInt != null) {
       unit = unitInt.intValue() * unit;
@@ -42,16 +38,15 @@ public abstract class MusicalValueMapperBase extends MusicalValueMapper {
       beats = fraction.getBeats();
       unit = fraction.getUnit();
     }
-    AbstractFractionVariation<?> variation = getVariationMapper().read(in, context);
-    if (empty && (variation == null)) {
-      return null;
-    }
-    if ((variation == MusicalValueVariation.NONE) && (beats == 3)) {
+    Punctuation punctuation = getPunctuationMapper().read(in, context);
+    Tuplet tuplet = getTupletMapper().read(in, context);
+
+    if ((punctuation == null) && (beats == 3)) {
       beats = 1;
       unit = unit / 2;
-      variation = Punctuation.P1;
+      punctuation = Punctuation.P1;
     }
-    return new MusicalValue(beats, unit, variation);
+    return new MusicalValue(beats, unit, punctuation, tuplet);
   }
 
   @Override
@@ -61,11 +56,10 @@ public abstract class MusicalValueMapperBase extends MusicalValueMapper {
       return;
     }
     PlainFraction unitNoteLength = context.getUnitNoteLength();
-    SimpleFraction<?> outValue = value.getPlain().divide(unitNoteLength);
-    AbstractFractionVariation<?> variation = value.getVariation();
-    if ((variation != MusicalValueVariation.NONE) && !isSupportVariation()) {
-      outValue = outValue.multiply(variation);
-      variation = MusicalValueVariation.NONE;
+    SimpleFraction<?> outValue = value.getPlain().copy().divide(unitNoteLength);
+    Punctuation punctuation = value.getPunctuation();
+    if (punctuation != null) {
+      punctuation = normalizePunctuation(punctuation, outValue);
     }
     outValue = outValue.normalize();
     int beats = outValue.getBeats();
@@ -77,15 +71,19 @@ public abstract class MusicalValueMapperBase extends MusicalValueMapper {
       out.write(BEAT_SEPARATOR);
       out.write(Integer.toString(fraction));
     }
-    getVariationMapper().write(variation, out, context);
+    getPunctuationMapper().write(punctuation, out, context);
+    getTupletMapper().write(value.getTuplet(), out, context);
   }
 
   /**
-   * @return {@code true} if {@link MusicalValueVariation} is supported as specific syntax of this format, {@code false}
-   *         otherwise.
+   * @param punctuation the {@link Punctuation}. Not {@code null}.
+   * @param outValue the {@link MusicalValue#getPlain() plain} value (with unitNoteLength applied) and therefore
+   *        {@link SimpleFraction#isMutable() mutable}.
+   * @return the {@link Punctuation} or {@code null} if normalized.
    */
-  protected boolean isSupportVariation() {
+  protected Punctuation normalizePunctuation(Punctuation punctuation, SimpleFraction<?> outValue) {
 
-    return true;
+    return punctuation;
   }
+
 }

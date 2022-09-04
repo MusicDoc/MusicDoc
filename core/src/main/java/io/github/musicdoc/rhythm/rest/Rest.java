@@ -12,6 +12,7 @@ import io.github.musicdoc.glyphs.MusicalGlyphsContext;
 import io.github.musicdoc.glyphs.smufl.SmuflGlyphsRest;
 import io.github.musicdoc.glyphs.unicode.UnicodeGlyphsRests;
 import io.github.musicdoc.rhythm.item.ValuedItem;
+import io.github.musicdoc.rhythm.punctuation.Punctuation;
 import io.github.musicdoc.rhythm.value.MusicalValue;
 import io.github.musicdoc.transpose.TransposeContext;
 
@@ -127,14 +128,17 @@ public class Rest extends ValuedItem<Rest> {
     } else {
       glyphs = SmuflGlyphsRest.get(this.value);
     }
+    Punctuation punctuation = this.value.getPunctuation();
+    if (punctuation != null) {
+      String pGlyphs = punctuation.getGlyphs(context);
+      if (pGlyphs == null) {
+        glyphs = null;
+      } else {
+        glyphs = glyphs + pGlyphs;
+      }
+    }
     if (glyphs == null) {
       throw new IllegalStateException("Not implemented/supported");
-    }
-    String vGlyphs = this.value.getVariation().getGlyphs(context);
-    if (vGlyphs == null) {
-      throw new IllegalStateException("Not implemented/supported");
-    } else if (!vGlyphs.isEmpty()) {
-      glyphs = glyphs + vGlyphs;
     }
     return glyphs;
   }
