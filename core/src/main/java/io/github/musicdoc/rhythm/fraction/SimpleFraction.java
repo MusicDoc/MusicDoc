@@ -9,10 +9,10 @@ import io.github.musicdoc.MutableObjecteCopier;
 /**
  * Simple implementation of {@link Fraction} for {@link #getPlain() plain} fraction.
  *
- * @param <T> type of this class itself.
+ * @param <SELF> type of this class itself.
  */
-public abstract class SimpleFraction<T extends SimpleFraction<T>> extends AbstractMusicalObject
-    implements Fraction, MutableObject<T> {
+public abstract class SimpleFraction<SELF extends SimpleFraction<SELF>> extends AbstractMusicalObject
+    implements Fraction, MutableObject<SELF> {
 
   /** @see #isImmutable() */
   protected boolean immutable;
@@ -58,7 +58,7 @@ public abstract class SimpleFraction<T extends SimpleFraction<T>> extends Abstra
    * @param fraction the {@link Fraction} to copy.
    * @param copier the {@link MutableObjecteCopier}.
    */
-  protected SimpleFraction(SimpleFraction<T> fraction, MutableObjecteCopier copier) {
+  protected SimpleFraction(SimpleFraction<SELF> fraction, MutableObjecteCopier copier) {
 
     super();
     this.beats = fraction.beats;
@@ -81,7 +81,7 @@ public abstract class SimpleFraction<T extends SimpleFraction<T>> extends Abstra
   }
 
   @Override
-  public T makeImmutable() {
+  public SELF makeImmutable() {
 
     this.immutable = true;
     return self();
@@ -98,12 +98,12 @@ public abstract class SimpleFraction<T extends SimpleFraction<T>> extends Abstra
    * @return a new {@link Fraction} with the given {@link #getBeats() beats} and all other properties like {@code this}
    *         one. Will be a {@link #copy()} if {@link #isImmutable() immutable}.
    */
-  public T setBeats(int beats) {
+  public SELF setBeats(int beats) {
 
     if (this.beats == beats) {
       return self();
     }
-    T fract = makeMutable();
+    SELF fract = makeMutable();
     fract.beats = beats;
     return fract;
   }
@@ -119,12 +119,12 @@ public abstract class SimpleFraction<T extends SimpleFraction<T>> extends Abstra
    * @return a new {@link Fraction} with the given {@link #getUnit() unit} and all other properties like {@code this}
    *         one. Will be a {@link #copy()} if {@link #isImmutable() immutable}.
    */
-  public T setUnit(int unit) {
+  public SELF setUnit(int unit) {
 
     if (this.unit == unit) {
       return self();
     }
-    T fract = makeMutable();
+    SELF fract = makeMutable();
     fract.unit = unit;
     return fract;
   }
@@ -133,7 +133,7 @@ public abstract class SimpleFraction<T extends SimpleFraction<T>> extends Abstra
    * @param fract the {@link Fraction} to multiply with.
    * @return the product of this {@link Fraction} times the given {@link Fraction}.
    */
-  public T multiply(Fraction fract) {
+  public SELF multiply(Fraction fract) {
 
     fract = fract.normalize();
     return normalize(this.beats * fract.getBeats(), this.unit * fract.getUnit());
@@ -143,19 +143,19 @@ public abstract class SimpleFraction<T extends SimpleFraction<T>> extends Abstra
    * @param fract the {@link Fraction} to divide by.
    * @return the quotient of this {@link Fraction} as numerator divided by the given {@link Fraction} as denominator.
    */
-  public T divide(Fraction fract) {
+  public SELF divide(Fraction fract) {
 
     fract = fract.normalize();
     return normalize(this.beats * fract.getUnit(), this.unit * fract.getBeats());
   }
 
   @Override
-  public T normalize() {
+  public SELF normalize() {
 
     return normalize(this.beats, this.unit);
   }
 
-  private T normalize(int beat, int unt) {
+  private SELF normalize(int beat, int unt) {
 
     while ((beat != 1) && (unt != 1)) {
       if (((beat % 2) == 0) && (unt % 2) == 0) {

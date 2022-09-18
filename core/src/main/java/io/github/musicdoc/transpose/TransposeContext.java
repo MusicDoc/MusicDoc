@@ -1,9 +1,9 @@
 package io.github.musicdoc.transpose;
 
+import android.app.ActionBar.Tab;
 import io.github.musicdoc.harmony.EnharmonicStyle;
 import io.github.musicdoc.harmony.TonalSystem;
 import io.github.musicdoc.harmony.key.MusicalKey;
-import io.github.musicdoc.tab.Tab;
 import io.github.musicdoc.tone.Tone;
 
 /**
@@ -14,8 +14,6 @@ public class TransposeContext {
   private boolean keepKey;
 
   private MusicalKey key;
-
-  private Tab tab;
 
   private EnharmonicStyle enharmonicStyle;
 
@@ -124,25 +122,8 @@ public class TransposeContext {
   }
 
   /**
-   * @return the current {@link Tab} used to transpose atomic musical instruments.
-   */
-  public Tab getTab() {
-
-    return this.tab;
-  }
-
-  /**
-   * @param tab the new value of {@link #getTab()}.
-   */
-  public void setTab(Tab tab) {
-
-    this.tab = tab;
-  }
-
-  /**
-   * @return {@code true} if a potential {@link Tab}s should be transposed so that its {@link Tab#getStrings() tuning}
-   *         actually changes.
-   * @see #setTab(Tab)
+   * @return {@code true} if a potential {@link Tab}s should be transposed so that its
+   *         {@link io.github.musicdoc.clef.Clef#getTuning() tuning} actually changes.
    */
   public boolean isChangeTab() {
 

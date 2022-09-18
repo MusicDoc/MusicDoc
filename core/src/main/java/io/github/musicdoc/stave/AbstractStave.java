@@ -12,10 +12,10 @@ import io.github.musicdoc.transpose.TransposeContext;
  * Abstract base class for {@link Stave} and {@link StaveChange}. Or in other words a container for {@link #getClef()
  * clef}, {@link #getKey() key}, and {@link #getMetre() metre}.
  *
- * @param <T> type of this class itself.
+ * @param <SELF> type of this class itself.
  */
-public abstract class AbstractStave<T extends AbstractStave<T>> extends AbstractTransposable<T>
-    implements MutableObject<T> {
+public abstract class AbstractStave<SELF extends AbstractStave<SELF>> extends AbstractTransposable<SELF>
+    implements MutableObject<SELF> {
 
   /** Property name of {@link #getClef() clef}. */
   public static final String PROPERTY_CLEF = "clef";
@@ -67,7 +67,7 @@ public abstract class AbstractStave<T extends AbstractStave<T>> extends Abstract
    * @param stave the {@link AbstractStave} to copy.
    * @param copier the {@link MutableObjecteCopier}.
    */
-  protected AbstractStave(AbstractStave<T> stave, MutableObjecteCopier copier) {
+  protected AbstractStave(AbstractStave<SELF> stave, MutableObjecteCopier copier) {
 
     super();
     this.clef = stave.clef.copy(copier);
@@ -88,12 +88,12 @@ public abstract class AbstractStave<T extends AbstractStave<T>> extends Abstract
    * @return a {@link Stave} with the given {@link #getClef() clef} and all other properties like {@code this} one. Will
    *         be a {@link #copy()} if {@link #isImmutable() immutable}.
    */
-  public T setClef(Clef newClef) {
+  public SELF setClef(Clef newClef) {
 
     if (newClef == this.clef) {
       return self();
     }
-    T stave = makeMutable();
+    SELF stave = makeMutable();
     stave.clef = newClef;
     return stave;
   }
@@ -113,12 +113,12 @@ public abstract class AbstractStave<T extends AbstractStave<T>> extends Abstract
    * @return a {@link Stave} with the given {@link #getKey() key} and all other properties like {@code this} one. Will
    *         be a {@link #copy()} if {@link #isImmutable() immutable}.
    */
-  public T setKey(MusicalKey newKey) {
+  public SELF setKey(MusicalKey newKey) {
 
     if (newKey == this.key) {
       return self();
     }
-    T stave = makeMutable();
+    SELF stave = makeMutable();
     stave.key = newKey;
     return stave;
   }
@@ -139,12 +139,12 @@ public abstract class AbstractStave<T extends AbstractStave<T>> extends Abstract
    * @return a new {@link Stave} with the given {@link #getMetre() metre} and all other properties like {@code this}
    *         one. Will be a {@link #copy()} if {@link #isImmutable() immutable}.
    */
-  public T setMetre(Metre newMetre) {
+  public SELF setMetre(Metre newMetre) {
 
     if (newMetre == this.metre) {
       return self();
     }
-    T stave = makeMutable();
+    SELF stave = makeMutable();
     stave.metre = newMetre;
     return stave;
   }
@@ -156,19 +156,19 @@ public abstract class AbstractStave<T extends AbstractStave<T>> extends Abstract
   }
 
   @Override
-  public T makeImmutable() {
+  public SELF makeImmutable() {
 
     this.immutable = true;
     return self();
   }
 
   @Override
-  public T transpose(int steps, boolean diatonic, TransposeContext context) {
+  public SELF transpose(int steps, boolean diatonic, TransposeContext context) {
 
     if ((context.isKeepKey()) || (this.key == null)) {
       return self();
     }
-    T transposed = copy();
+    SELF transposed = copy();
     transposed.key = this.key.transpose(steps, diatonic, context);
     return transposed;
   }

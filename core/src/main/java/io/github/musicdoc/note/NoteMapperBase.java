@@ -45,7 +45,7 @@ public abstract class NoteMapperBase extends NoteMapper {
     if (tone == null) {
       return null;
     }
-    List<Tone> tones = null;
+    List<NoteTone> tones = null;
     if (chord) {
       Tone t;
       do {
@@ -54,7 +54,8 @@ public abstract class NoteMapperBase extends NoteMapper {
           if (tones == null) {
             tones = new ArrayList<>();
           }
-          tones.add(t);
+          NoteTone noteTone = new NoteTone(t);
+          tones.add(noteTone);
         }
       } while (t != null);
       if (this.chordEnd != '\0') {
@@ -67,7 +68,7 @@ public abstract class NoteMapperBase extends NoteMapper {
     } else if (value == MusicalValue._1_1) {
       value = MusicalValue._4_4;
     }
-    return new Note(tone, value, decorations, tones);
+    return new Note(new NoteTone(tone), value, decorations, tones);
   }
 
   @Override

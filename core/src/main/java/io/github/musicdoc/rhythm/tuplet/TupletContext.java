@@ -10,7 +10,7 @@ public class TupletContext {
 
   private final Tuplet tuplet;
 
-  private int noteCount;
+  private int itemCount;
 
   /**
    * The constructor.
@@ -22,7 +22,7 @@ public class TupletContext {
 
     super();
     this.tuplet = tuplet;
-    this.noteCount = noteCount;
+    this.itemCount = noteCount;
   }
 
   /**
@@ -36,21 +36,24 @@ public class TupletContext {
   /**
    * @return the number of notes (left) to group as tuplet.
    */
-  public int getNoteCount() {
+  public int getItemCount() {
 
-    return this.noteCount;
+    return this.itemCount;
   }
 
   /**
-   * Decrements the {@link #getNoteCount() note count}. Shall only be called if {@link #getNoteCount() note count} is
+   * Decrements the {@link #getItemCount() note count}. Shall only be called if {@link #getItemCount() note count} is
    * currently positive ({@code > 0}).
+   *
+   * @return the new decreased {@link #getItemCount() note count}.
    */
-  public void decrementNoteCount() {
+  public int decrementNoteCount() {
 
-    assert (this.noteCount > 0);
-    if (this.noteCount > 0) {
-      this.noteCount--;
+    assert (this.itemCount > 0);
+    if (this.itemCount > 0) {
+      this.itemCount--;
     }
+    return this.itemCount;
   }
 
 }

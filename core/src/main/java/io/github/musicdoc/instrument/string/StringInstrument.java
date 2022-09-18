@@ -7,6 +7,9 @@ import java.util.List;
 import io.github.musicdoc.instrument.Instrument;
 import io.github.musicdoc.tone.Tone;
 
+/**
+ * {@link Instrument} with individual strings (e.g. violin, guitar, etc.).
+ */
 public abstract class StringInstrument extends Instrument implements StringTuning {
 
   private final List<Tone> tuning;

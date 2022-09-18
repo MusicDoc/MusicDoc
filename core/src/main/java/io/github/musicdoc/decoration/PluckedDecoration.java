@@ -32,7 +32,7 @@ public class PluckedDecoration extends MusicalDecoration {
   @Override
   public MusicalDecorationPosition getPosition() {
 
-    return MusicalDecorationPosition.TOP;
+    return MusicalDecorationPosition.LEFT;
   }
 
   @Override

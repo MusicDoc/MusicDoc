@@ -41,7 +41,7 @@ public abstract class SongMapper extends AbstractMapper<Song> {
 
     add(TEMPLATE.referenceNumber, IntegerMapper.INSTANCE);
     add(TEMPLATE.title, StringMapper.INSTANCE);
-    add(TEMPLATE.composer, StringMapper.INSTANCE);
+    add(TEMPLATE.artist, StringMapper.INSTANCE);
     add(TEMPLATE.album, StringMapper.INSTANCE);
     add(TEMPLATE.origin, StringMapper.INSTANCE);
     add(TEMPLATE.key, getKeyMapper());
@@ -50,7 +50,7 @@ public abstract class SongMapper extends AbstractMapper<Song> {
     add(TEMPLATE.unitNoteLength, getPlainFractionMapper());
     add(TEMPLATE.score, getScoreMapper());
     add(TEMPLATE.capo, IntegerMapper.INSTANCE);
-    // add fraction mapper?
+    add(TEMPLATE.tags, StringMapper.INSTANCE);
 
   }
 
@@ -81,36 +81,10 @@ public abstract class SongMapper extends AbstractMapper<Song> {
   protected abstract String getPropertyKey(String propertyName);
 
   @Override
-  public void write(Song song, MusicOutputStream out, SongFormatContext context) {
-
-    context.setSong(song);
-    boolean writeScore = true;
-    for (SongPropertyMapper mapper : this.properties) {
-      Property<?> property = song.getProperty(mapper.getName());
-      String key = mapper.getKey();
-      if (!key.isEmpty()) {
-        if (property == song.score) {
-          writeScore = false;
-        }
-        Object value = property.getValue();
-        if ((value != null) && (!"".equals(value))) {
-          out.writePropertyStart(key);
-          mapper.write(song, out, context);
-          out.writePropertyEnd(key);
-        }
-      }
-    }
-    if (writeScore) {
-      getScoreMapper().write(song.score.getValue(), out, context);
-    }
-  }
-
-  @Override
   public Song read(MusicInputStream in, SongFormatContext context) {
 
     Song song = new Song();
     context.setSong(song);
-    // TODO support property continuation (e.g. "+: ...")
     while (readProperty(in, context)) {
       // nothing else to do
     }
@@ -139,6 +113,31 @@ public abstract class SongMapper extends AbstractMapper<Song> {
       return true;
     }
     return false;
+  }
+
+  @Override
+  public void write(Song song, MusicOutputStream out, SongFormatContext context) {
+
+    context.setSong(song);
+    boolean writeScore = true;
+    for (SongPropertyMapper mapper : this.properties) {
+      Property<?> property = song.getProperty(mapper.getName());
+      String key = mapper.getKey();
+      if (!key.isEmpty()) {
+        if (property == song.score) {
+          writeScore = false;
+        }
+        Object value = property.getValue();
+        if ((value != null) && (!"".equals(value))) {
+          out.writePropertyStart(key);
+          mapper.write(song, out, context);
+          out.writePropertyEnd(key);
+        }
+      }
+    }
+    if (writeScore) {
+      getScoreMapper().write(song.score.getValue(), out, context);
+    }
   }
 
 }

@@ -8,6 +8,7 @@ import io.github.musicdoc.bar.BarLine;
 import io.github.musicdoc.harmony.chord.Chord;
 import io.github.musicdoc.harmony.chord.ChordContainer;
 import io.github.musicdoc.rhythm.item.ValuedItem;
+import io.github.musicdoc.score.line.ScoreLineBreak;
 import io.github.musicdoc.stave.Stave;
 import io.github.musicdoc.stave.StaveChange;
 import io.github.musicdoc.transpose.AbstractTransposable;
@@ -34,9 +35,7 @@ public class ScoreCell extends AbstractTransposable<ScoreCell> implements Mutabl
 
   private StaveChange staveChange;
 
-  private int fret;
-
-  private int string;
+  private ScoreLineBreak lineBreak;
 
   private boolean immutable;
 
@@ -121,7 +120,6 @@ public class ScoreCell extends AbstractTransposable<ScoreCell> implements Mutabl
     this.item = item;
     this.lyric = lyric;
     this.bar = bar;
-    this.fret = -1;
   }
 
   private ScoreCell(ScoreCell cell, MutableObjecteCopier copier) {
@@ -287,7 +285,7 @@ public class ScoreCell extends AbstractTransposable<ScoreCell> implements Mutabl
   }
 
   /**
-   * @return the optional {@link BarLine} of this cell that will be displayed to the right. May be {@code null} for
+   * @return the optional {@link BarLine} of this cell that will be displayed to the right. Will be {@code null} for
    *         none. There is no left {@link BarLine} as this would be the right {@link BarLine} of the previous cell.
    */
   public BarLine getBar() {
@@ -311,51 +309,25 @@ public class ScoreCell extends AbstractTransposable<ScoreCell> implements Mutabl
   }
 
   /**
-   * @return the fret number in case this cell belongs to a string line of a tabulature, or {@code -1} if no tab cell.
+   * @return the optional {@link ScoreLineBreak} will be {@code null} for none.
    */
-  public int getFret() {
+  public ScoreLineBreak getLineBreak() {
 
-    return this.fret;
+    return this.lineBreak;
   }
 
   /**
-   * @param fret new value of {@link #getFret()}.
-   * @return a new {@link ScoreCell} with the given {@link #getFret() fret} and all other properties like {@code this}
-   *         one. Will be a {@link #copy()} if {@link #isImmutable() immutable}.
-   */
-  public ScoreCell setFret(int fret) {
-
-    if (this.fret == fret) {
-      return this;
-    }
-    ScoreCell cell = makeMutable();
-    cell.fret = fret;
-    return cell;
-  }
-
-  /**
-   * @return the string number the {@link #getItem() tone} should be played on for a tabulature. Can be specified as a
-   *         hint in a regular cell for {@link io.github.musicdoc.stave.voice.StaveVoice#isAutocompute() autocomputed}
-   *         tabulature. Otherwise {@code 0} what means the the string is determined automatically in case a tabulature
-   *         is computed.
-   */
-  public int getString() {
-
-    return this.string;
-  }
-
-  /**
-   * @param string new value of {@link #getString()}.
-   * @return a new {@link ScoreCell} with the given {@link #getString() string} and all other properties like
+   * @param lineBreak new value of {@link #getLineBreak()}.
+   * @return a new {@link ScoreCell} with the given {@link #getLineBreak() lineBreak} and all other properties like
    *         {@code this} one. Will be a {@link #copy()} if {@link #isImmutable() immutable}.
    */
-  public ScoreCell setString(int string) {
+  public ScoreCell setLineBreak(ScoreLineBreak lineBreak) {
 
-    if (this.string == string) {
+    if (this.lineBreak == lineBreak) {
       return this;
     }
     ScoreCell cell = makeMutable();
-    cell.string = string;
+    cell.lineBreak = lineBreak;
     return cell;
   }
 

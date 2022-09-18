@@ -104,12 +104,12 @@ public final class MusicalValue extends AbstractMusicalObject implements Fractio
   /**
    * The constructor.
    *
-   * @param beats - see {@link #getBeats()}.
-   * @param fraction - see {@link #getUnit()}.
+   * @param beats the {@link #getBeats() beats}.
+   * @param unit the {@link #getUnit() unit}.
    */
-  public MusicalValue(int beats, int fraction) {
+  public MusicalValue(int beats, int unit) {
 
-    this(beats, fraction, null, null);
+    this(beats, unit, null, null);
   }
 
   /**

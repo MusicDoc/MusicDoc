@@ -42,6 +42,8 @@ import io.github.musicdoc.rhythm.value.MusicalValueMapper;
 import io.github.musicdoc.rhythm.value.MusicalValueMapperMusicDoc;
 import io.github.musicdoc.score.ScoreMapper;
 import io.github.musicdoc.score.ScoreMapperMusicDoc;
+import io.github.musicdoc.score.line.ScoreLineBreakMapper;
+import io.github.musicdoc.score.line.ScoreLineBreakMapperMusicDoc;
 import io.github.musicdoc.score.line.ScoreLineMapper;
 import io.github.musicdoc.score.line.ScoreLineMapperMusicDoc;
 import io.github.musicdoc.score.section.ScoreSectionNameMapper;
@@ -254,6 +256,12 @@ public class SongFormatMusicDoc extends SongFormatText {
   protected ScoreLineMapper getScoreLineMapper() {
 
     return ScoreLineMapperMusicDoc.INSTANCE;
+  }
+
+  @Override
+  protected ScoreLineBreakMapper getScoreLineBreakMapper() {
+
+    return ScoreLineBreakMapperMusicDoc.INSTANCE;
   }
 
   @Override

@@ -45,6 +45,8 @@ import io.github.musicdoc.rhythm.value.MusicalValueMapper;
 import io.github.musicdoc.rhythm.value.MusicalValueMapperAbc;
 import io.github.musicdoc.score.ScoreMapper;
 import io.github.musicdoc.score.ScoreMapperAbc;
+import io.github.musicdoc.score.line.ScoreLineBreakMapper;
+import io.github.musicdoc.score.line.ScoreLineBreakMapperAbc;
 import io.github.musicdoc.score.line.ScoreLineMapper;
 import io.github.musicdoc.score.line.ScoreLineMapperAbc;
 import io.github.musicdoc.score.section.ScoreSectionNameMapper;
@@ -276,6 +278,12 @@ public class SongFormatAbc extends SongFormatText {
   protected ScoreLineMapper getScoreLineMapper() {
 
     return ScoreLineMapperAbc.INSTANCE;
+  }
+
+  @Override
+  protected ScoreLineBreakMapper getScoreLineBreakMapper() {
+
+    return ScoreLineBreakMapperAbc.INSTANCE;
   }
 
   @Override

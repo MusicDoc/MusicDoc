@@ -28,6 +28,9 @@ public class MutableObjecteCopierWithCache implements MutableObjecteCopier {
   @Override
   public <T extends MutableObject<T>> T copy(T object) {
 
+    if (object == null) {
+      return null;
+    }
     T copy = (T) this.copyMap.computeIfAbsent(object, o -> o.copy());
     return copy;
   }

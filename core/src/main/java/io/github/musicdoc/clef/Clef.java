@@ -2,21 +2,18 @@
  * http://www.apache.org/licenses/LICENSE-2.0 */
 package io.github.musicdoc.clef;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 
 import io.github.musicdoc.AbstractMusicalObject;
 import io.github.musicdoc.MutableObject;
 import io.github.musicdoc.MutableObjecteCopier;
-import io.github.musicdoc.MutableObjecteHelper;
 import io.github.musicdoc.glyphs.MusicalGlyphs;
 import io.github.musicdoc.glyphs.MusicalGlyphsContext;
 import io.github.musicdoc.glyphs.smufl.SmuflGlyphsClefs;
 import io.github.musicdoc.glyphs.unicode.UnicodeGlyphsClefs;
 import io.github.musicdoc.harmony.TonalSystem;
 import io.github.musicdoc.harmony.key.MusicalKey;
+import io.github.musicdoc.instrument.string.SimpleStringTuning;
 import io.github.musicdoc.instrument.string.StringTuning;
 import io.github.musicdoc.interval.ChromaticInterval;
 import io.github.musicdoc.interval.ToneInterval;
@@ -27,8 +24,7 @@ import io.github.musicdoc.transpose.TransposeContext;
  * The clef is the initial symbol of a {@link io.github.musicdoc.stave.Stave} that indicates which line is identifying
  * which {@link Tone}.
  */
-public class Clef extends AbstractMusicalObject
-    implements MusicalGlyphs, ClefObject, MutableObject<Clef>, StringTuning {
+public class Clef extends AbstractMusicalObject implements MusicalGlyphs, ClefObject, MutableObject<Clef> {
 
   /** Regular {@link ClefSymbol#G G-clef}. */
   public static final Clef G = ofInteral(ClefSymbol.G, "g");
@@ -86,7 +82,7 @@ public class Clef extends AbstractMusicalObject
 
   private Tone referenceTone;
 
-  private List<Tone> strings;
+  private SimpleStringTuning tuning;
 
   private boolean immutable;
 
@@ -111,7 +107,7 @@ public class Clef extends AbstractMusicalObject
     this.name = clef.name;
     this.middleTone = clef.middleTone;
     this.referenceTone = clef.referenceTone;
-    this.strings = copier.copyListFlat(clef.strings);
+    this.tuning = copier.copy(clef.tuning);
   }
 
   @Override
@@ -249,16 +245,31 @@ public class Clef extends AbstractMusicalObject
     return this.middleTone;
   }
 
-  @Override
-  public List<Tone> getStrings() {
+  /**
+   * @return the {@link StringTuning} for {@link #TAB tablature} or {@code null} if not set.
+   */
+  public StringTuning getTuning() {
 
-    if (this.strings == null) {
-      if ((this.symbol != ClefSymbol.TAB) || this.immutable) {
-        return Collections.emptyList();
-      }
-      this.strings = new ArrayList<>();
+    return this.tuning;
+  }
+
+  /**
+   * @param newTuning the new {@link #getTuning() tuning}.
+   * @return a {@link Clef} with the given {@link #getTuning() tuning} and all other properties like {@code this} one.
+   *         Will be a {@link #copy() copy} if {@link #isImmutable() immutable}.
+   */
+  public Clef setTuning(StringTuning newTuning) {
+
+    if (Objects.equals(newTuning, this.tuning)) {
+      return this;
     }
-    return this.strings;
+    Clef clef = makeMutable();
+    if (newTuning instanceof SimpleStringTuning) {
+      clef.tuning = ((SimpleStringTuning) newTuning);
+    } else {
+      clef.tuning = new SimpleStringTuning(newTuning);
+    }
+    return clef;
   }
 
   @Override
@@ -271,8 +282,8 @@ public class Clef extends AbstractMusicalObject
   public Clef makeImmutable() {
 
     if (!this.immutable) {
-      if (this.strings != null) {
-        this.strings = MutableObjecteHelper.makeImmutableFlat(this.strings);
+      if (this.tuning != null) {
+        this.tuning.makeImmutable();
       }
       this.immutable = true;
     }
@@ -354,6 +365,13 @@ public class Clef extends AbstractMusicalObject
   public static Clef of(ClefSymbol type, String name, ToneInterval shift) {
 
     return new Clef(type, name, shift);
+  }
+
+  public static Clef ofTab(StringTuning tuning) {
+
+    Clef clef = TAB.makeMutable();
+    clef.setTuning(tuning);
+    return clef;
   }
 
 }

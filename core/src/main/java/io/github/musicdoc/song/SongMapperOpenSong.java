@@ -41,7 +41,7 @@ public class SongMapperOpenSong extends SongMapper {
       return PROPERTY_UNIT_NOTE_LENGTH;
     } else if (TEMPLATE.title.getName().equals(propertyName)) {
       return "title";
-    } else if (TEMPLATE.composer.getName().equals(propertyName)) {
+    } else if (TEMPLATE.artist.getName().equals(propertyName)) {
       return "author";
     } else if (TEMPLATE.capo.getName().equals(propertyName)) {
       return "capo";

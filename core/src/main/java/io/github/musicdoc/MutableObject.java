@@ -40,9 +40,9 @@ package io.github.musicdoc;
  * }
  * </pre>
  *
- * @param <T> type of this object itself.
+ * @param <SELF> type of this object itself.
  */
-public interface MutableObject<T extends MutableObject<T>> extends MusicalObject {
+public interface MutableObject<SELF extends MutableObject<SELF>> extends MusicalObject {
 
   /**
    * @return {@code true} if immutable (unmodifiable), {@code false} otherwise (if {@link #isMutable() mutable}).
@@ -62,7 +62,7 @@ public interface MutableObject<T extends MutableObject<T>> extends MusicalObject
    *
    * @return {@code this} object itself for fluent API calls.
    */
-  T makeImmutable();
+  SELF makeImmutable();
 
   /**
    * Ensures that this object is mutable.
@@ -80,15 +80,15 @@ public interface MutableObject<T extends MutableObject<T>> extends MusicalObject
    * @return {@code this} object itself.
    */
   @SuppressWarnings("unchecked")
-  default T self() {
+  default SELF self() {
 
-    return (T) this;
+    return (SELF) this;
   }
 
   /**
    * @return a {@link #isMutable() mutable} copy of this object.
    */
-  default T copy() {
+  default SELF copy() {
 
     return copy(MutableObjecteCopierSimple.INSTANCE);
   }
@@ -97,12 +97,12 @@ public interface MutableObject<T extends MutableObject<T>> extends MusicalObject
    * @param copier the {@link MutableObjecteCopier}.
    * @return a {@link #isMutable() mutable} copy of this object.
    */
-  T copy(MutableObjecteCopier copier);
+  SELF copy(MutableObjecteCopier copier);
 
   /**
    * @return {@code this} object itself if {@link #isMutable()} or a {@link #copy()} otherwise.
    */
-  default T makeMutable() {
+  default SELF makeMutable() {
 
     if (isImmutable()) {
       return copy();

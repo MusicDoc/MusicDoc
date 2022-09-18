@@ -144,7 +144,7 @@ public class SongFormatMusicDocTest extends SongFormatTest {
 
     // then
     assertThat(song.title.getValue()).isEqualTo("Dead cat");
-    assertThat(song.composer.getValue()).isEqualTo("Insane Composer");
+    assertThat(song.artist.getValue()).isEqualTo("Insane Composer");
     assertThat(score).isNotNull();
     assertThat(score.getSections()).hasSize(1);
     ScoreSection section = score.getSections().get(0);

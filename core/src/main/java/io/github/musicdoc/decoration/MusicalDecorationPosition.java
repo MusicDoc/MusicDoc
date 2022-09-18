@@ -5,35 +5,35 @@ package io.github.musicdoc.decoration;
  */
 public enum MusicalDecorationPosition {
 
-  /** On top of the {@link io.github.musicdoc.music.stave.Stave}. */
+  /** On top of the {@link io.github.musicdoc.stave.Stave}. */
   TOP,
 
-  /** At the bottom of the {@link io.github.musicdoc.music.stave.Stave}. */
+  /** At the bottom of the {@link io.github.musicdoc.stave.Stave}. */
   BOTTOM,
 
-  /** Above the {@link io.github.musicdoc.music.rythm.value.ValuedItem item}. */
+  /** Above the {@link io.github.musicdoc.rhythm.item.ValuedItem item}. */
   ABOVE,
 
-  /** Below the {@link io.github.musicdoc.music.rythm.value.ValuedItem item}. */
+  /** Below the {@link io.github.musicdoc.rhythm.item.ValuedItem item}. */
   BELOW,
 
   /**
-   * Above or below the {@link io.github.musicdoc.music.note.StemDirection stem}(s) of the
-   * {@link io.github.musicdoc.music.rythm.value.ValuedItem item}(s). So it follows the
-   * {@link io.github.musicdoc.music.note.StemDirection} and is placed at the vertical end of the stem.
+   * Above or below the {@link io.github.musicdoc.note.StemDirection stem}(s) of the
+   * {@link io.github.musicdoc.rhythm.item.ValuedItem item}(s). So it follows the
+   * {@link io.github.musicdoc.note.StemDirection} and is placed at the vertical end of the stem.
    */
   STEM,
 
   /**
-   * Above or below the note-head(s) of the {@link io.github.musicdoc.music.rythm.value.ValuedItem item}(s) so a
-   * {@link io.github.musicdoc.music.note.StemDirection stem} does not cross the decoration. Therefore it is opposite to
-   * the {@link io.github.musicdoc.music.note.StemDirection}.
+   * Above or below the note-head(s) of the {@link io.github.musicdoc.rhythm.item.ValuedItem item}(s) so a
+   * {@link io.github.musicdoc.note.StemDirection stem} does not cross the decoration. Therefore it is opposite to the
+   * {@link io.github.musicdoc.note.StemDirection}.
    */
   NOTEHEAD,
 
-  /** Left to the {@link io.github.musicdoc.music.rythm.value.ValuedItem item}. */
+  /** Left to the {@link io.github.musicdoc.rhythm.item.ValuedItem item}. */
   LEFT,
 
-  /** Rigth to the {@link io.github.musicdoc.music.rythm.value.ValuedItem item}. */
+  /** Rigth to the {@link io.github.musicdoc.rhythm.item.ValuedItem item}. */
   RIGHT
 }

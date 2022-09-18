@@ -85,9 +85,9 @@ public final class Tuplet extends FractionVariation {
   private static final Tuplet[] VALUES = { DUPLET, TRIPLET, QUADRUPLET, QUINTUPLET_2, QUINTUPLET_3, SIXTUPLET,
   SEVENTUPLET_2, SEVENTUPLET_3, EIGHTTUPLET, NINETUPLET_2, NINETUPLET_3 };
 
-  private Tuplet(int beats, int fraction, String text) {
+  private Tuplet(int beats, int unit, String text) {
 
-    super(beats, fraction, text);
+    super(beats, unit, text);
   }
 
   @Override

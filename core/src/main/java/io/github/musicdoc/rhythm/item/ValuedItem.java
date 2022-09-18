@@ -8,10 +8,10 @@ import java.util.Objects;
 import io.github.musicdoc.MutableObject;
 import io.github.musicdoc.MutableObjecteCopier;
 import io.github.musicdoc.MutableObjecteHelper;
+import io.github.musicdoc.decoration.DecoratedItem;
 import io.github.musicdoc.decoration.MusicalDecoration;
 import io.github.musicdoc.glyphs.MusicalGlyphs;
-import io.github.musicdoc.note.Note;
-import io.github.musicdoc.rhythm.rest.Rest;
+import io.github.musicdoc.note.NoteTone;
 import io.github.musicdoc.rhythm.value.MusicalValue;
 import io.github.musicdoc.tone.Tone;
 import io.github.musicdoc.transpose.AbstractTransposable;
@@ -23,7 +23,7 @@ import io.github.musicdoc.transpose.AbstractTransposable;
  * @param <SELF> type of the class itself.
  */
 public abstract class ValuedItem<SELF extends ValuedItem<SELF>> extends AbstractTransposable<SELF>
-    implements MusicalGlyphs, MutableObject<SELF> {
+    implements MusicalGlyphs, DecoratedItem, MutableObject<SELF> {
 
   /** @see #getValue() */
   protected MusicalValue value;
@@ -76,8 +76,9 @@ public abstract class ValuedItem<SELF extends ValuedItem<SELF>> extends Abstract
   }
 
   /**
-   * @return the {@link Tone} of this item or <code>null</code> if this item does not have a tone (e.g. {@link Rest}).
-   * @see Note
+   * @return the {@link Tone} of this item or <code>null</code> if this item does not have a tone (e.g.
+   *         {@link io.github.musicdoc.rhythm.rest.Rest}).
+   * @see io.github.musicdoc.note.Note
    */
   public Tone getTone() {
 
@@ -85,8 +86,9 @@ public abstract class ValuedItem<SELF extends ValuedItem<SELF>> extends Abstract
   }
 
   /**
-   * @return the number of {@link #getTone(int) tones} contained in this {@link Note}. Typically {@code 1} but may be
-   *         higher in case of a chord or unison.
+   * @return the number of {@link #getTone(int) tones} contained in this item. Typically {@code 1} but may be higher in
+   *         case of a chord or unison. Will always be {@code 0} in case of a
+   *         {@link io.github.musicdoc.rhythm.rest.Rest}.
    */
   public int getToneCount() {
 
@@ -95,9 +97,18 @@ public abstract class ValuedItem<SELF extends ValuedItem<SELF>> extends Abstract
 
   /**
    * @param i the index of the requested {@link Tone}.
-   * @return the {@link Tone} at the given index.
+   * @return the {@link Tone} at the given index or {@code null} if no such tone exists.
    */
   public Tone getTone(int i) {
+
+    return null;
+  }
+
+  /**
+   * @param i the index of the requested {@link NoteTone}.
+   * @return the {@link NoteTone} at the given index or {@code null} if no such {@link NoteTone} exists.
+   */
+  public NoteTone getNoteTone(int i) {
 
     return null;
   }
@@ -133,30 +144,30 @@ public abstract class ValuedItem<SELF extends ValuedItem<SELF>> extends Abstract
     return this.decorations;
   }
 
-  /**
-   * @param itemSuffix the {@link MusicalDecoration#isItemSuffix() item suffix} flag.
-   * @return {@code true} if this item {@link #getDecorations() has a decoration} with the given
-   *         {@link MusicalDecoration#isItemSuffix() item suffix} flag.
-   */
-  public boolean hasDecorationsWithSuffix(boolean itemSuffix) {
+  @Override
+  public int getDecorationCount() {
 
-    for (MusicalDecoration decoration : this.decorations) {
-      if (decoration.isItemSuffix() == itemSuffix) {
-        return true;
-      }
+    return this.decorations.size();
+  }
+
+  @Override
+  public MusicalDecoration getDecoration(int i) {
+
+    if ((i >= 0) && (i < this.decorations.size())) {
+      return this.decorations.get(i);
     }
-    return false;
+    return null;
   }
 
   /**
    * @param decoration the {@link MusicalDecoration} to add to {@link #getDecorations() decorations}.
-   * @return an {@link ValuedItem item} with the given {@link MusicalDecoration} added and all other properties like
-   *         {@code this} one. Will be a {@link #copy() copy} if {@link #isImmutable() immutable}.
+   * @return an item with the given {@link MusicalDecoration} added and all other properties like {@code this} one. Will
+   *         be a {@link #copy() copy} if {@link #isImmutable() immutable}.
    */
-  public SELF add(MusicalDecoration decoration) {
+  public SELF addDecoration(MusicalDecoration decoration) {
 
     SELF item = makeMutable();
-    ((ValuedItem<?>) item).decorations.add(decoration);
+    item.getDecorations().add(decoration);
     return item;
   }
 

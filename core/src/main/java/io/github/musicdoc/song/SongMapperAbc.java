@@ -40,7 +40,7 @@ public class SongMapperAbc extends SongMapper {
       return PROPERTY_UNIT_NOTE_LENGTH;
     } else if (TEMPLATE.title.getName().equals(propertyName)) {
       return PROPERTY_TITLE;
-    } else if (TEMPLATE.composer.getName().equals(propertyName)) {
+    } else if (TEMPLATE.artist.getName().equals(propertyName)) {
       return PROPERTY_COMPOSER;
     } else if (TEMPLATE.album.getName().equals(propertyName)) {
       return PROPERTY_DISCOGRAPHY;

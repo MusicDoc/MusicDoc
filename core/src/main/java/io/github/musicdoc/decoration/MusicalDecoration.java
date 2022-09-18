@@ -49,6 +49,7 @@ public abstract class MusicalDecoration implements MusicalGlyphs {
     StringDecoration.load();
     TieDecoration.load();
     TrillDecoration.load();
+    FretboardDecoration.load();
   }
 
   MusicalDecoration(String name, PeriodType period, String unicode, String smufl, MusicalDecoration reference) {

@@ -27,6 +27,7 @@ import io.github.musicdoc.rhythm.tuplet.TupletMapper;
 import io.github.musicdoc.rhythm.value.MusicalValueMapper;
 import io.github.musicdoc.score.Score;
 import io.github.musicdoc.score.ScoreMapper;
+import io.github.musicdoc.score.line.ScoreLineBreakMapper;
 import io.github.musicdoc.score.line.ScoreLineMapper;
 import io.github.musicdoc.score.section.ScoreSectionNameMapper;
 import io.github.musicdoc.stave.StaveChangeMapper;
@@ -333,6 +334,14 @@ public abstract class AbstractMapper<T> implements Mapper<T>, FormatConstants {
   protected ScoreLineMapper getScoreLineMapper() {
 
     return getFormat().getScoreLineMapper();
+  }
+
+  /**
+   * @return the {@link ScoreLineBreakMapper}.
+   */
+  protected ScoreLineBreakMapper getScoreLineBreakMapper() {
+
+    return getFormat().getScoreLineBreakMapper();
   }
 
   /**

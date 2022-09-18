@@ -121,12 +121,14 @@ public abstract class ScoreLineMapperBase extends ScoreLineMapper {
       in.next();
       return null;
     }
+    ScoreLineBreak lineBreak = getScoreLineBreakMapper().read(in, context);
     ScoreCell cell = new ScoreCell();
     cell.setStaveChange(staveChange);
     cell.setChordContainer(chordContainer);
     cell.setItem(item);
     cell.setLyric(lyric);
     cell.setBar(bar);
+    cell.setLineBreak(lineBreak);
     if (bar != null) {
       context.getTonePitchChange().clear();
     }

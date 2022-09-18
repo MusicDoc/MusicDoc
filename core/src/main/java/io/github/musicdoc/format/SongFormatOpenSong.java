@@ -32,6 +32,8 @@ import io.github.musicdoc.rhythm.tuplet.TupletMapper;
 import io.github.musicdoc.rhythm.value.MusicalValueMapper;
 import io.github.musicdoc.score.ScoreMapper;
 import io.github.musicdoc.score.ScoreMapperOpenSong;
+import io.github.musicdoc.score.line.ScoreLineBreakMapper;
+import io.github.musicdoc.score.line.ScoreLineBreakMapperOpenSong;
 import io.github.musicdoc.score.line.ScoreLineMapper;
 import io.github.musicdoc.score.line.ScoreLineMapperOpenSong;
 import io.github.musicdoc.score.section.ScoreSectionNameMapper;
@@ -251,6 +253,12 @@ public class SongFormatOpenSong extends SongFormatXml {
   protected ScoreLineMapper getScoreLineMapper() {
 
     return ScoreLineMapperOpenSong.INSTANCE;
+  }
+
+  @Override
+  protected ScoreLineBreakMapper getScoreLineBreakMapper() {
+
+    return ScoreLineBreakMapperOpenSong.INSTANCE;
   }
 
   @Override

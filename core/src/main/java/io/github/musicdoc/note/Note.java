@@ -15,21 +15,30 @@ import io.github.musicdoc.glyphs.unicode.UnicodeGlyphsNotes;
 import io.github.musicdoc.rhythm.item.ValuedItem;
 import io.github.musicdoc.rhythm.punctuation.Punctuation;
 import io.github.musicdoc.rhythm.value.MusicalValue;
+import io.github.musicdoc.tab.TabTone;
 import io.github.musicdoc.tone.Tone;
 import io.github.musicdoc.transpose.TransposeContext;
 
 /**
  * A {@link Note} is a musical object that has {@link #getTone() one} or {@link #getTone(int) multiple} {@link Tone}s
- * with a {@link #getValue() value}.<br>
+ * with a {@link #getValue() value} and optional {@link #getDecorations() decorations}.<br>
  * So e.g. the {@link Tone#C4} played with the length of a {@link MusicalValue#_1_4 quarter} can be expressed
  * accordingly. Also chords with {@link #getToneCount() multiple} {@link Tone}s of the same {@link #getValue() value}
- * (length) are possible. Even the same {@link Tone} can be contained twice what is called a <em>unison</em>.
+ * (length) are possible. Even the same {@link Tone} can be contained twice what is called a <em>unison</em>.<br>
+ * {@link #getDecorations() Decorations} apply to all {@link Tone}s in this {@link Note}. However, a {@link NoteTone}
+ * may have {@link NoteTone#getDecoration(int) additional decorations} specific only for that {@link Tone}. This only
+ * makes sense for {@link MusicalDecoration} specific for an individual {@link Tone}. So e.g. a
+ * {@link io.github.musicdoc.decoration.FretboardDecoration#SLIDE slide} applies to a single {@link Tone} while any
+ * decoration with {@link MusicalDecoration#getPosition() position}
+ * {@link io.github.musicdoc.decoration.MusicalDecorationPosition#TOP} or
+ * {@link io.github.musicdoc.decoration.MusicalDecorationPosition#BOTTOM} always applies to all {@link Tone}s and
+ * therefore shall never be added to an individual {@link Tone}.
  */
 public class Note extends ValuedItem<Note> {
 
-  private Tone tone;
+  private NoteTone tone;
 
-  private List<Tone> tones;
+  private List<NoteTone> tones;
 
   /**
    * The constructor.
@@ -76,7 +85,7 @@ public class Note extends ValuedItem<Note> {
    */
   public Note(Tone tone, MusicalValue value, List<MusicalDecoration> decorations) {
 
-    this(tone, value, decorations, null);
+    this(new NoteTone(tone), value, decorations, null);
   }
 
   /**
@@ -87,7 +96,7 @@ public class Note extends ValuedItem<Note> {
    * @param decorations - the {@link #getDecorations() decorations}.
    * @param tones the {@link #getTone(int) extra tones}.
    */
-  public Note(Tone tone, MusicalValue value, List<MusicalDecoration> decorations, List<Tone> tones) {
+  public Note(NoteTone tone, MusicalValue value, List<MusicalDecoration> decorations, List<NoteTone> tones) {
 
     super(value, decorations);
     Objects.requireNonNull(tone, "tone");
@@ -99,7 +108,14 @@ public class Note extends ValuedItem<Note> {
 
     super(note, copier);
     this.tone = note.tone;
-    this.tones = copier.copyListFlat(note.tones);
+    if (note.tones == null) {
+      this.tones = null;
+    } else {
+      this.tones = new ArrayList<>(note.tones.size());
+      for (NoteTone t : note.tones) {
+        this.tones.add(new NoteTone(t.getTone(), t.getTab()));
+      }
+    }
   }
 
   @Override
@@ -111,7 +127,7 @@ public class Note extends ValuedItem<Note> {
   @Override
   public Tone getTone() {
 
-    return this.tone;
+    return this.tone.getTone();
   }
 
   /**
@@ -121,18 +137,14 @@ public class Note extends ValuedItem<Note> {
    */
   public Note setTone(Tone tone) {
 
-    if (this.tone == tone) {
+    if (this.tone.getTone() == tone) {
       return this;
     }
     Note note = makeMutable();
-    note.tone = tone;
+    note.tone = new NoteTone(tone);
     return note;
   }
 
-  /**
-   * @return the number of {@link #getTone(int) tones} contained in this {@link Note}. Typically {@code 1} but may be
-   *         higher in case of a chord or unison.
-   */
   @Override
   public int getToneCount() {
 
@@ -143,12 +155,8 @@ public class Note extends ValuedItem<Note> {
     return count;
   }
 
-  /**
-   * @param i the index of the requested {@link Tone}.
-   * @return the {@link Tone} at the given index.
-   */
   @Override
-  public Tone getTone(int i) {
+  public NoteTone getNoteTone(int i) {
 
     if (i < 0) {
       return null;
@@ -161,6 +169,82 @@ public class Note extends ValuedItem<Note> {
     }
   }
 
+  @Override
+  public Tone getTone(int i) {
+
+    NoteTone noteTone = getNoteTone(i);
+    if (noteTone == null) {
+      return null;
+    }
+    return noteTone.getTone();
+  }
+
+  /**
+   * @param i the index of the {@link NoteTone}.
+   * @return the {@link TabTone} at the given index or {@code null} if no such {@link TabTone} exists.
+   */
+  public TabTone getTab(int i) {
+
+    NoteTone noteTone = getNoteTone(i);
+    if (noteTone == null) {
+      return null;
+    }
+    return noteTone.getTab();
+  }
+
+  /**
+   * @param i the index of the {@link NoteTone}. Has to be in the range from {@code 0} to {@link #getToneCount()
+   *        toneCount}-1.
+   * @param tab the {@link NoteTone#getTab() tab} to set.
+   * @return this {@link Note} if already mutable or a {@link #makeMutable() mutable copy}.
+   */
+  public Note setTab(int i, TabTone tab) {
+
+    Note note = makeMutable();
+    NoteTone noteTone = getNoteTone(i);
+    if (noteTone == null) {
+      throw new IndexOutOfBoundsException(Integer.toString(i));
+    }
+    noteTone.setTab(tab);
+    return note;
+  }
+
+  /**
+   * @param i the index of the {@link NoteTone}. Has to be in the range from {@code 0} to {@link #getToneCount()
+   *        toneCount}-1.
+   * @param decoration the {@link MusicalDecoration} to add.
+   * @return this {@link Note} if already mutable or a {@link #makeMutable() mutable copy}.
+   * @see NoteTone#getDecoration(int)
+   */
+  public Note addDecoration(int i, MusicalDecoration decoration) {
+
+    Note note = makeMutable();
+    NoteTone noteTone = getNoteTone(i);
+    if (noteTone == null) {
+      throw new IndexOutOfBoundsException(Integer.toString(i));
+    }
+    noteTone.addDecoration(decoration);
+    return note;
+  }
+
+  /**
+   * @param i the index of the {@link NoteTone}. Has to be in the range from {@code 0} to {@link #getToneCount()
+   *        toneCount}-1.
+   * @param decoration the {@link MusicalDecoration} to remove.
+   * @return this {@link Note} if already mutable or a {@link #makeMutable() mutable copy}.
+   * @see NoteTone#getDecoration(int)
+   */
+  public Note removeDecoration(int i, MusicalDecoration decoration) {
+
+    Note note = makeMutable();
+    NoteTone noteTone = getNoteTone(i);
+    if (noteTone == null) {
+      throw new IndexOutOfBoundsException(Integer.toString(i));
+    }
+    noteTone.removeDecoration(decoration);
+    return note;
+  }
+
   /**
    * @param extraTone the {@link Tone} to add.
    * @return this {@link Note} or a {@link #copy()} if {@link #isImmutable() immutable}.
@@ -171,18 +255,18 @@ public class Note extends ValuedItem<Note> {
     if (note.tones == null) {
       note.tones = new ArrayList<>();
     }
-    note.tones.add(extraTone);
+    note.tones.add(new NoteTone(extraTone));
     return note;
   }
 
   @Override
   public Note transpose(int steps, boolean diatonic, TransposeContext context) {
 
-    Tone newTone = this.tone.transpose(steps, diatonic, context);
-    List<Tone> extraTones = null;
+    NoteTone newTone = this.tone.transpose(steps, diatonic, context);
+    List<NoteTone> extraTones = null;
     if (this.tones != null) {
       extraTones = new ArrayList<>(this.tones.size());
-      for (Tone t : this.tones) {
+      for (NoteTone t : this.tones) {
         extraTones.add(t.transpose(steps, diatonic, context));
       }
     }
@@ -201,7 +285,7 @@ public class Note extends ValuedItem<Note> {
       }
       // TODO for beams this is incorrect and needs to be computed for entire sequences of notes.
       Tone middleTone = clef.getMiddleTone();
-      if (this.tone.isLower(middleTone)) {
+      if (this.tone.getTone().isLower(middleTone)) {
         stemDirection = StemDirection.DOWN;
       } else {
         stemDirection = StemDirection.UP;
@@ -231,10 +315,10 @@ public class Note extends ValuedItem<Note> {
   @Override
   protected void toStringItem(StringBuilder sb) {
 
-    this.tone.toString(sb);
+    this.tone.getTone().toString(sb);
     if (this.tones != null) {
-      for (Tone t : this.tones) {
-        t.toString(sb);
+      for (NoteTone t : this.tones) {
+        t.getTone().toString(sb);
       }
     }
     sb.append(':');

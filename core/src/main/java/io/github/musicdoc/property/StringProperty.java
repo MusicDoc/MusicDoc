@@ -5,7 +5,8 @@ package io.github.musicdoc.property;
  */
 public class StringProperty extends AbstractProperty<String> {
 
-  private String value;
+  /** @see #getValue() */
+  protected String value;
 
   /**
    * The constructor.

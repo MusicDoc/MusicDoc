@@ -50,14 +50,6 @@ public class TupletMapperMusicDoc extends TupletMapperBase {
   @Override
   public void write(Tuplet tuplet, MusicOutputStream out, SongFormatContext context) {
 
-    if (tuplet == null) {
-      return;
-    }
-    out.write(TUPLET_INDICATOR);
-    out.write(tuplet.getUnit());
-    if (!tuplet.hasDefaultBeats(context.getMetre())) {
-      out.write(':');
-      out.write(tuplet.getBeats());
-    }
+    writeTuplet(tuplet, 0, TUPLET_INDICATOR, out, context);
   }
 }

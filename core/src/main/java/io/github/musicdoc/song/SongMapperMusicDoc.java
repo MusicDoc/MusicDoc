@@ -40,14 +40,16 @@ public class SongMapperMusicDoc extends SongMapper {
       return PROPERTY_UNIT_NOTE_LENGTH;
     } else if (TEMPLATE.title.getName().equals(propertyName)) {
       return PROPERTY_TITLE;
-    } else if (TEMPLATE.composer.getName().equals(propertyName)) {
+    } else if (TEMPLATE.artist.getName().equals(propertyName)) {
       return PROPERTY_COMPOSER;
     } else if (TEMPLATE.album.getName().equals(propertyName)) {
       return PROPERTY_DISCOGRAPHY;
     } else if (TEMPLATE.origin.getName().equals(propertyName)) {
       return PROPERTY_ORIGIN;
     } else if (TEMPLATE.capo.getName().equals(propertyName)) {
-      return PROPERTY_CAPO;
+      return "Capo"; // "|"
+    } else if (TEMPLATE.tags.getName().equals(propertyName)) {
+      return "Tags"; // "#"
     }
     return null;
   }

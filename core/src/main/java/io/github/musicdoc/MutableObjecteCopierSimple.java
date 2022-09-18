@@ -19,6 +19,9 @@ public final class MutableObjecteCopierSimple implements MutableObjecteCopier {
   @Override
   public <T extends MutableObject<T>> T copy(T object) {
 
+    if (object == null) {
+      return null;
+    }
     return object.copy(this);
   }
 

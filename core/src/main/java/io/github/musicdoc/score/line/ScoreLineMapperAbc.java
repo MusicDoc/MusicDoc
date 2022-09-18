@@ -1,5 +1,7 @@
 package io.github.musicdoc.score.line;
 
+import java.util.List;
+
 import io.github.musicdoc.bar.BarLine;
 import io.github.musicdoc.format.SongFormat;
 import io.github.musicdoc.format.SongFormatAbc;
@@ -10,7 +12,9 @@ import io.github.musicdoc.io.MusicOutputStream;
 import io.github.musicdoc.rhythm.fraction.SimpleFraction;
 import io.github.musicdoc.rhythm.item.ValuedItem;
 import io.github.musicdoc.rhythm.punctuation.Punctuation;
+import io.github.musicdoc.rhythm.tuplet.Tuplet;
 import io.github.musicdoc.rhythm.tuplet.TupletContext;
+import io.github.musicdoc.rhythm.tuplet.TupletMapperBase;
 import io.github.musicdoc.rhythm.value.MusicalValue;
 import io.github.musicdoc.score.cell.ScoreCell;
 import io.github.musicdoc.stave.StaveChange;
@@ -130,9 +134,9 @@ public class ScoreLineMapperAbc extends ScoreLineMapperBase {
         item.getValue().setPunctuation(punctuation);
       }
     } else if (brokenRythmCount < 0) {
-      int fraction = 1 << (-brokenRythmCount);
+      int unitFactor = 1 << (-brokenRythmCount);
       SimpleFraction<?> plain = item.getValue().getPlain();
-      plain.setUnit(plain.getUnit() * fraction);
+      plain.setUnit(plain.getUnit() * unitFactor);
     }
   }
 
@@ -173,9 +177,8 @@ public class ScoreLineMapperAbc extends ScoreLineMapperBase {
     String lyric = cell.getLyric();
     BarLine bar = cell.getBar();
     String suffix = "";
-    TupletContext tc = context.getTupletContext();
     if (next != null) {
-      // proper alignment to increase reability
+      // proper alignment to increase readability
       if ((bar != null) || ((item == null) || (!item.hasDecorationsWithSuffix(true)))) {
         suffix = " ";
       }
@@ -193,11 +196,11 @@ public class ScoreLineMapperAbc extends ScoreLineMapperBase {
             suffix = getBrokenRythmInfix(true, punctuation);
           }
         } else if ((punctuation == 0) && (nextPunctuation != 0)) {
-          int fraction = 1 << nextPunctuation;
-          if ((value.getPlain().getValue() * fraction) == nextValue.getPlain().getValue()) {
+          int unitFactor = 1 << nextPunctuation;
+          if ((value.getPlain().getValue() * unitFactor) == nextValue.getPlain().getValue()) {
             item = item.copy();
             SimpleFraction<?> plain = item.getValue().getPlain();
-            plain.setUnit(plain.getUnit() / fraction);
+            plain.setUnit(plain.getUnit() / unitFactor);
             suffix = getBrokenRythmInfix(false, nextPunctuation);
           }
         }
@@ -211,24 +214,70 @@ public class ScoreLineMapperAbc extends ScoreLineMapperBase {
         int punctuation = value.getPunctuationCount();
         int previousPunctuation = previousValue.getPunctuationCount();
         if ((punctuation == 0) && (previousPunctuation != 0)) {
-          int fraction = 1 << previousPunctuation;
-          if (previousValue.getPlain().getValue() == (value.getPlain().getValue() * fraction)) {
+          int unitFactor = 1 << previousPunctuation;
+          if (previousValue.getPlain().getValue() == (value.getPlain().getValue() * unitFactor)) {
             item = item.copy();
             SimpleFraction<?> plain = item.getValue().getPlain();
-            plain.setUnit(value.getUnit() / fraction);
+            plain.setUnit(value.getUnit() / unitFactor);
           }
         } else if ((previousPunctuation == 0) && (punctuation != 0)) {
-          int fraction = 1 << punctuation;
-          if ((previousValue.getPlain().getValue() * fraction) == value.getPlain().getValue()) {
+          int unitFactor = 1 << punctuation;
+          if ((previousValue.getPlain().getValue() * unitFactor) == value.getPlain().getValue()) {
             item = item.copy();
             SimpleFraction<?> plain = item.getValue().getPlain();
-            plain.setUnit(value.getUnit() / fraction);
+            plain.setUnit(value.getUnit() / unitFactor);
           }
         }
       }
     }
+    if (item != null) {
+      TupletContext tc = context.getTupletContext();
+      Tuplet tuplet = item.getValue().getTuplet();
+      if (tuplet != null) {
+        if (tc == null) {
+          int count = countTuplets(tuplet, line, cellIndexx + 1);
+          tc = new TupletContext(tuplet, count);
+          TupletMapperBase.writeTupletContext(tc, '(', out, context);
+          tc.decrementNoteCount(); // first tuplet item will be written in this method (in writeCell)
+          context.setTupletContext(tc);
+        } else {
+          if (!tuplet.equals(tc.getTuplet())) {
+            out.addError("Incompatible tuplet.");
+          } else if (tc.getItemCount() > 0) {
+            int count = tc.decrementNoteCount();
+            if (count == 0) {
+              context.setTupletContext(null);
+            }
+          } else {
+            out.addError("Illegal tuplet state.");
+          }
+        }
+      } else if ((tc != null) && (tc.getItemCount() > 0)) {
+        out.addError("Missing tuplet.");
+      }
+    }
     writeCell(cell, staveChange, chordContainer, item, lyric, bar, out, context);
     out.write(suffix);
+  }
+
+  private int countTuplets(Tuplet tuplet, ScoreLine line, int cellIndex) {
+
+    int noteCount = 1;
+    List<ScoreCell> cells = line.getCells();
+    int size = cells.size();
+    for (int i = cellIndex; i < size; i++) {
+      ScoreCell cell = cells.get(i);
+      ValuedItem<?> item = cell.getItem();
+      if (item != null) {
+        if (tuplet.equals(item.getValue().getTuplet())) {
+          noteCount++;
+        } else {
+          return noteCount;
+        }
+      }
+    }
+    // TODO: continue noteCount in next voice line?
+    return noteCount;
   }
 
   private String getBrokenRythmInfix(boolean firstPunctuated, int count) {

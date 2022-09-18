@@ -109,7 +109,7 @@ public interface SmuflGlyphsClefs extends SmuflGlyphs {
       case PERCUSSION_2:
         return UNPITCHED_PERCUSSION_CLEV_2;
       case TAB:
-        int stringCount = clef.getStrings().size();
+        int stringCount = clef.getTuning().getStrings().size();
         if ((stringCount > 0) && (stringCount <= 4)) {
           return TAB_CLEV_4;
         } else {

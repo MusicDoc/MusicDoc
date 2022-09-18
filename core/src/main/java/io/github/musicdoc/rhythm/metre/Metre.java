@@ -37,14 +37,14 @@ public final class Metre extends SimpleFraction<Metre> {
   /** No beat. */
   public static final Metre NONE = create(0, 1, "none");
 
-  private Metre(int beats, int fraction) {
+  private Metre(int beats, int unit) {
 
-    this(beats, fraction, null);
+    this(beats, unit, null);
   }
 
-  private Metre(int beats, int fraction, String text) {
+  private Metre(int beats, int unit, String text) {
 
-    super(beats, fraction);
+    super(beats, unit);
     this.text = text;
   }
 

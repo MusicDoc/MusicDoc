@@ -47,9 +47,9 @@ public abstract class MetreMapper extends AbstractMapper<Metre> {
     } else {
       int beats = beat.getBeats();
       out.write(Integer.toString(beats));
-      int fraction = beat.getUnit();
+      int unit = beat.getUnit();
       out.write(BEAT_SEPARATOR);
-      out.write(Integer.toString(fraction));
+      out.write(Integer.toString(unit));
     }
   }
 }

@@ -63,13 +63,13 @@ public abstract class MusicalValueMapperBase extends MusicalValueMapper {
     }
     outValue = outValue.normalize();
     int beats = outValue.getBeats();
-    int fraction = outValue.getUnit();
+    int unit = outValue.getUnit();
     if (beats > 1) {
       out.write(Integer.toString(beats));
     }
-    if (fraction > 1) {
+    if (unit > 1) {
       out.write(BEAT_SEPARATOR);
-      out.write(Integer.toString(fraction));
+      out.write(Integer.toString(unit));
     }
     getPunctuationMapper().write(punctuation, out, context);
     getTupletMapper().write(value.getTuplet(), out, context);
