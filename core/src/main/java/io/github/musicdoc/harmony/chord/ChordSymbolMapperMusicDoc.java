@@ -4,17 +4,17 @@ import io.github.musicdoc.format.SongFormat;
 import io.github.musicdoc.format.SongFormatMusicDoc;
 
 /**
- * {@link ChordMapper} for {@link SongFormatMusicDoc}.
+ * {@link ChordSymbolMapper} for {@link SongFormatMusicDoc}.
  */
-public class ChordMapperMusicDoc extends ChordMapper {
+public class ChordSymbolMapperMusicDoc extends ChordSymbolMapper {
 
   /** The singleton instance. */
-  public static final ChordMapperMusicDoc INSTANCE = new ChordMapperMusicDoc();
+  public static final ChordSymbolMapperMusicDoc INSTANCE = new ChordSymbolMapperMusicDoc();
 
   /**
    * The constructor.
    */
-  protected ChordMapperMusicDoc() {
+  protected ChordSymbolMapperMusicDoc() {
 
     super();
   }

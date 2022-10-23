@@ -1,7 +1,7 @@
 package io.github.musicdoc.glyphs.smufl;
 
 import io.github.musicdoc.glyphs.unicode.UnicodeGlyphs;
-import io.github.musicdoc.rhythm.fraction.Fraction;
+import io.github.musicdoc.rhythm.fraction.SimpleFraction;
 
 /**
  * {@link UnicodeGlyphs} for {@link io.github.musicdoc.rhythm.rest.Rest}s.
@@ -42,10 +42,10 @@ public interface SmuflGlyphsRest extends UnicodeGlyphs {
   String REST_1_1024 = "\uE4ED";
 
   /**
-   * @param value the {@link Fraction} value.
+   * @param value the {@link SimpleFraction}.
    * @return the corresponding rest glyph.
    */
-  static String get(Fraction value) {
+  static String get(SimpleFraction<?> value) {
 
     int beats = value.getBeats();
     int fract = value.getUnit();
@@ -80,5 +80,4 @@ public interface SmuflGlyphsRest extends UnicodeGlyphs {
     }
     return null;
   }
-
 }

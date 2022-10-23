@@ -5,7 +5,7 @@ package io.github.musicdoc.interval;
 import java.util.Objects;
 
 import io.github.musicdoc.harmony.TonalSystem;
-import io.github.musicdoc.harmony.chord.Chord;
+import io.github.musicdoc.harmony.chord.ChordSymbol;
 import io.github.musicdoc.harmony.chord.ChordExtension;
 import io.github.musicdoc.harmony.key.MusicalKey;
 import io.github.musicdoc.tone.pitch.TonePitch;
@@ -31,13 +31,13 @@ public class ChromaticInterval implements ToneInterval {
   public static final ChromaticInterval MAJOR_SECOND = new ChromaticInterval(2, 1);
 
   /**
-   * Three semitone steps (two diatonic steps). The third of a {@link TonalSystem#MINOR minor} {@link Chord} or
+   * Three semitone steps (two diatonic steps). The third of a {@link TonalSystem#MINOR minor} {@link ChordSymbol} or
    * {@link MusicalKey key}.
    */
   public static final ChromaticInterval MINOR_THIRD = new ChromaticInterval(3, 2);
 
   /**
-   * Four semitone steps (two diatonic steps). The third of a {@link TonalSystem#MAJOR major} {@link Chord} or
+   * Four semitone steps (two diatonic steps). The third of a {@link TonalSystem#MAJOR major} {@link ChordSymbol} or
    * {@link MusicalKey key}.
    */
   public static final ChromaticInterval MAJOR_THIRD = new ChromaticInterval(4, 2);
@@ -59,7 +59,7 @@ public class ChromaticInterval implements ToneInterval {
 
   /**
    * Seven semitone steps (four diatonic steps). Same as {@link DiatonicInterval#FIFTH} also called <em>quintium</em>,
-   * the total interval of a regular {@link TonalSystem#MAJOR major} or {@link TonalSystem#MINOR minor} {@link Chord}.
+   * the total interval of a regular {@link TonalSystem#MAJOR major} or {@link TonalSystem#MINOR minor} {@link ChordSymbol}.
    */
   public static final ChromaticInterval PERFECT_FIFTH = new ChromaticInterval(7, 4);
 
@@ -90,7 +90,7 @@ public class ChromaticInterval implements ToneInterval {
 
   /**
    * Ten semitone steps (six diatonic steps). The regular {@link DiatonicInterval#SEVENTH seventh} used e.g. for
-   * {@link ChordExtension#_7}. Especially important for dominant {@link Chord}s.
+   * {@link ChordExtension#_7}. Especially important for dominant {@link ChordSymbol}s.
    */
   public static final ChromaticInterval MINOR_SEVENTH = new ChromaticInterval(10, 6);
 

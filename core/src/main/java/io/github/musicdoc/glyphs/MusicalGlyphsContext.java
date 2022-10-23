@@ -93,7 +93,7 @@ public class MusicalGlyphsContext implements MusicalGlyphsOptions {
    * @return a new {@link MusicalGlyphsContext} if {@link #getOptions() options} changed and {@link #isImmutable()
    *         immutable}, otherwise {@code this} instance itself.
    */
-  public MusicalGlyphsContext withOptions(MusicalGlyphsContextOptions newOptions) {
+  public MusicalGlyphsContext setOptions(MusicalGlyphsContextOptions newOptions) {
 
     Objects.requireNonNull(newOptions);
     if (newOptions == this.options) {
@@ -140,7 +140,7 @@ public class MusicalGlyphsContext implements MusicalGlyphsOptions {
    * @return a new {@link MusicalGlyphsContext} if {@link #getStemDirection()} changed and {@link #isImmutable()
    *         immutable}, otherwise {@code this} instance itself.
    */
-  public MusicalGlyphsContext withStemDirection(StemDirection direction) {
+  public MusicalGlyphsContext setStemDirection(StemDirection direction) {
 
     if (direction == this.stemDirection) {
       return this;
@@ -190,7 +190,7 @@ public class MusicalGlyphsContext implements MusicalGlyphsOptions {
    * @return a new {@link MusicalGlyphsContext} if the {@link Clef} changed and {@link #isImmutable() immutable},
    *         otherwise {@code this} instance itself.
    */
-  public MusicalGlyphsContext withClef(Clef newClef) {
+  public MusicalGlyphsContext setClef(Clef newClef) {
 
     if (newClef == this.clef) {
       return this;

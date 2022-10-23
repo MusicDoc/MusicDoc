@@ -12,11 +12,11 @@ import io.github.musicdoc.stave.voice.StaveVoice;
 import io.github.musicdoc.stave.voice.StaveVoiceContainer;
 
 /**
- * The system defining the structure of {@link Stave}s belonging together in a
- * {@link io.github.musicdoc.score.Score}. Technically it is a node of a tree of {@link Stave}s that groups
- * {@link #getChildren() children} that may be connected by a {@link #getBracket() bracket}. The actual {@link Stave}s
- * in this tree are wrapped in a {@link StaveSystemSingle} what can also be determined via {@link #isSingle()}. From the
- * perspective of a musical score only the root-node {@link StaveSystem} is actually what is called the system.
+ * The system defining the structure of {@link Stave}s belonging together in a {@link io.github.musicdoc.score.Score}.
+ * Technically it is a node of a tree of {@link Stave}s that groups {@link #getChildren() children} that may be
+ * connected by a {@link #getBracket() bracket}. The actual {@link Stave}s in this tree are wrapped in a
+ * {@link StaveSystemSingle} what can also be determined via {@link #isSingle()}. From the perspective of a musical
+ * score only the root-node {@link StaveSystem} is actually what is called the system.
  */
 public abstract class StaveSystem extends AbstractMusicalObject
     implements StaveVoiceContainer, MutableObject<StaveSystem> {
@@ -27,6 +27,9 @@ public abstract class StaveSystem extends AbstractMusicalObject
 
   /** @see #getBracket() */
   protected StaveBracket bracket;
+
+  /** @see #getName() */
+  protected String name;
 
   /** @see #getParent() */
   protected StaveSystemMultiple parent;
@@ -83,6 +86,30 @@ public abstract class StaveSystem extends AbstractMusicalObject
     }
     StaveSystem system = makeMutable();
     system.bracket = newBracket;
+    return system;
+  }
+
+  /**
+   * @return the optional name. It neither {@code null} nor empty it will be printed as label left to the
+   *         {@link #getBracket() bracket} vertically in the middle of this {@link StaveSystem}.
+   */
+  public String getName() {
+
+    return this.name;
+  }
+
+  /**
+   * @param newName the new {@link #getName() name}.
+   * @return a new {@link Stave} with the given {@link #getName() name} and all other properties like {@code this} one.
+   *         Will be a {@link #copy()} if {@link #isImmutable() immutable}.
+   */
+  public StaveSystem setName(String newName) {
+
+    if (newName == this.name) {
+      return this;
+    }
+    StaveSystem system = makeMutable();
+    system.name = newName;
     return system;
   }
 

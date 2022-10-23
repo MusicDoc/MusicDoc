@@ -10,7 +10,7 @@ import io.github.musicdoc.decoration.MusicalDecorationMapper;
 import io.github.musicdoc.harmony.TonalSystemMapper;
 import io.github.musicdoc.harmony.chord.ChordContainerMapper;
 import io.github.musicdoc.harmony.chord.ChordExtensionMapper;
-import io.github.musicdoc.harmony.chord.ChordMapper;
+import io.github.musicdoc.harmony.chord.ChordSymbolMapper;
 import io.github.musicdoc.harmony.key.MusicalKeyMapper;
 import io.github.musicdoc.instrument.InstrumentMapper;
 import io.github.musicdoc.io.MusicInputStream;
@@ -129,11 +129,11 @@ public abstract class AbstractMapper<T> implements Mapper<T>, FormatConstants {
   }
 
   /**
-   * @return the {@link ChordMapper}.
+   * @return the {@link ChordSymbolMapper}.
    */
-  protected ChordMapper getChordMapper() {
+  protected ChordSymbolMapper getChordSymbolMapper() {
 
-    return getFormat().getChordMapper();
+    return getFormat().getChordSymbolMapper();
   }
 
   /**

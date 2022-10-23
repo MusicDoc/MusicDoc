@@ -3,7 +3,7 @@ package io.github.musicdoc.format;
 import org.junit.jupiter.api.Test;
 
 import io.github.musicdoc.harmony.TonalSystem;
-import io.github.musicdoc.harmony.chord.Chord;
+import io.github.musicdoc.harmony.chord.ChordSymbol;
 import io.github.musicdoc.harmony.chord.ChordExtension;
 import io.github.musicdoc.score.Score;
 import io.github.musicdoc.score.ScoreRow;
@@ -68,25 +68,25 @@ public class SongFormatOpenSongTest extends SongFormatTest {
     assertThat(cell).isNotNull();
     assertThat(cell.getStaveChange()).isNull();
     assertThat(cell.getItem()).isNull();
-    assertThat(cell.getChord()).isEqualTo(new Chord(TonePitchEnglish.A, TonalSystem.MAJOR_EMPTY));
+    assertThat(cell.getChord()).isEqualTo(new ChordSymbol(TonePitchEnglish.A, TonalSystem.MAJOR_EMPTY));
     assertThat(cell.getLyric()).isEqualTo("a ");
     cell = voiceLine.getCell(1);
     assertThat(cell).isNotNull();
     assertThat(cell.getStaveChange()).isNull();
     assertThat(cell.getItem()).isNull();
-    assertThat(cell.getChord()).isEqualTo(new Chord(TonePitchEnglish.B, TonalSystem.of("m"), ChordExtension._7));
+    assertThat(cell.getChord()).isEqualTo(new ChordSymbol(TonePitchEnglish.B, TonalSystem.of("m"), ChordExtension._7));
     assertThat(cell.getLyric()).isEqualTo("b   ");
     cell = voiceLine.getCell(2);
     assertThat(cell).isNotNull();
     assertThat(cell.getStaveChange()).isNull();
     assertThat(cell.getItem()).isNull();
-    assertThat(cell.getChord()).isEqualTo(new Chord(TonePitchEnglish.C, TonalSystem.MAJOR_EMPTY, ChordExtension.ADD_9));
+    assertThat(cell.getChord()).isEqualTo(new ChordSymbol(TonePitchEnglish.C, TonalSystem.MAJOR_EMPTY, ChordExtension.ADD_9));
     assertThat(cell.getLyric()).isEqualTo("c the caT is ");
     cell = voiceLine.getCell(3);
     assertThat(cell).isNotNull();
     assertThat(cell.getStaveChange()).isNull();
     assertThat(cell.getItem()).isNull();
-    assertThat(cell.getChord()).isEqualTo(new Chord(TonePitchEnglish.D, TonalSystem.MAJOR_EMPTY));
+    assertThat(cell.getChord()).isEqualTo(new ChordSymbol(TonePitchEnglish.D, TonalSystem.MAJOR_EMPTY));
     assertThat(cell.getLyric()).isEqualTo(" dead.");
   }
 
@@ -102,10 +102,10 @@ public class SongFormatOpenSongTest extends SongFormatTest {
     ScoreSection section = new ScoreSection(name);
     ScoreRow row = new ScoreRow();
     ScoreVoiceLine line = new ScoreVoiceLine();
-    line.add(new ScoreCell(Chord.ofMajor(TonePitchEnglish.A), "a "));
-    line.add(new ScoreCell(Chord.ofMinorWith7(TonePitchEnglish.B), "b "));
-    line.add(new ScoreCell(Chord.ofMajor(TonePitchEnglish.C, ChordExtension.ADD_9), "c the caT is "));
-    line.add(new ScoreCell(Chord.ofMajor(TonePitchEnglish.D), " dead."));
+    line.add(new ScoreCell(ChordSymbol.ofMajor(TonePitchEnglish.A), "a "));
+    line.add(new ScoreCell(ChordSymbol.ofMinorWith7(TonePitchEnglish.B), "b "));
+    line.add(new ScoreCell(ChordSymbol.ofMajor(TonePitchEnglish.C, ChordExtension.ADD_9), "c the caT is "));
+    line.add(new ScoreCell(ChordSymbol.ofMajor(TonePitchEnglish.D), " dead."));
     row.addLine(line);
     section.getRows().add(row);
     score.getSections().add(section);

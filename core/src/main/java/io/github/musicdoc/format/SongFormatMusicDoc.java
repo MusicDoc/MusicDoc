@@ -14,8 +14,8 @@ import io.github.musicdoc.harmony.chord.ChordContainerMapper;
 import io.github.musicdoc.harmony.chord.ChordContainerMapperMusicDoc;
 import io.github.musicdoc.harmony.chord.ChordExtensionMapper;
 import io.github.musicdoc.harmony.chord.ChordExtensionMapperMusicDoc;
-import io.github.musicdoc.harmony.chord.ChordMapper;
-import io.github.musicdoc.harmony.chord.ChordMapperMusicDoc;
+import io.github.musicdoc.harmony.chord.ChordSymbolMapper;
+import io.github.musicdoc.harmony.chord.ChordSymbolMapperMusicDoc;
 import io.github.musicdoc.harmony.key.MusicalKeyMapper;
 import io.github.musicdoc.harmony.key.MusicalKeyMapperMusicDoc;
 import io.github.musicdoc.instrument.InstrumentMapper;
@@ -103,9 +103,9 @@ public class SongFormatMusicDoc extends SongFormatText {
   }
 
   @Override
-  protected ChordMapper getChordMapper() {
+  protected ChordSymbolMapper getChordSymbolMapper() {
 
-    return ChordMapperMusicDoc.INSTANCE;
+    return ChordSymbolMapperMusicDoc.INSTANCE;
   }
 
   @Override

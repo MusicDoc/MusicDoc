@@ -16,9 +16,9 @@ import io.github.musicdoc.transpose.AbstractTransposable;
 import io.github.musicdoc.transpose.TransposeContext;
 
 /**
- * A {@link Chord} is a combination of {@link TonePitch}es played simultaneously. Typical {@link Chord}s have a
+ * A {@link ChordSymbol} is a combination of {@link TonePitch}es played simultaneously. Typical {@link ChordSymbol}s have a
  * {@link #getTonalSystem() tonal system} which is either {@link TonalSystem#MAJOR} or {@link TonalSystem#MINOR}. Such
- * {@link Chord}s consists of a least three tones:
+ * {@link ChordSymbol}s consists of a least three tones:
  * <ul>
  * <li>the {@link #getFundamental() fundamental tone}</li>
  * <li>the {@link ChromaticInterval#MINOR_THIRD} on the {@link #getFundamental() fundamental tone} for
@@ -37,20 +37,20 @@ import io.github.musicdoc.transpose.TransposeContext;
  * {@link io.github.musicdoc.tone.pitch.TonePitchEnglish#D_SHARP D#}, and
  * {@link io.github.musicdoc.tone.pitch.TonePitchEnglish#G G}.</li>
  * </ul>
- * Further, a {@link Chord} can have {@link #getExtensions() extensions} that {@link ChordExtension#getIntervals() add}
- * or {@link ChordExtension#isRemoveThird() remove} tones from the {@link Chord}. A very common example is
+ * Further, a {@link ChordSymbol} can have {@link #getExtensions() extensions} that {@link ChordExtension#getIntervals() add}
+ * or {@link ChordExtension#isRemoveThird() remove} tones from the {@link ChordSymbol}. A very common example is
  * {@link ChordExtension#_7} that adds a {@link ChromaticInterval#MINOR_SEVENTH minor seventh} relative to the
- * {@link #getFundamental() fundamental tone} to the {@link Chord}. However, there can also be complex combinations such
+ * {@link #getFundamental() fundamental tone} to the {@link ChordSymbol}. However, there can also be complex combinations such
  * as "Csus4no5add11". Also there are the special {@link ChordExtension extensions} {@link ChordExtension#DIM} and
  * {@link ChordExtension#AUG} that change the chord character totally. <br/>
- * Finally, a {@link Chord} can have a different {@link #getBase() base tone}. This tone is not only added but has to be
- * the lowest tone in the {@link Chord}.<br/>
- * {@link Chord}s can be inverted what means that the tones except for a {@link #getBase() base tone} (if different from
+ * Finally, a {@link ChordSymbol} can have a different {@link #getBase() base tone}. This tone is not only added but has to be
+ * the lowest tone in the {@link ChordSymbol}.<br/>
+ * {@link ChordSymbol}s can be inverted what means that the tones except for a {@link #getBase() base tone} (if different from
  * {@link #getFundamental() fundamental tone}) can be {@link ChromaticInterval#PERFECT_OCTAVE octavated} so the order of
- * the tones from lower to higher tones will change. Instances of this {@link Chord} class do not distinguish inversions
+ * the tones from lower to higher tones will change. Instances of this {@link ChordSymbol} class do not distinguish inversions
  * of chords.
  */
-public class Chord extends AbstractTransposable<Chord> {
+public class ChordSymbol extends AbstractTransposable<ChordSymbol> {
 
   private final TonePitch fundamentalTone;
 
@@ -68,7 +68,7 @@ public class Chord extends AbstractTransposable<Chord> {
    * @param fundamental - see {@link #getFundamental()}.
    * @param system - see {@link #getTonalSystem()}.
    */
-  public Chord(TonePitch fundamental, TonalSystem system) {
+  public ChordSymbol(TonePitch fundamental, TonalSystem system) {
 
     this(fundamental, system, null, Collections.EMPTY_LIST);
   }
@@ -80,7 +80,7 @@ public class Chord extends AbstractTransposable<Chord> {
    * @param system - see {@link #getTonalSystem()}.
    * @param base - see {@link #getBase()}.
    */
-  public Chord(TonePitch fundamental, TonalSystem system, TonePitch base) {
+  public ChordSymbol(TonePitch fundamental, TonalSystem system, TonePitch base) {
 
     this(fundamental, system, base, Collections.EMPTY_LIST);
   }
@@ -92,7 +92,7 @@ public class Chord extends AbstractTransposable<Chord> {
    * @param system - see {@link #getTonalSystem()}.
    * @param extensions - see {@link #getExtensions()}.
    */
-  public Chord(TonePitch fundamental, TonalSystem system, ChordExtension... extensions) {
+  public ChordSymbol(TonePitch fundamental, TonalSystem system, ChordExtension... extensions) {
 
     this(fundamental, system, null, extensions);
   }
@@ -105,7 +105,7 @@ public class Chord extends AbstractTransposable<Chord> {
    * @param base - see {@link #getBase()}.
    * @param extensions - see {@link #getExtensions()}.
    */
-  public Chord(TonePitch fundamental, TonalSystem system, TonePitch base, ChordExtension... extensions) {
+  public ChordSymbol(TonePitch fundamental, TonalSystem system, TonePitch base, ChordExtension... extensions) {
 
     this(fundamental, system, base, Arrays.asList(extensions));
   }
@@ -118,7 +118,7 @@ public class Chord extends AbstractTransposable<Chord> {
    * @param base - see {@link #getBase()}.
    * @param extensions - see {@link #getExtensions()}.
    */
-  public Chord(TonePitch fundamental, TonalSystem system, TonePitch base, List<ChordExtension> extensions) {
+  public ChordSymbol(TonePitch fundamental, TonalSystem system, TonePitch base, List<ChordExtension> extensions) {
 
     this(Collections.unmodifiableList(extensions), fundamental, system, base);
   }
@@ -131,7 +131,7 @@ public class Chord extends AbstractTransposable<Chord> {
    * @param base - see {@link #getBase()}.
    * @param extensions - see {@link #getExtensions()}.
    */
-  private Chord(List<ChordExtension> extensions, TonePitch fundamental, TonalSystem system, TonePitch base) {
+  private ChordSymbol(List<ChordExtension> extensions, TonePitch fundamental, TonalSystem system, TonePitch base) {
 
     super();
     Objects.requireNonNull(fundamental, "fundamental");
@@ -148,10 +148,10 @@ public class Chord extends AbstractTransposable<Chord> {
   }
 
   /**
-   * @return the normalized instance of this {@link Chord}. E.g. for "Dismajor4/Es" the normalized result would be "D#4"
+   * @return the normalized instance of this {@link ChordSymbol}. E.g. for "Dismajor4/Es" the normalized result would be "D#4"
    *         and for "CΔ/fis" this method would return "Cmaj7/F#".
    */
-  public Chord normalize() {
+  public ChordSymbol normalize() {
 
     TonePitch fundamental = this.fundamentalTone.getNormalForm();
     TonalSystem system = this.tonalSystem;
@@ -178,7 +178,7 @@ public class Chord extends AbstractTransposable<Chord> {
     if (hasBase()) {
       base = this.baseTone.getReference();
     }
-    return new Chord(extList, fundamental, system, base);
+    return new ChordSymbol(extList, fundamental, system, base);
   }
 
   private String buildName() {
@@ -226,7 +226,7 @@ public class Chord extends AbstractTransposable<Chord> {
   }
 
   /**
-   * @return {@code true} if this {@link Chord} has a {@link #getBase() base tone} different from its
+   * @return {@code true} if this {@link ChordSymbol} has a {@link #getBase() base tone} different from its
    *         {@link #getFundamental() fundamental tone}.
    */
   public boolean hasBase() {
@@ -235,8 +235,8 @@ public class Chord extends AbstractTransposable<Chord> {
   }
 
   /**
-   * @return the base tone that is the lowest {@link TonePitch} played for this {@link Chord}. For a "regular"
-   *         {@link Chord} the base is the same as the {@link #getFundamental() fundamental tone} (e.g. in case "Cm7"
+   * @return the base tone that is the lowest {@link TonePitch} played for this {@link ChordSymbol}. For a "regular"
+   *         {@link ChordSymbol} the base is the same as the {@link #getFundamental() fundamental tone} (e.g. in case "Cm7"
    *         both base and fundamental are "C"). If the base differs from the {@link #getFundamental() fundamental}
    *         (e.g. in case of "Cm7/E" where base is "E" and fundamental is "C"), the base tone is added below the
    *         {@link #getFundamental() fundamental tone} or depending on the way it is played on a specific instrument it
@@ -256,7 +256,7 @@ public class Chord extends AbstractTransposable<Chord> {
   }
 
   @Override
-  public Chord transpose(int steps, boolean diatonic, TransposeContext context) {
+  public ChordSymbol transpose(int steps, boolean diatonic, TransposeContext context) {
 
     TonePitch transposedFundamental = this.fundamentalTone.transpose(steps, diatonic, context);
     int chromaticSteps;
@@ -272,7 +272,7 @@ public class Chord extends AbstractTransposable<Chord> {
       subContext = null;
     }
     TonePitch transposedBase = this.baseTone.transpose(chromaticSteps, false, subContext);
-    return new Chord(this.extensions, transposedFundamental, this.tonalSystem, transposedBase);
+    return new ChordSymbol(this.extensions, transposedFundamental, this.tonalSystem, transposedBase);
   }
 
   @Override
@@ -290,7 +290,7 @@ public class Chord extends AbstractTransposable<Chord> {
     if ((obj == null) || (getClass() != obj.getClass())) {
       return false;
     }
-    Chord other = (Chord) obj;
+    ChordSymbol other = (ChordSymbol) obj;
     if (!Objects.equals(this.name, other.name)) {
       return false;
     }
@@ -311,56 +311,56 @@ public class Chord extends AbstractTransposable<Chord> {
 
   /**
    * @param fundamental the {@link #getFundamental() fundamental tone}.
-   * @return the according major {@link Chord}.
+   * @return the according major {@link ChordSymbol}.
    */
-  public static Chord ofMajor(TonePitch fundamental) {
+  public static ChordSymbol ofMajor(TonePitch fundamental) {
 
-    return new Chord(fundamental, TonalSystem.MAJOR_EMPTY);
+    return new ChordSymbol(fundamental, TonalSystem.MAJOR_EMPTY);
   }
 
   /**
    * @param fundamental the {@link #getFundamental() fundamental tone}.
    * @param extensions - see {@link #getExtensions()}.
-   * @return the according major {@link Chord}.
+   * @return the according major {@link ChordSymbol}.
    */
-  public static Chord ofMajor(TonePitch fundamental, ChordExtension... extensions) {
+  public static ChordSymbol ofMajor(TonePitch fundamental, ChordExtension... extensions) {
 
-    return new Chord(fundamental, TonalSystem.MAJOR_EMPTY, extensions);
+    return new ChordSymbol(fundamental, TonalSystem.MAJOR_EMPTY, extensions);
   }
 
   /**
    * @param fundamental the {@link #getFundamental() fundamental tone}.
-   * @return the according major {@link Chord} with {@link ChordExtension#_7 7th}.
+   * @return the according major {@link ChordSymbol} with {@link ChordExtension#_7 7th}.
    */
-  public static Chord ofMajorWith7(TonePitch fundamental) {
+  public static ChordSymbol ofMajorWith7(TonePitch fundamental) {
 
     return ofMajor(fundamental, ChordExtension._7);
   }
 
   /**
    * @param fundamental the {@link #getFundamental() fundamental tone}.
-   * @return the according minor {@link Chord}.
+   * @return the according minor {@link ChordSymbol}.
    */
-  public static Chord ofMinor(TonePitch fundamental) {
+  public static ChordSymbol ofMinor(TonePitch fundamental) {
 
-    return new Chord(fundamental, TonalSystem.MINOR_M);
+    return new ChordSymbol(fundamental, TonalSystem.MINOR_M);
   }
 
   /**
    * @param fundamental the {@link #getFundamental() fundamental tone}.
    * @param extensions - see {@link #getExtensions()}.
-   * @return the according minor {@link Chord}.
+   * @return the according minor {@link ChordSymbol}.
    */
-  public static Chord ofMinor(TonePitch fundamental, ChordExtension... extensions) {
+  public static ChordSymbol ofMinor(TonePitch fundamental, ChordExtension... extensions) {
 
-    return new Chord(fundamental, TonalSystem.MINOR_M, extensions);
+    return new ChordSymbol(fundamental, TonalSystem.MINOR_M, extensions);
   }
 
   /**
    * @param fundamental the {@link #getFundamental() fundamental tone}.
-   * @return the according minor {@link Chord} with {@link ChordExtension#_7 7th}.
+   * @return the according minor {@link ChordSymbol} with {@link ChordExtension#_7 7th}.
    */
-  public static Chord ofMinorWith7(TonePitch fundamental) {
+  public static ChordSymbol ofMinorWith7(TonePitch fundamental) {
 
     return ofMinor(fundamental, ChordExtension._7);
   }

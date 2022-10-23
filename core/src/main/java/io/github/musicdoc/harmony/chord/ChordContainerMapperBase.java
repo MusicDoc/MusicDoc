@@ -63,7 +63,7 @@ public abstract class ChordContainerMapperBase extends ChordContainerMapper {
 
   private ChordContainer readChord(MusicInputStream in, SongFormatContext context) {
 
-    Chord chord = getChordMapper().read(in, context);
+    ChordSymbol chord = getChordSymbolMapper().read(in, context);
     String suffix = "";
     if (this.chordEnd != 0) {
       suffix = in.readUntil(this.stopFilter, true);

@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import io.github.musicdoc.bar.BarLine;
 import io.github.musicdoc.bar.BarLineType;
 import io.github.musicdoc.decoration.SlurDecoration;
-import io.github.musicdoc.harmony.chord.Chord;
+import io.github.musicdoc.harmony.chord.ChordSymbol;
 import io.github.musicdoc.harmony.chord.ChordContainer;
 import io.github.musicdoc.harmony.key.MusicalKey;
 import io.github.musicdoc.note.Note;
@@ -81,22 +81,22 @@ public abstract class SongFormatTest extends Assertions {
     checkLine(lines.get(0), new ScoreVoiceLine() //
         .setVoice(voice) //
         .add(Note.of1_4(Tone.A4), "A-", BarLineType.SINGLE) //
-        .add(Chord.ofMinor(TonePitchEnglish.A), Note.of1_2(Tone.C5), "las, ") //
+        .add(ChordSymbol.ofMinor(TonePitchEnglish.A), Note.of1_2(Tone.C5), "las, ") //
         .add(Note.of1_4(Tone.D5), "my ", BarLineType.SINGLE) //
-        .add(Chord.ofMajorWith7(TonePitchEnglish.D), Note.of1_4p(Tone.E5).addDecoration(SlurDecoration.SLUR_START), "lo-") //
+        .add(ChordSymbol.ofMajorWith7(TonePitchEnglish.D), Note.of1_4p(Tone.E5).addDecoration(SlurDecoration.SLUR_START), "lo-") //
         .add(Note.of1_8(Tone.F5).addDecoration(SlurDecoration.SLUR_END), "ve, ") //
         .add(Note.of1_4(Tone.E5), "you ", BarLineType.SINGLE) //
-        .add(Chord.ofMajor(TonePitchEnglish.G), Note.of1_2(Tone.D5), "do ") //
+        .add(ChordSymbol.ofMajor(TonePitchEnglish.G), Note.of1_2(Tone.D5), "do ") //
         .add(Note.of1_4(Tone.B4), "me ", BarLineType.SINGLE) //
-        .add(Chord.ofMinor(TonePitchEnglish.E), Note.of1_4p(Tone.G4).addDecoration(SlurDecoration.SLUR_START), "wro-") //
+        .add(ChordSymbol.ofMinor(TonePitchEnglish.E), Note.of1_4p(Tone.G4).addDecoration(SlurDecoration.SLUR_START), "wro-") //
         .add(Note.of1_8(Tone.A4).addDecoration(SlurDecoration.SLUR_END), "ng, ") //
         .add(Note.of1_4(Tone.B4), "to ", BarLineType.SINGLE) //
-        .add(Chord.ofMajor(TonePitchEnglish.F), Note.of1_2(Tone.C5), "cast ") //
+        .add(ChordSymbol.ofMajor(TonePitchEnglish.F), Note.of1_2(Tone.C5), "cast ") //
         .add(Note.of1_4(Tone.A4), "me ", BarLineType.SINGLE) //
         .add(Note.of1_4p(Tone.A4).addDecoration(SlurDecoration.SLUR_START), "o-") //
         .add(Note.of1_8(Tone.GS4).addDecoration(SlurDecoration.SLUR_END), "ff ") //
         .add(Note.of1_4(Tone.A4), "dis-", BarLineType.SINGLE) //
-        .add(Chord.ofMajor(TonePitchEnglish.E), Note.of1_2(Tone.B4), "cour-") //
+        .add(ChordSymbol.ofMajor(TonePitchEnglish.E), Note.of1_2(Tone.B4), "cour-") //
         .add(Note.of1_4(Tone.GS4), "teous-", BarLineType.SINGLE) //
         .add(Note.of1_2(Tone.E4), "ly. ") //
         .add(Note.of1_4(Tone.A4), "And", BarLineType.SINGLE) //
@@ -106,23 +106,23 @@ public abstract class SongFormatTest extends Assertions {
     assertThat(lines).hasSize(1);
     checkLine(lines.get(0), new ScoreVoiceLine() //
         .setVoice(voice) //
-        .add(Chord.ofMinor(TonePitchEnglish.A), Note.of1_2(Tone.C5), "I ") //
+        .add(ChordSymbol.ofMinor(TonePitchEnglish.A), Note.of1_2(Tone.C5), "I ") //
         .add(Note.of1_4(Tone.D5), "have ", BarLineType.SINGLE) //
-        .add(Chord.ofMajorWith7(TonePitchEnglish.D), Note.of1_4p(Tone.E5).addDecoration(SlurDecoration.SLUR_START), "lo-") //
+        .add(ChordSymbol.ofMajorWith7(TonePitchEnglish.D), Note.of1_4p(Tone.E5).addDecoration(SlurDecoration.SLUR_START), "lo-") //
         .add(Note.of1_8(Tone.F5), "ved ") //
         .add(Note.of1_4(Tone.E5).addDecoration(SlurDecoration.SLUR_END), "_ ", BarLineType.SINGLE) //
-        .add(Chord.ofMajor(TonePitchEnglish.G), Note.of1_2(Tone.D5), "you ") //
+        .add(ChordSymbol.ofMajor(TonePitchEnglish.G), Note.of1_2(Tone.D5), "you ") //
         .add(Note.of1_4(Tone.B4), "so ", BarLineType.SINGLE) //
-        .add(Chord.ofMinor(TonePitchEnglish.E), Note.of1_4p(Tone.G4).addDecoration(SlurDecoration.SLUR_START), "lo-") //
+        .add(ChordSymbol.ofMinor(TonePitchEnglish.E), Note.of1_4p(Tone.G4).addDecoration(SlurDecoration.SLUR_START), "lo-") //
         .add(Note.of1_8(Tone.A4).addDecoration(SlurDecoration.SLUR_END), "ng, ") //
         .add(Note.of1_4(Tone.B4), "de-", BarLineType.SINGLE) //
-        .add(Chord.ofMajor(TonePitchEnglish.F), Note.of1_4p(Tone.C5).addDecoration(SlurDecoration.SLUR_START), "ligh-") //
+        .add(ChordSymbol.ofMajor(TonePitchEnglish.F), Note.of1_4p(Tone.C5).addDecoration(SlurDecoration.SLUR_START), "ligh-") //
         .add(Note.of1_8(Tone.B4).addDecoration(SlurDecoration.SLUR_END), "_ ") //
         .add(Note.of1_4(Tone.A4), "ting ", BarLineType.SINGLE) //
-        .add(Chord.ofMajorWith7(TonePitchEnglish.E), Note.of1_4p(Tone.GS4).addDecoration(SlurDecoration.SLUR_START), "in ") //
+        .add(ChordSymbol.ofMajorWith7(TonePitchEnglish.E), Note.of1_4p(Tone.GS4).addDecoration(SlurDecoration.SLUR_START), "in ") //
         .add(Note.of1_8(Tone.FS4).addDecoration(SlurDecoration.SLUR_END), "_ ") //
         .add(Note.of1_4(Tone.GS4), "your ", BarLineType.SINGLE) //
-        .add(Chord.ofMinor(TonePitchEnglish.A), Note.of1_2(Tone.A4), "com-") //
+        .add(ChordSymbol.ofMinor(TonePitchEnglish.A), Note.of1_2(Tone.A4), "com-") //
         .add(Note.of1_4(Tone.A4), "pa-", BarLineType.SINGLE) //
         .add(Note.of1_2p(Tone.A4), "ny.", BarLineType.DOUBLE) //
     );
@@ -139,21 +139,21 @@ public abstract class SongFormatTest extends Assertions {
     assertThat(lines).hasSize(1);
     checkLine(lines.get(0), new ScoreVoiceLine() //
         .setVoice(voice) //
-        .add(Chord.ofMajor(TonePitchEnglish.C), Note.of1_2p(Tone.G5), "Green-", BarLineType.SINGLE) //
+        .add(ChordSymbol.ofMajor(TonePitchEnglish.C), Note.of1_2p(Tone.G5), "Green-", BarLineType.SINGLE) //
         .add(Note.of1_4p(Tone.G5).addDecoration(SlurDecoration.SLUR_START), "slee-") //
         .add(Note.of1_8(Tone.F5).addDecoration(SlurDecoration.SLUR_END), "ves ") //
         .add(Note.of1_4(Tone.E5), "was ", BarLineType.SINGLE) //
-        .add(Chord.ofMinor(TonePitchEnglish.B), Note.of1_2(Tone.D5), "all ") //
+        .add(ChordSymbol.ofMinor(TonePitchEnglish.B), Note.of1_2(Tone.D5), "all ") //
         .add(Note.of1_4(Tone.B4), "my ", BarLineType.SINGLE) //
-        .add(Chord.ofMinor(TonePitchEnglish.E), Note.of1_4(Tone.G4).addDecoration(SlurDecoration.SLUR_START), "joy, ") //
+        .add(ChordSymbol.ofMinor(TonePitchEnglish.E), Note.of1_4(Tone.G4).addDecoration(SlurDecoration.SLUR_START), "joy, ") //
         .add(Note.of1_4(Tone.A4), "_ ") //
         .add(Note.of1_4(Tone.B4).addDecoration(SlurDecoration.SLUR_END), "_ ", BarLineType.SINGLE) //
-        .add(Chord.ofMinor(TonePitchEnglish.A), Note.of1_2(Tone.C5).addDecoration(SlurDecoration.SLUR_START), "Gre-") //
+        .add(ChordSymbol.ofMinor(TonePitchEnglish.A), Note.of1_2(Tone.C5).addDecoration(SlurDecoration.SLUR_START), "Gre-") //
         .add(Note.of1_4(Tone.A4).addDecoration(SlurDecoration.SLUR_END), "en-", BarLineType.SINGLE) //
-        .add(Chord.ofMajor(TonePitchEnglish.F), Note.of1_4p(Tone.A4).addDecoration(SlurDecoration.SLUR_START), "sle-") //
+        .add(ChordSymbol.ofMajor(TonePitchEnglish.F), Note.of1_4p(Tone.A4).addDecoration(SlurDecoration.SLUR_START), "sle-") //
         .add(Note.of1_8(Tone.GS4).addDecoration(SlurDecoration.SLUR_END), "eves ") //
         .add(Note.of1_4(Tone.A4), "was ", BarLineType.SINGLE) //
-        .add(Chord.ofMajor(TonePitchEnglish.E), Note.of1_2(Tone.B4), "my ") //
+        .add(ChordSymbol.ofMajor(TonePitchEnglish.E), Note.of1_2(Tone.B4), "my ") //
         .add(Note.of1_4(Tone.GS4), "de-", BarLineType.SINGLE) //
         .add(Note.of1_2p(Tone.E4), "light,", BarLineType.SINGLE) //
     );
@@ -162,22 +162,22 @@ public abstract class SongFormatTest extends Assertions {
     assertThat(lines).hasSize(1);
     checkLine(lines.get(0), new ScoreVoiceLine() //
         .setVoice(voice) //
-        .add(Chord.ofMajor(TonePitchEnglish.C), Note.of1_2p(Tone.G5), "Green-", BarLineType.SINGLE) //
+        .add(ChordSymbol.ofMajor(TonePitchEnglish.C), Note.of1_2p(Tone.G5), "Green-", BarLineType.SINGLE) //
         .add(Note.of1_4p(Tone.G5).addDecoration(SlurDecoration.SLUR_START), "sleeves ") //
         .add(Note.of1_8(Tone.F5).addDecoration(SlurDecoration.SLUR_END), "was ") //
         .add(Note.of1_4(Tone.E5), "my ", BarLineType.SINGLE) //
-        .add(Chord.ofMajor(TonePitchEnglish.G), Note.of1_2(Tone.D5), "heart ") //
+        .add(ChordSymbol.ofMajor(TonePitchEnglish.G), Note.of1_2(Tone.D5), "heart ") //
         .add(Note.of1_4(Tone.B4), "of ", BarLineType.SINGLE) //
-        .add(Chord.ofMinor(TonePitchEnglish.E), Note.of1_4p(Tone.G4).addDecoration(SlurDecoration.SLUR_START), "go-") //
+        .add(ChordSymbol.ofMinor(TonePitchEnglish.E), Note.of1_4p(Tone.G4).addDecoration(SlurDecoration.SLUR_START), "go-") //
         .add(Note.of1_8(Tone.A4).addDecoration(SlurDecoration.SLUR_END), "ld, ") //
         .add(Note.of1_4(Tone.B4), "and ", BarLineType.SINGLE) //
-        .add(Chord.ofMajor(TonePitchEnglish.F), Note.of1_4(Tone.C5), "who ") //
+        .add(ChordSymbol.ofMajor(TonePitchEnglish.F), Note.of1_4(Tone.C5), "who ") //
         .add(Note.of1_4(Tone.B4), "but ") //
         .add(Note.of1_4(Tone.A4), "my ", BarLineType.SINGLE) //
-        .add(Chord.ofMajorWith7(TonePitchEnglish.E), Note.of1_4(Tone.GS4).addDecoration(SlurDecoration.SLUR_START), "la-") //
+        .add(ChordSymbol.ofMajorWith7(TonePitchEnglish.E), Note.of1_4(Tone.GS4).addDecoration(SlurDecoration.SLUR_START), "la-") //
         .add(Note.of1_4(Tone.FS4), "dy ") //
         .add(Note.of1_4(Tone.GS4).addDecoration(SlurDecoration.SLUR_END), "_ ", BarLineType.SINGLE) //
-        .add(Chord.ofMinor(TonePitchEnglish.A), Note.of1_2p(Tone.A4), "Green-", BarLineType.SINGLE) //
+        .add(ChordSymbol.ofMinor(TonePitchEnglish.A), Note.of1_2p(Tone.A4), "Green-", BarLineType.SINGLE) //
         .add(Note.of1_2(Tone.A4), "sleeves.", BarLineType.THIN_THICK) //
     );
 
@@ -274,7 +274,7 @@ public abstract class SongFormatTest extends Assertions {
    * @param lyric the expected {@link ScoreCell#getLyric() lyric}.
    * @param chord the expected {@link ScoreCell#getChord() chord}.
    */
-  protected void checkCell(ScoreCell cell, String lyric, Chord chord) {
+  protected void checkCell(ScoreCell cell, String lyric, ChordSymbol chord) {
 
     checkCell(cell, lyric, chord, null);
   }
@@ -285,7 +285,7 @@ public abstract class SongFormatTest extends Assertions {
    * @param chord the expected {@link ScoreCell#getChord() chord}.
    * @param item the expected {@link ScoreCell#getItem() item}.
    */
-  protected void checkCell(ScoreCell cell, String lyric, Chord chord, ValuedItem<?> item) {
+  protected void checkCell(ScoreCell cell, String lyric, ChordSymbol chord, ValuedItem<?> item) {
 
     checkCell(cell, lyric, chord, item, (BarLine) null);
   }
@@ -297,7 +297,7 @@ public abstract class SongFormatTest extends Assertions {
    * @param item the expected {@link ScoreCell#getItem() item}.
    * @param bar the expected {@link ScoreCell#getBar() bar}.
    */
-  protected void checkCell(ScoreCell cell, String lyric, Chord chord, ValuedItem<?> item, BarLine bar) {
+  protected void checkCell(ScoreCell cell, String lyric, ChordSymbol chord, ValuedItem<?> item, BarLine bar) {
 
     checkCell(cell, lyric, chord, item, bar, null);
   }
@@ -309,7 +309,7 @@ public abstract class SongFormatTest extends Assertions {
    * @param item the expected {@link ScoreCell#getItem() item}.
    * @param barType the expected {@link ScoreCell#getBar() bar} {@link BarLine#getType() type}.
    */
-  protected void checkCell(ScoreCell cell, String lyric, Chord chord, ValuedItem<?> item, BarLineType barType) {
+  protected void checkCell(ScoreCell cell, String lyric, ChordSymbol chord, ValuedItem<?> item, BarLineType barType) {
 
     checkCell(cell, lyric, chord, item, new BarLine(barType), null);
   }
@@ -322,7 +322,7 @@ public abstract class SongFormatTest extends Assertions {
    * @param barType the expected {@link ScoreCell#getBar() bar} {@link BarLine#getType() type}.
    * @param staveChange the expected {@link ScoreCell#getStaveChange() stave change}.
    */
-  protected void checkCell(ScoreCell cell, String lyric, Chord chord, ValuedItem<?> item, BarLineType barType,
+  protected void checkCell(ScoreCell cell, String lyric, ChordSymbol chord, ValuedItem<?> item, BarLineType barType,
       StaveChange staveChange) {
 
     checkCell(cell, lyric, chord, item, new BarLine(barType), staveChange);
@@ -336,7 +336,7 @@ public abstract class SongFormatTest extends Assertions {
    * @param bar the expected {@link ScoreCell#getBar() bar}.
    * @param staveChange the expected {@link ScoreCell#getStaveChange() stave change}.
    */
-  protected void checkCell(ScoreCell cell, String lyric, Chord chord, ValuedItem<?> item, BarLine bar,
+  protected void checkCell(ScoreCell cell, String lyric, ChordSymbol chord, ValuedItem<?> item, BarLine bar,
       StaveChange staveChange) {
 
     assertThat(cell).isEqualTo(new ScoreCell(ChordContainer.of(chord), item, lyric, bar));

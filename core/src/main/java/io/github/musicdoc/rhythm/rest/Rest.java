@@ -124,9 +124,9 @@ public class Rest extends ValuedItem<Rest> {
     }
     String glyphs = null;
     if (context.isEnforceUnicode()) {
-      glyphs = UnicodeGlyphsRests.get(this.value);
+      glyphs = UnicodeGlyphsRests.get(this.value.getPlain());
     } else {
-      glyphs = SmuflGlyphsRest.get(this.value);
+      glyphs = SmuflGlyphsRest.get(this.value.getPlain());
     }
     Punctuation punctuation = this.value.getPunctuation();
     if (punctuation != null) {

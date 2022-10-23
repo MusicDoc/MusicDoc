@@ -13,7 +13,8 @@ import io.github.musicdoc.transpose.TransposeContext;
 
 /**
  * Represents a row of a {@link Score}. Such row is a consists of a number of {@link #getLines() lines} that can form an
- * entire system of {@link io.github.musicdoc.stave.Stave}(s), lyrics, etc.
+ * entire {@link io.github.musicdoc.stave.system.StaveSystem system} of {@link io.github.musicdoc.stave.Stave}(s),
+ * lyrics, etc.
  *
  * @see ScoreSection#getRows()
  */

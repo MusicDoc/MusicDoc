@@ -12,8 +12,8 @@ import io.github.musicdoc.harmony.chord.ChordContainerMapper;
 import io.github.musicdoc.harmony.chord.ChordContainerMapperOpenSong;
 import io.github.musicdoc.harmony.chord.ChordExtensionMapper;
 import io.github.musicdoc.harmony.chord.ChordExtensionMapperOpenSong;
-import io.github.musicdoc.harmony.chord.ChordMapper;
-import io.github.musicdoc.harmony.chord.ChordMapperOpenSong;
+import io.github.musicdoc.harmony.chord.ChordSymbolMapper;
+import io.github.musicdoc.harmony.chord.ChordSymbolMapperOpenSong;
 import io.github.musicdoc.harmony.key.MusicalKeyMapper;
 import io.github.musicdoc.harmony.key.MusicalKeyMapperOpenSong;
 import io.github.musicdoc.instrument.InstrumentMapper;
@@ -100,9 +100,9 @@ public class SongFormatOpenSong extends SongFormatXml {
   }
 
   @Override
-  protected ChordMapper getChordMapper() {
+  protected ChordSymbolMapper getChordSymbolMapper() {
 
-    return ChordMapperOpenSong.INSTANCE;
+    return ChordSymbolMapperOpenSong.INSTANCE;
   }
 
   @Override

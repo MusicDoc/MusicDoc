@@ -139,8 +139,8 @@ public class TransposeContext {
   }
 
   /**
-   * @return {@code true} to {@link io.github.musicdoc.harmony.chord.Chord#normalize() normalize}
-   *         {@link io.github.musicdoc.harmony.chord.Chord}s, {@code false} otherwise.
+   * @return {@code true} to {@link io.github.musicdoc.harmony.chord.ChordSymbol#normalize() normalize}
+   *         {@link io.github.musicdoc.harmony.chord.ChordSymbol}s, {@code false} otherwise.
    */
   public boolean isNormalizeChords() {
 

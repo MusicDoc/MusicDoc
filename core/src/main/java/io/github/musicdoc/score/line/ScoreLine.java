@@ -5,7 +5,7 @@ import java.util.List;
 import io.github.musicdoc.MutableObject;
 import io.github.musicdoc.bar.BarLine;
 import io.github.musicdoc.bar.BarLineType;
-import io.github.musicdoc.harmony.chord.Chord;
+import io.github.musicdoc.harmony.chord.ChordSymbol;
 import io.github.musicdoc.harmony.chord.ChordContainer;
 import io.github.musicdoc.rhythm.item.ValuedItem;
 import io.github.musicdoc.score.cell.ScoreCell;
@@ -83,7 +83,7 @@ public interface ScoreLine extends Transposable<ScoreLine>, MutableObject<ScoreL
    * @param lyric the {@link ScoreCell#getLyric() lyric}.
    * @return this {@link ScoreVoiceLine} for fluent API calls.
    */
-  default ScoreLine add(Chord chord, ValuedItem<?> item, String lyric) {
+  default ScoreLine add(ChordSymbol chord, ValuedItem<?> item, String lyric) {
 
     return add(chord, item, lyric, (BarLine) null);
   }
@@ -147,7 +147,7 @@ public interface ScoreLine extends Transposable<ScoreLine>, MutableObject<ScoreL
    * @param barType the {@link ScoreCell#getBar() bar} {@link BarLine#getType() type}.
    * @return this {@link ScoreVoiceLine} for fluent API calls.
    */
-  default ScoreLine add(Chord chord, ValuedItem<?> item, String lyric, BarLineType barType) {
+  default ScoreLine add(ChordSymbol chord, ValuedItem<?> item, String lyric, BarLineType barType) {
 
     BarLine bar = null;
     if (barType != null) {
@@ -165,7 +165,7 @@ public interface ScoreLine extends Transposable<ScoreLine>, MutableObject<ScoreL
    * @param bar the {@link ScoreCell#getBar() bar}.
    * @return this {@link ScoreVoiceLine} for fluent API calls.
    */
-  default ScoreLine add(Chord chord, ValuedItem<?> item, String lyric, BarLine bar) {
+  default ScoreLine add(ChordSymbol chord, ValuedItem<?> item, String lyric, BarLine bar) {
 
     return add(ChordContainer.of(chord), item, lyric, bar);
   }

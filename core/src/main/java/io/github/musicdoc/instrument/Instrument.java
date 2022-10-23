@@ -1,6 +1,6 @@
 package io.github.musicdoc.instrument;
 
-import io.github.musicdoc.harmony.chord.Chord;
+import io.github.musicdoc.harmony.chord.ChordSymbol;
 import io.github.musicdoc.interval.ChromaticInterval;
 import io.github.musicdoc.tone.Tone;
 
@@ -41,7 +41,7 @@ public abstract class Instrument {
 
   /**
    * @return the {@link ChromaticInterval} indicating the chromatic offset relative to the
-   *         {@link io.github.musicdoc.score.Score} when playing {@link Chord}s. E.g. for a special
+   *         {@link io.github.musicdoc.score.Score} when playing {@link ChordSymbol}s. E.g. for a special
    *         {@link io.github.musicdoc.instrument.string.FrettedStringInstrument} this would be the Capo offset
    *         relative to the normal instrument. For instance a
    *         {@link io.github.musicdoc.instrument.string.Guitalele} has a chord offset of 7 chromatic steps higher
@@ -54,7 +54,7 @@ public abstract class Instrument {
 
   /**
    * @return the {@link ChromaticInterval} indicating the chromatic offset relative to the
-   *         {@link io.github.musicdoc.score.Score} when playing {@link Chord}s. E.g.
+   *         {@link io.github.musicdoc.score.Score} when playing {@link ChordSymbol}s. E.g.
    */
   public ChromaticInterval getToneOffset() {
 

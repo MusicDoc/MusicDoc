@@ -81,9 +81,6 @@ public class StaveSystemState {
 
     handleVoice();
     assert (bracket != null);
-    if (this.system.getBracket() == StaveBracket.NONE) {
-      in.addError("Cannot nest inside parentheses '(' - ignoring '" + bracket.getStart() + "'.");
-    }
     this.system = this.system.addChild(bracket);
   }
 

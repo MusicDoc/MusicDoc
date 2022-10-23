@@ -5,7 +5,7 @@ import java.util.Objects;
 import io.github.musicdoc.MutableObject;
 import io.github.musicdoc.MutableObjecteCopier;
 import io.github.musicdoc.bar.BarLine;
-import io.github.musicdoc.harmony.chord.Chord;
+import io.github.musicdoc.harmony.chord.ChordSymbol;
 import io.github.musicdoc.harmony.chord.ChordContainer;
 import io.github.musicdoc.rhythm.item.ValuedItem;
 import io.github.musicdoc.score.line.ScoreLineBreak;
@@ -63,7 +63,7 @@ public class ScoreCell extends AbstractTransposable<ScoreCell> implements Mutabl
    * @param chord the {@link #getChord() chord}.
    * @param lyric the {@link #getLyric() lyric}.
    */
-  public ScoreCell(Chord chord, String lyric) {
+  public ScoreCell(ChordSymbol chord, String lyric) {
 
     this(ChordContainer.of(chord), null, lyric, null);
   }
@@ -180,7 +180,7 @@ public class ScoreCell extends AbstractTransposable<ScoreCell> implements Mutabl
   /**
    * @return {@link ChordContainer#getChord()}
    */
-  public Chord getChord() {
+  public ChordSymbol getChord() {
 
     if (this.chordContainer == null) {
       return null;
@@ -193,7 +193,7 @@ public class ScoreCell extends AbstractTransposable<ScoreCell> implements Mutabl
    * @return a new {@link ScoreCell} with the given {@link #getChord() chord} and all other properties like {@code this}
    *         one. Will be a {@link #copy()} if {@link #isImmutable() immutable}.
    */
-  public ScoreCell setChord(Chord chord) {
+  public ScoreCell setChord(ChordSymbol chord) {
 
     return setChordContainer(new ChordContainer(chord));
   }

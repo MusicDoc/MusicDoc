@@ -13,15 +13,15 @@ import io.github.musicdoc.tone.ToneNameStyle;
 import io.github.musicdoc.tone.pitch.TonePitch;
 
 /**
- * {@link AbstractMapper Mapper} for {@link Chord}.
+ * {@link AbstractMapper Mapper} for {@link ChordSymbol}.
  */
-public abstract class ChordMapper extends AbstractMapper<Chord> {
+public abstract class ChordSymbolMapper extends AbstractMapper<ChordSymbol> {
 
   /** Separator character for base tone. */
   public static final char BASE_TONE_SEPARATOR = '/';
 
   @Override
-  public Chord read(MusicInputStream in, SongFormatContext context) {
+  public ChordSymbol read(MusicInputStream in, SongFormatContext context) {
 
     in.skipWhile(' ');
     // detect fundamental tone
@@ -73,11 +73,11 @@ public abstract class ChordMapper extends AbstractMapper<Chord> {
         }
       }
     }
-    return new Chord(fundamentalTone, tonalSystem, baseTone, extensions);
+    return new ChordSymbol(fundamentalTone, tonalSystem, baseTone, extensions);
   }
 
   @Override
-  public void write(Chord chord, MusicOutputStream out, SongFormatContext context) {
+  public void write(ChordSymbol chord, MusicOutputStream out, SongFormatContext context) {
 
     if (chord == null) {
       return;

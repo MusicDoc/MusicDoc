@@ -1,5 +1,6 @@
 package io.github.musicdoc.property;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -76,6 +77,15 @@ public class TagsProperty extends StringProperty {
    */
   public boolean addTag(String tag) {
 
+    boolean added = doAddTag(tag);
+    if (added) {
+      fireChange();
+    }
+    return added;
+  }
+
+  private boolean doAddTag(String tag) {
+
     if (tag == null) {
       return false;
     }
@@ -90,6 +100,26 @@ public class TagsProperty extends StringProperty {
       } else {
         super.doSetValue(this.value + "," + tag);
       }
+    }
+    return added;
+  }
+
+  /**
+   * @param tags2add the {@link Collection} of tags to {@link #addTag(String) add}.
+   * @return {@code true} if the given {@code tag} has been added, {@code false} otherwise (if it has already been
+   *         present before).
+   */
+  public boolean addTags(Collection<String> tags2add) {
+
+    boolean added = false;
+    for (String tag : tags2add) {
+      boolean tagAdded = doAddTag(tag);
+      if (tagAdded) {
+        added = true;
+      }
+    }
+    if (added) {
+      fireChange();
     }
     return added;
   }
@@ -146,6 +176,9 @@ public class TagsProperty extends StringProperty {
         }
       }
       super.doSetValue(this.value.substring(0, start) + this.value.substring(end));
+    }
+    if (removed) {
+      fireChange();
     }
     return removed;
   }

@@ -14,7 +14,7 @@ import io.github.musicdoc.decoration.MusicalDecorationMapper;
 import io.github.musicdoc.harmony.TonalSystemMapper;
 import io.github.musicdoc.harmony.chord.ChordContainerMapper;
 import io.github.musicdoc.harmony.chord.ChordExtensionMapper;
-import io.github.musicdoc.harmony.chord.ChordMapper;
+import io.github.musicdoc.harmony.chord.ChordSymbolMapper;
 import io.github.musicdoc.harmony.key.MusicalKeyMapper;
 import io.github.musicdoc.instrument.InstrumentMapper;
 import io.github.musicdoc.io.MusicInputStream;
@@ -96,9 +96,9 @@ public abstract class SongFormat {
   protected abstract TonalSystemMapper getTonalSystemMapper();
 
   /**
-   * @return the {@link ChordMapper}.
+   * @return the {@link ChordSymbolMapper}.
    */
-  protected abstract ChordMapper getChordMapper();
+  protected abstract ChordSymbolMapper getChordSymbolMapper();
 
   /**
    * @return the {@link ChordExtensionMapper}.

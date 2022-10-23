@@ -33,6 +33,13 @@ public class StaveSystemMapperMusicDoc extends StaveSystemMapper {
       if ((c == '{') || (c == '[')) {
         in.next();
         state.start(StaveBracket.ofStart(c), in);
+        if (in.expect('"')) {
+          String name = in.readUntil('"', false);
+          if (in.expect('"', true)) {
+            state.getSystem().setName(name);
+          }
+        }
+
       } else if ((c == ']') || (c == '}')) {
         in.next();
         state.end(StaveBracket.ofEnd(c), in);
@@ -43,9 +50,6 @@ public class StaveSystemMapperMusicDoc extends StaveSystemMapper {
         Stave stave = getStaveMapper().read(in, context);
         if (stave != null) {
           state.addStave(stave);
-          // } else if (state.getSystem().getParent() == null) {
-          // // newline is missing...
-          // break;
         }
       }
     }
