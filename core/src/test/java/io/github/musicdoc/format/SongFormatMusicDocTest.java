@@ -4,8 +4,8 @@ import org.junit.jupiter.api.Test;
 
 import io.github.musicdoc.clef.Clef;
 import io.github.musicdoc.harmony.TonalSystem;
-import io.github.musicdoc.harmony.chord.ChordSymbol;
 import io.github.musicdoc.harmony.chord.ChordExtension;
+import io.github.musicdoc.harmony.chord.ChordSymbol;
 import io.github.musicdoc.note.Note;
 import io.github.musicdoc.rhythm.rest.Rest;
 import io.github.musicdoc.rhythm.value.MusicalValue;
@@ -38,7 +38,6 @@ public class SongFormatMusicDocTest extends SongFormatTest {
       + "C:Insane Composer\n" //
       + "L:1/4\n" //
       + "#[C1]\n" //
-      // + "$:[G(S=Sporano)(A=Alto)F(T=Tenor)(B=Bass)]-{G(P1=}(P2=)}\n" //
       + "$:[G(S=Soprano)(A=Alto)F(T=Tenor)(B=Bass)]\n" //
       + "$S {A2}[A]a [Bm7]{B2}b [Cadd9]{c}c {d}the {c}caT {B}is [D]{A2} dead.{z2}\n" //
       + "$A {F2}{G2}{A}{B}{A}{G}{F2}{z2}\n" //
@@ -96,7 +95,8 @@ public class SongFormatMusicDocTest extends SongFormatTest {
     assertThat(cell).isNotNull();
     assertThat(cell.getStaveChange()).isNull();
     assertThat(cell.getItem()).isNull();
-    assertThat(cell.getChord()).isEqualTo(new ChordSymbol(TonePitchEnglish.C, TonalSystem.MAJOR_EMPTY, ChordExtension.ADD_9));
+    assertThat(cell.getChord())
+        .isEqualTo(new ChordSymbol(TonePitchEnglish.C, TonalSystem.MAJOR_EMPTY, ChordExtension.ADD_9));
     assertThat(cell.getLyric()).isEqualTo("c the caT is ");
     cell = voiceLine.getCell(3);
     assertThat(cell).isNotNull();

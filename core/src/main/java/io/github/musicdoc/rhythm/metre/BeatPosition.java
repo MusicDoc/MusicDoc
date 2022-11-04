@@ -1,8 +1,7 @@
-package io.github.musicdoc.view.reader;
+package io.github.musicdoc.rhythm.metre;
 
 import io.github.musicdoc.rhythm.fraction.Fraction;
 import io.github.musicdoc.rhythm.item.ValuedItem;
-import io.github.musicdoc.rhythm.metre.Metre;
 import io.github.musicdoc.rhythm.value.MusicalValue;
 import io.github.musicdoc.score.cell.ScoreCell;
 import io.github.musicdoc.stave.StaveChange;

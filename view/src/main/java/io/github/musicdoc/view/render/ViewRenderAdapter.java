@@ -9,7 +9,7 @@ import io.github.musicdoc.view.layout.ViewTextType;
  * technology but reuse the layout engine via {@link ViewRenderer}[Impl] across different rendering or UI technologies.
  *
  * Therefore to implement your own rendering technology, all you need to do is implement this interface and create your
- * instance of {@link ViewRendererImpl} from it. Then you can compute the desired layout as view object and simply
+ * instance of {@link DefaultViewRenderer} from it. Then you can compute the desired layout as view object and simply
  * render it to your screen, PDF, SVG, or whatever output you prefer.
  */
 public interface ViewRenderAdapter {

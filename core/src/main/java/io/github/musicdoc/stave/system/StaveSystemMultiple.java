@@ -168,7 +168,7 @@ public class StaveSystemMultiple extends StaveSystem {
   @Override
   public StaveSystemSingle addChild(Stave stave) {
 
-    return addChild(stave, null);
+    return addChild(stave, StaveBracket.NONE);
   }
 
   @Override

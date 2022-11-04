@@ -22,6 +22,8 @@ public class StaveSystemState {
 
   private boolean floating;
 
+  private int staveIndex;
+
   /**
    * The constructor.
    *
@@ -64,7 +66,7 @@ public class StaveSystemState {
         stave = new Stave();
         stave.setDisconnected(this.disconnected);
         this.disconnected = this.disconnectedDefault;
-        this.system.addChild(stave);
+        addStave(stave);
       }
     } else {
       stave = this.system.getStave();
@@ -113,7 +115,8 @@ public class StaveSystemState {
    */
   public void addStave(Stave stave) {
 
-    this.system.addChild(stave, StaveBracket.NONE);
+    stave.setIndex(this.staveIndex++);
+    this.system.addChild(stave);
   }
 
   /**

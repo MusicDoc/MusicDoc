@@ -19,7 +19,6 @@ public interface UnicodeGlyphs {
    * The 6-string fretboard symbol: {@value}.
    *
    * @see io.github.musicdoc.harmony.chord.ChordSymbol
-   * @see io.github.musicdoc.tab.Tab
    */
   String SIX_STRING_FRETBOARD = "\uD834\uDD1C";
 
@@ -27,7 +26,6 @@ public interface UnicodeGlyphs {
    * The 4-string fretboard symbol: {@value}.
    *
    * @see io.github.musicdoc.harmony.chord.ChordSymbol
-   * @see io.github.musicdoc.tab.Tab
    */
   String FOUR_STRING_FRETBOARD = "\uD834\uDD1D";
 

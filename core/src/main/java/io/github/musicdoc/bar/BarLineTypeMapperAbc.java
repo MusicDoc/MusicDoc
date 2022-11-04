@@ -30,8 +30,8 @@ public class BarLineTypeMapperAbc extends BarLineTypeMapperBase {
     addMapping(":||:", BarLineType.REPEAT_END_START_2);
     addMapping("|:", BarLineType.REPEAT_START);
     addMapping(":|", BarLineType.REPEAT_END);
-    addMapping("||", BarLineType.DOUBLE);
-    addMapping("|", BarLineType.SINGLE);
+    addMapping("||", BarLineType.THIN_THIN);
+    addMapping("|", BarLineType.THIN);
   }
 
   @Override

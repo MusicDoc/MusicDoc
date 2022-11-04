@@ -3,9 +3,9 @@ package io.github.musicdoc.glyphs.unicode;
 import io.github.musicdoc.stave.StaveBracket;
 
 /**
- * {@link UnicodeGlyphs} for <a href="https://www.htmlsymbols.xyz/musical-symbols/bars">bars</a>-
+ * {@link UnicodeGlyphs} for <a href="https://www.htmlsymbols.xyz/musical-symbols/staff-brackets">staff-brackets</a>.
  *
- * @see io.github.musicdoc.bar.BarLine
+ * @see io.github.musicdoc.stave.StaveBracket
  */
 public interface UnicodeGlyphsStaffBrackets extends UnicodeGlyphs {
 

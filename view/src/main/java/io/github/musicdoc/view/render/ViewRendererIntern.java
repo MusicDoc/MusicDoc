@@ -4,11 +4,11 @@ import io.github.musicdoc.PeriodType;
 import io.github.musicdoc.decoration.MusicalDecoration;
 import io.github.musicdoc.decoration.MusicalDecorationPosition;
 import io.github.musicdoc.decoration.PedalDecoration;
-import io.github.musicdoc.glyphs.MusicalGlyphsContext;
 import io.github.musicdoc.harmony.chord.ChordContainer;
 import io.github.musicdoc.note.Note;
 import io.github.musicdoc.note.NoteTone;
 import io.github.musicdoc.rhythm.item.ValuedItem;
+import io.github.musicdoc.rhythm.metre.BeatPosition;
 import io.github.musicdoc.rhythm.rest.Rest;
 import io.github.musicdoc.score.Score;
 import io.github.musicdoc.score.ScoreRow;
@@ -17,18 +17,13 @@ import io.github.musicdoc.score.line.ScoreLineBreak;
 import io.github.musicdoc.score.section.ScoreSection;
 import io.github.musicdoc.score.section.ScoreSectionName;
 import io.github.musicdoc.song.Song;
-import io.github.musicdoc.stave.Stave;
-import io.github.musicdoc.stave.StaveBracket;
 import io.github.musicdoc.stave.system.StaveSystem;
 import io.github.musicdoc.stave.voice.StaveVoice;
 import io.github.musicdoc.tone.Tone;
 import io.github.musicdoc.view.ViewContext;
 import io.github.musicdoc.view.data.ViewPositionBean;
 import io.github.musicdoc.view.data.ViewRectangle;
-import io.github.musicdoc.view.layout.ViewLayout;
-import io.github.musicdoc.view.layout.ViewPlacement;
-import io.github.musicdoc.view.layout.ViewPlacementType;
-import io.github.musicdoc.view.layout.ViewStaveLayout;
+import io.github.musicdoc.view.layout.ViewStavesLayout;
 import io.github.musicdoc.view.layout.ViewTextAlignment;
 import io.github.musicdoc.view.layout.ViewTextProgression;
 import io.github.musicdoc.view.layout.ViewTextType;
@@ -39,14 +34,13 @@ import io.github.musicdoc.view.model.ViewDocument;
 import io.github.musicdoc.view.model.ViewItemText;
 import io.github.musicdoc.view.model.ViewPage;
 import io.github.musicdoc.view.model.ViewRow;
-import io.github.musicdoc.view.reader.BeatPosition;
 import io.github.musicdoc.view.reader.ScoreLineReader;
 import io.github.musicdoc.view.reader.ScoreRowReader;
 
 /**
  * Internal stateful implementation of {@link ViewRenderer} logic.
  */
-class ViewRendererStateful {
+class ViewRendererIntern implements ViewTextRenderer {
 
   /** The {@link ViewRenderAdapter}. */
   private final ViewRenderAdapter adapter;
@@ -67,21 +61,21 @@ class ViewRendererStateful {
 
   private StaveSystem staveSystem;
 
-  private int staveIndex;
+  private ViewStavesLayout stavesLayout;
 
-  private ViewLayout layout;
+  private ViewStaveSystemRenderer systemRenderer;
 
-  private boolean firstSystemRendered;
-
-  private MusicalGlyphsContext glyphsContext;
+  private StaveVoice currentVoice;
 
   /**
    * The constructor.
    *
    * @param adapter the {@link ViewRenderAdapter}.
    * @param context the {@link ViewContext}.
+   * @param endlessRow - {@code true} to render entire {@link io.github.musicdoc.score.Score} as a single row,
+   *        {@code false} otherwise.
    */
-  public ViewRendererStateful(ViewRenderAdapter adapter, ViewContext context, boolean endlessRow) {
+  public ViewRendererIntern(ViewRenderAdapter adapter, ViewContext context, boolean endlessRow) {
 
     super();
     this.adapter = adapter;
@@ -91,9 +85,13 @@ class ViewRendererStateful {
     this.beatPosition = new BeatPosition();
     this.pageWidth = this.adapter.getPageWidth();
     this.pageHeight = this.adapter.getPageHeight();
-    this.firstSystemRendered = false;
-    this.layout = new ViewLayout();
-    this.glyphsContext = new MusicalGlyphsContext();
+    this.stavesLayout = new ViewStavesLayout();
+  }
+
+  @Override
+  public ViewContext getContext() {
+
+    return this.context;
   }
 
   ViewPage renderPages(Song song, ViewDocument document, ViewRow row) {
@@ -119,22 +117,19 @@ class ViewRendererStateful {
       ScoreSectionName sectionName = section.getName();
       for (ScoreRow scoreRow : section.getRows()) {
         ScoreRowReader rowReader = new ScoreRowReader(scoreRow, this.beatPosition, this.context);
-        boolean done = false;
-        while (!done) {
+        do {
           ViewRow viewRow;
-          boolean endless = false;
           if (row == null) {
             viewRow = new ViewRow();
           } else {
             viewRow = row;
-            endless = true;
           }
-          done = renderRow(rowReader, viewRow, sectionName, endless);
+          renderRow(rowReader, viewRow, sectionName);
+          sectionName = null;
           if (page != null) {
             page.getRows().add(viewRow);
           }
-        }
-        sectionName = null;
+        } while (!rowReader.isDone());
       }
       if ((document != null) && (page != null)) {
         double y = this.position.getY();
@@ -153,7 +148,7 @@ class ViewRendererStateful {
           page.setHeader(header);
         }
       }
-      this.layout.resetRow();
+      this.stavesLayout.resetRow();
     }
     return page;
   }
@@ -162,12 +157,12 @@ class ViewRendererStateful {
 
     ViewBlock header = new ViewBlock();
     if (page.getNumber() == 1) {
-      header.getItems().add(renderText(song.title.getValue(), ViewTextType.TITLE, ViewPlacement.ABSOLUTE,
-          ViewTextAlignment.CENTER, ViewTextProgression.NEWLINE));
+      header.getItems().add(
+          renderText(song.title.getValue(), ViewTextType.TITLE, ViewTextAlignment.CENTER, ViewTextProgression.NEWLINE));
       String subtitle = song.artist.getValueOrDefault();
       // TODO song.capo.getValue();
-      header.getItems().add(renderText(subtitle, ViewTextType.SUB_TITLE, ViewPlacement.ABSOLUTE,
-          ViewTextAlignment.CENTER, ViewTextProgression.NEWLINE));
+      header.getItems()
+          .add(renderText(subtitle, ViewTextType.SUB_TITLE, ViewTextAlignment.CENTER, ViewTextProgression.NEWLINE));
     } else {
       String text = song.title.getValue();
       String artist = song.artist.getValueOrDefault();
@@ -178,59 +173,63 @@ class ViewRendererStateful {
       if (capo != null) {
         text = text + "[" + capo + "]";
       }
-      header.getItems().add(renderText(text, ViewTextType.SUB_TITLE, ViewPlacement.ABSOLUTE, ViewTextAlignment.CENTER,
-          ViewTextProgression.NEWLINE));
+      header.getItems()
+          .add(renderText(text, ViewTextType.SUB_TITLE, ViewTextAlignment.CENTER, ViewTextProgression.NEWLINE));
     }
     return header;
   }
 
-  private boolean renderRow(ScoreRowReader rowReader, ViewRow viewRow, ScoreSectionName sectionName, boolean endless) {
+  private void renderRow(ScoreRowReader rowReader, ViewRow viewRow, ScoreSectionName sectionName) {
 
-    if (sectionName != null) {
-      ViewTextProgression progression = ViewTextProgression.V_STEP;
-      if (endless) {
-        if (this.sectionProgressed) {
-          progression = ViewTextProgression.NONE;
-        } else {
-          this.sectionProgressed = true;
-        }
-      }
-      // TODO i18n
-      String name = sectionName.getName();
-      viewRow.getBlock().getItems()
-          .add(renderText(name, ViewTextType.SECTION, ViewPlacement.ABSOLUTE, ViewTextAlignment.LEFT, progression));
+    renderSection(sectionName, viewRow);
+    if (this.systemRenderer == null) {
+      this.systemRenderer = new ViewStaveSystemRenderer(this.staveSystem, rowReader, this);
+    } else {
+      this.systemRenderer = this.systemRenderer.getNext(this.staveSystem, rowReader);
     }
-    // score lines a first rendered with positions relative to stave baseline with horizontal alignment of vertical
-    // ViewColumns accross multiple voices and staves
-    // TODO we first need to render part of the stave system to know the left position were we can start the staves...
-    boolean done = renderScoreLines(rowReader, viewRow);
-    if (done) {
-      // once we have reached the end of the row we transfer relative to absolute positions.
-      // then the stave system is rendered absolute and score lines are moved to their absolute position
-      renderStaveSystem(rowReader, viewRow);
-    }
-    return done;
+    // score lines are first rendered with positions relative to stave baseline with horizontal alignment of vertical
+    // ViewColumns across multiple voices and staves
+    this.position.setX(this.systemRenderer.getViewColumnStartX());
+    boolean done;
+    do {
+      done = renderColumn(rowReader, viewRow);
+    } while (!done);
+    // once we have reached the end of the row we transfer relative to absolute positions.
+    // then the stave system is rendered absolute and score lines are moved to their absolute position
+    layoutRow(rowReader, viewRow);
   }
 
-  private boolean renderScoreLines(ScoreRowReader rowReader, ViewRow viewRow) {
+  private void renderSection(ScoreSectionName sectionName, ViewRow viewRow) {
+
+    if (sectionName == null) {
+      return;
+    }
+    ViewTextProgression progression = ViewTextProgression.V_STEP;
+    if (this.endlessRow) {
+      if (this.sectionProgressed) {
+        progression = ViewTextProgression.NONE;
+      } else {
+        this.sectionProgressed = true;
+      }
+    }
+    // TODO i18n
+    String name = sectionName.getName();
+    viewRow.getBlock().getItems().add(renderText(name, ViewTextType.SECTION, ViewTextAlignment.LEFT, progression));
+  }
+
+  private boolean renderColumn(ScoreRowReader rowReader, ViewRow viewRow) {
 
     boolean done = false;
     int lineCount = rowReader.getLineCount();
-    this.staveIndex = 0;
-    Stave stave = null;
     ViewColumn column = new ViewColumn();
     for (int lineIndex = 0; lineIndex < lineCount; lineIndex++) {
       ScoreLineReader lineReader = rowReader.getLine(lineIndex);
-      Stave currentStave = lineReader.getLine().getVoice().getStave();
-      if ((stave != currentStave) && (stave != null)) {
-        this.staveIndex++;
-      }
-      stave = currentStave;
+      this.currentVoice = lineReader.getLine().getVoice();
       BeatPosition lineBeatPosition = lineReader.getPosition();
       if (this.beatPosition.isEqualTo(lineBeatPosition)) {
         ScoreCell scoreCell = lineReader.getCell();
         if (scoreCell != null) {
-          ViewCell viewCell = new ViewCell(scoreCell);
+          ViewCell viewCell = new ViewCell(scoreCell, this.currentVoice);
           renderCell(scoreCell, viewCell);
           if (scoreCell.getLineBreak() == ScoreLineBreak.BREAK) {
             done = true;
@@ -239,7 +238,7 @@ class ViewRendererStateful {
         }
       }
     }
-    double x = this.position.getX() + this.layout.getColumnWidth();
+    double x = this.position.getX() + this.stavesLayout.getColumnWidth();
     if (this.endlessRow || (x <= this.pageWidth)) {
       viewRow.addColumn(column);
       this.position.setX(x);
@@ -247,7 +246,7 @@ class ViewRendererStateful {
     } else {
       done = true;
     }
-    this.layout.resetColumn();
+    this.stavesLayout.resetColumn();
     return done;
   }
 
@@ -280,9 +279,8 @@ class ViewRendererStateful {
     if (chordContainer == null) {
       return;
     }
-    ViewPlacement placement = new ViewPlacement(this.staveIndex, ViewPlacementType.CHORD);
-    ViewItemText viewChord = renderText(chordContainer.toString(), ViewTextType.CHORD_SYMBOL, placement);
-    this.layout.visit(viewChord);
+    ViewItemText viewChord = renderText(chordContainer.toString(), ViewTextType.CHORD_SYMBOL);
+    this.stavesLayout.visit(viewChord);
     cell.addItem(viewChord);
   }
 
@@ -306,7 +304,7 @@ class ViewRendererStateful {
 
     PeriodType period = decoration.getPeriod();
     if ((period == null) || (decoration instanceof PedalDecoration)) {
-      String glyphs = decoration.getGlyphs(this.glyphsContext);
+      String glyphs = decoration.getGlyphs(this.context.getGlyphsContext());
       MusicalDecorationPosition pos = decoration.getPosition();
 
     } else {
@@ -316,28 +314,26 @@ class ViewRendererStateful {
 
   private ViewItemText renderRest(Rest rest, ViewCell cell) {
 
-    String glyphs = rest.getGlyphs(this.glyphsContext);
-    ViewPlacement placement = new ViewPlacement(this.staveIndex, ViewPlacementType.STAVE);
-    ViewItemText viewRest = renderText(glyphs, ViewTextType.MUSIC, placement);
+    String glyphs = rest.getGlyphs(this.context.getGlyphsContext());
+    ViewItemText viewRest = renderText(glyphs, ViewTextType.MUSIC_CONTENT);
     cell.addItem(viewRest);
-    this.layout.visit(viewRest);
+    this.stavesLayout.visit(viewRest);
     return viewRest;
   }
 
   private ViewItemText renderNote(Note note, ViewCell cell) {
 
     // TODO stem direction, beams, etc.
-    String glyphs = note.getGlyphs(this.glyphsContext);
-    ViewPlacement placement = new ViewPlacement(this.staveIndex, ViewPlacementType.STAVE);
+    String glyphs = note.getGlyphs(this.context.getGlyphsContext());
     int toneCount = note.getToneCount();
     ViewItemText viewNote = null;
     for (int toneIndex = 0; toneIndex <= toneCount; toneIndex++) {
-      viewNote = renderText(glyphs, ViewTextType.MUSIC, placement);
+      viewNote = renderText(glyphs, ViewTextType.MUSIC_CONTENT);
       NoteTone noteTone = note.getNoteTone(toneIndex);
       Tone tone = noteTone.getTone();
       // TODO vertical alignment
       cell.addItem(viewNote);
-      this.layout.visit(viewNote);
+      this.stavesLayout.visit(viewNote);
     }
     return viewNote;
   }
@@ -348,60 +344,10 @@ class ViewRendererStateful {
 
   }
 
-  // also does the row layout by transforming from relative to absolute positions.
-  private void renderStaveSystem(ScoreRowReader rowReader, ViewRow viewRow) {
+  private void layoutRow(ScoreRowReader rowReader, ViewRow viewRow) {
 
-    renderStaveSystemRecursive(this.staveSystem, this.layout.getStaveLayout(), rowReader, viewRow);
-    this.firstSystemRendered = true;
+    // TODO Auto-generated method stub
 
-    int lineCount = rowReader.getLineCount();
-    for (int lineIndex = 0; lineIndex < lineCount; lineIndex++) {
-      ViewColumn column = new ViewColumn();
-      // ViewCell cell;
-      // cell.set
-      // column.addCell(cell);
-      // if ()
-      ScoreLineReader lineReader = rowReader.getLine(lineIndex);
-      lineReader.getLine().getVoice();
-      ScoreCell cell = lineReader.getCell();
-      if (cell != null) {
-      }
-      viewRow.addColumn(column);
-    }
-  }
-
-  private boolean renderStaveSystemRecursive(StaveSystem system, ViewStaveLayout staveLayout, ScoreRowReader rowReader,
-      ViewRow viewRow) {
-
-    boolean visible;
-    if (system.isSingle()) {
-      Stave stave = system.getStave();
-      visible = this.context.getStaveAcitvity().isActive(stave);
-      if (visible) {
-        for (StaveVoice voice : stave.getVoices()) {
-
-        }
-      }
-    } else {
-      visible = false;
-      ViewStaveLayout childLayout = staveLayout.getOrCreateNext();
-      for (StaveSystem child : system.getChildren()) {
-        boolean childVisible = renderStaveSystemRecursive(child, childLayout, rowReader, viewRow);
-        if (childVisible) {
-          visible = true;
-        }
-      }
-    }
-    if (visible) {
-      StaveBracket bracket = system.getBracket();
-      if (bracket != null) {
-        String glyphs = bracket.getGlyphs(this.glyphsContext);
-        ViewItemText viewBracket = renderText(glyphs, ViewTextType.MUSIC);
-        viewRow.getBlock().addItem(viewBracket);
-        staveLayout.setWidthMax(viewBracket.getWidth());
-      }
-    }
-    return visible;
   }
 
   private ViewBlock renderPageFooter(ViewContext context, int pageNumber) {
@@ -411,24 +357,24 @@ class ViewRendererStateful {
     return footer;
   }
 
-  private ViewItemText renderText(String text, ViewTextType textType) {
+  @Override
+  public ViewItemText renderText(String text, ViewTextType textType, ViewTextAlignment alignment) {
 
-    return renderText(text, textType, ViewTextAlignment.LEFT);
+    StaveVoice voice = null;
+    if (textType.asPlacementType() != null) {
+      voice = this.currentVoice;
+    }
+    return renderText(text, textType, alignment, textType.asTextProgression(), voice);
   }
 
-  private ViewItemText renderText(String text, ViewTextType textType, ViewTextAlignment alignment) {
+  @Override
+  public ViewItemText renderText(String text, ViewTextType textType, ViewTextAlignment alignment,
+      ViewTextProgression progression, StaveVoice voice) {
 
-    return renderText(text, textType, ViewPlacement.ABSOLUTE, alignment, ViewTextProgression.ABSOLUTE);
-  }
-
-  private ViewItemText renderText(String text, ViewTextType textType, ViewPlacement placement) {
-
-    return renderText(text, textType, placement, ViewTextAlignment.LEFT, ViewTextProgression.ABSOLUTE);
-  }
-
-  private ViewItemText renderText(String text, ViewTextType textType, ViewPlacement placement,
-      ViewTextAlignment alignment, ViewTextProgression progression) {
-
+    ViewItemText textItem = new ViewItemText(voice, text, textType);
+    ViewPositionBean topLeft = textItem.getTopLeft();
+    ViewPositionBean drawStart = textItem.getDrawStart();
+    ViewPositionBean bottomRight = textItem.getBottomRight();
     ViewRectangle box = this.adapter.getTextSize(text, textType, this.context);
     double x = 0;
     double y = 0;
@@ -443,41 +389,38 @@ class ViewRendererStateful {
         x = 0;
       }
     }
-    ViewPositionBean topLeft = new ViewPositionBean(x, y);
-    ViewPositionBean draw = new ViewPositionBean();
     double x0 = box.getX0();
     if (x0 < 0) {
       // left tilt
-      draw.setX(x);
-      x = x + x0; //
-      topLeft.setX(x);
+      drawStart.setX(x);
+      x = x + x0;
     } else {
-      draw.setX(x + x0);
+      drawStart.setX(x + x0);
     }
+    topLeft.set(x, y);
     double y0 = box.getY0();
     assert (y0 >= 0); // baseline
-    draw.setY(y + y0);
-    ViewPositionBean bottomRight = new ViewPositionBean(x + box.getWidth(), y + box.getHeight());
+    drawStart.setY(y + y0);
+    bottomRight.set(x + box.getWidth(), y + box.getHeight());
     if (alignment == ViewTextAlignment.CENTER) {
       double widthLeft = this.pageWidth - x;
       if (widthLeft < 0) {
         // TODO
         widthLeft = 0;
       }
-      draw.addX(widthLeft / 2);
+      drawStart.addX(widthLeft / 2);
       bottomRight.addX(widthLeft);
     }
 
-    ViewItemText titleItem = new ViewItemText(placement, topLeft, bottomRight, draw, text, textType);
     if (progression.isHorizontal()) {
-      this.position.addX(titleItem.getWidth());
+      this.position.addX(textItem.getWidth());
     }
     if (progression.isVertical()) {
-      double height = titleItem.getHeight();
+      double height = textItem.getHeight();
       double vspace = this.context.getScale() * height / 20;
       this.position.addY(height + vspace);
     }
-    return titleItem;
+    return textItem;
   }
 
 }

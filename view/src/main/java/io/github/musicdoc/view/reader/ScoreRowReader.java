@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import io.github.musicdoc.rhythm.metre.BeatPosition;
 import io.github.musicdoc.score.ScoreRow;
 import io.github.musicdoc.score.line.ScoreLine;
 import io.github.musicdoc.stave.activity.StaveAcitvity;
@@ -60,6 +61,20 @@ public class ScoreRowReader {
       return null;
     }
     return this.lines.get(lineIndex);
+  }
+
+  /**
+   * @return {@code true} if all {@link ScoreLineReader}s are {@link ScoreLineReader#isDone() done} and this row is
+   *         entirely consumed, {@code false} otherwise.
+   */
+  public boolean isDone() {
+
+    for (ScoreLineReader line : this.lines) {
+      if (!line.isDone()) {
+        return false;
+      }
+    }
+    return true;
   }
 
 }

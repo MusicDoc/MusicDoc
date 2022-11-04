@@ -10,7 +10,7 @@ import io.github.musicdoc.view.model.ViewRow;
  * Implementation of {@link ViewRenderer} based on {@link ViewRenderAdapter} as call-back-interface to abstract from
  * concrete rendering technology.
  */
-public class ViewRendererImpl implements ViewRenderer {
+public class DefaultViewRenderer implements ViewRenderer {
 
   /** The {@link ViewRenderAdapter}. */
   protected final ViewRenderAdapter adapter;
@@ -20,7 +20,7 @@ public class ViewRendererImpl implements ViewRenderer {
    *
    * @param adapter the {@link ViewRenderAdapter}.
    */
-  public ViewRendererImpl(ViewRenderAdapter adapter) {
+  public DefaultViewRenderer(ViewRenderAdapter adapter) {
 
     super();
     this.adapter = adapter;
@@ -29,7 +29,7 @@ public class ViewRendererImpl implements ViewRenderer {
   @Override
   public ViewPage renderPage(Song song, ViewContext context) {
 
-    ViewRendererStateful renderer = new ViewRendererStateful(this.adapter, context, false);
+    ViewRendererIntern renderer = new ViewRendererIntern(this.adapter, context, false);
     return renderer.renderPages(song, null, null);
   }
 
@@ -37,7 +37,7 @@ public class ViewRendererImpl implements ViewRenderer {
   public ViewDocument renderDocument(Song song, ViewContext context) {
 
     ViewDocument document = new ViewDocument();
-    ViewRendererStateful renderer = new ViewRendererStateful(this.adapter, context, false);
+    ViewRendererIntern renderer = new ViewRendererIntern(this.adapter, context, false);
     renderer.renderPages(song, document, null);
     return document;
   }
@@ -46,7 +46,7 @@ public class ViewRendererImpl implements ViewRenderer {
   public ViewRow renderRow(Song song, ViewContext context) {
 
     ViewRow row = new ViewRow();
-    ViewRendererStateful renderer = new ViewRendererStateful(this.adapter, context, true);
+    ViewRendererIntern renderer = new ViewRendererIntern(this.adapter, context, true);
     renderer.renderPages(song, null, row);
     return row;
   }

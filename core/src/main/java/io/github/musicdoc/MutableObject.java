@@ -58,7 +58,8 @@ public interface MutableObject<SELF extends MutableObject<SELF>> extends Musical
   }
 
   /**
-   * Makes this object {@link #isImmutable() immutable}.
+   * Makes this object {@link #isImmutable() immutable}. This is an irreversible operation that can not be undone.
+   * Subsequent calls of this method will have no further object.
    *
    * @return {@code this} object itself for fluent API calls.
    */

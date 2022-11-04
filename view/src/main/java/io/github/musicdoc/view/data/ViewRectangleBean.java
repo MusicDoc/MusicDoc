@@ -5,7 +5,7 @@ import java.util.Objects;
 /**
  * Implementation of {@link ViewRectangle rectangle} as Java bean.
  */
-public class ViewRectangleBean implements ViewRectangle, ViewPositionMovable {
+public class ViewRectangleBean implements ViewRectangle, ViewPositionAdd {
 
   private ViewPositionBean topLeft;
 
@@ -22,8 +22,8 @@ public class ViewRectangleBean implements ViewRectangle, ViewPositionMovable {
   /**
    * The constructor.
    *
-   * @param topLeft the {@link #getPositionTopLeft() top left position}.
-   * @param bottomRight the {@link #getPositionBottomRight() bottom right position}.
+   * @param topLeft the {@link #getTopLeft() top left position}.
+   * @param bottomRight the {@link #getBottomRight() bottom right position}.
    */
   public ViewRectangleBean(ViewPositionBean topLeft, ViewPositionBean bottomRight) {
 
@@ -33,7 +33,7 @@ public class ViewRectangleBean implements ViewRectangle, ViewPositionMovable {
   }
 
   @Override
-  public ViewPositionBean getPositionTopLeft() {
+  public ViewPositionBean getTopLeft() {
 
     if (this.topLeft == null) {
       this.topLeft = new ViewPositionBean();
@@ -42,15 +42,15 @@ public class ViewRectangleBean implements ViewRectangle, ViewPositionMovable {
   }
 
   /**
-   * @param topLeft the new value of {@link #getPositionTopLeft()}.
+   * @param topLeft the new value of {@link #getTopLeft()}.
    */
-  public void setPositionTopLeft(ViewPositionBean topLeft) {
+  public void setTopLeft(ViewPositionBean topLeft) {
 
     this.topLeft = topLeft;
   }
 
   @Override
-  public ViewPositionBean getPositionBottomRight() {
+  public ViewPositionBean getBottomRight() {
 
     if (this.bottomRight == null) {
       this.bottomRight = new ViewPositionBean();
@@ -59,9 +59,9 @@ public class ViewRectangleBean implements ViewRectangle, ViewPositionMovable {
   }
 
   /**
-   * @param bottomRight the new value of {@link #getPositionBottomRight()}.
+   * @param bottomRight the new value of {@link #getBottomRight()}.
    */
-  public void setPositionBottomRight(ViewPositionBean bottomRight) {
+  public void setBottomRight(ViewPositionBean bottomRight) {
 
     this.bottomRight = bottomRight;
   }
@@ -94,7 +94,7 @@ public class ViewRectangleBean implements ViewRectangle, ViewPositionMovable {
   @Override
   public String toString() {
 
-    return getPositionTopLeft() + "->" + getPositionBottomRight() + "[" + getWidth() + "x" + getHeight() + "]";
+    return getTopLeft() + "->" + getBottomRight() + "[" + getWidth() + "x" + getHeight() + "]";
   }
 
 }

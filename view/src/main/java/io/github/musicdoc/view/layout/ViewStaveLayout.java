@@ -1,31 +1,93 @@
 package io.github.musicdoc.view.layout;
 
-import io.github.musicdoc.view.data.ViewSizeBean;
+import java.util.HashMap;
+import java.util.Map;
+
+import io.github.musicdoc.stave.Stave;
 
 /**
- * Layout state for the left side of the {@link io.github.musicdoc.stave.system.StaveSystem}.
+ * Layout for a single stave line.
  */
-public class ViewStaveLayout extends ViewSizeBean {
+public class ViewStaveLayout {
 
-  private ViewStaveLayout next;
+  private final Map<ViewPlacementType, ViewPlacementHeight> map;
 
   /**
-   * @return the next {@link ViewStaveLayout} or {@code null} if this is the last one.
+   * The constructor.
    */
-  public ViewStaveLayout getNext() {
+  public ViewStaveLayout() {
 
-    return this.next;
+    super();
+    this.map = new HashMap<>();
   }
 
   /**
-   * @return the next {@link ViewStaveLayout}. Will be created if not yet existing.
+   * @param type the {@link ViewPlacementType}.
+   * @return the {@link ViewPlacementHeight} for the given {@link ViewPlacementType} or {@code null} if none available.
    */
-  public ViewStaveLayout getOrCreateNext() {
+  public ViewPlacementHeight getHeight(ViewPlacementType type) {
 
-    if (this.next == null) {
-      this.next = new ViewStaveLayout();
+    return this.map.get(type);
+  }
+
+  /**
+   * @param type the {@link ViewPlacementType}.
+   * @return the {@link ViewPlacementHeight} for the given {@link ViewPlacementType} or {@code null} if none available.
+   */
+  public ViewPlacementHeight getOrCreateHeight(ViewPlacementType type) {
+
+    return this.map.computeIfAbsent(type, (p) -> new ViewPlacementHeight());
+  }
+
+  /**
+   * @return the total height as sum of all height values.
+   */
+  public double getTotalHeight() {
+
+    return getTotalHeight(0);
+  }
+
+  /**
+   * @param space the height to add as space between each row.
+   * @return the total height as sum of all height values including the given {@code space} between each of them.
+   */
+  public double getTotalHeight(double space) {
+
+    double total = 0;
+    for (ViewPlacementHeight placementHeight : this.map.values()) {
+      double height = placementHeight.getLength();
+      if (height > 0) {
+        if (total == 0) {
+          total = height;
+        } else {
+          total = total + space + height;
+        }
+      }
     }
-    return this.next;
+    return total;
   }
 
+  /**
+   * @param yStart the {@link io.github.musicdoc.view.data.ViewAttributeReadY#getY() y-coordinate} where to start this
+   *        {@link Stave}.
+   * @param space the vertical space to add between elements with different {@link ViewPlacementType} within the
+   *        {@link Stave} (chord symbol, notes, lyrics, etc.).
+   * @return the new {@link io.github.musicdoc.view.data.ViewAttributeReadY#getY() y-coordinate} at the bottom of the
+   *         {@link Stave}.
+   */
+  public double layout(double yStart, double space) {
+
+    double y = yStart;
+    for (ViewPlacementType type : ViewPlacementType.values()) {
+      ViewPlacementHeight placementHeight = this.map.get(type);
+      if (placementHeight != null) {
+        placementHeight.setYAbsolute(y);
+        double height = placementHeight.getLength();
+        if (height > 0) {
+          y = y + height + space;
+        }
+      }
+    }
+    return y;
+  }
 }

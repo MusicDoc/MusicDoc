@@ -2,6 +2,8 @@ package io.github.musicdoc.glyphs;
 
 import java.util.Objects;
 
+import io.github.musicdoc.MutableObject;
+import io.github.musicdoc.MutableObjecteCopier;
 import io.github.musicdoc.clef.Clef;
 import io.github.musicdoc.glyphs.smufl.SmuflGlyphs;
 import io.github.musicdoc.glyphs.unicode.UnicodeGlyphs;
@@ -13,10 +15,10 @@ import io.github.musicdoc.rhythm.item.ValuedItem;
  *
  * @see MusicalGlyphsContextOptions
  */
-public class MusicalGlyphsContext implements MusicalGlyphsOptions {
+public class MusicalGlyphsContext implements MusicalGlyphsOptions, MutableObject<MusicalGlyphsContext> {
 
   /** The immutable default instance. */
-  public static final MusicalGlyphsContext DEFAULT = new MusicalGlyphsContext();
+  public static final MusicalGlyphsContext DEFAULT = new MusicalGlyphsContext().makeImmutable();
 
   private final boolean enforceUnicode;
 
@@ -29,10 +31,6 @@ public class MusicalGlyphsContext implements MusicalGlyphsOptions {
   private StemDirection currentStemDirection;
 
   private boolean immutable;
-
-  static {
-    DEFAULT.makeImmutable();
-  }
 
   /**
    * The constructor.
@@ -64,20 +62,31 @@ public class MusicalGlyphsContext implements MusicalGlyphsOptions {
     this.currentStemDirection = stemDirection;
   }
 
+  private MusicalGlyphsContext(MusicalGlyphsContext copy, MutableObjecteCopier copier) {
+
+    this(copy.stemDirection, copy.clef, copy.options, copy.enforceUnicode);
+  }
+
   /**
    * @return immutable {@code true} if immutable, {@code false} otherwise.
    */
+  @Override
   public boolean isImmutable() {
 
     return this.immutable;
   }
 
-  /**
-   * Setting {@link #isImmutable()} to true. Irreversible operation.
-   */
-  public void makeImmutable() {
+  @Override
+  public MusicalGlyphsContext makeImmutable() {
 
     this.immutable = true;
+    return this;
+  }
+
+  @Override
+  public MusicalGlyphsContext copy(MutableObjecteCopier copier) {
+
+    return new MusicalGlyphsContext(this, copier);
   }
 
   /**
@@ -99,12 +108,9 @@ public class MusicalGlyphsContext implements MusicalGlyphsOptions {
     if (newOptions == this.options) {
       return this;
     }
-    if (this.immutable) {
-      return new MusicalGlyphsContext(this.stemDirection, this.clef, newOptions, this.enforceUnicode);
-    } else {
-      this.options = newOptions;
-      return this;
-    }
+    MusicalGlyphsContext context = makeMutable();
+    context.options = newOptions;
+    return context;
   }
 
   @Override
@@ -145,12 +151,9 @@ public class MusicalGlyphsContext implements MusicalGlyphsOptions {
     if (direction == this.stemDirection) {
       return this;
     }
-    if (this.immutable) {
-      return new MusicalGlyphsContext(direction, this.clef, this.options, this.enforceUnicode);
-    } else {
-      this.stemDirection = direction;
-      return this;
-    }
+    MusicalGlyphsContext context = makeMutable();
+    context.stemDirection = direction;
+    return context;
   }
 
   /**
@@ -195,11 +198,18 @@ public class MusicalGlyphsContext implements MusicalGlyphsOptions {
     if (newClef == this.clef) {
       return this;
     }
-    if (this.immutable) {
-      return new MusicalGlyphsContext(this.currentStemDirection, newClef, this.options, this.enforceUnicode);
+    MusicalGlyphsContext context = makeMutable();
+    context.clef = newClef;
+    return context;
+  }
+
+  @Override
+  public void toString(StringBuilder sb) {
+
+    if (this.enforceUnicode) {
+      sb.append("UTF");
     } else {
-      this.clef = newClef;
-      return this;
+      sb.append("SMuFL");
     }
   }
 

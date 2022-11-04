@@ -1,17 +1,17 @@
 package io.github.musicdoc.view.model;
 
-import io.github.musicdoc.view.data.ViewPositionBean;
-import io.github.musicdoc.view.layout.ViewPlacement;
+import io.github.musicdoc.stave.voice.StaveVoice;
+import io.github.musicdoc.view.layout.ViewPlacementType;
 import io.github.musicdoc.view.layout.ViewTextType;
 
 /**
  * {@link ViewItem} that draws text or musical symbols as glyphs.
  */
-public class ViewItemText extends ViewItemDrawPosition {
+public class ViewItemText extends ViewItemDrawStart {
 
-  private String text;
+  private final String text;
 
-  private ViewTextType type;
+  private final ViewTextType type;
 
   private double scaleX;
 
@@ -20,29 +20,13 @@ public class ViewItemText extends ViewItemDrawPosition {
   /**
    * The constructor.
    *
-   * @param placement the {@link #getPlacement() placement}.
-   */
-  public ViewItemText(ViewPlacement placement) {
-
-    super(placement);
-    this.scaleX = 1;
-    this.scaleY = 1;
-  }
-
-  /**
-   * The constructor.
-   *
-   * @param placement the {@link #getPlacement() placement}.
-   * @param topLeft the {@link #getPositionTopLeft() top left position}.
-   * @param bottomRight the {@link #getPositionBottomRight() bottom right position}.
-   * @param draw the {@link #getPositionDraw() draw position}.
+   * @param voice the {@link #getVoice() voice}.
    * @param text the {@link #getText() text}.
    * @param type the {@link #getType() type}.
    */
-  public ViewItemText(ViewPlacement placement, ViewPositionBean topLeft, ViewPositionBean bottomRight,
-      ViewPositionBean draw, String text, ViewTextType type) {
+  public ViewItemText(StaveVoice voice, String text, ViewTextType type) {
 
-    super(placement, topLeft, bottomRight, draw);
+    super(voice);
     this.text = text;
     this.type = type;
     this.scaleX = 1;
@@ -58,27 +42,11 @@ public class ViewItemText extends ViewItemDrawPosition {
   }
 
   /**
-   * @param text new value of {@link #getText()}.
-   */
-  public void setText(String text) {
-
-    this.text = text;
-  }
-
-  /**
    * @return the {@link ViewTextType} used to render the {@link #getText() text}. Will determine font and size.
    */
   public ViewTextType getType() {
 
     return this.type;
-  }
-
-  /**
-   * @param type new value of {@link #getType()}.
-   */
-  public void setType(ViewTextType type) {
-
-    this.type = type;
   }
 
   /**
@@ -113,6 +81,12 @@ public class ViewItemText extends ViewItemDrawPosition {
   public void setScaleY(double scaleY) {
 
     this.scaleY = scaleY;
+  }
+
+  @Override
+  public ViewPlacementType getPlacementType() {
+
+    return this.type.asPlacementType();
   }
 
   @Override

@@ -7,8 +7,17 @@ import io.github.musicdoc.view.model.ViewItemText;
  */
 public enum ViewTextType {
 
-  /** Musical symbols like notes, rest, clefs, etc. */
-  MUSIC,
+  /**
+   * Musical symbols for stave content like {@link io.github.musicdoc.note.Note},
+   * {@link io.github.musicdoc.rhythm.rest.Rest}, etc.
+   */
+  MUSIC_CONTENT,
+
+  /**
+   * Musical symbols for declarations like {@link io.github.musicdoc.clef.Clef},
+   * {@link io.github.musicdoc.stave.StaveBracket}, etc.
+   */
+  MUSIC_DECLARATION,
 
   /** Lyrics with the song text in regular font. */
   LYRICS,
@@ -37,6 +46,53 @@ public enum ViewTextType {
    * {@link io.github.musicdoc.stave.system.StaveSystem} {@link io.github.musicdoc.stave.system.StaveSystem#getName()
    * name}.
    */
-  VOICE_OR_STAVE,
+  LABEL;
+
+  /**
+   * @return the corresponding {@link ViewPlacementType} or {@code null} for {@link ViewPlacement#ABSOLUTE}.
+   */
+  public ViewPlacementType asPlacementType() {
+
+    switch (this) {
+      case CHORD_SYMBOL:
+        return ViewPlacementType.CHORD;
+      case LYRICS:
+        return ViewPlacementType.LYRICS;
+      case MUSIC_CONTENT:
+        return ViewPlacementType.STAVE;
+      case VOLTA:
+        return ViewPlacementType.VOLTA;
+      default:
+        return null;
+    }
+  }
+
+  /**
+   * @return the corresponding {@link ViewTextProgression}.
+   */
+  public ViewTextProgression asTextProgression() {
+
+    switch (this) {
+      case TITLE:
+      case SUB_TITLE:
+        return ViewTextProgression.NEWLINE;
+      default:
+        return ViewTextProgression.ABSOLUTE;
+    }
+  }
+
+  /**
+   * @return the corresponding {@link ViewTextAlignment}.
+   */
+  public ViewTextAlignment asTextAlignment() {
+
+    switch (this) {
+      case TITLE:
+      case SUB_TITLE:
+        return ViewTextAlignment.CENTER;
+      default:
+        return ViewTextAlignment.LEFT;
+    }
+  }
 
 }

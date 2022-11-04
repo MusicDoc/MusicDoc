@@ -5,14 +5,14 @@ import io.github.musicdoc.bar.BarLineType;
 /**
  * {@link SmuflGlyphs} for <a href="https://w3c.github.io/smufl/latest/tables/barlines.html">barlines</a>.
  *
- * @see io.github.musicdoc.bar.BarLine
+ * @see BarLineType
  */
 public interface SmuflGlyphsBarlines extends SmuflGlyphs {
 
-  /** The {@link BarLineType#SINGLE single bar} symbol: {@value}. */
+  /** The {@link BarLineType#THIN single bar} symbol: {@value}. */
   String BAR_SINGLE = "\uE030";
 
-  /** The {@link BarLineType#DOUBLE double bar} symbol: {@value}. */
+  /** The {@link BarLineType#THIN_THIN double bar} symbol: {@value}. */
   String BAR_DOUBLE = "\uE031";
 
   /** The {@link BarLineType#THIN_THICK final bar} symbol: {@value}. */
@@ -35,9 +35,9 @@ public interface SmuflGlyphsBarlines extends SmuflGlyphs {
 
     if (barType == null) {
       return null;
-    } else if (barType == BarLineType.SINGLE) {
+    } else if (barType == BarLineType.THIN) {
       return BAR_SINGLE;
-    } else if (barType == BarLineType.DOUBLE) {
+    } else if (barType == BarLineType.THIN_THIN) {
       return BAR_DOUBLE;
     } else if (barType == BarLineType.THIN_THICK) {
       return BAR_FINAL;

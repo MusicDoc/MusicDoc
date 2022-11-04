@@ -367,6 +367,10 @@ public class Clef extends AbstractMusicalObject implements MusicalGlyphs, ClefOb
     return new Clef(type, name, shift);
   }
 
+  /**
+   * @param tuning the {@link Clef#getTuning() tuning} to use.
+   * @return the {@link #TAB} {@link Clef} with the given {@link Clef#getTuning() tuning}.
+   */
   public static Clef ofTab(StringTuning tuning) {
 
     Clef clef = TAB.makeMutable();

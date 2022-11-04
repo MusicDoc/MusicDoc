@@ -1,7 +1,12 @@
 package io.github.musicdoc.view.reader;
 
+import io.github.musicdoc.bar.BarLine;
+import io.github.musicdoc.rhythm.metre.BeatPosition;
 import io.github.musicdoc.score.cell.ScoreCell;
 import io.github.musicdoc.score.line.ScoreLine;
+import io.github.musicdoc.stave.voice.StaveVoice;
+import io.github.musicdoc.view.layout.ViewBarLineLayout;
+import io.github.musicdoc.view.render.ViewTextRenderer;
 
 /**
  * Reader for {@link ScoreLine} with status pointing to reading-position.
@@ -13,6 +18,10 @@ public class ScoreLineReader {
   private final BeatPosition position;
 
   private int cellIndex;
+
+  private ViewBarLineLayout barLineLayout;
+
+  private boolean done;
 
   /**
    * The constructor.
@@ -52,11 +61,21 @@ public class ScoreLineReader {
   public ScoreCell getNext() {
 
     ScoreCell cell = this.line.getCell(this.cellIndex);
-    if (cell != null) {
+    if (cell == null) {
+      this.done = true;
+    } else {
       this.cellIndex++;
       this.position.add(cell);
+      BarLine bar = cell.getBar();
+      if (bar != null) {
+        // TODO
+        StaveVoice voice = null;
+        ViewTextRenderer textRenderer = null;
+        this.barLineLayout = ViewBarLineLayout.of(bar, this.position.getBar(), voice, textRenderer);
+      }
     }
     return cell;
+
   }
 
   /**
@@ -65,6 +84,14 @@ public class ScoreLineReader {
   public ScoreLine getLine() {
 
     return this.line;
+  }
+
+  /**
+   * @return {@code true} if done and all {@link ScoreCell}s are {@link #getNext() consumed}, {@code false} otherwise.
+   */
+  public boolean isDone() {
+
+    return this.done;
   }
 
 }

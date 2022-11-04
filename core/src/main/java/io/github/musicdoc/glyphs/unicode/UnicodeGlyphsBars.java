@@ -22,31 +22,33 @@ public interface UnicodeGlyphsBars extends UnicodeGlyphs {
   String REVERSE_FINAL_BARLINE = "\uD834\uDD03";
 
   /**
-   * @param barType the {@link BarLineType}.
+   * @param type the {@link BarLineType}.
    * @return the according glyph.
    */
-  static String get(BarLineType barType) {
+  static String get(BarLineType type) {
 
-    if (barType == null) {
+    if (type == null) {
       return null;
-    } else if (barType == BarLineType.SINGLE) {
-      return SINGLE_BARLINE;
-    } else if (barType == BarLineType.DOUBLE) {
-      return DOUBLE_BARLINE;
-    } else if (barType == BarLineType.THIN_THICK) {
-      return FINAL_BARLINE;
-    } else if (barType == BarLineType.THICK) {
-      return SINGLE_BARLINE; // fallback
-    } else if (barType == BarLineType.THICK_THIN) {
-      return REVERSE_FINAL_BARLINE;
-    } else if (barType == BarLineType.THICK_THICK) {
-      return DOUBLE_BARLINE; // fallback
-    } else if (barType == BarLineType.REPEAT_START) {
-      return UnicodeGlyphsCodas.LEFT_REPEAT;
-    } else if (barType == BarLineType.REPEAT_END) {
-      return UnicodeGlyphsCodas.RIGHT_REPEAT;
-    } else if (barType.isRepeatEndStart()) {
-      return UnicodeGlyphsCodas.RIGHT_REPEAT + UnicodeGlyphsCodas.LEFT_REPEAT;
+    }
+    switch (type) {
+      case THIN:
+      case THICK:
+        return SINGLE_BARLINE;
+      case THIN_THIN:
+      case THICK_THICK:
+        return DOUBLE_BARLINE;
+      case THICK_THIN:
+        return REVERSE_FINAL_BARLINE;
+      case THIN_THICK:
+        return FINAL_BARLINE;
+      case REPEAT_START:
+        return UnicodeGlyphsCodas.LEFT_REPEAT;
+      case REPEAT_END:
+        return UnicodeGlyphsCodas.RIGHT_REPEAT;
+      case REPEAT_END_START_0:
+      case REPEAT_END_START_1:
+      case REPEAT_END_START_2:
+        return UnicodeGlyphsCodas.RIGHT_REPEAT + UnicodeGlyphsCodas.LEFT_REPEAT;
     }
     return null;
   }

@@ -1,11 +1,14 @@
 package io.github.musicdoc.bar;
 
-import io.github.musicdoc.MusicalObject;
+import io.github.musicdoc.glyphs.MusicalGlyphs;
+import io.github.musicdoc.glyphs.MusicalGlyphsContext;
+import io.github.musicdoc.glyphs.smufl.SmuflGlyphsBarlines;
+import io.github.musicdoc.glyphs.unicode.UnicodeGlyphsBars;
 
 /**
  * {@link BarLine#getType() Type} of a {@link BarLine}.
  */
-public enum BarLineType implements MusicalObject {
+public enum BarLineType implements MusicalGlyphs {
 
   /** A double thick bar. */
   THICK_THICK("|*|*"),
@@ -20,7 +23,7 @@ public enum BarLineType implements MusicalObject {
   THICK("|*"),
 
   /** A double thin bar. */
-  DOUBLE("||"),
+  THIN_THIN("||"),
 
   /** The bar to end a repeat and to start a new repeat (short form without '|'). */
   REPEAT_END_START_0("::"),
@@ -38,7 +41,7 @@ public enum BarLineType implements MusicalObject {
   REPEAT_END(":|"),
 
   /** A single thin bar. */
-  SINGLE("|");
+  THIN("|");
 
   private final String syntax;
 
@@ -72,6 +75,16 @@ public enum BarLineType implements MusicalObject {
   public String getSyntax() {
 
     return this.syntax;
+  }
+
+  @Override
+  public String getGlyphs(MusicalGlyphsContext context) {
+
+    if (context.isEnforceUnicode()) {
+      return UnicodeGlyphsBars.get(this);
+    } else {
+      return SmuflGlyphsBarlines.get(this);
+    }
   }
 
   @Override

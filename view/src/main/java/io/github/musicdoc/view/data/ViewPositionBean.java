@@ -5,7 +5,7 @@ import java.util.Objects;
 /**
  * Mutable implementation of {@link ViewPosition}.
  */
-public class ViewPositionBean implements ViewPosition, ViewPositionMovable {
+public class ViewPositionBean implements ViewPosition, ViewPositionAdd, ViewAttributeWriteX, ViewAttributeWriteY {
 
   private double x;
 
@@ -52,12 +52,16 @@ public class ViewPositionBean implements ViewPosition, ViewPositionMovable {
     return this.x;
   }
 
-  /**
-   * @param x new value of {@link #getX()}.
-   */
+  @Override
   public void setX(double x) {
 
     this.x = x;
+  }
+
+  @Override
+  public void addX(double xOffset) {
+
+    this.x += xOffset;
   }
 
   @Override
@@ -66,12 +70,16 @@ public class ViewPositionBean implements ViewPosition, ViewPositionMovable {
     return this.y;
   }
 
-  /**
-   * @param y new value of {@link #getY()}.
-   */
+  @Override
   public void setY(double y) {
 
     this.y = y;
+  }
+
+  @Override
+  public void addY(double yOffset) {
+
+    this.y += yOffset;
   }
 
   /**

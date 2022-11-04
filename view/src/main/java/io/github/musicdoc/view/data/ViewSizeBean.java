@@ -5,7 +5,7 @@ import java.util.Objects;
 /**
  * Implementation of {@link ViewSize} as immutable type.
  */
-public class ViewSizeBean implements ViewSize {
+public class ViewSizeBean implements ViewSize, ViewAttributeWriteHeight, ViewAttributeWriteWidth {
 
   /** @see #getWidth() */
   protected double width;
@@ -40,30 +40,10 @@ public class ViewSizeBean implements ViewSize {
     return this.width;
   }
 
-  /**
-   * @param width new value of {@link #getWidth()}.
-   */
+  @Override
   public void setWidth(double width) {
 
     this.width = width;
-  }
-
-  /**
-   * @param newWidthIfGreater new value of {@link #getWidth()} if greater than current {@link #getWidth() width}.
-   */
-  public void setWidthMax(double newWidthIfGreater) {
-
-    if (newWidthIfGreater > this.width) {
-      this.width = newWidthIfGreater;
-    }
-  }
-
-  /**
-   * @param wOffset the offset to add to {@link #getWidth() width}.
-   */
-  public void addWidth(double wOffset) {
-
-    this.width += wOffset;
   }
 
   @Override
@@ -72,30 +52,10 @@ public class ViewSizeBean implements ViewSize {
     return this.height;
   }
 
-  /**
-   * @param height new value of {@link #getHeight()}.
-   */
+  @Override
   public void setHeight(double height) {
 
     this.height = height;
-  }
-
-  /**
-   * @param newHeightIfGreater new value of {@link #getHeight()} if greater than current {@link #getHeight() height}.
-   */
-  public void setHeightMax(double newHeightIfGreater) {
-
-    if (newHeightIfGreater > this.height) {
-      this.height = newHeightIfGreater;
-    }
-  }
-
-  /**
-   * @param hOffset the offset to add to {@link #getHeight() height}.
-   */
-  public void addHeight(double hOffset) {
-
-    this.height += hOffset;
   }
 
   /**

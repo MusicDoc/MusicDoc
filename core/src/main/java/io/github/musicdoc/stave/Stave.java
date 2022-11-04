@@ -18,15 +18,15 @@ import io.github.musicdoc.stave.voice.StaveVoiceContainer;
 /**
  * Represents the configuration and intro of a musical <em>stave</em> (also known as <em>staff</em>), what in general
  * refers to the five lines used in classic music notation. Here a {@link Stave} contains the {@link #getClef() clef},
- * {@link #getKey() key} and {@link #getMetre() beat} as well as the {@link #getVoices() voices} related to the stave. It
- * is used for the initial definition and configuration of a stave as well as for changes to a stave within the line (to
- * change the key or beat).<br>
+ * {@link #getKey() key} and {@link #getMetre() beat} as well as the {@link #getVoices() voices} related to the stave.
+ * It is used for the initial definition and configuration of a stave as well as for changes to a stave within the line
+ * (to change the key or beat).<br>
  * <br>
  * <em>Stave</em> is the British term that is called <em>staff</em> in US English. As <em>staff</em> is more ambiguous
  * and the plural form is always <em>staves</em> the British name was preferred even though <em>staff</em> is used quite
  * commonly.
  */
-public final class Stave extends AbstractStave<Stave> implements StaveVoiceContainer {
+public final class Stave extends AbstractStave<Stave> implements StaveVoiceContainer, Comparable<Stave> {
 
   /** The default {@link Stave}. */
   public static final Stave DEFAULT = new Stave(Clef.TREBLE, MusicalKey.C_MAJOR, Metre.COMMON_TIME).makeImmutable();
@@ -34,6 +34,8 @@ public final class Stave extends AbstractStave<Stave> implements StaveVoiceConta
   private boolean disconnected;
 
   private int lines;
+
+  private int index;
 
   private List<StaveVoice> voices;
 
@@ -134,23 +136,23 @@ public final class Stave extends AbstractStave<Stave> implements StaveVoiceConta
   }
 
   @Override
-  public StaveVoice getVoice(int index) {
+  public StaveVoice getVoice(int voiceIndex) {
 
-    if ((index < 0) || (index >= this.voices.size())) {
+    if ((voiceIndex < 0) || (voiceIndex >= this.voices.size())) {
       return null;
     }
-    return this.voices.get(index);
+    return this.voices.get(voiceIndex);
   }
 
   @Override
   public int indexOf(String id) {
 
-    int index = 0;
+    int i = 0;
     for (StaveVoice voice : this.voices) {
       if (Objects.equals(voice.getId(), id)) {
-        return index;
+        return i;
       }
-      index++;
+      i++;
     }
     return -1;
   }
@@ -211,6 +213,30 @@ public final class Stave extends AbstractStave<Stave> implements StaveVoiceConta
     return stave;
   }
 
+  /**
+   * @return the index of this {@link Stave} within the {@link StaveSystem}.
+   */
+  public int getIndex() {
+
+    return this.index;
+  }
+
+  /**
+   * @param newIndex the new {@link #getIndex() index}.
+   * @return this {@link Stave} with the given {@link #getIndex() index} and all other properties like {@code this} one.
+   *         Will be a {@link #copy()} if {@link #isImmutable() immutable}.
+   */
+  public Stave setIndex(int newIndex) {
+
+    assert (newIndex >= 0);
+    if (newIndex == this.index) {
+      return this;
+    }
+    Stave stave = makeMutable();
+    stave.index = newIndex;
+    return stave;
+  }
+
   @Override
   public Stave makeImmutable() {
 
@@ -222,6 +248,15 @@ public final class Stave extends AbstractStave<Stave> implements StaveVoiceConta
       super.makeImmutable();
     }
     return this;
+  }
+
+  @Override
+  public int compareTo(Stave other) {
+
+    if (other == null) {
+      return -1;
+    }
+    return this.index - other.index;
   }
 
   @Override

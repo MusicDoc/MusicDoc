@@ -14,8 +14,8 @@ public class ViewRectangleType implements ViewRectangle {
   /**
    * The constructor.
    *
-   * @param topLeft the {@link #getPositionTopLeft() top left position}.
-   * @param bottomRight the {@link #getPositionBottomRight() bottom right position}.
+   * @param topLeft the {@link #getTopLeft() top left position}.
+   * @param bottomRight the {@link #getBottomRight() bottom right position}.
    */
   public ViewRectangleType(ViewPositionType topLeft, ViewPositionType bottomRight) {
 
@@ -54,13 +54,13 @@ public class ViewRectangleType implements ViewRectangle {
   }
 
   @Override
-  public ViewPosition getPositionTopLeft() {
+  public ViewPosition getTopLeft() {
 
     return this.topLeft;
   }
 
   @Override
-  public ViewPosition getPositionBottomRight() {
+  public ViewPosition getBottomRight() {
 
     return this.bottomRight;
   }

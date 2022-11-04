@@ -1,8 +1,8 @@
 package io.github.musicdoc.view.data;
 
 /**
- * Interface for a rectangle. It is defined by two {@link ViewPosition positions}, the {@link #getPositionTopLeft() top
- * left position} as {@link #getX0() x0} and {@link #getY0() y0} together with the {@link #getPositionBottomRight()
+ * Interface for a rectangle. It is defined by two {@link ViewPosition positions}, the {@link #getTopLeft() top
+ * left position} as {@link #getX0() x0} and {@link #getY0() y0} together with the {@link #getBottomRight()
  * bottom right position} as {@link #getX1() x1} and {@link #getY1() y1}. It also implements {@link ViewSize} providing
  * access to {@link #getWidth() width} and {@link #getHeight() height}.
  */
@@ -11,19 +11,19 @@ public interface ViewRectangle extends ViewSize {
   /**
    * @return the top left {@link ViewPosition} of the rectangle.
    */
-  ViewPosition getPositionTopLeft();
+  ViewPosition getTopLeft();
 
   /**
    * @return the bottom right {@link ViewPosition} of the rectangle.
    */
-  ViewPosition getPositionBottomRight();
+  ViewPosition getBottomRight();
 
   /**
    * @return the left x coordinate of the rectangle.
    */
   default double getX0() {
 
-    return getPositionTopLeft().getX();
+    return getTopLeft().getX();
   }
 
   /**
@@ -31,7 +31,7 @@ public interface ViewRectangle extends ViewSize {
    */
   default double getY0() {
 
-    return getPositionTopLeft().getY();
+    return getTopLeft().getY();
   }
 
   /**
@@ -39,7 +39,7 @@ public interface ViewRectangle extends ViewSize {
    */
   default double getX1() {
 
-    return getPositionBottomRight().getX();
+    return getBottomRight().getX();
   }
 
   /**
@@ -47,19 +47,19 @@ public interface ViewRectangle extends ViewSize {
    */
   default double getY1() {
 
-    return getPositionBottomRight().getY();
+    return getBottomRight().getY();
   }
 
   @Override
   default double getWidth() {
 
-    return getPositionBottomRight().getX() - getPositionTopLeft().getX();
+    return getBottomRight().getX() - getTopLeft().getX();
   }
 
   @Override
   default double getHeight() {
 
-    return getPositionBottomRight().getY() - getPositionTopLeft().getY();
+    return getBottomRight().getY() - getTopLeft().getY();
   }
 
   /**
@@ -75,8 +75,8 @@ public interface ViewRectangle extends ViewSize {
   }
 
   /**
-   * @param topLeft the {@link #getPositionTopLeft() top left position}.
-   * @param bottomRight the {@link #getPositionBottomRight() bottom right position}.
+   * @param topLeft the {@link #getTopLeft() top left position}.
+   * @param bottomRight the {@link #getBottomRight() bottom right position}.
    * @return the {@link ViewRectangleType} from the given {@link ViewPosition}s.
    */
   static ViewRectangleType of(ViewPosition topLeft, ViewPosition bottomRight) {
@@ -85,7 +85,7 @@ public interface ViewRectangle extends ViewSize {
   }
 
   /**
-   * @param topLeft the {@link #getPositionTopLeft() top left position}.
+   * @param topLeft the {@link #getTopLeft() top left position}.
    * @param size the {@link ViewSize size} of the rectangle.
    * @return the {@link ViewRectangleType} fSrom the given {@link ViewPosition}s.
    */

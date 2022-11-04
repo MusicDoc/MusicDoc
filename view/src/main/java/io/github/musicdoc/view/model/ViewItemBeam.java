@@ -1,7 +1,6 @@
 package io.github.musicdoc.view.model;
 
-import io.github.musicdoc.view.data.ViewPositionBean;
-import io.github.musicdoc.view.layout.ViewPlacement;
+import io.github.musicdoc.view.layout.ViewPlacementType;
 
 /**
  * {@link ViewItem} for beams that connect the stems for groups of {@link io.github.musicdoc.note.Note}s.
@@ -14,24 +13,10 @@ public class ViewItemBeam extends ViewItem {
 
   /**
    * The constructor.
-   *
-   * @param placement the {@link #getPlacement() placement}.
-   * @param topLeft the {@link #getPositionTopLeft() top left position}.
-   * @param bottomRight the {@link #getPositionBottomRight() bottom right position}.
    */
-  public ViewItemBeam(ViewPlacement placement, ViewPositionBean topLeft, ViewPositionBean bottomRight) {
+  public ViewItemBeam() {
 
-    super(placement, topLeft, bottomRight);
-  }
-
-  /**
-   * The constructor.
-   *
-   * @param placement the {@link #getPlacement() placement}.
-   */
-  public ViewItemBeam(ViewPlacement placement) {
-
-    super(placement);
+    super();
   }
 
   /**
@@ -55,10 +40,10 @@ public class ViewItemBeam extends ViewItem {
   }
 
   /**
-   * @return {@code true} if the beam is going downwards from {@link #getPositionTopLeft() top left position}
-   *         ({@link #getX0() x0},{@link #getY0() y0}) to {@link #getPositionBottomRight() bottom right position}
-   *         ({@link #getX1() x1},{@link #getY1() y1}), {@code false} otherwise (upwards from {@link #getX0()
-   *         x0},{@link #getY1() y1} to {@link #getX1() x1},{@link #getY0() y0}).
+   * @return {@code true} if the beam is going downwards from {@link #getTopLeft() top left position} ({@link #getX0()
+   *         x0},{@link #getY0() y0}) to {@link #getBottomRight() bottom right position} ({@link #getX1()
+   *         x1},{@link #getY1() y1}), {@code false} otherwise (upwards from {@link #getX0() x0},{@link #getY1() y1} to
+   *         {@link #getX1() x1},{@link #getY0() y0}).
    */
   public boolean isDown() {
 
@@ -71,6 +56,12 @@ public class ViewItemBeam extends ViewItem {
   public void setDown(boolean down) {
 
     this.down = down;
+  }
+
+  @Override
+  public ViewPlacementType getPlacementType() {
+
+    return null;
   }
 
 }

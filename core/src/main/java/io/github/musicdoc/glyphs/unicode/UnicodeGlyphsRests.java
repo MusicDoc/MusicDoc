@@ -3,7 +3,9 @@ package io.github.musicdoc.glyphs.unicode;
 import io.github.musicdoc.rhythm.fraction.SimpleFraction;
 
 /**
- * {@link UnicodeGlyphs} for {@link io.github.musicdoc.rhythm.rest.Rest}s.
+ * {@link UnicodeGlyphs} for <a href="https://www.htmlsymbols.xyz/musical-symbols/rests">rests</a>.
+ *
+ * @see io.github.musicdoc.rhythm.rest.Rest
  */
 public interface UnicodeGlyphsRests extends UnicodeGlyphs {
 

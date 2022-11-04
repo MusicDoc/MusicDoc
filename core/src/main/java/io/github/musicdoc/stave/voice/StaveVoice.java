@@ -4,8 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import io.github.musicdoc.AbstractMusicalObject;
-import io.github.musicdoc.MutableObject;
+import io.github.musicdoc.AbstractMutableLabeledObject;
 import io.github.musicdoc.MutableObjecteCopier;
 import io.github.musicdoc.instrument.Instrument;
 import io.github.musicdoc.note.StemDirection;
@@ -14,16 +13,10 @@ import io.github.musicdoc.stave.Stave;
 /**
  * Represents a voice inside a {@link Stave}.
  */
-public class StaveVoice extends AbstractMusicalObject implements MutableObject<StaveVoice> {
+public class StaveVoice extends AbstractMutableLabeledObject<StaveVoice> {
 
   /** Property name of {@link #getId() ID}. */
   public static final String PROPERTY_ID = "id";
-
-  /** Property name of {@link #getName() name}. */
-  public static final String PROPERTY_NAME = "name";
-
-  /** Property name of {@link #getAbbreviation() abbreviation}. */
-  public static final String PROPERTY_ABBREVIATION = "abbreviation";
 
   /** Property name of {@link #getStemDirection() stemDirection}. */
   public static final String PROPERTY_STEM_DIRECTION = "stemDirection";
@@ -55,10 +48,6 @@ public class StaveVoice extends AbstractMusicalObject implements MutableObject<S
   public static final StaveVoice EMPTY = ofInternal("", "");
 
   private String id;
-
-  private String name;
-
-  private String abbreviation;
 
   private Instrument instrument;
 
@@ -92,8 +81,6 @@ public class StaveVoice extends AbstractMusicalObject implements MutableObject<S
     super();
     Objects.requireNonNull(id, "ID");
     this.id = id;
-    this.name = "";
-    this.abbreviation = "";
   }
 
   /**
@@ -115,16 +102,16 @@ public class StaveVoice extends AbstractMusicalObject implements MutableObject<S
       int transpose, int octaveShift) {
 
     super();
-    this.name = name;
+    setName(name);
     if (abbreviation == null) {
       abbreviation = "";
       if (!name.isEmpty()) {
         abbreviation = name.substring(0, 1);
       }
     }
-    this.abbreviation = abbreviation;
+    setAbbreviation(abbreviation);
     if (id == null) {
-      this.id = this.abbreviation;
+      this.id = abbreviation;
     } else {
       this.id = id;
     }
@@ -140,10 +127,8 @@ public class StaveVoice extends AbstractMusicalObject implements MutableObject<S
 
   private StaveVoice(StaveVoice copy, MutableObjecteCopier copier) {
 
-    super();
+    super(copy, copier);
     this.id = copy.id;
-    this.name = copy.name;
-    this.abbreviation = copy.abbreviation;
     this.instrument = copy.instrument;
     this.octaveShift = copy.octaveShift;
     this.transpose = copy.transpose;
@@ -177,53 +162,6 @@ public class StaveVoice extends AbstractMusicalObject implements MutableObject<S
     }
     StaveVoice voice = makeMutable();
     voice.id = newId;
-    return voice;
-  }
-
-  /**
-   * @return the display name of this voice (e.g. "Bass").
-   */
-  public String getName() {
-
-    return this.name;
-  }
-
-  /**
-   * @param newName the new {@link #getName() name}.
-   * @return a {@link StaveVoice} with the given {@link #getName() name} and all other properties like {@code this} one.
-   *         Will be a {@link #copy() copy} if {@link #isImmutable() immutable}.
-   */
-  public StaveVoice setName(String newName) {
-
-    if (Objects.equals(this.name, newName)) {
-      return this;
-    }
-    StaveVoice voice = makeMutable();
-    voice.name = newName;
-    return voice;
-  }
-
-  /**
-   * @return the abbreviation of the {@link #getName() name}. Used to display the voice {@link #getName() name} for
-   *         repeated staves to save space. This is called "subname" ("snm") in ABC notation.
-   */
-  public String getAbbreviation() {
-
-    return this.abbreviation;
-  }
-
-  /**
-   * @param newAbbreviation the new {@link #getAbbreviation() abbreviation}.
-   * @return a {@link StaveVoice} with the given {@link #getAbbreviation() abbreviation} and all other properties like
-   *         {@code this} one. Will be a {@link #copy() copy} if {@link #isImmutable() immutable}.
-   */
-  public StaveVoice setAbbreviation(String newAbbreviation) {
-
-    if (Objects.equals(this.abbreviation, newAbbreviation)) {
-      return this;
-    }
-    StaveVoice voice = makeMutable();
-    voice.abbreviation = newAbbreviation;
     return voice;
   }
 

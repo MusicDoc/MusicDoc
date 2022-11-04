@@ -2,6 +2,8 @@ package io.github.musicdoc.view.layout;
 
 import java.util.Objects;
 
+import io.github.musicdoc.stave.Stave;
+import io.github.musicdoc.stave.voice.StaveVoice;
 import io.github.musicdoc.view.data.ViewPositionType;
 import io.github.musicdoc.view.model.ViewItem;
 
@@ -14,43 +16,53 @@ public class ViewPlacement {
   /** {@link ViewPlacement} for absolute {@link ViewItem}s such as headers, footers, or stave brackets. */
   public static final ViewPlacement ABSOLUTE = new ViewPlacement();
 
-  private final int index;
+  private final StaveVoice voice;
 
   private final ViewPlacementType type;
 
   private ViewPlacement() {
 
     super();
-    this.index = -1;
+    this.voice = null;
     this.type = null;
   }
 
   /**
    * The constructor.
    *
-   * @param index the {@link #getIndex() stave index}.
+   * @param voice the {@link #getVoice() voice}.
    * @param type the {@link ViewPositionType}.
    */
-  public ViewPlacement(int index, ViewPlacementType type) {
+  public ViewPlacement(StaveVoice voice, ViewPlacementType type) {
 
     super();
-    assert (index >= 0);
+    Objects.requireNonNull(voice);
     Objects.requireNonNull(type);
-    this.index = index;
+    this.voice = voice;
     this.type = type;
   }
 
   /**
-   * @return the index number of the {@link io.github.musicdoc.stave.Stave} in the
-   *         {@link io.github.musicdoc.stave.system.StaveSystem}.
+   * @return the {@link StaveVoice} of this placement. Will be {@code null} only in case of {@link #ABSOLUTE}.
    */
-  public int getIndex() {
+  public StaveVoice getVoice() {
 
-    return this.index;
+    return this.voice;
   }
 
   /**
-   * @return the {@link ViewPositionType}.
+   * @return the {@link Stave} of this placement. Will be {@code null} in case of {@link #ABSOLUTE}.
+   */
+  public Stave getStave() {
+
+    if (this.voice == null) {
+      return null;
+    }
+    return this.voice.getStave();
+  }
+
+  /**
+   * @return the {@link ViewPositionType}. Will be {@code null} only in case of {@link #ABSOLUTE}.
    */
   public ViewPlacementType getType() {
 
@@ -60,7 +72,7 @@ public class ViewPlacement {
   @Override
   public int hashCode() {
 
-    return Objects.hash(Integer.valueOf(this.index), this.type);
+    return Objects.hash(this.voice, this.type);
   }
 
   @Override
@@ -72,7 +84,7 @@ public class ViewPlacement {
       return false;
     }
     ViewPlacement other = (ViewPlacement) obj;
-    return this.index == other.index && Objects.equals(this.type, other.type);
+    return Objects.equals(this.voice, other.voice) && Objects.equals(this.type, other.type);
   }
 
 }

@@ -1,22 +1,16 @@
 package io.github.musicdoc.view.layout;
 
 /**
- * TODO hohwille This type ...
- *
+ * Enum with the available types of a {@link ViewPlacement}.<br>
+ * <b>ATTENTION:</b> {@link #values() values} have to be ordered with their {@link #ordinal() ordinal} vertically from
+ * top to bottom.
  */
 public enum ViewPlacementType {
 
   /**
-   * Placement for the {@link io.github.musicdoc.score.cell.ScoreCell#getLyric() lyric}s rendered below the
-   * {@link #STAVE stave}.
+   * {@link io.github.musicdoc.volta.Volta} is placed on top of the {@link #STAVE stave} and the {@link #CHORD chords}.
    */
-  LYRICS,
-
-  /**
-   * Placement for any item in the {@link io.github.musicdoc.stave.Stave} including
-   * {@link io.github.musicdoc.decoration.MusicalDecoration}s.
-   */
-  STAVE,
+  VOLTA,
 
   /**
    * Placement for a {@link io.github.musicdoc.harmony.chord.ChordSymbol} is placed top of the top-most item of the
@@ -25,8 +19,15 @@ public enum ViewPlacementType {
   CHORD,
 
   /**
-   * {@link io.github.musicdoc.volta.Volta} is placed on top of the {@link #STAVE stave} and the {@link #CHORD chords}.
+   * Placement for any item in the {@link io.github.musicdoc.stave.Stave} including
+   * {@link io.github.musicdoc.decoration.MusicalDecoration}s.
    */
-  VOLTA,
+  STAVE,
+
+  /**
+   * Placement for the {@link io.github.musicdoc.score.cell.ScoreCell#getLyric() lyric}s rendered below the
+   * {@link #STAVE stave}.
+   */
+  LYRICS,
 
 }

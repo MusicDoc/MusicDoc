@@ -2,6 +2,7 @@ package io.github.musicdoc.view;
 
 import java.util.Locale;
 
+import io.github.musicdoc.glyphs.MusicalGlyphsContext;
 import io.github.musicdoc.stave.Stave;
 import io.github.musicdoc.stave.activity.StaveAcitvity;
 import io.github.musicdoc.stave.voice.StaveVoice;
@@ -17,6 +18,8 @@ public class ViewContext {
   private double scale;
 
   private StaveAcitvity staveAcitvity;
+
+  private MusicalGlyphsContext glyphsContext;
 
   /**
    * @return the {@link Locale} for l10n.
@@ -76,6 +79,28 @@ public class ViewContext {
   public void setStaveAcitvity(StaveAcitvity staveAcitvity) {
 
     this.staveAcitvity = staveAcitvity;
+  }
+
+  /**
+   * @return the {@link MusicalGlyphsContext} to use.
+   */
+  public MusicalGlyphsContext getGlyphsContext() {
+
+    if (this.glyphsContext == null) {
+      this.glyphsContext = new MusicalGlyphsContext();
+    }
+    return this.glyphsContext;
+  }
+
+  /**
+   * @param glyphContext new value of {@link #getGlyphsContext()}.
+   */
+  public void setGlyphsContext(MusicalGlyphsContext glyphContext) {
+
+    if (glyphContext != null) {
+      glyphContext = glyphContext.makeMutable();
+    }
+    this.glyphsContext = glyphContext;
   }
 
 }
