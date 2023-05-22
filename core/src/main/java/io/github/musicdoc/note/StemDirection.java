@@ -13,6 +13,15 @@ public enum StemDirection {
   UP,
 
   /** Always draw the stem down from the note-head towards the bottom of the score. */
-  DOWN
+  DOWN;
+
+  /**
+   * @param stemDirection the {@link StemDirection} to check.
+   * @return {@code true} if the given {@link StemDirection} is {@link #AUTO} or {@code null}, {@code false} otherwise.
+   */
+  public static boolean isAuto(StemDirection stemDirection) {
+
+    return (stemDirection == null) || (stemDirection == AUTO);
+  }
 
 }

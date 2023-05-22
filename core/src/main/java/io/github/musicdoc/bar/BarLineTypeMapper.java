@@ -1,6 +1,6 @@
 package io.github.musicdoc.bar;
 
-import io.github.musicdoc.filter.ListCharFilter;
+import io.github.mmm.base.filter.ListCharFilter;
 import io.github.musicdoc.format.AbstractMapper;
 
 /**

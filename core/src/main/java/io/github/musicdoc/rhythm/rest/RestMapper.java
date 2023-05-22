@@ -2,6 +2,7 @@ package io.github.musicdoc.rhythm.rest;
 
 import java.util.List;
 
+import io.github.mmm.scanner.CharStreamScanner;
 import io.github.musicdoc.decoration.MusicalDecoration;
 import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.io.MusicInputStream;
@@ -17,7 +18,8 @@ public abstract class RestMapper extends AbstractValuedItemMapper<Rest> {
   @Override
   protected Rest readItem(MusicInputStream in, SongFormatContext context, List<MusicalDecoration> decorations) {
 
-    char c = in.peek();
+    CharStreamScanner scanner = in.getScanner();
+    char c = scanner.peek();
     boolean invisible;
     if (c == REST_VISIBLE) {
       invisible = false;
@@ -26,7 +28,7 @@ public abstract class RestMapper extends AbstractValuedItemMapper<Rest> {
     } else {
       return null;
     }
-    in.next();
+    scanner.next();
     MusicalValue value = getValueMapper().read(in, context);
     return new Rest(value, invisible, decorations);
   }

@@ -151,7 +151,7 @@ public class ViewStaveSystemRenderer {
         StaveVoice voice = cell.getVoice();
         Stave stave = voice.getStave();
         ViewStaveLayout staveLayout = stavesLayout.getStaveLayout(stave);
-        for (ViewItem item : cell.getItems()) {
+        for (ViewItem item : cell) {
           ViewPlacementType type = item.getPlacementType();
           ViewPlacementHeight placementHeight = staveLayout.getHeight(type);
           double y = placementHeight.getY();

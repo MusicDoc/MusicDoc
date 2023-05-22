@@ -1,5 +1,6 @@
 package io.github.musicdoc.score;
 
+import io.github.mmm.scanner.CharStreamScanner;
 import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
@@ -19,6 +20,7 @@ public abstract class ScoreMapperBase extends ScoreMapper {
   @Override
   public Score read(MusicInputStream in, SongFormatContext context) {
 
+    CharStreamScanner scanner = in.getScanner();
     ScoreState state = new ScoreState(context);
     ScoreLineMapper lineMapper = getScoreLineMapper();
     ScoreSectionNameMapper sectionNameMapper = getSectionNameMapper();
@@ -28,7 +30,7 @@ public abstract class ScoreMapperBase extends ScoreMapper {
       staveSystem = staveSystemMapper.read(in, context);
     }
     state.setScoreSystem(staveSystem);
-    while (in.hasNext()) {
+    while (scanner.hasNext()) {
       // new section?
       if (sectionNameMapper != null) {
         ScoreSectionName sectionName = sectionNameMapper.read(in, context);

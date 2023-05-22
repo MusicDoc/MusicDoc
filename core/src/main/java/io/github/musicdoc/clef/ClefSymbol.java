@@ -88,12 +88,17 @@ public enum ClefSymbol implements ClefObject {
   @Override
   public Tone getReferenceTone() {
 
-    if (this == G) {
-      return Tone.G4;
-    } else if (this == F) {
-      return Tone.F3;
-    } else if (this == C) {
-      return Tone.C4;
+    switch (this) {
+      case G:
+        return Tone.G4;
+      case F:
+        return Tone.F3;
+      case C:
+        return Tone.C4;
+      case TAB:
+      case PERCUSSION_1:
+      case PERCUSSION_2:
+        return null;
     }
     return null;
   }
@@ -101,12 +106,35 @@ public enum ClefSymbol implements ClefObject {
   @Override
   public Tone getMiddleTone() {
 
-    if (this == G) {
-      return Tone.B4;
-    } else if (this == F) {
-      return Tone.D3;
-    } else if (this == C) {
-      return Tone.C4;
+    switch (this) {
+      case G:
+        return Tone.B4;
+      case F:
+        return Tone.D3;
+      case C:
+        return Tone.C4; // Alto-Clef
+      case TAB:
+      case PERCUSSION_1:
+      case PERCUSSION_2:
+        return null;
+    }
+    return null;
+  }
+
+  @Override
+  public Tone getLowerTone() {
+
+    switch (this) {
+      case G:
+        return Tone.F4;
+      case F:
+        return Tone.A2;
+      case C:
+        return Tone.E4;
+      case TAB:
+      case PERCUSSION_1:
+      case PERCUSSION_2:
+        return null;
     }
     return null;
   }

@@ -3,6 +3,7 @@ package io.github.musicdoc.stave;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.github.mmm.scanner.CharStreamScanner;
 import io.github.musicdoc.clef.ClefMapper;
 import io.github.musicdoc.format.AbstractMapper;
 import io.github.musicdoc.format.SongFormat;
@@ -39,10 +40,11 @@ public abstract class AbstractStaveMapperProperties<T extends AbstractStave<T>> 
   @Override
   public T read(MusicInputStream in, SongFormatContext context) {
 
+    CharStreamScanner scanner = in.getScanner();
     T stave = null;
     boolean found = true;
     while (found) {
-      in.skipWhile(' ');
+      scanner.skipWhile(' ');
       String property = in.readPropertyStart();
       if (property == null) {
         found = false;
@@ -69,7 +71,7 @@ public abstract class AbstractStaveMapperProperties<T extends AbstractStave<T>> 
       in.readPropertyValue();
       return true;
     }
-    in.skipWhile(' ');
+    in.getScanner().skipWhile(' ');
     T stave = (T) propertyMapper.read(in, context);
     String rest = in.readPropertyValue();
     assert (rest.isEmpty()) : rest;
@@ -155,7 +157,8 @@ public abstract class AbstractStaveMapperProperties<T extends AbstractStave<T>> 
           new StavePropertyMapper<>(StavePropertyBeat.INSTANCE, beatMapper, PROPERTY_METRE));
     }
 
-    public StaveProperties(ClefMapper clefMapper, MusicalKeyMapper keyMapper, MetreMapper beatMapper, StaveVoiceMapper voiceMapper) {
+    public StaveProperties(ClefMapper clefMapper, MusicalKeyMapper keyMapper, MetreMapper beatMapper,
+        StaveVoiceMapper voiceMapper) {
 
       this(new StavePropertyMapper<>(StavePropertyClef.INSTANCE, clefMapper, PROPERTY_CLEF),
           new StavePropertyMapper<>(StavePropertyKey.INSTANCE, keyMapper, PROPERTY_KEY),

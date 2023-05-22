@@ -3,6 +3,7 @@ package io.github.musicdoc.harmony.chord;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.github.mmm.scanner.CharStreamScanner;
 import io.github.musicdoc.format.AbstractMapper;
 import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.harmony.TonalSystem;
@@ -23,7 +24,8 @@ public abstract class ChordSymbolMapper extends AbstractMapper<ChordSymbol> {
   @Override
   public ChordSymbol read(MusicInputStream in, SongFormatContext context) {
 
-    in.skipWhile(' ');
+    CharStreamScanner scanner = in.getScanner();
+    scanner.skipWhile(' ');
     // detect fundamental tone
     TonePitch fundamentalTone = getTonePitchMapper().read(in, context);
     if (fundamentalTone == null) {
@@ -60,7 +62,7 @@ public abstract class ChordSymbolMapper extends AbstractMapper<ChordSymbol> {
     } while (extension != null);
     // detect base tone
     TonePitch baseTone = fundamentalTone;
-    if (in.expect(BASE_TONE_SEPARATOR)) {
+    if (scanner.expectOne(BASE_TONE_SEPARATOR)) {
       baseTone = getTonePitchMapper().read(in, context);
       if (baseTone == null) {
         // actually a parse error...

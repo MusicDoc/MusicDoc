@@ -82,6 +82,8 @@ public class Clef extends AbstractMusicalObject implements MusicalGlyphs, ClefOb
 
   private Tone referenceTone;
 
+  private Tone lowerTone;
+
   private SimpleStringTuning tuning;
 
   private boolean immutable;
@@ -243,6 +245,20 @@ public class Clef extends AbstractMusicalObject implements MusicalGlyphs, ClefOb
       this.middleTone = middle;
     }
     return this.middleTone;
+  }
+
+  @Override
+  public Tone getLowerTone() {
+
+    if ((this.lowerTone == null) && (this.symbol != null)) {
+      Tone lower = this.symbol.getLowerTone();
+      if (this.shift != ChromaticInterval.PERFECT_UNISON) {
+        TransposeContext context = new TransposeContext(MusicalKey.C_MAJOR);
+        lower = lower.transpose(this.shift, context);
+      }
+      this.lowerTone = lower;
+    }
+    return this.lowerTone;
   }
 
   /**

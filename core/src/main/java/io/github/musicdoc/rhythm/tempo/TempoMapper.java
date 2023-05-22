@@ -3,7 +3,8 @@ package io.github.musicdoc.rhythm.tempo;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.github.musicdoc.filter.ListCharFilter;
+import io.github.mmm.base.filter.CharFilter;
+import io.github.mmm.scanner.CharStreamScanner;
 import io.github.musicdoc.format.AbstractMapper;
 import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.io.MusicInputStream;
@@ -16,7 +17,7 @@ import io.github.musicdoc.rhythm.metre.Metre;
  */
 public abstract class TempoMapper extends AbstractMapper<Tempo> {
 
-  private static final ListCharFilter STOP_FILTER = ListCharFilter.DIGITS.join(NEWLINE_CHAR);
+  private static final CharFilter STOP_FILTER = CharFilter.LATIN_DIGIT.compose(CharFilter.NEWLINE);
 
   /** Character to indicate start of {@link Tempo#getBpm() BPM} value after {@link Tempo#getFraction(int) fractions}. */
   protected static final char BPM_ASSIGN_CHAR = '=';
@@ -24,8 +25,9 @@ public abstract class TempoMapper extends AbstractMapper<Tempo> {
   @Override
   public Tempo read(MusicInputStream in, SongFormatContext context) {
 
-    in.skipWhile(' ');
-    String prefix = parseString(in);
+    CharStreamScanner scanner = in.getScanner();
+    scanner.skipWhile(' ');
+    String prefix = parseString(scanner);
     List<Fraction> fractions = new ArrayList<>();
     boolean todo = true;
     while (todo) {
@@ -34,40 +36,40 @@ public abstract class TempoMapper extends AbstractMapper<Tempo> {
         todo = false;
       } else {
         fractions.add(fraction);
-        todo = in.expect(' ');
+        todo = scanner.expectOne(' ');
       }
     }
     if (fractions.size() == 0) {
-      in.addError("Missing fraction for tempo.");
+      scanner.addError("Missing fraction for tempo.");
       fractions.add(Metre.of(1, 4));
     }
     int bpm = 80;
-    if (in.expect(BPM_ASSIGN_CHAR)) {
-      in.skipWhile(' ');
+    if (scanner.expectOne(BPM_ASSIGN_CHAR)) {
+      scanner.skipWhile(' ');
       Integer i = in.readInteger(3, false);
       if (i == null) {
-        in.addError("Missing bpm value for tempo.");
+        scanner.addError("Missing bpm value for tempo.");
       } else {
         bpm = i.intValue();
       }
     } else {
-      in.addError("Missing '=' for tempo.");
+      scanner.addError("Missing '=' for tempo.");
     }
-    in.skipWhile(' ');
-    String suffix = parseString(in);
+    scanner.skipWhile(' ');
+    String suffix = parseString(scanner);
     return new Tempo(prefix, bpm, suffix, fractions.toArray(new Fraction[fractions.size()]));
   }
 
-  private String parseString(MusicInputStream in) {
+  private String parseString(CharStreamScanner scanner) {
 
     String string;
-    if (in.expect('"')) {
-      string = in.readUntil('"', false);
+    if (scanner.expectOne('"')) {
+      string = scanner.readUntil('"', false);
       if (string == null) {
-        in.addError("Unterminated quoted string.");
+        scanner.addError("Unterminated quoted string.");
       }
     } else {
-      string = in.readUntil(STOP_FILTER, false);
+      string = scanner.readUntil(STOP_FILTER, false);
     }
     return string;
   }

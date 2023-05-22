@@ -28,18 +28,25 @@ public class XmlMusicInputStreamTest extends Assertions {
     assertThat(in.readPropertyStart()).isEqualTo("tempo");
     assertThat(in.readPropertyValue()).isEqualTo("1/4=100");
     assertThat(in.readPropertyStart()).isEqualTo("lyrics");
-    assertThat(in.readLine()).isEqualTo("[V1]");
-    assertThat(in.readLine()).isEqualTo(".   Am       D7          G      Em          F                  E");
-    assertThat(in.readLine()).isEqualTo(" A-|las, my |lo-ve, you |do me |wro-ng, to |cast me |o-ff dis-|cour-teous-|ly. And|");
-    assertThat(in.readLine()).isEqualTo(".Am      D7        G       Em         F            E7         Am");
-    assertThat(in.readLine()).isEqualTo(" I have |lo-ved _ |you so |lo-ng, de-|ligh-_ ting |in _ your |com-pa-|ny.||");
-    assertThat(in.readLine()).isEqualTo("[C]");
-    assertThat(in.readLine()).isEqualTo(".C                    Bm      Em        Am      F             E");
-    assertThat(in.readLine()).isEqualTo(" Green-|slee-ves was |all my |joy, _ _ |Gre-en-|sle-eves was |my de-|light,|");
-    assertThat(in.readLine()).isEqualTo(".C                      G         Em          F           E7       Am");
-    assertThat(in.readLine()).isEqualTo(" Green-|sleeves was my |heart of |go-ld, and |who but my |la-dy _ |Green-|sleeves.||*");
+    assertThat(in.getScanner().readLine()).isEqualTo("[V1]");
+    assertThat(in.getScanner().readLine())
+        .isEqualTo(".   Am       D7          G      Em          F                  E");
+    assertThat(in.getScanner().readLine())
+        .isEqualTo(" A-|las, my |lo-ve, you |do me |wro-ng, to |cast me |o-ff dis-|cour-teous-|ly. And|");
+    assertThat(in.getScanner().readLine())
+        .isEqualTo(".Am      D7        G       Em         F            E7         Am");
+    assertThat(in.getScanner().readLine())
+        .isEqualTo(" I have |lo-ved _ |you so |lo-ng, de-|ligh-_ ting |in _ your |com-pa-|ny.||");
+    assertThat(in.getScanner().readLine()).isEqualTo("[C]");
+    assertThat(in.getScanner().readLine()).isEqualTo(".C                    Bm      Em        Am      F             E");
+    assertThat(in.getScanner().readLine())
+        .isEqualTo(" Green-|slee-ves was |all my |joy, _ _ |Gre-en-|sle-eves was |my de-|light,|");
+    assertThat(in.getScanner().readLine())
+        .isEqualTo(".C                      G         Em          F           E7       Am");
+    assertThat(in.getScanner().readLine())
+        .isEqualTo(" Green-|sleeves was my |heart of |go-ld, and |who but my |la-dy _ |Green-|sleeves.||*");
     assertThat(in.readPropertyValue()).isEqualTo("");
-    assertThat(in.hasNext()).isFalse();
+    assertThat(in.getScanner().hasNext()).isFalse();
   }
 
 }

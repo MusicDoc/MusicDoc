@@ -1,5 +1,6 @@
 package io.github.musicdoc.rhythm.item;
 
+import io.github.mmm.scanner.CharStreamScanner;
 import io.github.musicdoc.format.SongFormat;
 import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.format.SongFormatMusicDoc;
@@ -31,8 +32,9 @@ public class ValuedItemMapperMusicDoc extends ValuedItemMapperBase {
   @Override
   public ValuedItem<?> read(MusicInputStream in, SongFormatContext context) {
 
+    CharStreamScanner scanner = in.getScanner();
     ValuedItem<?> item = null;
-    if (in.expect(ITEM_START)) {
+    if (scanner.expectOne(ITEM_START)) {
       item = super.read(in, context);
       in.expect(ITEM_END, true);
     }

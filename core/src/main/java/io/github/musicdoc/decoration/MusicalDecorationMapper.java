@@ -1,7 +1,8 @@
 package io.github.musicdoc.decoration;
 
-import io.github.musicdoc.filter.CharFilter;
-import io.github.musicdoc.filter.ListCharFilter;
+import io.github.mmm.base.filter.CharFilter;
+import io.github.mmm.base.filter.ListCharFilter;
+import io.github.mmm.scanner.CharStreamScanner;
 import io.github.musicdoc.format.AbstractMapper;
 import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.io.MusicInputStream;
@@ -14,26 +15,27 @@ public abstract class MusicalDecorationMapper extends AbstractMapper<MusicalDeco
 
   // TODO: This is crappy and hardcoded - we should use MusicalDecoration instead take all keys that have only a single
   // char.
-  private static final CharFilter DECORATION_SYMBOL_FILTER = new ListCharFilter('h', 'w', true).join('~', '.')
-      .or(new ListCharFilter('H', 'W', true));
+  private static final CharFilter DECORATION_SYMBOL_FILTER = new ListCharFilter("hwHW~.");
 
-  private static final ListCharFilter DECORATION_STOP_FILTER = ListCharFilter.NEWLINE.join(DECORATION_END, ITEM_END, CHORD_END);
+  private static final CharFilter DECORATION_STOP_FILTER = CharFilter.NEWLINE
+      .compose(new ListCharFilter(DECORATION_END, ITEM_END, CHORD_END));
 
   @Override
   public MusicalDecoration read(MusicInputStream in, SongFormatContext context) {
 
-    char c = in.peek();
+    CharStreamScanner scanner = in.getScanner();
+    char c = scanner.peek();
     String name = null;
     if (c == DECORATION_START) {
-      in.next();
-      name = in.readUntil(DECORATION_STOP_FILTER, false);
-      c = in.next();
+      scanner.next();
+      name = scanner.readUntil(DECORATION_STOP_FILTER, false);
+      c = scanner.next();
       if (c != DECORATION_END) {
         // actually an error, but be tolerant
         // return null;
       }
     } else if (DECORATION_SYMBOL_FILTER.accept(c)) {
-      c = in.next();
+      c = scanner.next();
       name = Character.toString(c);
     }
     return MusicalDecoration.of(name);

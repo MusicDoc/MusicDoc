@@ -1,5 +1,6 @@
 package io.github.musicdoc.rhythm.tuplet;
 
+import io.github.mmm.scanner.CharStreamScanner;
 import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
@@ -48,12 +49,13 @@ public abstract class TupletMapperBase extends TupletMapper {
     if (unitInteger == null) {
       return null;
     }
+    CharStreamScanner scanner = in.getScanner();
     int unit = unitInteger.intValue();
     Integer beatsInteger = null;
     int itemCount = unit;
-    if (in.expect(':')) {
+    if (scanner.expectOne(':')) {
       beatsInteger = in.readInteger(2, false);
-      if (supportNoteCount && in.expect(':')) {
+      if (supportNoteCount && scanner.expectOne(':')) {
         Integer tonesInteger = in.readInteger(2, false);
         if (tonesInteger != null) {
           itemCount = tonesInteger.intValue();

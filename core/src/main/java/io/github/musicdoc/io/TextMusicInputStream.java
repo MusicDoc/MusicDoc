@@ -5,8 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import io.github.musicdoc.filter.CharFilter;
-import io.github.musicdoc.filter.ListCharFilter;
+import io.github.mmm.base.filter.CharFilter;
+import io.github.mmm.base.filter.ListCharFilter;
+import io.github.mmm.scanner.CharStreamScanner;
 import io.github.musicdoc.format.FormatConstants;
 
 /**
@@ -14,7 +15,8 @@ import io.github.musicdoc.format.FormatConstants;
  */
 public class TextMusicInputStream extends AbstractTextMusicInputStream {
 
-  private static final CharFilter FILTER_PROPERTY_CHAR = ListCharFilter.LETTERS_AND_DIGITS.join('_', '-');;
+  private static final CharFilter FILTER_PROPERTY_CHAR = CharFilter.LATIN_LETTER_OR_DIGIT
+      .compose(new ListCharFilter("_-"));
 
   private final PropertyState rootProperty;
 
@@ -69,13 +71,8 @@ public class TextMusicInputStream extends AbstractTextMusicInputStream {
     if (state == null) {
       return false;
     }
-    int len = property.length();
-    int i = this.index + len;
-    if ((i <= this.end) && (this.string.charAt(i) == state.infix)) {
-      String p = this.string.substring(this.index, i);
-      if (property.equals(p)) {
-        return true;
-      }
+    if ((this.scanner.peek(property.length()) == state.infix) && this.scanner.expect(property, false, true)) {
+      return true;
     }
     return false;
   }
@@ -90,29 +87,24 @@ public class TextMusicInputStream extends AbstractTextMusicInputStream {
     if (property == null) {
       throw new IllegalStateException("Previous property (" + this.rootProperty + ") has not been terminated.");
     }
-    if (!hasNext()) {
-      return null;
-    }
-    int start = this.index;
-    for (int i = this.index; i <= this.end; i++) {
-      char c = this.string.charAt(i);
-      if (property.acceptMultipleSuffix && (c == property.suffix) && (i == start)) {
-        start++;
+    int i = 0;
+    char c;
+    while ((c = this.scanner.peek(i)) != CharStreamScanner.EOS) {
+      if ((i == 0) && property.acceptMultipleSuffix && (c == property.suffix)) {
+        this.scanner.next(); // skip suffix as prefix
       } else if (c == property.infix) {
-        property.currentName = this.string.substring(start, i);
-        int newIndex = i + 1;
-        if (newIndex <= this.end) {
-          c = this.string.charAt(newIndex);
-          if (c == '"') {
-            property.currentQuoted = true;
-            newIndex++;
-          }
+        property.currentName = this.scanner.read(i);
+        this.scanner.next(); // skip infix
+        c = this.scanner.peek();
+        if (c == '"') {
+          property.currentQuoted = true;
+          this.scanner.next(); // skip quote
         }
-        this.column += (newIndex - this.index);
-        this.index = newIndex;
         this.currentProperty = property;
         return property.currentName;
-      } else if (!FILTER_PROPERTY_CHAR.accept(c)) {
+      } else if (FILTER_PROPERTY_CHAR.accept(c)) {
+        i++;
+      } else {
         // property name may only contain letters, digits, etc.
         return null;
       }
@@ -131,91 +123,38 @@ public class TextMusicInputStream extends AbstractTextMusicInputStream {
     if (property == null) {
       throw new IllegalStateException("Parser not inside property.");
     }
-    if (!hasNext()) {
+    if (!this.scanner.hasNext()) {
       property.currentName = null;
       this.currentProperty = property;
       return "";
       // addWarning("Property (" + this.rootProperty + ") not terminated.");
       // return null;
     }
-    int nextLine = this.line;
-    int nextColumn = this.column;
-    int newIndex = this.index;
-    int endIndex = -1;
-    boolean escape = false;
-    boolean escapedQuote = false;
     boolean todo = true;
     String value = null;
     StringBuilder valueBuilder = null;
     while (todo) {
-      for (int i = this.index; i <= this.end; i++) {
-        char c = this.string.charAt(i);
-        if (c == NEWLINE_CHAR) {
-          nextLine++;
-          nextColumn = 1;
-        } else if (c != '\r') {
-          nextColumn++;
-        }
-        if (c == property.suffix) {
-          endIndex = i;
-          newIndex = i + 1;
-          while (property.isAcceptMultipleSuffix() && (newIndex <= this.end)
-              && (this.string.charAt(newIndex) == property.suffix)) {
-            newIndex++;
-          }
-          break;
-        } else if (property.isParentSuffix(c)) {
-          endIndex = i;
-          newIndex = i;
-          break;
-        } else if (property.currentQuoted && (c == '"')) {
-          if (escape) {
-            escapedQuote = true;
-          } else {
-            endIndex = i;
-            newIndex = i + 1;
-            if ((newIndex <= this.end) && (this.string.charAt(newIndex) == property.suffix)) {
-              newIndex++;
-            }
-            break;
-          }
-        } else if (i == this.end) {
-          endIndex = i + 1;
-          newIndex = i + 1;
-          break;
-        }
-        escape = (c == '\\');
-      }
-      if (valueBuilder == null) {
-        value = this.string.substring(this.index, endIndex);
-        if (escapedQuote) {
-          value = value.replace("\\\"", "\"");
-        }
+      if (property.currentQuoted) {
+        value = this.scanner.readUntil('"', false, '\\');
+        this.scanner.expectOne(property.suffix);
       } else {
-        if (escapedQuote) {
-          value = this.string.substring(this.index, endIndex);
-          value = value.replace("\\\"", "\"");
-          valueBuilder.append(value);
-        } else {
-          valueBuilder.append(this.string, this.index, endIndex);
-        }
+        value = this.scanner.readUntil(property.suffix, true);
       }
-      this.index = newIndex;
+      if (valueBuilder != null) {
+        valueBuilder.append(value);
+      }
       property.currentQuoted = false;
       todo = false;
-      if ((property.continuation != null) && expect(property.continuation, false)) {
+      if ((property.continuation != null) && this.scanner.expect(property.continuation, false)) {
         todo = true;
-        escapedQuote = false;
         if (valueBuilder == null) {
           valueBuilder = new StringBuilder(value);
         }
-        if (expect('"')) {
+        if (this.scanner.expectOne('"')) {
           property.currentQuoted = true;
         }
       }
     }
-    this.line = nextLine;
-    this.column = nextColumn;
     property.currentName = null;
     this.currentProperty = property;
     if (valueBuilder != null) {
@@ -227,7 +166,7 @@ public class TextMusicInputStream extends AbstractTextMusicInputStream {
   @Override
   public void close() {
 
-    this.index = this.end;
+    // nothing to do
   }
 
   /**

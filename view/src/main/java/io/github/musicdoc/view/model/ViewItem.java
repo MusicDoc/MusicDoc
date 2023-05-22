@@ -13,7 +13,7 @@ import io.github.musicdoc.view.layout.ViewPlacementType;
  * A single item that can be drawn. Defines a {@link ViewRectangle rectangle} with the bounding box of its content on
  * the page or screen.
  */
-public abstract class ViewItem extends ViewRectangleBean {
+public abstract class ViewItem extends ViewRectangleBean implements ViewItemContainer {
 
   private final StaveVoice voice;
 
@@ -100,5 +100,20 @@ public abstract class ViewItem extends ViewRectangleBean {
    * @return the {@link ViewPlacementType} of this item or {@code null} if not aligned with a {@link Stave}.
    */
   public abstract ViewPlacementType getPlacementType();
+
+  @Override
+  public int getItemCount() {
+
+    return 1;
+  }
+
+  @Override
+  public ViewItem getItem(int i) {
+
+    if (i == 0) {
+      return this;
+    }
+    return null;
+  }
 
 }

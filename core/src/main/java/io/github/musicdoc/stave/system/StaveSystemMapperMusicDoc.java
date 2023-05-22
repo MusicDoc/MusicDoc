@@ -1,5 +1,6 @@
 package io.github.musicdoc.stave.system;
 
+import io.github.mmm.scanner.CharStreamScanner;
 import io.github.musicdoc.format.SongFormat;
 import io.github.musicdoc.format.SongFormatAbc;
 import io.github.musicdoc.format.SongFormatContext;
@@ -22,29 +23,30 @@ public class StaveSystemMapperMusicDoc extends StaveSystemMapper {
   @Override
   public StaveSystem read(MusicInputStream in, SongFormatContext context) {
 
-    if (!in.expect(PREFIX_STAVE_SYSTEM, false)) {
+    CharStreamScanner scanner = in.getScanner();
+    if (!scanner.expect(PREFIX_STAVE_SYSTEM, false)) {
       return null;
     }
     StaveSystemState state = new StaveSystemState(false);
     char c;
-    while (in.hasNext()) {
-      in.skipWhile(' ');
-      c = in.peek();
+    while (scanner.hasNext()) {
+      scanner.skipWhile(' ');
+      c = scanner.peek();
       if ((c == '{') || (c == '[')) {
-        in.next();
+        scanner.next();
         state.start(StaveBracket.ofStart(c), in);
-        if (in.expect('"')) {
-          String name = in.readUntil('"', false);
+        if (scanner.expectOne('"')) {
+          String name = scanner.readUntil('"', false);
           if (in.expect('"', true)) {
             state.getSystem().setName(name);
           }
         }
 
       } else if ((c == ']') || (c == '}')) {
-        in.next();
+        scanner.next();
         state.end(StaveBracket.ofEnd(c), in);
       } else if (c == NEWLINE_CHAR) {
-        in.next();
+        scanner.next();
         break;
       } else {
         Stave stave = getStaveMapper().read(in, context);

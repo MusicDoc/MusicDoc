@@ -33,27 +33,27 @@ public class TextMusicInputStreamTest extends Assertions {
     assertThat(in.readPropertyValue()).isEqualTo("1/4=100");
     assertThat(in.readPropertyStart()).isEqualTo("L");
     assertThat(in.readPropertyValue()).isEqualTo("1/4");
-    assertThat(in.readLine()).isEqualTo("%%text V1");
-    assertThat(in.readLine()).isEqualTo(
+    assertThat(in.getScanner().readLine()).isEqualTo("%%text V1");
+    assertThat(in.getScanner().readLine()).isEqualTo(
         "A | \"Am\"c2 d | \"D7\"(e>f)e | \"G\"d2 B | \"Em\"(G>A)B | \"F\"c2 A | (A>^G)A | \"E\"B2 ^G | E2 A |");
     assertThat(in.readPropertyStart()).isEqualTo("w");
     assertThat(in.readPropertyValue())
         .isEqualTo("A-las, my lo-ve, you do me wro-ng, to cast me o-ff dis-cour-teous-ly. And");
-    assertThat(in.readLine()).isEqualTo(
+    assertThat(in.getScanner().readLine()).isEqualTo(
         "\"Am\"c2 d | \"D7\"(e>f e) | \"G\"d2 B | \"Em\"(G>A)B | \"F\"(c>B)A | \"E7\"(^G>^F)G | \"Am\"A2 A | A3 ||");
     assertThat(in.readPropertyStart()).isEqualTo("w");
     assertThat(in.readPropertyValue()).isEqualTo("I have lo-ved _ you so lo-ng, de-ligh-_ ting in _ your com-pa-ny.");
-    assertThat(in.readLine()).isEqualTo("%%text C");
-    assertThat(in.readLine())
+    assertThat(in.getScanner().readLine()).isEqualTo("%%text C");
+    assertThat(in.getScanner().readLine())
         .isEqualTo("\"C\"g3 | (g>f)e | \"Bm\"d2 B | \"Em\"(G A B) | \"Am\"(c2 A) | \"F\"(A>^G)A | \"E\"B2 ^G | E3 |");
     assertThat(in.readPropertyStart()).isEqualTo("w");
     assertThat(in.readPropertyValue()).isEqualTo("Green-slee-ves was all my joy, _ _ Gre-en-sle-eves was my de-light,");
-    assertThat(in.readLine())
+    assertThat(in.getScanner().readLine())
         .isEqualTo("\"C\"g3 | (g>f)e | \"G\"d2 B | \"Em\"(G>A)B | \"F\"c B A | \"E7\"(^G ^F G) | \"Am\"A3 | A2 |]");
     assertThat(in.readPropertyStart()).isEqualTo("w");
     assertThat(in.readPropertyValue())
         .isEqualTo("Green-sleeves was my heart of go-ld, and who but my la-dy _ Green-sleeves.");
-    assertThat(in.hasNext()).isFalse();
+    assertThat(in.getScanner().hasNext()).isFalse();
   }
 
   @Test

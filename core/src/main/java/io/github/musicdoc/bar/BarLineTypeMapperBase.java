@@ -1,6 +1,7 @@
 package io.github.musicdoc.bar;
 
-import io.github.musicdoc.filter.ListCharFilter;
+import io.github.mmm.base.filter.ListCharFilter;
+import io.github.mmm.scanner.CharStreamScanner;
 import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
@@ -24,7 +25,7 @@ public abstract class BarLineTypeMapperBase extends BarLineTypeMapper {
     super();
     this.startNode = new BarLineTypeNode();
     this.endNode = this.startNode;
-    this.startFilter = new ListCharFilter(new char[0], true);
+    this.startFilter = new ListCharFilter(new char[0]);
     registerMappings();
   }
 
@@ -61,11 +62,12 @@ public abstract class BarLineTypeMapperBase extends BarLineTypeMapper {
   @Override
   public BarLineType read(MusicInputStream in, SongFormatContext context) {
 
-    char c = in.peek();
+    CharStreamScanner scanner = in.getScanner();
+    char c = scanner.peek();
     if (this.startFilter.accept(c)) {
       BarLineTypeNode node = this.startNode.next;
       while (node != null) {
-        if ((node.syntax.charAt(0) == c) && in.expect(node.syntax, false)) {
+        if ((node.syntax.charAt(0) == c) && scanner.expect(node.syntax, false)) {
           return node.type;
         }
         node = node.next;

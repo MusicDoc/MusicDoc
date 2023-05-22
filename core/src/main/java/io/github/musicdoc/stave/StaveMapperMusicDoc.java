@@ -1,5 +1,6 @@
 package io.github.musicdoc.stave;
 
+import io.github.mmm.scanner.CharStreamScanner;
 import io.github.musicdoc.clef.Clef;
 import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.harmony.key.MusicalKey;
@@ -29,7 +30,7 @@ public class StaveMapperMusicDoc extends AbstractStaveMapperMusicDoc<Stave> impl
   public Stave read(MusicInputStream in, SongFormatContext context) {
 
     boolean disconnected = false;
-    if (in.expect('-')) {
+    if (in.getScanner().expectOne('-')) {
       disconnected = true;
     }
     Stave stave = super.read(in, context);
@@ -44,14 +45,15 @@ public class StaveMapperMusicDoc extends AbstractStaveMapperMusicDoc<Stave> impl
 
   private void readVoices(Stave stave, MusicInputStream in, SongFormatContext context) {
 
+    CharStreamScanner scanner = in.getScanner();
     StaveVoiceMapper voiceMapper = getStaveVoiceMapper();
     while (true) {
-      in.skipWhile(' ');
-      if (!in.expect('(')) {
+      scanner.skipWhile(' ');
+      if (!scanner.expectOne('(')) {
         return;
       }
       StaveVoice voice = voiceMapper.read(in, context);
-      in.skipWhile(' ');
+      scanner.skipWhile(' ');
       in.expect(')', true);
       stave.addVoice(voice);
     }

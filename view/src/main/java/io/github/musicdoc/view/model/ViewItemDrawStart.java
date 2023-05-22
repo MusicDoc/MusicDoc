@@ -5,7 +5,7 @@ import io.github.musicdoc.stave.voice.StaveVoice;
 import io.github.musicdoc.view.data.ViewPositionBean;
 
 /**
- * {@link ViewItem} that has its own {@link #getDrawStart() draw start}.
+ * {@link ViewItem} with individual {@link #getDrawStart() draw start} position.
  */
 public abstract class ViewItemDrawStart extends ViewItem {
 

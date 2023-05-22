@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import io.github.mmm.scanner.CharStreamScanner;
 import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.harmony.TonalSystem;
 import io.github.musicdoc.interval.DiatonicInterval;
@@ -64,9 +65,10 @@ public abstract class ClefMapperBase extends ClefMapper {
   @Override
   public Clef read(MusicInputStream in, SongFormatContext context) {
 
+    CharStreamScanner scanner = in.getScanner();
     Clef clef = null;
     for (Entry<String, Clef> entry : this.clefMap.entrySet()) {
-      if (in.expect(entry.getKey(), true)) {
+      if (scanner.expect(entry.getKey(), true)) {
         clef = entry.getValue();
         break;
       }
@@ -74,8 +76,8 @@ public abstract class ClefMapperBase extends ClefMapper {
     if (clef == null) {
       return null;
     }
-    Integer lineNumber = in.readInteger(1, false);
-    if (lineNumber != null) {
+    int lineNumber = scanner.readDigit();
+    if (lineNumber >= 0) {
       int defaultLineNumber = -1;
       if (clef != null) {
         defaultLineNumber = clef.getSymbol().getLineNumber();
@@ -83,11 +85,11 @@ public abstract class ClefMapperBase extends ClefMapper {
       if (defaultLineNumber < 1) {
         in.addWarning("Misplaced line number (" + lineNumber + ").");
       } else {
-        int delta = defaultLineNumber - lineNumber.intValue();
+        int delta = defaultLineNumber - lineNumber;
         clef = clef.setShiftAdd(DiatonicInterval.of(delta * 2));
       }
     }
-    char c = in.peek();
+    char c = scanner.peek();
     if ((c == '+') || (c == '-')) {
       int diatonicShift = in.readInteger(2, true).intValue();
       clef = clef.setShiftAdd(DiatonicInterval.of(diatonicShift));

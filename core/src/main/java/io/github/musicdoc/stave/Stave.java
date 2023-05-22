@@ -9,6 +9,7 @@ import java.util.Objects;
 import io.github.musicdoc.MutableObjecteCopier;
 import io.github.musicdoc.MutableObjecteHelper;
 import io.github.musicdoc.clef.Clef;
+import io.github.musicdoc.clef.ClefSymbol;
 import io.github.musicdoc.harmony.key.MusicalKey;
 import io.github.musicdoc.rhythm.metre.Metre;
 import io.github.musicdoc.stave.system.StaveSystem;
@@ -71,7 +72,11 @@ public final class Stave extends AbstractStave<Stave> implements StaveVoiceConta
 
     super(clef, key, beat);
     this.disconnected = disconnected;
-    this.lines = 5;
+    if (clef.getSymbol() == ClefSymbol.TAB) {
+      this.lines = 6;
+    } else {
+      this.lines = 5;
+    }
     this.voices = new ArrayList<>();
   }
 
@@ -234,6 +239,34 @@ public final class Stave extends AbstractStave<Stave> implements StaveVoiceConta
     }
     Stave stave = makeMutable();
     stave.index = newIndex;
+    return stave;
+  }
+
+  /**
+   * Applies a {@link StaveChange} to this {@link Stave}. Typically you shall first {@link #copy() copy} the initial
+   * stave before using this method.
+   *
+   * @param staveChange the {@link AbstractStave} (typically {@link StaveChange}) to apply.
+   * @return this {@link Stave} with the given {@link StaveChange} applied. Will be a {@link #copy()} if
+   *         {@link #isImmutable() immutable}.
+   */
+  public Stave apply(AbstractStave<?> staveChange) {
+
+    Stave stave = this;
+    if (staveChange != null) {
+      Clef newClef = staveChange.getClef();
+      if (newClef != null) {
+        stave = stave.setClef(newClef);
+      }
+      MusicalKey newKey = staveChange.getKey();
+      if (newKey != null) {
+        stave = stave.setKey(newKey);
+      }
+      Metre newMetre = staveChange.getMetre();
+      if (newMetre != null) {
+        stave = stave.setMetre(newMetre);
+      }
+    }
     return stave;
   }
 

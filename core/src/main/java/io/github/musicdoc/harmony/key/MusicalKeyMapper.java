@@ -1,5 +1,6 @@
 package io.github.musicdoc.harmony.key;
 
+import io.github.mmm.scanner.CharStreamScanner;
 import io.github.musicdoc.format.AbstractMapper;
 import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.harmony.TonalSystem;
@@ -19,7 +20,8 @@ public abstract class MusicalKeyMapper extends AbstractMapper<MusicalKey> {
     if (tonika == null) {
       return null;
     }
-    in.skipWhile(' '); // for ABC compatibility
+    CharStreamScanner scanner = in.getScanner();
+    scanner.skipWhile(' '); // for ABC compatibility
     // detect tonal system (maj/min)...
     TonalSystem tonalSystem = getTonalSystemMapper().read(in, context);
     if (tonalSystem == null) {

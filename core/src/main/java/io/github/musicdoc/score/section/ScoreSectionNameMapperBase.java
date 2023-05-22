@@ -1,7 +1,8 @@
 package io.github.musicdoc.score.section;
 
-import io.github.musicdoc.filter.CharFilter;
-import io.github.musicdoc.filter.ListCharFilter;
+import io.github.mmm.base.filter.CharFilter;
+import io.github.mmm.base.filter.ListCharFilter;
+import io.github.mmm.scanner.CharStreamScanner;
 import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
@@ -28,23 +29,24 @@ public abstract class ScoreSectionNameMapperBase extends ScoreSectionNameMapper 
     this.sectionStart = sectionStart;
     this.sectionEnd = sectionEnd;
     if (sectionEnd != NEWLINE_CHAR) {
-      this.stopFilter = ListCharFilter.allOf(sectionEnd, NEWLINE_CHAR);
+      this.stopFilter = new ListCharFilter(sectionEnd, NEWLINE_CHAR);
     } else {
-      this.stopFilter = ListCharFilter.allOf(sectionEnd);
+      this.stopFilter = new ListCharFilter(sectionEnd);
     }
   }
 
   @Override
   public ScoreSectionName read(MusicInputStream in, SongFormatContext context) {
 
-    if (in.expect(this.sectionStart, false)) {
-      String section = in.readUntil(this.stopFilter, true);
+    CharStreamScanner scanner = in.getScanner();
+    if (scanner.expect(this.sectionStart, false)) {
+      String section = scanner.readUntil(this.stopFilter, true);
       ScoreSectionName name = new ScoreSectionName(section);
       in.expect(this.sectionEnd, true);
       if ((this.sectionEnd != NEWLINE_CHAR) && !in.skipNewline()) {
-        in.skipWhile(' ');
         in.addWarning("Ignoring gabarge.");
-        in.readLine();
+        scanner.skipWhile(' ');
+        scanner.readLine();
       }
       return name;
     }

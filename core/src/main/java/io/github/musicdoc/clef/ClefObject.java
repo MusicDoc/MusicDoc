@@ -26,4 +26,14 @@ public interface ClefObject {
     return null;
   }
 
+  /**
+   * @return the {@link Tone} between the first and the second line of the {@link Stave} (starting with the first line
+   *         from the bottom). So for {@link ClefSymbol#G G-clef} this will be {@link Tone#F4 F4} and for
+   *         {@link ClefSymbol#F F-clef} (bass clef) it will be {@link Tone#A2 A2}.
+   */
+  default Tone getLowerTone() {
+
+    return null;
+  }
+
 }

@@ -1,5 +1,6 @@
 package io.github.musicdoc.rhythm.punctuation;
 
+import io.github.mmm.scanner.CharStreamScanner;
 import io.github.musicdoc.format.SongFormat;
 import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.format.SongFormatMusicDoc;
@@ -31,11 +32,12 @@ public class PunctuationMapperMusicDoc extends PunctuationMapper {
   @Override
   public Punctuation read(MusicInputStream in, SongFormatContext context) {
 
-    if (in.expect('.')) {
+    CharStreamScanner scanner = in.getScanner();
+    if (scanner.expectOne('.')) {
       int dots = 1;
-      if (in.expect('.')) {
+      if (scanner.expectOne('.')) {
         dots++;
-        if (in.expect('.')) {
+        if (scanner.expectOne('.')) {
           dots++;
         }
       }

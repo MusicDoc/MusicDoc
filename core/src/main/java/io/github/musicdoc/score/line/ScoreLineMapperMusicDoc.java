@@ -1,6 +1,6 @@
 package io.github.musicdoc.score.line;
 
-import io.github.musicdoc.filter.CharFilter;
+import io.github.mmm.base.filter.CharFilter;
 import io.github.musicdoc.format.SongFormat;
 import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.format.SongFormatMusicDoc;
@@ -28,7 +28,7 @@ public class ScoreLineMapperMusicDoc extends ScoreLineMapperBase {
   @Override
   protected String readLyric(MusicInputStream in, SongFormatContext context) {
 
-    return in.readUntil(this.stopFilter, true);
+    return in.getScanner().readUntil(this.stopFilter, true);
   }
 
   @Override

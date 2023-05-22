@@ -1,5 +1,6 @@
 package io.github.musicdoc.tone;
 
+import io.github.mmm.scanner.CharStreamScanner;
 import io.github.musicdoc.format.SongFormat;
 import io.github.musicdoc.format.SongFormatAbc;
 import io.github.musicdoc.format.SongFormatContext;
@@ -42,25 +43,26 @@ public class ToneMapperAbc extends ToneMapperBase {
   @Override
   protected TonePitch readPitch(MusicInputStream in, SongFormatContext context) {
 
+    CharStreamScanner scanner = in.getScanner();
     // In ABC format, pitches are written relative to current key and previous accidental signs
     // the parsing logic is intentionally kept here instead of TonePitchMapperAbc because that is also used to
     // parse pitches for chords or keys where these changes shall not apply.
     EnharmonicType type = null;
-    if (in.expect(SHARPEN)) {
+    if (scanner.expectOne(SHARPEN)) {
       type = EnharmonicType.SINGLE_SHARP;
-    } else if (in.expect(FLATTEN)) {
+    } else if (scanner.expectOne(FLATTEN)) {
       type = EnharmonicType.SINGLE_FLAT;
-    } else if (in.expect(NEUTRALIZE)) {
+    } else if (scanner.expectOne(NEUTRALIZE)) {
       type = EnharmonicType.NORMAL;
     }
-    char c = in.peek();
+    char c = scanner.peek();
     if (!TonePitchMapperBase.FILTER_TONE_START.accept(c)) {
       if (type != null) {
-        in.addError("Missing pitch after accidental sign.");
+        scanner.addError("Missing pitch after accidental sign.");
       }
       return null;
     }
-    in.next();
+    scanner.next();
     TonePitch pitch = TonePitches.of(Character.toString(c));
     TonePitchChange tonePitchChange = context.getTonePitchChange();
     pitch = tonePitchChange.resolve(pitch, type);

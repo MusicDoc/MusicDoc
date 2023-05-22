@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import io.github.mmm.scanner.CharStreamScanner;
 import io.github.musicdoc.format.AbstractMapper;
 import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.io.MusicInputStream;
@@ -63,8 +64,9 @@ public abstract class StemDirectionMapper extends AbstractMapper<StemDirection> 
   @Override
   public StemDirection read(MusicInputStream in, SongFormatContext context) {
 
+    CharStreamScanner scanner = in.getScanner();
     for (Entry<StemDirection, String> entry : this.map.entrySet()) {
-      if (in.expect(entry.getValue(), false)) {
+      if (scanner.expect(entry.getValue(), false)) {
         return entry.getKey();
       }
     }

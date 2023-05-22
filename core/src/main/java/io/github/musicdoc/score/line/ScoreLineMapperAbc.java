@@ -2,6 +2,7 @@ package io.github.musicdoc.score.line;
 
 import java.util.List;
 
+import io.github.mmm.scanner.CharStreamScanner;
 import io.github.musicdoc.bar.BarLine;
 import io.github.musicdoc.format.SongFormat;
 import io.github.musicdoc.format.SongFormatAbc;
@@ -24,6 +25,8 @@ import io.github.musicdoc.stave.StaveChange;
  */
 public class ScoreLineMapperAbc extends ScoreLineMapperBase {
 
+  private static final String PROPERTY_LYRICS = "w";
+
   /** The singleton instance. */
   public static final ScoreLineMapperAbc INSTANCE = new ScoreLineMapperAbc();
 
@@ -44,15 +47,16 @@ public class ScoreLineMapperAbc extends ScoreLineMapperBase {
   @Override
   public ScoreLine read(MusicInputStream in, SongFormatContext context) {
 
-    String lookahead = in.peek(2);
+    CharStreamScanner scanner = in.getScanner();
+    String lookahead = scanner.peekString(2);
     if ("%%".equals(lookahead)) {
       return null;
     }
     ScoreLine line = super.read(in, context);
     if (line instanceof ScoreVoiceLine) {
-      if (in.peek(2).equals("w:")) {
+      if (in.isPropertyStart(PROPERTY_LYRICS)) {
         String property = in.readPropertyStart();
-        assert (property.equals("w"));
+        assert (property.equals(PROPERTY_LYRICS));
         String text = in.readPropertyValue();
         int cellIndex = 0;
         int start = 0;
@@ -99,16 +103,17 @@ public class ScoreLineMapperAbc extends ScoreLineMapperBase {
   @Override
   protected void readCells(ScoreVoiceLine line, MusicInputStream in, SongFormatContext context) {
 
+    CharStreamScanner scanner = in.getScanner();
     int previousBrokenRythmCount = 0;
-    while (in.hasNext() && !in.skipNewline()) {
+    while (scanner.hasNext() && !in.skipNewline()) {
       ScoreCell cell = readCell(line, in, context);
       if (cell != null) {
-        in.skipWhile(' ');
+        scanner.skipWhile(' ');
         int brokenRythmCount = 0;
-        while ((brokenRythmCount < 3) && in.expect('>')) {
+        while ((brokenRythmCount < 3) && scanner.expectOne('>')) {
           brokenRythmCount++;
         }
-        while ((brokenRythmCount > -3) && (brokenRythmCount <= 0) && in.expect('<')) {
+        while ((brokenRythmCount > -3) && (brokenRythmCount <= 0) && scanner.expectOne('<')) {
           brokenRythmCount--;
         }
         ValuedItem<?> item = cell.getItem();
@@ -145,7 +150,7 @@ public class ScoreLineMapperAbc extends ScoreLineMapperBase {
 
     super.writeCells(line, out, context);
     // in ABC the lyrics are written as an extra "w:" line so we loop the cells again
-    out.writePropertyStart("w");
+    out.writePropertyStart(PROPERTY_LYRICS);
     int max = line.getCellCount() - 1;
     for (int i = 0; i <= max; i++) {
       ScoreCell cell = line.getCell(i);
@@ -164,7 +169,7 @@ public class ScoreLineMapperAbc extends ScoreLineMapperBase {
         out.write('_');
       }
     }
-    out.writePropertyEnd("w");
+    out.writePropertyEnd(PROPERTY_LYRICS);
   }
 
   @Override

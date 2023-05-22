@@ -2,7 +2,8 @@ package io.github.musicdoc.stave.voice;
 
 import java.util.Objects;
 
-import io.github.musicdoc.filter.ListCharFilter;
+import io.github.mmm.base.filter.CharFilter;
+import io.github.mmm.scanner.CharStreamScanner;
 import io.github.musicdoc.format.SongFormat;
 import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.format.SongFormatMusicDoc;
@@ -35,19 +36,20 @@ public class StaveVoiceMapperMusicDoc extends StaveVoiceMapper {
   @Override
   public StaveVoice read(MusicInputStream in, SongFormatContext context) {
 
-    in.skipWhile(' ');
-    String id = in.readWhile(ListCharFilter.LETTERS_AND_DIGITS);
+    CharStreamScanner scanner = in.getScanner();
+    scanner.skipWhile(' ');
+    String id = scanner.readWhile(CharFilter.LATIN_LETTER_OR_DIGIT);
     assert ((id != null) && (id.length() > 0));
-    in.skipWhile(' ');
+    scanner.skipWhile(' ');
     StaveVoice voice;
-    if (in.expect('=')) {
-      in.skipWhile(' ');
-      String name = in.readWhile(ListCharFilter.LETTERS_AND_DIGITS);
-      in.skipWhile(' ');
+    if (scanner.expectOne('=')) {
+      scanner.skipWhile(' ');
+      String name = scanner.readWhile(CharFilter.LATIN_LETTER_OR_DIGIT);
+      scanner.skipWhile(' ');
       String abbreviation;
-      if (in.expect('=')) {
-        in.skipWhile(' ');
-        abbreviation = in.readWhile(ListCharFilter.LETTERS_AND_DIGITS);
+      if (scanner.expectOne('=')) {
+        scanner.skipWhile(' ');
+        abbreviation = scanner.readWhile(CharFilter.LATIN_LETTER_OR_DIGIT);
       } else {
         if (name.isEmpty()) {
           abbreviation = name;
@@ -64,11 +66,11 @@ public class StaveVoiceMapperMusicDoc extends StaveVoiceMapper {
     Integer transpose = null;
     boolean progress = true;
     while (progress) {
-      in.skipWhile(' ');
+      scanner.skipWhile(' ');
       progress = false;
       if (instrument == null) {
-        if (in.expect(':')) {
-          in.skipWhile(' ');
+        if (scanner.expectOne(':')) {
+          scanner.skipWhile(' ');
           instrument = getInstrumentMapper().read(in, context);
         }
         if (instrument != null) {
@@ -77,8 +79,8 @@ public class StaveVoiceMapperMusicDoc extends StaveVoiceMapper {
         }
       }
       if (octaveShift == null) {
-        if (in.expect('o')) {
-          octaveShift = in.readInteger();
+        if (scanner.expectOne('o')) {
+          octaveShift = scanner.readInteger();
           if (octaveShift == null) {
             in.addError("Octave (o) has to be followed by a number.");
           }
@@ -89,8 +91,8 @@ public class StaveVoiceMapperMusicDoc extends StaveVoiceMapper {
         }
       }
       if (transpose == null) {
-        if (in.expect('t')) {
-          transpose = in.readInteger();
+        if (scanner.expectOne('t')) {
+          transpose = scanner.readInteger();
           if (transpose == null) {
             in.addError("Transpose (t) has to be followed by a number.");
           }
@@ -116,7 +118,8 @@ public class StaveVoiceMapperMusicDoc extends StaveVoiceMapper {
     String name = voice.getName();
     String abbreviation = voice.getAbbreviation();
     StaveVoice buildIn = StaveVoice.get(id);
-    if ((buildIn == null) || !Objects.equals(name, buildIn.getName()) || !Objects.equals(abbreviation, buildIn.getAbbreviation())) {
+    if ((buildIn == null) || !Objects.equals(name, buildIn.getName())
+        || !Objects.equals(abbreviation, buildIn.getAbbreviation())) {
       out.write("=");
       out.write(name);
       if (!id.equals(abbreviation)) {

@@ -1,5 +1,6 @@
 package io.github.musicdoc.rhythm.metre;
 
+import io.github.mmm.scanner.CharStreamScanner;
 import io.github.musicdoc.format.AbstractMapper;
 import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.io.MusicInputStream;
@@ -13,20 +14,21 @@ public abstract class MetreMapper extends AbstractMapper<Metre> {
   @Override
   public Metre read(MusicInputStream in, SongFormatContext context) {
 
+    CharStreamScanner scanner = in.getScanner();
     Integer beats = in.readInteger(3, false);
     if (beats == null) {
-      if (in.expect(Metre.CUT_TIME.toString(), false)) {
+      if (scanner.expect(Metre.CUT_TIME.toString(), false)) {
         return Metre.CUT_TIME;
-      } else if (in.expect(Metre.COMMON_TIME.toString(), false)) {
+      } else if (scanner.expect(Metre.COMMON_TIME.toString(), false)) {
         return Metre.COMMON_TIME;
-      } else if (in.expect(Metre.NONE.toString(), false)) {
+      } else if (scanner.expect(Metre.NONE.toString(), false)) {
         return Metre.NONE;
       } else {
         return null;
       }
     }
     int fract = 4;
-    if (in.expect(BEAT_SEPARATOR)) {
+    if (scanner.expectOne(BEAT_SEPARATOR)) {
       Integer fraction = in.readInteger(3, false);
       if (fraction != null) {
         fract = fraction.intValue();

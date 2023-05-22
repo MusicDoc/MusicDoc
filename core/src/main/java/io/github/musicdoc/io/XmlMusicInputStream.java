@@ -37,7 +37,7 @@ public class XmlMusicInputStream extends AbstractTextMusicInputStream {
   @Override
   public int getLine(boolean relative) {
 
-    int result = this.line;
+    int result = this.scanner.getLine();
     if (!relative) {
       result += this.xmlReader.getLocation().getLineNumber() - 1;
     }
@@ -47,17 +47,11 @@ public class XmlMusicInputStream extends AbstractTextMusicInputStream {
   @Override
   public int getColumn(boolean relative) {
 
-    int result = this.column;
-    if (!relative && (this.line == 1)) {
+    int result = this.scanner.getColumn();
+    if (!relative && (this.scanner.getLine() == 1)) {
       result += this.xmlReader.getLocation().getColumnNumber() - 1;
     }
     return result;
-  }
-
-  @Override
-  public long getIndex() {
-
-    return this.xmlReader.getLocation().getCharacterOffset() + super.getIndex();
   }
 
   /**
@@ -101,7 +95,7 @@ public class XmlMusicInputStream extends AbstractTextMusicInputStream {
 
     try {
       assert (this.xmlReader.getEventType() == XMLStreamConstants.END_ELEMENT);
-      String value = read(Integer.MAX_VALUE);
+      String value = this.scanner.read(Integer.MAX_VALUE);
       this.xmlReader.nextTag();
       return value;
     } catch (XMLStreamException e) {

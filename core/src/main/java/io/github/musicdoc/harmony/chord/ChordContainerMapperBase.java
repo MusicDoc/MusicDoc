@@ -1,6 +1,7 @@
 package io.github.musicdoc.harmony.chord;
 
-import io.github.musicdoc.filter.ListCharFilter;
+import io.github.mmm.base.filter.ListCharFilter;
+import io.github.mmm.scanner.CharStreamScanner;
 import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
@@ -28,14 +29,20 @@ public abstract class ChordContainerMapperBase extends ChordContainerMapper {
     super();
     this.chordStart = chordStart;
     this.chordEnd = chordEnd;
-    this.stopFilter = TonePitchMapperBase.FILTER_TONE_START.join(NEWLINE_CHAR, chordStart, chordEnd);
+    ListCharFilter filter = TonePitchMapperBase.FILTER_TONE_START;
+    if (chordStart == chordEnd) {
+      this.stopFilter = filter.join(NEWLINE_CHAR, chordStart);
+    } else {
+      this.stopFilter = filter.join(NEWLINE_CHAR, chordStart, chordEnd);
+    }
   }
 
   @Override
   public ChordContainer read(MusicInputStream in, SongFormatContext context) {
 
+    CharStreamScanner scanner = in.getScanner();
     ChordContainer result = null;
-    if ((this.chordStart == 0) || in.expect(this.chordStart)) {
+    if ((this.chordStart == 0) || scanner.expectOne(this.chordStart)) {
       result = readChord(in, context);
       if (result == null) {
         if ((this.chordStart != 0) && (this.chordEnd != 0)) {
@@ -45,7 +52,7 @@ public abstract class ChordContainerMapperBase extends ChordContainerMapper {
       } else {
         if (this.chordEnd != 0) {
           ChordContainer current = result;
-          while (!in.expect(this.chordEnd)) {
+          while (!scanner.expectOne(this.chordEnd)) {
             ChordContainer next = readChord(in, context);
             if (next == null) {
               in.addError("Chord not terminated.");
@@ -66,7 +73,7 @@ public abstract class ChordContainerMapperBase extends ChordContainerMapper {
     ChordSymbol chord = getChordSymbolMapper().read(in, context);
     String suffix = "";
     if (this.chordEnd != 0) {
-      suffix = in.readUntil(this.stopFilter, true);
+      suffix = in.getScanner().readUntil(this.stopFilter, true);
     }
     if (suffix.isEmpty() && (chord == null)) {
       return null;

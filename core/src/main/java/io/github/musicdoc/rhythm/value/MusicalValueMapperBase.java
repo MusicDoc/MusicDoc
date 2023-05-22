@@ -1,5 +1,6 @@
 package io.github.musicdoc.rhythm.value;
 
+import io.github.mmm.scanner.CharStreamScanner;
 import io.github.musicdoc.format.AbstractMapper;
 import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.io.MusicInputStream;
@@ -19,6 +20,7 @@ public abstract class MusicalValueMapperBase extends MusicalValueMapper {
   @Override
   public MusicalValue read(MusicInputStream in, SongFormatContext context) {
 
+    CharStreamScanner scanner = in.getScanner();
     PlainFraction unitNoteLength = context.getUnitNoteLength();
     Integer beatsInt = in.readInteger(2, false);
     int beats = unitNoteLength.getBeats();
@@ -27,7 +29,7 @@ public abstract class MusicalValueMapperBase extends MusicalValueMapper {
     }
     Integer unitInt = null;
     int unit = unitNoteLength.getUnit();
-    if (in.expect(BEAT_SEPRATOR_STRING, false)) {
+    if (scanner.expect(BEAT_SEPRATOR_STRING, false)) {
       unitInt = in.readInteger(4, false);
     }
     if (unitInt != null) {

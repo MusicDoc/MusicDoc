@@ -1,6 +1,7 @@
 package io.github.musicdoc.stave.system;
 
-import io.github.musicdoc.filter.ListCharFilter;
+import io.github.mmm.base.filter.CharFilter;
+import io.github.mmm.scanner.CharStreamScanner;
 import io.github.musicdoc.format.SongFormat;
 import io.github.musicdoc.format.SongFormatAbc;
 import io.github.musicdoc.format.SongFormatContext;
@@ -22,13 +23,14 @@ public class StaveSystemMapperAbc extends StaveSystemMapper {
   @Override
   public StaveSystem read(MusicInputStream in, SongFormatContext context) {
 
-    if (!in.expect(PREFIX_SCORE, false)) {
+    CharStreamScanner scanner = in.getScanner();
+    if (!scanner.expect(PREFIX_SCORE, false)) {
       return null;
     }
     StaveSystemState state = new StaveSystemState(true);
     char c;
     do {
-      c = in.next();
+      c = scanner.next();
       if ((c == '(') || (c == '{') || (c == '[')) {
         state.start(StaveBracket.ofStart(c), in);
       } else if ((c == ')') || (c == ']') || (c == '}')) {
@@ -40,17 +42,17 @@ public class StaveSystemMapperAbc extends StaveSystemMapper {
         readVoiceId(in, state);
       } else if (c == ' ') {
         state.handleVoice();
-      } else if (ListCharFilter.LETTERS_AND_DIGITS.accept(c)) {
+      } else if (CharFilter.LATIN_LETTER_OR_DIGIT.accept(c)) {
         state.appendVoiceId(c);
         readVoiceId(in, state);
       } else {
-        in.addError("Unexpected character '" + c + "'");
+        scanner.addError("Unexpected character '" + c + "'");
       }
     } while ((c != NEWLINE_CHAR) && (c != 0));
     StaveSystem group = state.getTopSystem(in);
     assert (group != null);
     context.setStaveSystem(group);
-    while (in.peek(2).equals("V:")) {
+    while (scanner.peekString(2).equals("V:")) {
       String property = in.readPropertyStart();
       assert (property.equals("V"));
       StaveVoice voice = getStaveVoiceMapper().read(in, context);
@@ -62,7 +64,7 @@ public class StaveSystemMapperAbc extends StaveSystemMapper {
 
   private void readVoiceId(MusicInputStream in, StaveSystemState state) {
 
-    String id = in.readWhile(ListCharFilter.LETTERS_AND_DIGITS);
+    String id = in.getScanner().readWhile(CharFilter.LATIN_LETTER_OR_DIGIT);
     state.appendVoiceId(id);
     state.handleVoice();
   }

@@ -37,6 +37,9 @@ public enum ViewTextType {
   /** {@link io.github.musicdoc.harmony.chord.ChordContainer} with chord symbols. */
   CHORD_SYMBOL,
 
+  /** Tablature (fret numbers, hammer on, pull off, etc.). */
+  TAB,
+
   /** {@link io.github.musicdoc.volta.Volta} {@link io.github.musicdoc.volta.Volta#getNumbers() numbers}. */
   VOLTA,
 
@@ -59,6 +62,7 @@ public enum ViewTextType {
       case LYRICS:
         return ViewPlacementType.LYRICS;
       case MUSIC_CONTENT:
+      case TAB:
         return ViewPlacementType.STAVE;
       case VOLTA:
         return ViewPlacementType.VOLTA;

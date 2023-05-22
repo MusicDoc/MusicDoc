@@ -1,5 +1,6 @@
 package io.github.musicdoc.rhythm.fraction;
 
+import io.github.mmm.scanner.CharStreamScanner;
 import io.github.musicdoc.format.AbstractMapper;
 import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.io.MusicInputStream;
@@ -21,8 +22,9 @@ public abstract class FractionMapper<F extends Fraction> extends AbstractMapper<
     if (beats == null) {
       return null;
     }
+    CharStreamScanner scanner = in.getScanner();
     Integer unit;
-    if (in.expect(BEAT_SEPARATOR)) {
+    if (scanner.expectOne(BEAT_SEPARATOR)) {
       unit = in.readInteger(3, false);
     } else {
       unit = getDefaultUnit(in, context);

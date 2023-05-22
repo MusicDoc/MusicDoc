@@ -9,7 +9,7 @@ public class ViewItemBeam extends ViewItem {
 
   private int beamCount;
 
-  private boolean down;
+  private boolean up;
 
   /**
    * The constructor.
@@ -40,22 +40,22 @@ public class ViewItemBeam extends ViewItem {
   }
 
   /**
-   * @return {@code true} if the beam is going downwards from {@link #getTopLeft() top left position} ({@link #getX0()
-   *         x0},{@link #getY0() y0}) to {@link #getBottomRight() bottom right position} ({@link #getX1()
-   *         x1},{@link #getY1() y1}), {@code false} otherwise (upwards from {@link #getX0() x0},{@link #getY1() y1} to
-   *         {@link #getX1() x1},{@link #getY0() y0}).
+   * @return {@code true} if the beam is going upwards from {@link #getX0() x0},{@link #getY1() y1} to {@link #getX1()
+   *         x1},{@link #getY0() y0}, {@code false} otherwise (downwards from {@link #getTopLeft() top left position}
+   *         ({@link #getX0() x0},{@link #getY0() y0}) to {@link #getBottomRight() bottom right position}
+   *         ({@link #getX1() x1},{@link #getY1() y1})).
    */
-  public boolean isDown() {
+  public boolean isUp() {
 
-    return this.down;
+    return this.up;
   }
 
   /**
-   * @param down new value of {@link #isDown()}.
+   * @param down new value of {@link #isUp()}.
    */
-  public void setDown(boolean down) {
+  public void setUp(boolean down) {
 
-    this.down = down;
+    this.up = down;
   }
 
   @Override

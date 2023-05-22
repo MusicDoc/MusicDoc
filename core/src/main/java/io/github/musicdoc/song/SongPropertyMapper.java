@@ -81,7 +81,7 @@ public class SongPropertyMapper extends AbstractMapper<Song> {
     Song song = context.getSong();
     if (song != null) {
       if (this.valueMapper == null) {
-        String value = in.readUntil('\n', true).trim();
+        String value = in.getScanner().readUntil('\n', true).trim();
         song.setValueAsString(this.propertyName, value);
       } else {
         Object value = this.valueMapper.read(in, context);

@@ -1,6 +1,6 @@
 package io.github.musicdoc.stave.voice;
 
-import io.github.musicdoc.filter.ListCharFilter;
+import io.github.mmm.base.filter.CharFilter;
 import io.github.musicdoc.format.SongFormat;
 import io.github.musicdoc.format.SongFormatAbc;
 import io.github.musicdoc.format.SongFormatContext;
@@ -35,7 +35,7 @@ public class StaveVoiceMapperAbc extends StaveVoiceMapperProperties {
   @Override
   protected StaveVoice readVoice(MusicInputStream in, SongFormatContext context) {
 
-    String id = in.readWhile(ListCharFilter.LETTERS_AND_DIGITS);
+    String id = in.getScanner().readWhile(CharFilter.LATIN_LETTER_OR_DIGIT);
     assert (!id.isEmpty());
     StaveSystem system = context.getStaveSystem();
     assert (system != null);

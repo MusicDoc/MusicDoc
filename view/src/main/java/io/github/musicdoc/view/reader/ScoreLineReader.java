@@ -4,6 +4,8 @@ import io.github.musicdoc.bar.BarLine;
 import io.github.musicdoc.rhythm.metre.BeatPosition;
 import io.github.musicdoc.score.cell.ScoreCell;
 import io.github.musicdoc.score.line.ScoreLine;
+import io.github.musicdoc.stave.Stave;
+import io.github.musicdoc.stave.StaveChange;
 import io.github.musicdoc.stave.voice.StaveVoice;
 import io.github.musicdoc.view.layout.ViewBarLineLayout;
 import io.github.musicdoc.view.render.ViewTextRenderer;
@@ -19,9 +21,13 @@ public class ScoreLineReader {
 
   private int cellIndex;
 
-  private ViewBarLineLayout barLineLayout;
-
   private boolean done;
+
+  private Stave stave;
+
+  private boolean staveChanged;
+
+  private ViewBarLineLayout barLineLayout;
 
   /**
    * The constructor.
@@ -34,6 +40,10 @@ public class ScoreLineReader {
     super();
     this.line = line;
     this.position = new BeatPosition(position);
+    StaveVoice voice = line.getVoice();
+    if (voice != null) {
+      this.stave = voice.getStave();
+    }
   }
 
   /**
@@ -73,6 +83,14 @@ public class ScoreLineReader {
         ViewTextRenderer textRenderer = null;
         this.barLineLayout = ViewBarLineLayout.of(bar, this.position.getBar(), voice, textRenderer);
       }
+      StaveChange staveChange = cell.getStaveChange();
+      if (staveChange != null) {
+        if (!this.staveChanged) {
+          this.stave = this.stave.copy();
+          this.staveChanged = true;
+        }
+        this.stave.apply(staveChange);
+      }
     }
     return cell;
 
@@ -84,6 +102,14 @@ public class ScoreLineReader {
   public ScoreLine getLine() {
 
     return this.line;
+  }
+
+  /**
+   * @return the current {@link Stave} of this line.
+   */
+  public Stave getStave() {
+
+    return this.stave;
   }
 
   /**

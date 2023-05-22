@@ -2,8 +2,10 @@ package io.github.musicdoc.score.line;
 
 import java.util.List;
 
+import io.github.mmm.base.filter.CharFilter;
+import io.github.mmm.base.filter.ListCharFilter;
+import io.github.mmm.scanner.CharStreamScanner;
 import io.github.musicdoc.bar.BarLine;
-import io.github.musicdoc.filter.ListCharFilter;
 import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.harmony.chord.ChordContainer;
 import io.github.musicdoc.io.MusicInputStream;
@@ -23,7 +25,7 @@ public abstract class ScoreLineMapperBase extends ScoreLineMapper {
    * {@link ListCharFilter} {@link ListCharFilter#accept(char) accepting} the end of a
    * {@link io.github.musicdoc.score.cell.ScoreCell#getLyric() lyric segment}.
    */
-  protected static final ListCharFilter LYRIC_END_FILTER = ListCharFilter.allOf(' ', '-', '_');
+  protected static final ListCharFilter LYRIC_END_FILTER = new ListCharFilter(" -_");
 
   private final String voiceStart;
 
@@ -56,19 +58,20 @@ public abstract class ScoreLineMapperBase extends ScoreLineMapper {
   @Override
   public ScoreLine read(MusicInputStream in, SongFormatContext context) {
 
-    if (in.expect(this.commentPrefix, false)) {
-      String comment = in.readLine();
+    CharStreamScanner scanner = in.getScanner();
+    if (scanner.expect(this.commentPrefix, false)) {
+      String comment = scanner.readLine();
       return new ScoreCommentLine(comment);
     } else if (in.skipNewline()) {
       return ScoreEmptyLine.INSTANCE;
     }
     ScoreVoiceLine line = new ScoreVoiceLine();
     String voiceId = null;
-    if ((this.voiceStart != null) && in.expect(this.voiceStart, false)) {
-      in.skipWhile(' '); // be tolerant
-      voiceId = in.readWhile(ListCharFilter.LETTERS_AND_DIGITS);
-      in.skipWhile(' '); // be tolerant
-      if (!in.expect(this.voiceEnd, false)) {
+    if ((this.voiceStart != null) && scanner.expect(this.voiceStart, false)) {
+      scanner.skipWhile(' '); // be tolerant
+      voiceId = scanner.readWhile(CharFilter.LATIN_LETTER_OR_DIGIT);
+      scanner.skipWhile(' '); // be tolerant
+      if (!scanner.expect(this.voiceEnd, false)) {
         in.addError("Missing voice end marker (" + this.voiceEnd + ").");
       }
     }
@@ -91,7 +94,8 @@ public abstract class ScoreLineMapperBase extends ScoreLineMapper {
    */
   protected void readCells(ScoreVoiceLine line, MusicInputStream in, SongFormatContext context) {
 
-    while (in.hasNext() && !in.skipNewline()) {
+    CharStreamScanner scanner = in.getScanner();
+    while (scanner.hasNext() && !in.skipNewline()) {
       ScoreCell cell = readCell(line, in, context);
       if (cell != null) {
         line.add(cell);
@@ -107,6 +111,7 @@ public abstract class ScoreLineMapperBase extends ScoreLineMapper {
    */
   protected ScoreCell readCell(ScoreVoiceLine line, MusicInputStream in, SongFormatContext context) {
 
+    CharStreamScanner scanner = in.getScanner();
     StaveChange staveChange = getStaveChangeMapper().read(in, context);
     ValuedItem<?> item = readValuedItem(in, context);
     ChordContainer chordContainer = getChordContainerMapper().read(in, context);
@@ -117,8 +122,8 @@ public abstract class ScoreLineMapperBase extends ScoreLineMapper {
     String lyric = readLyric(in, context);
     BarLine bar = getBarLineMapper().read(in, context);
     if ((staveChange == null) && (item == null) && (chordContainer == null) && lyric.isEmpty() && (bar == null)) {
-      in.addError("Missing voice cell - ignoring character to prevent infinity loop.");
-      in.next();
+      scanner.addError("Missing voice cell - ignoring character to prevent infinity loop.");
+      scanner.next();
       return null;
     }
     ScoreLineBreak lineBreak = getScoreLineBreakMapper().read(in, context);
@@ -148,7 +153,7 @@ public abstract class ScoreLineMapperBase extends ScoreLineMapper {
   protected String readLyric(MusicInputStream in, SongFormatContext context) {
 
     // to be overridden
-    in.skipWhile(' ');
+    in.getScanner().skipWhile(' ');
     return "";
   }
 

@@ -1,5 +1,6 @@
 package io.github.musicdoc.rhythm.tuplet;
 
+import io.github.mmm.scanner.CharStreamScanner;
 import io.github.musicdoc.format.SongFormat;
 import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.format.SongFormatMusicDoc;
@@ -33,9 +34,10 @@ public class TupletMapperMusicDoc extends TupletMapperBase {
   @Override
   public Tuplet read(MusicInputStream in, SongFormatContext context) {
 
+    CharStreamScanner scanner = in.getScanner();
     Tuplet tuplet = super.read(in, context);
     if (tuplet == null) {
-      if (in.expect(TUPLET_INDICATOR)) {
+      if (scanner.expectOne(TUPLET_INDICATOR)) {
         TupletContext tc = readTupletContext(in, context, false);
         if (tc == null) {
           in.addError("Invalid tuplet");

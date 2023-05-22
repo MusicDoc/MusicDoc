@@ -14,7 +14,7 @@ public class IntegerMapper extends AbstractMapper<Integer> {
   @Override
   public Integer read(MusicInputStream in, SongFormatContext context) {
 
-    Integer value = in.readInteger();
+    Integer value = in.getScanner().readInteger();
     return value;
   }
 

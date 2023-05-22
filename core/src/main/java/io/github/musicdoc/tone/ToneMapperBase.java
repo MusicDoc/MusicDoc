@@ -1,7 +1,8 @@
 package io.github.musicdoc.tone;
 
+import io.github.mmm.base.filter.CharFilter;
+import io.github.mmm.scanner.CharStreamScanner;
 import io.github.musicdoc.clef.Clef;
-import io.github.musicdoc.filter.ListCharFilter;
 import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
@@ -44,19 +45,21 @@ public abstract class ToneMapperBase extends ToneMapper {
    */
   protected Tone readOctave(MusicInputStream in, SongFormatContext context, TonePitch pitch) {
 
+    CharStreamScanner scanner = in.getScanner();
     int octave = -1;
     boolean absolute = false;
     if (isSupportAbsoluteOctave()) {
-      String lookahead = in.peek(3);
+      String lookahead = scanner.peekString(3);
       int length = lookahead.length();
       if (length > 0) {
         char c0 = lookahead.charAt(0);
-        if (ListCharFilter.DIGITS.accept(c0) && (length >= 2)) {
+        if (CharFilter.LATIN_DIGIT.accept(c0) && (length >= 2)) {
           char c1 = lookahead.charAt(1);
           if ((c1 == END_OCTAVE)
-              || (ListCharFilter.DIGITS.accept(c1) && (length == 3) && (lookahead.charAt(2) == END_OCTAVE))) {
-            Integer octaveInteger = in.readInteger(2, true);
+              || (CharFilter.LATIN_DIGIT.accept(c1) && (length == 3) && (lookahead.charAt(2) == END_OCTAVE))) {
+            Integer octaveInteger = scanner.readInteger(); // in.readInteger(2, true);
             assert (octaveInteger != null);
+            octave = octaveInteger.intValue();
             in.expect(END_OCTAVE, true);
           }
         }
@@ -65,7 +68,7 @@ public abstract class ToneMapperBase extends ToneMapper {
     if (octave == -1) {
       octave = getOctave(context, pitch);
       while (true) {
-        char c = in.peek();
+        char c = scanner.peek();
         if (c == Tone.OCTAVE_UP) {
           octave++;
         } else if (c == Tone.OCTAVE_DOWN) {
@@ -73,7 +76,7 @@ public abstract class ToneMapperBase extends ToneMapper {
         } else {
           break;
         }
-        in.next();
+        scanner.next();
       }
     }
     return Tone.of(pitch, octave, absolute);

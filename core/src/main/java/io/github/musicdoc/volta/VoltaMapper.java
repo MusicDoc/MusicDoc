@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import io.github.mmm.scanner.CharStreamScanner;
 import io.github.musicdoc.format.AbstractMapper;
 import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.io.MusicInputStream;
@@ -49,12 +50,13 @@ public abstract class VoltaMapper extends AbstractMapper<Volta> {
   @Override
   public Volta read(MusicInputStream in, SongFormatContext context) {
 
+    CharStreamScanner scanner = in.getScanner();
     NumberSet numbers = parseSet(in);
     if (numbers == null) {
       return Volta.NONE;
     }
     int extraBars = 0;
-    if (in.expect(EXTRA_BARS_CHAR)) {
+    if (scanner.expectOne(EXTRA_BARS_CHAR)) {
       Integer i = in.readInteger(3, false);
       if (i == null) {
         in.addError("Volta extra bars (+) has to be followed by a number.");
@@ -65,22 +67,23 @@ public abstract class VoltaMapper extends AbstractMapper<Volta> {
     return Volta.of(numbers, extraBars);
   }
 
-  private static NumberSet parseSet(MusicInputStream chars) {
+  private static NumberSet parseSet(MusicInputStream in) {
 
-    NumberRange range = parseRange(chars);
+    NumberRange range = parseRange(in);
     if (range == null) {
       return null;
     }
+    CharStreamScanner scanner = in.getScanner();
     NumberSet numbers = range;
     List<NumberRange> ranges = null;
-    while (chars.expect(SET_CHAR)) {
+    while (scanner.expectOne(SET_CHAR)) {
       if (ranges == null) {
         ranges = new ArrayList<>();
         ranges.add(range);
       }
-      range = parseRange(chars);
+      range = parseRange(in);
       if (range == null) {
-        chars.addError("Volta set is missing range.");
+        in.addError("Volta set is missing range.");
       } else {
         ranges.add(range);
       }
@@ -92,18 +95,18 @@ public abstract class VoltaMapper extends AbstractMapper<Volta> {
     return numbers;
   }
 
-  private static NumberRange parseRange(MusicInputStream chars) {
+  private static NumberRange parseRange(MusicInputStream in) {
 
-    Integer i = chars.readInteger(2, false);
+    Integer i = in.readInteger(2, false);
     if (i == null) {
       return null;
     }
     int min = i.intValue();
     int max = min;
-    if (chars.expect(RANGE_CHAR)) {
-      i = chars.readInteger(2, false);
+    if (in.getScanner().expectOne(RANGE_CHAR)) {
+      i = in.readInteger(2, false);
       if (i == null) {
-        chars.addError("Volta range is missing max value.");
+        in.addError("Volta range is missing max value.");
       } else {
         max = i.intValue();
       }

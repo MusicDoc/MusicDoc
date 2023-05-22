@@ -1,5 +1,6 @@
 package io.github.musicdoc.score.line;
 
+import io.github.mmm.scanner.CharStreamScanner;
 import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
@@ -25,10 +26,11 @@ public abstract class ScoreLineBreakMapperBase extends ScoreLineBreakMapper {
   @Override
   public ScoreLineBreak read(MusicInputStream in, SongFormatContext context) {
 
+    CharStreamScanner scanner = in.getScanner();
     for (ScoreLineBreak lineBreak : ScoreLineBreak.values()) {
       String syntax = getSyntax(lineBreak, context);
       if (syntax != null) {
-        if (in.expect(syntax, false)) {
+        if (scanner.expect(syntax, false)) {
           return lineBreak;
         }
       }

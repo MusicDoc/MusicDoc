@@ -1,12 +1,18 @@
 package io.github.musicdoc.view.render;
 
 import io.github.musicdoc.PeriodType;
+import io.github.musicdoc.clef.Clef;
+import io.github.musicdoc.clef.ClefSymbol;
+import io.github.musicdoc.decoration.DecoratedItem;
 import io.github.musicdoc.decoration.MusicalDecoration;
 import io.github.musicdoc.decoration.MusicalDecorationPosition;
 import io.github.musicdoc.decoration.PedalDecoration;
 import io.github.musicdoc.harmony.chord.ChordContainer;
+import io.github.musicdoc.instrument.string.StringTuning;
+import io.github.musicdoc.interval.ChromaticInterval;
 import io.github.musicdoc.note.Note;
 import io.github.musicdoc.note.NoteTone;
+import io.github.musicdoc.note.StemDirection;
 import io.github.musicdoc.rhythm.item.ValuedItem;
 import io.github.musicdoc.rhythm.metre.BeatPosition;
 import io.github.musicdoc.rhythm.rest.Rest;
@@ -17,8 +23,10 @@ import io.github.musicdoc.score.line.ScoreLineBreak;
 import io.github.musicdoc.score.section.ScoreSection;
 import io.github.musicdoc.score.section.ScoreSectionName;
 import io.github.musicdoc.song.Song;
+import io.github.musicdoc.stave.Stave;
 import io.github.musicdoc.stave.system.StaveSystem;
 import io.github.musicdoc.stave.voice.StaveVoice;
+import io.github.musicdoc.tab.TabTone;
 import io.github.musicdoc.tone.Tone;
 import io.github.musicdoc.view.ViewContext;
 import io.github.musicdoc.view.data.ViewPositionBean;
@@ -31,6 +39,8 @@ import io.github.musicdoc.view.model.ViewBlock;
 import io.github.musicdoc.view.model.ViewCell;
 import io.github.musicdoc.view.model.ViewColumn;
 import io.github.musicdoc.view.model.ViewDocument;
+import io.github.musicdoc.view.model.ViewItemContainer;
+import io.github.musicdoc.view.model.ViewItemGroup;
 import io.github.musicdoc.view.model.ViewItemText;
 import io.github.musicdoc.view.model.ViewPage;
 import io.github.musicdoc.view.model.ViewRow;
@@ -135,7 +145,7 @@ class ViewRendererIntern implements ViewTextRenderer {
         double y = this.position.getY();
         double heightLeftRatio = (this.pageHeight - y) / this.pageHeight;
         if (heightLeftRatio < 0.1) { // TODO should not be static 10% but rather adapt to height of row?!
-          ViewBlock footer = renderPageFooter(this.context, pageNumber);
+          ViewBlock footer = renderPageFooter(pageNumber);
           page.setFooter(footer);
           document.getPages().add(page);
           pageNumber++;
@@ -157,12 +167,12 @@ class ViewRendererIntern implements ViewTextRenderer {
 
     ViewBlock header = new ViewBlock();
     if (page.getNumber() == 1) {
-      header.getItems().add(
+      header.addItem(
           renderText(song.title.getValue(), ViewTextType.TITLE, ViewTextAlignment.CENTER, ViewTextProgression.NEWLINE));
       String subtitle = song.artist.getValueOrDefault();
       // TODO song.capo.getValue();
-      header.getItems()
-          .add(renderText(subtitle, ViewTextType.SUB_TITLE, ViewTextAlignment.CENTER, ViewTextProgression.NEWLINE));
+      header
+          .addItem(renderText(subtitle, ViewTextType.SUB_TITLE, ViewTextAlignment.CENTER, ViewTextProgression.NEWLINE));
     } else {
       String text = song.title.getValue();
       String artist = song.artist.getValueOrDefault();
@@ -173,8 +183,7 @@ class ViewRendererIntern implements ViewTextRenderer {
       if (capo != null) {
         text = text + "[" + capo + "]";
       }
-      header.getItems()
-          .add(renderText(text, ViewTextType.SUB_TITLE, ViewTextAlignment.CENTER, ViewTextProgression.NEWLINE));
+      header.addItem(renderText(text, ViewTextType.SUB_TITLE, ViewTextAlignment.CENTER, ViewTextProgression.NEWLINE));
     }
     return header;
   }
@@ -214,7 +223,7 @@ class ViewRendererIntern implements ViewTextRenderer {
     }
     // TODO i18n
     String name = sectionName.getName();
-    viewRow.getBlock().getItems().add(renderText(name, ViewTextType.SECTION, ViewTextAlignment.LEFT, progression));
+    viewRow.getBlock().addItem(renderText(name, ViewTextType.SECTION, ViewTextAlignment.LEFT, progression));
   }
 
   private boolean renderColumn(ScoreRowReader rowReader, ViewRow viewRow) {
@@ -230,7 +239,7 @@ class ViewRendererIntern implements ViewTextRenderer {
         ScoreCell scoreCell = lineReader.getCell();
         if (scoreCell != null) {
           ViewCell viewCell = new ViewCell(scoreCell, this.currentVoice);
-          renderCell(scoreCell, viewCell);
+          renderCell(scoreCell, viewCell, this.currentVoice, lineReader);
           if (scoreCell.getLineBreak() == ScoreLineBreak.BREAK) {
             done = true;
           }
@@ -267,81 +276,131 @@ class ViewRendererIntern implements ViewTextRenderer {
     this.beatPosition = nextBeatPosition;
   }
 
-  private void renderCell(ScoreCell scoreCell, ViewCell viewCell) {
+  private void renderCell(ScoreCell scoreCell, ViewCell viewCell, StaveVoice voice, ScoreLineReader lineReader) {
 
-    renderChord(scoreCell.getChordContainer(), viewCell);
-    renderItem(scoreCell.getItem(), viewCell);
-    renderLyric(scoreCell.getLyric(), viewCell);
+    renderChord(scoreCell.getChordContainer(), viewCell, voice, lineReader);
+    renderItem(scoreCell.getItem(), viewCell, voice, lineReader);
+    renderLyric(scoreCell.getLyric(), viewCell, lineReader);
   }
 
-  private void renderChord(ChordContainer chordContainer, ViewCell cell) {
+  private void renderChord(ChordContainer chordContainer, ViewCell viewCell, StaveVoice voice,
+      ScoreLineReader lineReader) {
 
     if (chordContainer == null) {
       return;
     }
     ViewItemText viewChord = renderText(chordContainer.toString(), ViewTextType.CHORD_SYMBOL);
     this.stavesLayout.visit(viewChord);
-    cell.addItem(viewChord);
+    viewCell.addItem(viewChord);
   }
 
-  private void renderItem(ValuedItem<?> item, ViewCell cell) {
+  private void renderItem(ValuedItem<?> item, ViewCell viewCell, StaveVoice voice, ScoreLineReader lineReader) {
 
     if (item == null) {
       return;
     }
-    ViewItemText viewItem;
+    ViewItemGroup viewItem = new ViewItemGroup();
     if (item instanceof Rest) {
-      viewItem = renderRest((Rest) item, cell);
+      renderRest((Rest) item, viewCell, voice, lineReader, viewItem);
     } else {
-      viewItem = renderNote((Note) item, cell);
+      renderNote((Note) item, viewCell, voice, lineReader, viewItem);
     }
-    for (MusicalDecoration decoration : item.getDecorations()) {
-      renderDecoration(decoration, cell, viewItem);
+    renderDecorations(item, viewCell, viewItem);
+  }
+
+  private void renderDecorations(DecoratedItem item, ViewCell viewCell, ViewItemContainer viewItem) {
+
+    int count = item.getDecorationCount();
+    for (int i = 0; i < count; i++) {
+      MusicalDecoration decoration = item.getDecoration(i);
+      renderDecoration(decoration, viewCell, viewItem);
     }
   }
 
-  private void renderDecoration(MusicalDecoration decoration, ViewCell cell, ViewItemText viewItem) {
+  private void renderDecoration(MusicalDecoration decoration, ViewCell viewCell, ViewItemContainer viewItem) {
 
     PeriodType period = decoration.getPeriod();
     if ((period == null) || (decoration instanceof PedalDecoration)) {
       String glyphs = decoration.getGlyphs(this.context.getGlyphsContext());
       MusicalDecorationPosition pos = decoration.getPosition();
-
+      switch (pos) {
+        case ABOVE:
+        case BELOW:
+        case STEM:
+        case NOTEHEAD:
+        case LEFT:
+        case RIGHT:
+        case TOP:
+        case BOTTOM:
+      }
     } else {
 
     }
   }
 
-  private ViewItemText renderRest(Rest rest, ViewCell cell) {
+  private void renderRest(Rest rest, ViewCell viewCell, StaveVoice voice, ScoreLineReader lineReader,
+      ViewItemGroup itemGroup) {
 
-    String glyphs = rest.getGlyphs(this.context.getGlyphsContext());
-    ViewItemText viewRest = renderText(glyphs, ViewTextType.MUSIC_CONTENT);
-    cell.addItem(viewRest);
+    ViewItemText viewRest = renderText(rest, ViewTextType.MUSIC_CONTENT);
+    viewCell.addItem(viewRest);
     this.stavesLayout.visit(viewRest);
-    return viewRest;
+    itemGroup.addItem(viewRest);
   }
 
-  private ViewItemText renderNote(Note note, ViewCell cell) {
+  private void renderNote(Note note, ViewCell viewCell, StaveVoice voice, ScoreLineReader lineReader,
+      ViewItemGroup itemGroup) {
 
+    Stave stave = lineReader.getStave();
+    Clef clef = stave.getClef();
+    ClefSymbol clefSymbol = clef.getSymbol();
     // TODO stem direction, beams, etc.
-    String glyphs = note.getGlyphs(this.context.getGlyphsContext());
+    StemDirection stemDirection = voice.getStemDirection();
+    String glyphs = null;
     int toneCount = note.getToneCount();
-    ViewItemText viewNote = null;
     for (int toneIndex = 0; toneIndex <= toneCount; toneIndex++) {
-      viewNote = renderText(glyphs, ViewTextType.MUSIC_CONTENT);
       NoteTone noteTone = note.getNoteTone(toneIndex);
-      Tone tone = noteTone.getTone();
-      // TODO vertical alignment
-      cell.addItem(viewNote);
+      ViewItemText viewNote;
+      int step;
+      if (clefSymbol == ClefSymbol.TAB) {
+        TabTone tab = noteTone.getTab();
+        assert (tab != null);
+        int fret = tab.getFret();
+        viewNote = renderText("" + fret, ViewTextType.TAB);
+        int string = tab.getString();
+        int stringCount = stave.getLines();
+        StringTuning tuning = clef.getTuning();
+        if (tuning != null) {
+          stringCount = tuning.getStringCount();
+        }
+        step = 2 * (stringCount - string - 1);
+      } else {
+        // TODO percussion clef???
+        if (glyphs == null) {
+          glyphs = note.getGlyphs(this.context.getGlyphsContext());
+        }
+        viewNote = renderText(glyphs, ViewTextType.MUSIC_CONTENT);
+        Tone tone = noteTone.getTone();
+        ChromaticInterval interval = clef.getLowerTone().getInterval(tone);
+        step = interval.getChromaticSteps(null);
+      }
+      itemGroup.addItem(viewNote);
+      renderDecorations(noteTone, viewCell, viewNote);
+      double yOffset = this.adapter.getStepOffset(step, this.context);
+      viewNote.addY(yOffset);
+      viewCell.addItem(viewNote);
       this.stavesLayout.visit(viewNote);
     }
-    return viewNote;
   }
 
-  private void renderLyric(String lyric, ViewCell viewCell) {
+  private ViewItemText renderLyric(String lyric, ViewCell viewCell, ScoreLineReader lineReader) {
 
-    // TODO Auto-generated method stub
-
+    if ((lyric == null) || (lyric.isBlank())) {
+      return null;
+    }
+    ViewItemText viewLyrics = renderText(lyric, ViewTextType.LYRICS);
+    viewCell.addItem(viewLyrics);
+    this.stavesLayout.visit(viewLyrics);
+    return viewLyrics;
   }
 
   private void layoutRow(ScoreRowReader rowReader, ViewRow viewRow) {
@@ -350,7 +409,7 @@ class ViewRendererIntern implements ViewTextRenderer {
 
   }
 
-  private ViewBlock renderPageFooter(ViewContext context, int pageNumber) {
+  private ViewBlock renderPageFooter(int pageNumber) {
 
     ViewBlock footer = new ViewBlock();
     footer.addItem(renderText(Integer.toString(pageNumber), ViewTextType.FOOTER, ViewTextAlignment.RIGHT));

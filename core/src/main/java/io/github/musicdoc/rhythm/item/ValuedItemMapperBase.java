@@ -43,7 +43,7 @@ public abstract class ValuedItemMapperBase extends ValuedItemMapper {
    */
   protected MusicalDecoration readItemPrefix(MusicInputStream in, SongFormatContext context) {
 
-    if (in.expect('(')) {
+    if (in.getScanner().expectOne('(')) {
       // "(abc)" annotates a slur for the notes a b c.
       // in "(3a(bc)" the first ( is not a slur but annotates a triplet for the following 3 notes.
       // such tuplets are not closed via ")" in ABC what can cause slight confusions for the reader.
@@ -64,7 +64,7 @@ public abstract class ValuedItemMapperBase extends ValuedItemMapper {
    */
   protected ValuedItem<?> readItemSuffix(ValuedItem<?> item, MusicInputStream in, SongFormatContext context) {
 
-    if (in.expect(')')) {
+    if (in.getScanner().expectOne(')')) {
       item.getDecorations().add(SlurDecoration.SLUR_END);
     }
     return item;

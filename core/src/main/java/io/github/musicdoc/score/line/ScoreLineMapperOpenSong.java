@@ -2,10 +2,11 @@ package io.github.musicdoc.score.line;
 
 import java.util.List;
 
+import io.github.mmm.base.filter.ListCharFilter;
+import io.github.mmm.scanner.CharStreamScanner;
 import io.github.musicdoc.StringHelper;
 import io.github.musicdoc.bar.BarLine;
 import io.github.musicdoc.bar.BarLineMapper;
-import io.github.musicdoc.filter.ListCharFilter;
 import io.github.musicdoc.format.SongFormat;
 import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.format.SongFormatOpenSong;
@@ -48,20 +49,21 @@ public class ScoreLineMapperOpenSong extends ScoreLineMapper {
   @Override
   public ScoreLine read(MusicInputStream in, SongFormatContext context) {
 
-    if (in.expect(BEGIN_COMMENT, false)) {
-      String comment = in.readLine();
+    CharStreamScanner scanner = in.getScanner();
+    if (scanner.expectOne(BEGIN_COMMENT)) {
+      String comment = scanner.readLine();
       return new ScoreCommentLine(comment);
     } else if (in.skipNewline()) {
       return ScoreEmptyLine.INSTANCE;
     }
     ChordNode chordStart = new ChordNode();
     ChordNode chordNode = chordStart;
-    char c = in.peek();
+    char c = scanner.peek();
     if (c == BEGIN_CHORDS) {
-      in.next();
-      while (in.hasNext() && !in.skipNewline()) {
-        in.skipWhile(' ');
-        int column = in.getColumn(true);
+      scanner.next();
+      while (scanner.hasNext() && !in.skipNewline()) {
+        scanner.skipWhile(' ');
+        int column = scanner.getColumn();
         ChordContainer chordContainer = getChordContainerMapper().read(in, context);
         if (chordContainer == null) {
           break;
@@ -69,7 +71,7 @@ public class ScoreLineMapperOpenSong extends ScoreLineMapper {
           chordNode = chordNode.append(chordContainer, column);
         }
       }
-      c = in.peek();
+      c = scanner.peek();
     }
     BarLineMapper barLineMapper = getBarLineMapper();
     ScoreVoiceLine line = new ScoreVoiceLine();
@@ -79,24 +81,26 @@ public class ScoreLineMapperOpenSong extends ScoreLineMapper {
       line = line.setVoice(voice);
     }
     if (c == BEGIN_LYRICS) {
-      in.next();
+      scanner.next();
     }
     chordNode = chordStart.next;
-    while (in.hasNext() && !in.skipNewline()) {
-      int delta = 5000;
+    while (scanner.hasNext() && !in.skipNewline()) {
+      int delta = 1000;
       if (chordNode != null) {
-        int column = in.getColumn(true);
+        int column = scanner.getColumn();
         delta = chordNode.column - column;
         if ((delta <= 0) && (chordNode.next != null)) {
           delta = chordNode.next.column - column;
         }
         if (delta <= 0) {
-          delta = 5000;
+          delta = 1000;
         }
       }
-      String lyric = in.readUntil(this.lyricStopFilter, delta);
+      // TODO simplify on next mmm update:
+      // scanner.readUntil(this.lyricStopFilter, delta);
+      String lyric = scanner.readWhile(this.lyricStopFilter.negate(), delta);
       BarLine bar = barLineMapper.read(in, context);
-      if ((chordNode != null) && (in.getColumn(true) > chordNode.column)) {
+      if ((chordNode != null) && (scanner.getColumn() > chordNode.column)) {
         line.add(chordNode.chordContainer, lyric, bar);
         chordNode = chordNode.next;
       } else {

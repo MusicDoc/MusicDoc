@@ -3,6 +3,7 @@ package io.github.musicdoc.note;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.github.mmm.scanner.CharStreamScanner;
 import io.github.musicdoc.decoration.MusicalDecoration;
 import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.io.MusicInputStream;
@@ -36,16 +37,17 @@ public abstract class NoteMapperBase extends NoteMapper {
   @Override
   protected Note readItem(MusicInputStream in, SongFormatContext context, List<MusicalDecoration> decorations) {
 
+    CharStreamScanner scanner = in.getScanner();
     boolean chord = true;
     if (this.chordStart != '\0') {
-      chord = in.expect(this.chordStart);
+      chord = scanner.expectOne(this.chordStart);
     }
     ToneMapper toneMapper = getToneMapper();
     Tone tone = toneMapper.read(in, context);
     if (tone == null) {
       return null;
     }
-    List<NoteTone> tones = null;
+    List<Tone> tones = null;
     if (chord) {
       Tone t;
       do {
@@ -54,8 +56,7 @@ public abstract class NoteMapperBase extends NoteMapper {
           if (tones == null) {
             tones = new ArrayList<>();
           }
-          NoteTone noteTone = new NoteTone(t);
-          tones.add(noteTone);
+          tones.add(t);
         }
       } while (t != null);
       if (this.chordEnd != '\0') {
@@ -68,7 +69,13 @@ public abstract class NoteMapperBase extends NoteMapper {
     } else if (value == MusicalValue._1_1) {
       value = MusicalValue._4_4;
     }
-    return new Note(new NoteTone(tone), value, decorations, tones);
+    Note note = new Note(tone, value, decorations);
+    if (tones != null) {
+      for (Tone t : tones) {
+        note.addTone(t);
+      }
+    }
+    return note;
   }
 
   @Override

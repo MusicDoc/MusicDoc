@@ -4,9 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import io.github.musicdoc.clef.Clef;
 import io.github.musicdoc.decoration.DecoratedItem;
 import io.github.musicdoc.decoration.MusicalDecoration;
+import io.github.musicdoc.glyphs.MusicalGlyphs;
+import io.github.musicdoc.glyphs.MusicalGlyphsContext;
+import io.github.musicdoc.glyphs.smufl.SmuflGlyphsNote;
+import io.github.musicdoc.glyphs.unicode.UnicodeGlyphsNotes;
 import io.github.musicdoc.interval.ChromaticInterval;
+import io.github.musicdoc.rhythm.fraction.PlainFraction;
+import io.github.musicdoc.rhythm.punctuation.Punctuation;
+import io.github.musicdoc.rhythm.value.MusicalValue;
 import io.github.musicdoc.tab.TabTone;
 import io.github.musicdoc.tone.Tone;
 import io.github.musicdoc.transpose.AbstractTransposable;
@@ -17,7 +25,9 @@ import io.github.musicdoc.transpose.TransposeContext;
  *
  * @see Note
  */
-public class NoteTone extends AbstractTransposable<NoteTone> implements DecoratedItem {
+public class NoteTone extends AbstractTransposable<NoteTone> implements DecoratedItem, MusicalGlyphs {
+
+  private Note note;
 
   private Tone tone;
 
@@ -28,41 +38,36 @@ public class NoteTone extends AbstractTransposable<NoteTone> implements Decorate
   /**
    * The constructor.
    *
+   * @param note the owning {@link Note}.
    * @param tone the {@link #getTone() tone}.
    */
-  public NoteTone(Tone tone) {
+  public NoteTone(Note note, Tone tone) {
 
-    this(tone, null);
+    this(note, tone, null);
   }
 
   /**
    * The constructor.
    *
+   * @param note the owning {@link Note}.
    * @param tone the {@link #getTone() tone}.
    * @param tab the {@link #getTab() tab}.
    */
-  public NoteTone(Tone tone, TabTone tab) {
+  NoteTone(Note note, Tone tone, TabTone tab) {
 
     super();
     Objects.requireNonNull(tone);
+    this.note = note;
     this.tone = tone;
     this.tab = tab;
   }
 
   /**
-   * @return tone
+   * @return the actual {@link Tone}.
    */
   public Tone getTone() {
 
     return this.tone;
-  }
-
-  /**
-   * @return tab
-   */
-  public TabTone getTab() {
-
-    return this.tab;
   }
 
   /**
@@ -74,11 +79,37 @@ public class NoteTone extends AbstractTransposable<NoteTone> implements Decorate
   }
 
   /**
+   * @return the {@link TabTone} or {@code null} if undefined.
+   */
+  public TabTone getTab() {
+
+    return this.tab;
+  }
+
+  /**
    * @param tab new value of {@link #getTab()}.
    */
   void setTab(TabTone tab) {
 
     this.tab = tab;
+  }
+
+  /**
+   * @return the owning {@link Note}.
+   */
+  Note getNote() {
+
+    return this.note;
+  }
+
+  /**
+   * @param note new value of {@link #getNote()}.
+   */
+  void setNote(Note note) {
+
+    assert (this.note == null);
+    assert (note != null);
+    this.note = note;
   }
 
   @Override
@@ -116,6 +147,57 @@ public class NoteTone extends AbstractTransposable<NoteTone> implements Decorate
   }
 
   @Override
+  public String getGlyphs(MusicalGlyphsContext context) {
+
+    return getGlyphs(context, context.getStemDirection());
+  }
+
+  /**
+   * @param context the {@link MusicalGlyphsContext}.
+   * @param stemDirection the already computed {@link StemDirection} or {@link StemDirection#isAuto(StemDirection) auto}
+   *        to compute.
+   * @return
+   */
+  public String getGlyphs(MusicalGlyphsContext context, StemDirection stemDirection) {
+
+    String glyphs = null;
+    if (StemDirection.isAuto(stemDirection)) {
+      Clef clef = context.getClef();
+      if (clef == null) {
+        clef = Clef.G;
+      }
+      // TODO for beams this is incorrect and needs to be computed for entire sequences of notes.
+      Tone middleTone = clef.getMiddleTone();
+      if (this.tone.isLower(middleTone)) {
+        stemDirection = StemDirection.DOWN;
+      } else {
+        stemDirection = StemDirection.UP;
+      }
+    }
+    boolean down = StemDirection.DOWN == stemDirection;
+    MusicalValue value = this.note.getValue();
+    PlainFraction plain = value.getPlain();
+    if (context.isEnforceUnicode()) {
+      glyphs = UnicodeGlyphsNotes.get(plain, down);
+    } else {
+      glyphs = SmuflGlyphsNote.get(plain, down);
+    }
+    Punctuation punctuation = value.getPunctuation();
+    if (punctuation != null) {
+      String pGlyphs = punctuation.getGlyphs(context);
+      if (pGlyphs == null) {
+        glyphs = null;
+      } else {
+        glyphs = glyphs + pGlyphs;
+      }
+    }
+    if (glyphs == null) {
+      throw new IllegalStateException("Not implemented/supported");
+    }
+    return glyphs;
+  }
+
+  @Override
   public NoteTone transpose(int steps, boolean diatonic, TransposeContext context) {
 
     Tone newTone = this.tone.transpose(steps, diatonic, context);
@@ -131,7 +213,7 @@ public class NoteTone extends AbstractTransposable<NoteTone> implements Decorate
         newTab = new TabTone(this.tab.getString(), fret);
       }
     }
-    return new NoteTone(newTone, newTab);
+    return new NoteTone(null, newTone, newTab);
   }
 
   @Override

@@ -7,11 +7,8 @@ import java.util.List;
 import java.util.Objects;
 
 import io.github.musicdoc.MutableObjecteCopier;
-import io.github.musicdoc.clef.Clef;
 import io.github.musicdoc.decoration.MusicalDecoration;
 import io.github.musicdoc.glyphs.MusicalGlyphsContext;
-import io.github.musicdoc.glyphs.smufl.SmuflGlyphsNote;
-import io.github.musicdoc.glyphs.unicode.UnicodeGlyphsNotes;
 import io.github.musicdoc.rhythm.item.ValuedItem;
 import io.github.musicdoc.rhythm.punctuation.Punctuation;
 import io.github.musicdoc.rhythm.value.MusicalValue;
@@ -85,22 +82,33 @@ public class Note extends ValuedItem<Note> {
    */
   public Note(Tone tone, MusicalValue value, List<MusicalDecoration> decorations) {
 
-    this(new NoteTone(tone), value, decorations, null);
+    this(tone, value, decorations, null);
   }
 
-  /**
-   * The constructor.
-   *
-   * @param tone - the {@link #getTone() tone}.
-   * @param value - the {@link #getValue() value}.
-   * @param decorations - the {@link #getDecorations() decorations}.
-   * @param tones the {@link #getTone(int) extra tones}.
-   */
-  public Note(NoteTone tone, MusicalValue value, List<MusicalDecoration> decorations, List<NoteTone> tones) {
+  Note(Tone tone, MusicalValue value, List<MusicalDecoration> decorations, List<NoteTone> tones) {
 
     super(value, decorations);
     Objects.requireNonNull(tone, "tone");
+    this.tone = new NoteTone(this, tone);
+    if (tones != null) {
+      for (NoteTone noteTone : tones) {
+        noteTone.setNote(this);
+      }
+    }
+    this.tones = tones;
+  }
+
+  Note(NoteTone tone, MusicalValue value, List<MusicalDecoration> decorations, List<NoteTone> tones) {
+
+    super(value, decorations);
+    Objects.requireNonNull(tone, "tone");
+    tone.setNote(this);
     this.tone = tone;
+    if (tones != null) {
+      for (NoteTone noteTone : tones) {
+        noteTone.setNote(this);
+      }
+    }
     this.tones = tones;
   }
 
@@ -113,7 +121,7 @@ public class Note extends ValuedItem<Note> {
     } else {
       this.tones = new ArrayList<>(note.tones.size());
       for (NoteTone t : note.tones) {
-        this.tones.add(new NoteTone(t.getTone(), t.getTab()));
+        this.tones.add(new NoteTone(this, t.getTone(), t.getTab()));
       }
     }
   }
@@ -141,7 +149,7 @@ public class Note extends ValuedItem<Note> {
       return this;
     }
     Note note = makeMutable();
-    note.tone = new NoteTone(tone);
+    note.tone = new NoteTone(this, tone);
     return note;
   }
 
@@ -255,7 +263,7 @@ public class Note extends ValuedItem<Note> {
     if (note.tones == null) {
       note.tones = new ArrayList<>();
     }
-    note.tones.add(new NoteTone(extraTone));
+    note.tones.add(new NoteTone(this, extraTone));
     return note;
   }
 
@@ -276,40 +284,7 @@ public class Note extends ValuedItem<Note> {
   @Override
   public String getGlyphs(MusicalGlyphsContext context) {
 
-    String glyphs = null;
-    StemDirection stemDirection = context.getStemDirection();
-    if ((stemDirection == null) || (stemDirection == StemDirection.AUTO)) {
-      Clef clef = context.getClef();
-      if (clef == null) {
-        clef = Clef.G;
-      }
-      // TODO for beams this is incorrect and needs to be computed for entire sequences of notes.
-      Tone middleTone = clef.getMiddleTone();
-      if (this.tone.getTone().isLower(middleTone)) {
-        stemDirection = StemDirection.DOWN;
-      } else {
-        stemDirection = StemDirection.UP;
-      }
-    }
-    boolean down = StemDirection.DOWN == stemDirection;
-    if (context.isEnforceUnicode()) {
-      glyphs = UnicodeGlyphsNotes.get(this.value, down);
-    } else {
-      glyphs = SmuflGlyphsNote.get(this.value, down);
-    }
-    Punctuation punctuation = this.value.getPunctuation();
-    if (punctuation != null) {
-      String pGlyphs = punctuation.getGlyphs(context);
-      if (pGlyphs == null) {
-        glyphs = null;
-      } else {
-        glyphs = glyphs + pGlyphs;
-      }
-    }
-    if (glyphs == null) {
-      throw new IllegalStateException("Not implemented/supported");
-    }
-    return glyphs;
+    return this.tone.getGlyphs(context);
   }
 
   @Override
