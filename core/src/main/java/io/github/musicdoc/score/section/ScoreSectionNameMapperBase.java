@@ -43,7 +43,7 @@ public abstract class ScoreSectionNameMapperBase extends ScoreSectionNameMapper 
       String section = scanner.readUntil(this.stopFilter, true);
       ScoreSectionName name = new ScoreSectionName(section);
       in.expect(this.sectionEnd, true);
-      if ((this.sectionEnd != NEWLINE_CHAR) && !in.skipNewline()) {
+      if ((this.sectionEnd != NEWLINE_CHAR) && (scanner.skipNewLine() == 0)) {
         in.addWarning("Ignoring gabarge.");
         scanner.skipWhile(' ');
         scanner.readLine();

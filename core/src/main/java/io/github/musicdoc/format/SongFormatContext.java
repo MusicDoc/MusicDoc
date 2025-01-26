@@ -105,8 +105,8 @@ public class SongFormatContext {
   }
 
   /**
-   * @return {@code true} to normalize {@link io.github.musicdoc.harmony.chord.ChordSymbol#getExtensions() chord extensions},
-   *         {@code false} otherwise.
+   * @return {@code true} to normalize {@link io.github.musicdoc.harmony.chord.ChordSymbol#getExtensions() chord
+   *         extensions}, {@code false} otherwise.
    */
   public boolean isNormalizeChordExtensions() {
 
@@ -310,16 +310,16 @@ public class SongFormatContext {
   }
 
   /**
-   * @return the {@link Song#unitNoteLength}.
+   * @return the {@link Song#UnitNoteLength}.
    */
   public PlainFraction getUnitNoteLength() {
 
     if (this.song == null) {
       return this.format.getUnitNoteLength(null);
     }
-    PlainFraction unitNoteLength = this.song.unitNoteLength.getValue();
+    PlainFraction unitNoteLength = this.song.UnitNoteLength().get();
     if (unitNoteLength == null) {
-      Metre songBeat = this.song.metre.getValue();
+      Metre songBeat = this.song.Metre().get();
       unitNoteLength = this.format.getUnitNoteLength(songBeat);
     }
     return unitNoteLength;

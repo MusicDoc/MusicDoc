@@ -25,38 +25,12 @@ public class TextMusicInputStream extends AbstractTextMusicInputStream {
   /**
    * The constructor.
    *
-   * @param string the {@link #getString() string to parse}.
+   * @param string the data to parse as {@link String}.
    * @param property the {@link PropertyState}.
    */
   public TextMusicInputStream(String string, PropertyState property) {
 
-    this(string, 0, property);
-  }
-
-  /**
-   * The constructor.
-   *
-   * @param string the {@link #getString() string to parse}.
-   * @param index the offset where to start parsing. Typically {@code 0} to start from the beginning.
-   * @param property the {@link PropertyState}.
-   */
-  public TextMusicInputStream(String string, int index, PropertyState property) {
-
-    this(string, index, string.length() - 1, property);
-  }
-
-  /**
-   * The constructor.
-   *
-   * @param string the {@link #getString() string to parse}.
-   * @param index the offset where to start parsing. Typically {@code 0} to start from the beginning.
-   * @param end the end position where to stop parsing. Typically the index of the last character in the
-   *        {@link #getString() string to parse}.
-   * @param property the {@link PropertyState}.
-   */
-  public TextMusicInputStream(String string, int index, int end, PropertyState property) {
-
-    super(string, index, end);
+    super(string);
     this.rootProperty = property;
     this.currentProperty = property;
   }

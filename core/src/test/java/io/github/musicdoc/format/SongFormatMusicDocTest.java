@@ -59,7 +59,7 @@ public class SongFormatMusicDocTest extends SongFormatTest {
 
     // when
     Song song = SongFormatMusicDoc.INSTANCE.getSongMapper().read(lyrics);
-    Score score = song.score.getValue();
+    Score score = song.Score().get();
 
     // then
     assertThat(score).isNotNull();
@@ -140,11 +140,11 @@ public class SongFormatMusicDocTest extends SongFormatTest {
 
     // when
     Song song = SongFormatMusicDoc.INSTANCE.getSongMapper().read(lyrics);
-    Score score = song.score.getValue();
+    Score score = song.Score().get();
 
     // then
-    assertThat(song.title.getValue()).isEqualTo("Dead cat");
-    assertThat(song.artist.getValue()).isEqualTo("Insane Composer");
+    assertThat(song.Title().get()).isEqualTo("Dead cat");
+    assertThat(song.Artist().get()).isEqualTo("Insane Composer");
     assertThat(score).isNotNull();
     assertThat(score.getSections()).hasSize(1);
     ScoreSection section = score.getSections().get(0);

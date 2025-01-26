@@ -12,8 +12,11 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
-import io.github.musicdoc.property.BeanProperty;
-import io.github.musicdoc.property.Property;
+import io.github.mmm.bean.WritableBean;
+import io.github.mmm.bean.property.BeanProperty;
+import io.github.mmm.property.WritableProperty;
+import io.github.mmm.property.object.WritableSimpleProperty;
+import io.github.musicdoc.config.Config;
 
 /**
  * Implementation of {@link BeanXmlMapper} using StAX.
@@ -23,9 +26,9 @@ public class BeanXmlStaxMapper extends BeanXmlMapper {
   /**
    * The constructor.
    *
-   * @param bean the {@link Bean} to map.
+   * @param bean the {@link WritableBean} to map.
    */
-  public BeanXmlStaxMapper(Bean bean) {
+  public BeanXmlStaxMapper(WritableBean bean) {
 
     super(bean);
   }
@@ -70,11 +73,11 @@ public class BeanXmlStaxMapper extends BeanXmlMapper {
     xmlWriter.writeEndDocument();
   }
 
-  private void saveXml(XMLStreamWriter xmlWriter, Bean bean) throws XMLStreamException {
+  private void saveXml(XMLStreamWriter xmlWriter, WritableBean bean) throws XMLStreamException {
 
-    for (Property<?> property : bean.getProperties()) {
+    for (WritableProperty<?> property : bean.getProperties()) {
       if (property instanceof BeanProperty) {
-        Bean childBean = ((BeanProperty<?>) property).getValue();
+        WritableBean childBean = ((BeanProperty<?>) property).get();
         if (childBean != null) {
           if (this.includeGroupTags) {
             xmlWriter.writeStartElement(property.getName());
@@ -90,9 +93,9 @@ public class BeanXmlStaxMapper extends BeanXmlMapper {
     }
   }
 
-  private void saveXml(XMLStreamWriter xmlWriter, Property<?> property) throws XMLStreamException {
+  private void saveXml(XMLStreamWriter xmlWriter, WritableProperty<?> property) throws XMLStreamException {
 
-    Object value = property.getValue();
+    Object value = property.get();
     if (value == null) {
       return;
     }
@@ -171,22 +174,34 @@ public class BeanXmlStaxMapper extends BeanXmlMapper {
     expectTag(xmlReader, rootTag, true, true);
   }
 
-  private void loadXml(XMLStreamReader xmlReader, Bean bean) throws XMLStreamException {
+  private void loadXml(XMLStreamReader xmlReader, WritableBean bean) throws XMLStreamException {
 
     int event = xmlReader.next();
     while ((event != XMLStreamConstants.END_ELEMENT) && (event != XMLStreamConstants.END_DOCUMENT)) {
       if (event == XMLStreamConstants.START_ELEMENT) {
         String name = xmlReader.getName().getLocalPart();
-        Property<?> property = bean.getProperty(name, !this.includeGroupTags);
+        WritableProperty<?> property;
+        if (bean instanceof Config) {
+          Config config = (Config) bean;
+          property = config.getProperty(name, !this.includeGroupTags);
+        } else {
+          property = bean.getProperty(name);
+        }
         if (property instanceof BeanProperty) {
           assert (this.includeGroupTags);
-          Bean childBean = ((BeanProperty<?>) property).getValue();
+          WritableBean childBean = ((BeanProperty<?>) property).get();
           if (childBean != null) {
             loadXml(xmlReader, childBean);
           }
-        } else {
+        } else if (property instanceof WritableSimpleProperty) {
           String value = readText(xmlReader).trim();
-          property.setValueAsString(value);
+          ((WritableSimpleProperty<?>) property).setAsString(value);
+        } else {
+          if (property == null) {
+            throw new IllegalStateException(name);
+          } else {
+            throw new IllegalStateException(property.toString());
+          }
         }
         expectTag(xmlReader, name, true, true);
       }

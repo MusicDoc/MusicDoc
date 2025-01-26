@@ -1,11 +1,15 @@
 package io.github.musicdoc.rhythm.tempo;
 
-import io.github.musicdoc.property.AbstractProperty;
+import io.github.mmm.property.PropertyMetadata;
+import io.github.mmm.property.object.SimpleProperty;
+import io.github.musicdoc.rhythm.fraction.PlainFraction;
 
 /**
- * {@link io.github.musicdoc.property.Property} with {@link #getValue() value} of {@link #getType() type} {@link Tempo}.
+ * {@link SimpleProperty} with {@link #get() value} of {@link #getValueClass() type} {@link Tempo}.
  */
-public class TempoProperty extends AbstractProperty<Tempo> {
+public final class TempoProperty extends SimpleProperty<Tempo> {
+
+  private static final Tempo DEFAULT = new Tempo("", 120, "", PlainFraction._1_4);
 
   private Tempo value;
 
@@ -13,45 +17,41 @@ public class TempoProperty extends AbstractProperty<Tempo> {
    * The constructor.
    *
    * @param name the {@link #getName() property name}.
+   * @param metadata the {@link #getMetadata() metadata}.
    */
-  public TempoProperty(String name) {
+  public TempoProperty(String name, PropertyMetadata<Tempo> metadata) {
 
-    this(name, null);
-  }
-
-  /**
-   * The constructor.
-   *
-   * @param name the {@link #getName() property name}.
-   * @param value the {@link #getValue() property value}.
-   */
-  public TempoProperty(String name, Tempo value) {
-
-    super(name);
-    this.value = value;
+    super(name, metadata);
   }
 
   @Override
-  public Class<Tempo> getType() {
+  public Class<Tempo> getValueClass() {
 
     return Tempo.class;
   }
 
   @Override
-  public Tempo getValue() {
+  public Tempo getFallbackSafeValue() {
+
+    return DEFAULT;
+  }
+
+  @Override
+  public Tempo doGet() {
 
     return this.value;
   }
 
   @Override
-  protected void doSetValue(Tempo newValue) {
+  protected void doSet(Tempo newValue) {
 
     this.value = newValue;
   }
 
   @Override
-  protected Tempo parseValue(String valueAsString) {
+  public Tempo parse(String valueAsString) {
 
     return TempoMapperMusicDoc.INSTANCE.read(valueAsString);
   }
+
 }

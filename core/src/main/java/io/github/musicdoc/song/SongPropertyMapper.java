@@ -1,14 +1,15 @@
 package io.github.musicdoc.song;
 
+import io.github.mmm.property.WritableProperty;
+import io.github.mmm.property.object.SimpleProperty;
 import io.github.musicdoc.format.AbstractMapper;
 import io.github.musicdoc.format.SongFormat;
 import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.io.MusicOutputStream;
-import io.github.musicdoc.property.Property;
 
 /**
- * {@link AbstractMapper Mapper} for a {@link Property} of a {@link Song}.
+ * {@link AbstractMapper Mapper} for a {@link WritableProperty property} of a {@link Song}.
  */
 public class SongPropertyMapper extends AbstractMapper<Song> {
 
@@ -22,9 +23,9 @@ public class SongPropertyMapper extends AbstractMapper<Song> {
   /**
    * The constructor.
    *
-   * @param propertyName the {@link Property#getName() name} of the {@link Property} to map.
+   * @param propertyName the {@link WritableProperty#getName() name} of the {@link WritableProperty} to map.
    * @param key the {@link #getKey() song format key}.
-   * @param valueMapper the optional {@link AbstractMapper mapper} to map the the {@link Property#getValue() property
+   * @param valueMapper the optional {@link AbstractMapper mapper} to map the the {@link WritableProperty#get() property
    *        value}.
    */
   @SuppressWarnings("rawtypes")
@@ -45,7 +46,7 @@ public class SongPropertyMapper extends AbstractMapper<Song> {
   }
 
   /**
-   * @return the {@link Property#getName() property name}.
+   * @return the {@link WritableProperty#getName() property name}.
    */
   public String getName() {
 
@@ -56,15 +57,15 @@ public class SongPropertyMapper extends AbstractMapper<Song> {
   @Override
   public void write(Song song, MusicOutputStream out, SongFormatContext context) {
 
-    Property<?> property = null;
+    WritableProperty<?> property = null;
     if (song != null) {
-      property = song.getProperty(this.propertyName, true);
+      property = song.getProperty(this.propertyName); // , true);
     }
     if (property == null) {
       // log warning
       return;
     }
-    Object value = property.getValue();
+    Object value = property.get();
     if (value == null) {
       return;
     }
@@ -75,17 +76,23 @@ public class SongPropertyMapper extends AbstractMapper<Song> {
     }
   }
 
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   @Override
   public Song read(MusicInputStream in, SongFormatContext context) {
 
     Song song = context.getSong();
     if (song != null) {
+      WritableProperty<?> property = song.getRequiredProperty(this.propertyName);
       if (this.valueMapper == null) {
-        String value = in.getScanner().readUntil('\n', true).trim();
-        song.setValueAsString(this.propertyName, value);
+        if (property instanceof SimpleProperty) {
+          String value = in.getScanner().readUntil('\n', true).trim();
+          ((SimpleProperty<?>) property).setAsString(value);
+        } else {
+          throw new IllegalStateException(this.propertyName);
+        }
       } else {
         Object value = this.valueMapper.read(in, context);
-        song.setValue(this.propertyName, value);
+        ((WritableProperty) property).set(value);
       }
     }
     return song;
@@ -104,25 +111,25 @@ public class SongPropertyMapper extends AbstractMapper<Song> {
   }
 
   /**
-   * @param <T> type of the {@link Property#getValue() property value}.
-   * @param property the {@link Property} to map.
+   * @param <T> type of the {@link WritableProperty#get() property value}.
+   * @param property the {@link WritableProperty} to map.
    * @param key the {@link #getKey() key}.
    * @param valueMapper the {@link AbstractMapper}.
    * @return the {@link SongPropertyMapper}.
    */
-  public static <T> SongPropertyMapper of(Property<T> property, char key, AbstractMapper<T> valueMapper) {
+  public static <T> SongPropertyMapper of(WritableProperty<T> property, char key, AbstractMapper<T> valueMapper) {
 
     return of(property, Character.toString(key), valueMapper);
   }
 
   /**
-   * @param <T> type of the {@link Property#getValue() property value}.
-   * @param property the {@link Property} to map.
+   * @param <T> type of the {@link WritableProperty#get() property value}.
+   * @param property the {@link WritableProperty} to map.
    * @param key the {@link #getKey() key}.
    * @param valueMapper the {@link AbstractMapper}.
    * @return the {@link SongPropertyMapper}.
    */
-  public static <T> SongPropertyMapper of(Property<T> property, String key, AbstractMapper<T> valueMapper) {
+  public static <T> SongPropertyMapper of(WritableProperty<T> property, String key, AbstractMapper<T> valueMapper) {
 
     return new SongPropertyMapper(property.getName(), key, valueMapper);
   }

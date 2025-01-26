@@ -29,23 +29,23 @@ public class SongMapperOpenSong extends SongMapper {
   protected String getPropertyKey(String propertyName) {
 
     // TODO theme, copyright, ccli, copyright, key_line, presentation
-    if (TEMPLATE.referenceNumber.getName().equals(propertyName)) {
+    if (TEMPLATE.ReferenceNumber().getName().equals(propertyName)) {
       return "hymn_number";
-    } else if (TEMPLATE.key.getName().equals(propertyName)) {
+    } else if (TEMPLATE.Key().getName().equals(propertyName)) {
       return "key";
-    } else if (TEMPLATE.metre.getName().equals(propertyName)) {
+    } else if (TEMPLATE.Metre().getName().equals(propertyName)) {
       return "timesig";
-    } else if (TEMPLATE.tempo.getName().equals(propertyName)) {
+    } else if (TEMPLATE.Tempo().getName().equals(propertyName)) {
       return "tempo";
-    } else if (TEMPLATE.unitNoteLength.getName().equals(propertyName)) {
+    } else if (TEMPLATE.UnitNoteLength().getName().equals(propertyName)) {
       return PROPERTY_UNIT_NOTE_LENGTH;
-    } else if (TEMPLATE.title.getName().equals(propertyName)) {
+    } else if (TEMPLATE.Title().getName().equals(propertyName)) {
       return "title";
-    } else if (TEMPLATE.artist.getName().equals(propertyName)) {
+    } else if (TEMPLATE.Artist().getName().equals(propertyName)) {
       return "author";
-    } else if (TEMPLATE.capo.getName().equals(propertyName)) {
+    } else if (TEMPLATE.Capo().getName().equals(propertyName)) {
       return "capo";
-    } else if (TEMPLATE.score.getName().equals(propertyName)) {
+    } else if (TEMPLATE.Score().getName().equals(propertyName)) {
       return "lyrics";
     }
     return null;

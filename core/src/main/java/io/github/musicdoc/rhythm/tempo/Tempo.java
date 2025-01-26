@@ -72,8 +72,9 @@ public class Tempo {
   }
 
   /**
-   * @param i the index of the requested {@link Fraction}.
-   * @return fractions
+   * @param i the index of the requested {@link Fraction}. Should be in the range from {@code 0} to
+   *        <code>{@link #getFractionCount()}-1</code>.
+   * @return the {@link Fraction} at the given index.
    */
   public Fraction getFraction(int i) {
 
@@ -122,8 +123,8 @@ public class Tempo {
       return false;
     }
     Tempo other = (Tempo) obj;
-    return this.bpm == other.bpm && Arrays.equals(this.fractions, other.fractions) && Objects.equals(this.prefix, other.prefix)
-        && Objects.equals(this.suffix, other.suffix);
+    return this.bpm == other.bpm && Arrays.equals(this.fractions, other.fractions)
+        && Objects.equals(this.prefix, other.prefix) && Objects.equals(this.suffix, other.suffix);
   }
 
   @Override

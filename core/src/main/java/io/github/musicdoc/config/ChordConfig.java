@@ -1,10 +1,9 @@
 package io.github.musicdoc.config;
 
-import io.github.musicdoc.bean.Bean;
-import io.github.musicdoc.property.BooleanProperty;
+import io.github.mmm.property.booleans.BooleanProperty;
 
 /**
- * {@link Bean} for Chords and Capo.
+ * {@link Config} for Chords and Capo.
  */
 public class ChordConfig extends Config {
 
@@ -19,10 +18,11 @@ public class ChordConfig extends Config {
   public ChordConfig() {
 
     super();
-    this.showChords = register(new BooleanProperty("showChords", true));
-    this.showCapoChords = register(new BooleanProperty("showCapoChords"));
-    this.showNativeAndCapoChords = register(new BooleanProperty("showNativeAndCapoChords"));
-    this.showCapoAsNumerals = register(new BooleanProperty("showCapoAsNumerals"));
+    this.showChords = add(new BooleanProperty("showChords"));
+    this.showCapoChords = add(new BooleanProperty("showCapoChords"));
+    this.showNativeAndCapoChords = add(new BooleanProperty("showNativeAndCapoChords"));
+    this.showCapoAsNumerals = add(new BooleanProperty("showCapoAsNumerals"));
+    this.showChords.setValue(true);
   }
 
 }

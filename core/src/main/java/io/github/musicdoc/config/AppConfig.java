@@ -1,7 +1,7 @@
 package io.github.musicdoc.config;
 
-import io.github.musicdoc.bean.Bean;
-import io.github.musicdoc.property.BeanProperty;
+import io.github.mmm.bean.Bean;
+import io.github.mmm.bean.property.BeanProperty;
 
 /**
  * {@link Bean} of the entire app.
@@ -19,10 +19,14 @@ public class AppConfig extends Config {
   public AppConfig() {
 
     super();
-    this.chordProperty = register(new BeanProperty<>("chord", new ChordConfig()));
-    this.padProperty = register(new BeanProperty<>("pad", new PadConfig()));
-    this.metronomeProperty = register(new BeanProperty<>("metronome", new MetronomeConfig()));
-    this.menuProperty = register(new BeanProperty<>("menu", new MenuConfig()));
+    this.chordProperty = add(new BeanProperty<>("chord", ChordConfig.class));
+    this.chordProperty.set(new ChordConfig());
+    this.padProperty = add(new BeanProperty<>("pad", PadConfig.class));
+    this.padProperty.set(new PadConfig());
+    this.metronomeProperty = add(new BeanProperty<>("metronome", MetronomeConfig.class));
+    this.metronomeProperty.set(new MetronomeConfig());
+    this.menuProperty = add(new BeanProperty<>("menu", MenuConfig.class));
+    this.menuProperty.set(new MenuConfig());
   }
 
   public ChordConfig getChord() {

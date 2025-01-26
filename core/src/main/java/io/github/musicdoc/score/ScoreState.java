@@ -2,9 +2,6 @@ package io.github.musicdoc.score;
 
 import java.util.Objects;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.io.MusicInputStream;
 import io.github.musicdoc.score.line.ScoreLine;
@@ -17,8 +14,6 @@ import io.github.musicdoc.stave.system.StaveVoiceContainerSystem;
  * State object for {@link ScoreMapper}.
  */
 final class ScoreState {
-
-  private static final Logger LOG = LoggerFactory.getLogger(ScoreState.class);
 
   private Score score;
 

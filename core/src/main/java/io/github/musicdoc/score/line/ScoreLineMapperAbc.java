@@ -105,7 +105,7 @@ public class ScoreLineMapperAbc extends ScoreLineMapperBase {
 
     CharStreamScanner scanner = in.getScanner();
     int previousBrokenRythmCount = 0;
-    while (scanner.hasNext() && !in.skipNewline()) {
+    while (scanner.hasNext() && (scanner.skipNewLine() == 0)) {
       ScoreCell cell = readCell(line, in, context);
       if (cell != null) {
         scanner.skipWhile(' ');

@@ -11,7 +11,7 @@ import io.github.musicdoc.format.TextPosition;
 /**
  * Implementation of {@link MusicOutputStream} for XML based formats such as MusicXML.
  */
-public class XmlMusicOutputStream extends AbstractMusicStream implements MusicOutputStream {
+public class XmlMusicOutputStream extends AbstractMusicOutputStream {
 
   private XMLStreamWriter xmlWriter;
 

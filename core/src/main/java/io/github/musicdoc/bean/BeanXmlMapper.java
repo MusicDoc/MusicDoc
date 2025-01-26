@@ -7,6 +7,8 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 
+import io.github.mmm.bean.Bean;
+import io.github.mmm.bean.WritableBean;
 import io.github.musicdoc.config.Config;
 
 /**
@@ -24,7 +26,7 @@ public abstract class BeanXmlMapper extends BeanMapper {
    *
    * @param bean the {@link Bean} to map.
    */
-  public BeanXmlMapper(Bean bean) {
+  public BeanXmlMapper(WritableBean bean) {
 
     super(bean);
     if (bean instanceof Config) {

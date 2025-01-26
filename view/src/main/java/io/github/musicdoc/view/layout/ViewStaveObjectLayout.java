@@ -14,7 +14,7 @@ public abstract class ViewStaveObjectLayout {
   ViewItemText label;
 
   /**
-   * @return the {@link ViewItemText} for the label ({@link io.github.musicdoc.AbstractMutableLabeledObject#getName()
+   * @return the {@link ViewItemText} for the label ({@link io.github.musicdoc.AbstractMutableLabeledObject#getTitle()
    *         name} or {@link io.github.musicdoc.AbstractMutableLabeledObject#getAbbreviation() abbreviation}) or
    *         {@code null} for none.
    */

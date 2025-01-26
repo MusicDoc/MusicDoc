@@ -39,8 +39,9 @@ public class ChordTest extends AbstractTest {
     assertThat(mapper.read("C#maj7/E")).isEqualTo(
         new ChordSymbol(TonePitchEnglish.C_SHARP, TonalSystem.MAJOR_EMPTY, TonePitchEnglish.E, ChordExtension.MAJ_7));
     ChordSymbol AsSus4Add9OverFeses = mapper.read("a\u266Dsus4add9/F\uD834\uDD2B");
-    assertThat(AsSus4Add9OverFeses).isEqualTo(new ChordSymbol(TonePitchInternational.A_FLAT.with(ToneNameCase.LOWER_CASE),
-        null, TonePitchInternational.F_DOUBLE_FLAT, ChordExtension.SUS_4, ChordExtension.ADD_9));
+    assertThat(AsSus4Add9OverFeses)
+        .isEqualTo(new ChordSymbol(TonePitchInternational.A_FLAT.with(ToneNameCase.LOWER_CASE), null,
+            TonePitchInternational.F_DOUBLE_FLAT, ChordExtension.SUS_4, ChordExtension.ADD_9));
     assertThat(AsSus4Add9OverFeses.getFundamental())
         .isSameAs(TonePitchInternational.A_FLAT.with(ToneNameCase.LOWER_CASE));
     assertThat(AsSus4Add9OverFeses.getTonalSystem()).isNull();
@@ -51,8 +52,8 @@ public class ChordTest extends AbstractTest {
     // accords with additional clutter
     assertThat(mapper.read("F/")).isEqualTo(new ChordSymbol(TonePitchEnglish.F, TonalSystem.MAJOR_EMPTY));
     ChordSymbol d6sus4SupertrampEvenInTheQuitesMoments = mapper.read("D6sus4(xx0787)");
-    assertThat(d6sus4SupertrampEvenInTheQuitesMoments)
-        .isEqualTo(new ChordSymbol(TonePitchEnglish.D, TonalSystem.MAJOR_EMPTY, ChordExtension._6, ChordExtension.SUS_4));
+    assertThat(d6sus4SupertrampEvenInTheQuitesMoments).isEqualTo(
+        new ChordSymbol(TonePitchEnglish.D, TonalSystem.MAJOR_EMPTY, ChordExtension._6, ChordExtension.SUS_4));
     assertThat(d6sus4SupertrampEvenInTheQuitesMoments.getName()).isEqualTo("D6sus4");
     // negative tests (invalid chords)
     assertThat(mapper.read("X")).isNull();
@@ -60,7 +61,7 @@ public class ChordTest extends AbstractTest {
     assertThat(mapper.read("N.C.")).isNull();
   }
 
-  /** Test of {@link ChordSymbol#Chord(TonePitch, TonalSystem, TonePitch)}. */
+  /** Test of {@link ChordSymbol#ChordSymbol(TonePitch, TonalSystem, TonePitch)}. */
   @Test
   public void testNew() {
 
@@ -71,12 +72,12 @@ public class ChordTest extends AbstractTest {
         .isEqualTo(mapper.read("F#/E"));
     assertThat(new ChordSymbol(TonePitchInternational.F_SHARP, TonalSystem.MAJOR_EMPTY, TonePitchEnglish.E))
         .isEqualTo(mapper.read("F\u266F/E"));
-    assertThat(new ChordSymbol(TonePitchGerman.ES, TonalSystem.MINOR_M, ChordExtension._7)).isEqualTo(mapper.read("Esm7"));
+    assertThat(new ChordSymbol(TonePitchGerman.ES, TonalSystem.MINOR_M, ChordExtension._7))
+        .isEqualTo(mapper.read("Esm7"));
     assertThat(new ChordSymbol(TonePitchEnglish.E_FLAT, TonalSystem.MINOR_M, ChordExtension._7))
         .isEqualTo(mapper.read("Ebm7"));
-    assertThat(
-        new ChordSymbol(TonePitchInternational.E_FLAT.with(ToneNameCase.LOWER_CASE), TonalSystem.MINOR_M, ChordExtension._7))
-            .isEqualTo(mapper.read("e\u266Dm7"));
+    assertThat(new ChordSymbol(TonePitchInternational.E_FLAT.with(ToneNameCase.LOWER_CASE), TonalSystem.MINOR_M,
+        ChordExtension._7)).isEqualTo(mapper.read("e\u266Dm7"));
   }
 
   /** Test of {@link ChordSymbol#transposeChromatic(int)}. */

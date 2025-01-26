@@ -168,7 +168,7 @@ public class StaveSystemState {
    */
   public StaveSystem getTopSystem(MusicInputStream in) {
 
-    if (this.system.getBracket() != null) {
+    if (this.system.getParent() != null) {
       in.addError("Missing closing bracket '" + this.system.getBracket().getEnd() + "'.");
     }
     // find root

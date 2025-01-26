@@ -277,7 +277,7 @@ public abstract class SongFormat {
 
   /**
    * @param beat the current beat.
-   * @return the default for {@link Song#unitNoteLength}.
+   * @return the default for {@link Song#UnitNoteLength}.
    */
   PlainFraction getUnitNoteLength(Metre beat) {
 

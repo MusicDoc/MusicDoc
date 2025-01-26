@@ -4,7 +4,6 @@ import io.github.musicdoc.format.AbstractMapper;
 import io.github.musicdoc.format.SongFormat;
 import io.github.musicdoc.format.SongFormatContext;
 import io.github.musicdoc.io.MusicInputStream;
-import io.github.musicdoc.property.Property;
 import io.github.musicdoc.stave.system.StaveSystem;
 
 /**
@@ -42,7 +41,7 @@ public abstract class StaveVoicePropertyMapper extends AbstractMapper<StaveVoice
   }
 
   /**
-   * @return the {@link Property#getName() property name}.
+   * @return the {@link io.github.mmm.property.Property#getName() property name}.
    */
   public abstract String getName();
 

@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Test;
 import io.github.musicdoc.bar.BarLine;
 import io.github.musicdoc.bar.BarLineType;
 import io.github.musicdoc.decoration.SlurDecoration;
-import io.github.musicdoc.harmony.chord.ChordSymbol;
 import io.github.musicdoc.harmony.chord.ChordContainer;
+import io.github.musicdoc.harmony.chord.ChordSymbol;
 import io.github.musicdoc.harmony.key.MusicalKey;
 import io.github.musicdoc.note.Note;
 import io.github.musicdoc.rhythm.fraction.PlainFraction;
@@ -54,15 +54,15 @@ public abstract class SongFormatTest extends Assertions {
     // when
     Song song = getFormat().read(inputStream);
     assertThat(song).isNotNull();
-    assertThat(song.title.getValue()).isEqualTo("Greensleeves");
-    assertThat(song.artist.getValue()).isEqualTo("Traditional");
-    assertThat(song.metre.getValue()).isEqualTo(Metre._3_4);
+    assertThat(song.Title().get()).isEqualTo("Greensleeves");
+    assertThat(song.Artist().get()).isEqualTo("Traditional");
+    assertThat(song.Metre().get()).isEqualTo(Metre._3_4);
     if (format != SongFormatOpenSong.INSTANCE) {
-      assertThat(song.unitNoteLength.getValue()).isEqualTo(PlainFraction._1_4);
-      assertThat(song.tempo.getValue()).isEqualTo(new Tempo("", 100, "", Metre.of(1, 4)));
+      assertThat(song.UnitNoteLength().get()).isEqualTo(PlainFraction._1_4);
+      assertThat(song.Tempo().get()).isEqualTo(new Tempo("", 100, "", Metre.of(1, 4)));
     }
-    assertThat(song.key.getValue()).isEqualTo(MusicalKey.C_MAJOR);
-    Score score = song.score.getValue();
+    assertThat(song.Key().get()).isEqualTo(MusicalKey.C_MAJOR);
+    Score score = song.Score().get();
     StaveVoice voice = StaveVoice.EMPTY;
     List<ScoreSection> sections = score.getSections();
     if (format.isSupportSection()) {
@@ -83,12 +83,14 @@ public abstract class SongFormatTest extends Assertions {
         .add(Note.of1_4(Tone.A4), "A-", BarLineType.THIN) //
         .add(ChordSymbol.ofMinor(TonePitchEnglish.A), Note.of1_2(Tone.C5), "las, ") //
         .add(Note.of1_4(Tone.D5), "my ", BarLineType.THIN) //
-        .add(ChordSymbol.ofMajorWith7(TonePitchEnglish.D), Note.of1_4p(Tone.E5).addDecoration(SlurDecoration.SLUR_START), "lo-") //
+        .add(ChordSymbol.ofMajorWith7(TonePitchEnglish.D),
+            Note.of1_4p(Tone.E5).addDecoration(SlurDecoration.SLUR_START), "lo-") //
         .add(Note.of1_8(Tone.F5).addDecoration(SlurDecoration.SLUR_END), "ve, ") //
         .add(Note.of1_4(Tone.E5), "you ", BarLineType.THIN) //
         .add(ChordSymbol.ofMajor(TonePitchEnglish.G), Note.of1_2(Tone.D5), "do ") //
         .add(Note.of1_4(Tone.B4), "me ", BarLineType.THIN) //
-        .add(ChordSymbol.ofMinor(TonePitchEnglish.E), Note.of1_4p(Tone.G4).addDecoration(SlurDecoration.SLUR_START), "wro-") //
+        .add(ChordSymbol.ofMinor(TonePitchEnglish.E), Note.of1_4p(Tone.G4).addDecoration(SlurDecoration.SLUR_START),
+            "wro-") //
         .add(Note.of1_8(Tone.A4).addDecoration(SlurDecoration.SLUR_END), "ng, ") //
         .add(Note.of1_4(Tone.B4), "to ", BarLineType.THIN) //
         .add(ChordSymbol.ofMajor(TonePitchEnglish.F), Note.of1_2(Tone.C5), "cast ") //
@@ -108,18 +110,22 @@ public abstract class SongFormatTest extends Assertions {
         .setVoice(voice) //
         .add(ChordSymbol.ofMinor(TonePitchEnglish.A), Note.of1_2(Tone.C5), "I ") //
         .add(Note.of1_4(Tone.D5), "have ", BarLineType.THIN) //
-        .add(ChordSymbol.ofMajorWith7(TonePitchEnglish.D), Note.of1_4p(Tone.E5).addDecoration(SlurDecoration.SLUR_START), "lo-") //
+        .add(ChordSymbol.ofMajorWith7(TonePitchEnglish.D),
+            Note.of1_4p(Tone.E5).addDecoration(SlurDecoration.SLUR_START), "lo-") //
         .add(Note.of1_8(Tone.F5), "ved ") //
         .add(Note.of1_4(Tone.E5).addDecoration(SlurDecoration.SLUR_END), "_ ", BarLineType.THIN) //
         .add(ChordSymbol.ofMajor(TonePitchEnglish.G), Note.of1_2(Tone.D5), "you ") //
         .add(Note.of1_4(Tone.B4), "so ", BarLineType.THIN) //
-        .add(ChordSymbol.ofMinor(TonePitchEnglish.E), Note.of1_4p(Tone.G4).addDecoration(SlurDecoration.SLUR_START), "lo-") //
+        .add(ChordSymbol.ofMinor(TonePitchEnglish.E), Note.of1_4p(Tone.G4).addDecoration(SlurDecoration.SLUR_START),
+            "lo-") //
         .add(Note.of1_8(Tone.A4).addDecoration(SlurDecoration.SLUR_END), "ng, ") //
         .add(Note.of1_4(Tone.B4), "de-", BarLineType.THIN) //
-        .add(ChordSymbol.ofMajor(TonePitchEnglish.F), Note.of1_4p(Tone.C5).addDecoration(SlurDecoration.SLUR_START), "ligh-") //
+        .add(ChordSymbol.ofMajor(TonePitchEnglish.F), Note.of1_4p(Tone.C5).addDecoration(SlurDecoration.SLUR_START),
+            "ligh-") //
         .add(Note.of1_8(Tone.B4).addDecoration(SlurDecoration.SLUR_END), "_ ") //
         .add(Note.of1_4(Tone.A4), "ting ", BarLineType.THIN) //
-        .add(ChordSymbol.ofMajorWith7(TonePitchEnglish.E), Note.of1_4p(Tone.GS4).addDecoration(SlurDecoration.SLUR_START), "in ") //
+        .add(ChordSymbol.ofMajorWith7(TonePitchEnglish.E),
+            Note.of1_4p(Tone.GS4).addDecoration(SlurDecoration.SLUR_START), "in ") //
         .add(Note.of1_8(Tone.FS4).addDecoration(SlurDecoration.SLUR_END), "_ ") //
         .add(Note.of1_4(Tone.GS4), "your ", BarLineType.THIN) //
         .add(ChordSymbol.ofMinor(TonePitchEnglish.A), Note.of1_2(Tone.A4), "com-") //
@@ -145,12 +151,15 @@ public abstract class SongFormatTest extends Assertions {
         .add(Note.of1_4(Tone.E5), "was ", BarLineType.THIN) //
         .add(ChordSymbol.ofMinor(TonePitchEnglish.B), Note.of1_2(Tone.D5), "all ") //
         .add(Note.of1_4(Tone.B4), "my ", BarLineType.THIN) //
-        .add(ChordSymbol.ofMinor(TonePitchEnglish.E), Note.of1_4(Tone.G4).addDecoration(SlurDecoration.SLUR_START), "joy, ") //
+        .add(ChordSymbol.ofMinor(TonePitchEnglish.E), Note.of1_4(Tone.G4).addDecoration(SlurDecoration.SLUR_START),
+            "joy, ") //
         .add(Note.of1_4(Tone.A4), "_ ") //
         .add(Note.of1_4(Tone.B4).addDecoration(SlurDecoration.SLUR_END), "_ ", BarLineType.THIN) //
-        .add(ChordSymbol.ofMinor(TonePitchEnglish.A), Note.of1_2(Tone.C5).addDecoration(SlurDecoration.SLUR_START), "Gre-") //
+        .add(ChordSymbol.ofMinor(TonePitchEnglish.A), Note.of1_2(Tone.C5).addDecoration(SlurDecoration.SLUR_START),
+            "Gre-") //
         .add(Note.of1_4(Tone.A4).addDecoration(SlurDecoration.SLUR_END), "en-", BarLineType.THIN) //
-        .add(ChordSymbol.ofMajor(TonePitchEnglish.F), Note.of1_4p(Tone.A4).addDecoration(SlurDecoration.SLUR_START), "sle-") //
+        .add(ChordSymbol.ofMajor(TonePitchEnglish.F), Note.of1_4p(Tone.A4).addDecoration(SlurDecoration.SLUR_START),
+            "sle-") //
         .add(Note.of1_8(Tone.GS4).addDecoration(SlurDecoration.SLUR_END), "eves ") //
         .add(Note.of1_4(Tone.A4), "was ", BarLineType.THIN) //
         .add(ChordSymbol.ofMajor(TonePitchEnglish.E), Note.of1_2(Tone.B4), "my ") //
@@ -168,13 +177,15 @@ public abstract class SongFormatTest extends Assertions {
         .add(Note.of1_4(Tone.E5), "my ", BarLineType.THIN) //
         .add(ChordSymbol.ofMajor(TonePitchEnglish.G), Note.of1_2(Tone.D5), "heart ") //
         .add(Note.of1_4(Tone.B4), "of ", BarLineType.THIN) //
-        .add(ChordSymbol.ofMinor(TonePitchEnglish.E), Note.of1_4p(Tone.G4).addDecoration(SlurDecoration.SLUR_START), "go-") //
+        .add(ChordSymbol.ofMinor(TonePitchEnglish.E), Note.of1_4p(Tone.G4).addDecoration(SlurDecoration.SLUR_START),
+            "go-") //
         .add(Note.of1_8(Tone.A4).addDecoration(SlurDecoration.SLUR_END), "ld, ") //
         .add(Note.of1_4(Tone.B4), "and ", BarLineType.THIN) //
         .add(ChordSymbol.ofMajor(TonePitchEnglish.F), Note.of1_4(Tone.C5), "who ") //
         .add(Note.of1_4(Tone.B4), "but ") //
         .add(Note.of1_4(Tone.A4), "my ", BarLineType.THIN) //
-        .add(ChordSymbol.ofMajorWith7(TonePitchEnglish.E), Note.of1_4(Tone.GS4).addDecoration(SlurDecoration.SLUR_START), "la-") //
+        .add(ChordSymbol.ofMajorWith7(TonePitchEnglish.E),
+            Note.of1_4(Tone.GS4).addDecoration(SlurDecoration.SLUR_START), "la-") //
         .add(Note.of1_4(Tone.FS4), "dy ") //
         .add(Note.of1_4(Tone.GS4).addDecoration(SlurDecoration.SLUR_END), "_ ", BarLineType.THIN) //
         .add(ChordSymbol.ofMinor(TonePitchEnglish.A), Note.of1_2p(Tone.A4), "Green-", BarLineType.THIN) //

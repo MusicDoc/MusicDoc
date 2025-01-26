@@ -106,7 +106,7 @@ class ViewRendererIntern implements ViewTextRenderer {
 
   ViewPage renderPages(Song song, ViewDocument document, ViewRow row) {
 
-    Score score = song.score.getValue();
+    Score score = song.Score().get();
     assert ((row != null) == this.endlessRow);
     int pageNumber = 1;
     double contentY = 0;
@@ -168,18 +168,18 @@ class ViewRendererIntern implements ViewTextRenderer {
     ViewBlock header = new ViewBlock();
     if (page.getNumber() == 1) {
       header.addItem(
-          renderText(song.title.getValue(), ViewTextType.TITLE, ViewTextAlignment.CENTER, ViewTextProgression.NEWLINE));
-      String subtitle = song.artist.getValueOrDefault();
+          renderText(song.Title().get(), ViewTextType.TITLE, ViewTextAlignment.CENTER, ViewTextProgression.NEWLINE));
+      String subtitle = song.Artist().get().getTarget().Title().getSafe();
       // TODO song.capo.getValue();
       header
           .addItem(renderText(subtitle, ViewTextType.SUB_TITLE, ViewTextAlignment.CENTER, ViewTextProgression.NEWLINE));
     } else {
-      String text = song.title.getValue();
-      String artist = song.artist.getValueOrDefault();
+      String text = song.Title().get();
+      String artist = song.Artist().get().getTarget().Title().getSafe();
       if (!artist.isBlank()) {
         text = text + " (" + artist + ")";
       }
-      Integer capo = song.capo.getValue();
+      Integer capo = song.Capo().get();
       if (capo != null) {
         text = text + "[" + capo + "]";
       }

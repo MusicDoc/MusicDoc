@@ -3,8 +3,8 @@ package io.github.musicdoc.format;
 import org.junit.jupiter.api.Test;
 
 import io.github.musicdoc.harmony.TonalSystem;
-import io.github.musicdoc.harmony.chord.ChordSymbol;
 import io.github.musicdoc.harmony.chord.ChordExtension;
+import io.github.musicdoc.harmony.chord.ChordSymbol;
 import io.github.musicdoc.score.Score;
 import io.github.musicdoc.score.ScoreRow;
 import io.github.musicdoc.score.cell.ScoreCell;
@@ -44,7 +44,7 @@ public class SongFormatOpenSongTest extends SongFormatTest {
 
     // when
     Song song = SongFormatOpenSong.INSTANCE.getSongMapper().read(lyrics);
-    Score score = song.score.getValue();
+    Score score = song.Score().get();
 
     // then
     assertThat(score).isNotNull();
@@ -80,7 +80,8 @@ public class SongFormatOpenSongTest extends SongFormatTest {
     assertThat(cell).isNotNull();
     assertThat(cell.getStaveChange()).isNull();
     assertThat(cell.getItem()).isNull();
-    assertThat(cell.getChord()).isEqualTo(new ChordSymbol(TonePitchEnglish.C, TonalSystem.MAJOR_EMPTY, ChordExtension.ADD_9));
+    assertThat(cell.getChord())
+        .isEqualTo(new ChordSymbol(TonePitchEnglish.C, TonalSystem.MAJOR_EMPTY, ChordExtension.ADD_9));
     assertThat(cell.getLyric()).isEqualTo("c the caT is ");
     cell = voiceLine.getCell(3);
     assertThat(cell).isNotNull();
@@ -109,8 +110,8 @@ public class SongFormatOpenSongTest extends SongFormatTest {
     row.addLine(line);
     section.getRows().add(row);
     score.getSections().add(section);
-    Song song = new Song();
-    song.score.setValue(score);
+    Song song = Song.of();
+    song.Score().set(score);
 
     // when
     String lyrics = SongFormatOpenSong.INSTANCE.getSongMapper().write(song);

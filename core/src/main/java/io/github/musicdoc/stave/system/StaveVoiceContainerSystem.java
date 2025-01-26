@@ -15,8 +15,8 @@ import io.github.musicdoc.stave.voice.StaveVoiceContainer;
 
 /**
  * {@link StaveVoiceContainer} with state to support automatic assignment of next {@link StaveVoice} from
- * {@link StaveSystem} and to {@link #isNewRow() determine} if a new {@link io.github.musicdoc.score.ScoreRow}
- * needs to be started or not.
+ * {@link StaveSystem} and to {@link #isNewRow() determine} if a new {@link io.github.musicdoc.score.ScoreRow} needs to
+ * be started or not.
  */
 public class StaveVoiceContainerSystem implements StaveVoiceContainer {
 

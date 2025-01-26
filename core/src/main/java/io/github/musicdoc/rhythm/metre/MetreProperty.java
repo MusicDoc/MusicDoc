@@ -1,11 +1,12 @@
 package io.github.musicdoc.rhythm.metre;
 
-import io.github.musicdoc.property.AbstractProperty;
+import io.github.mmm.property.PropertyMetadata;
+import io.github.mmm.property.object.SimpleProperty;
 
 /**
- * {@link io.github.musicdoc.property.Property} with {@link #getValue() value} {@link #getType() type} {@link Metre}.
+ * {@link SimpleProperty} with {@link #get() value} {@link #getValueClass() type} {@link Metre}.
  */
-public class MetreProperty extends AbstractProperty<Metre> {
+public final class MetreProperty extends SimpleProperty<Metre> {
 
   private Metre value;
 
@@ -13,44 +14,39 @@ public class MetreProperty extends AbstractProperty<Metre> {
    * The constructor.
    *
    * @param name the {@link #getName() property name}.
+   * @param metadata the {@link #getMetadata() metadata}.
    */
-  public MetreProperty(String name) {
+  public MetreProperty(String name, PropertyMetadata<Metre> metadata) {
 
-    this(name, null);
-  }
-
-  /**
-   * The constructor.
-   *
-   * @param name the {@link #getName() property name}.
-   * @param value the {@link #getValue() property value}.
-   */
-  public MetreProperty(String name, Metre value) {
-
-    super(name);
-    this.value = value;
+    super(name, metadata);
   }
 
   @Override
-  public Class<Metre> getType() {
+  public Class<Metre> getValueClass() {
 
     return Metre.class;
   }
 
   @Override
-  public Metre getValue() {
+  public Metre getFallbackSafeValue() {
+
+    return Metre._4_4;
+  }
+
+  @Override
+  public Metre doGet() {
 
     return this.value;
   }
 
   @Override
-  protected void doSetValue(Metre newValue) {
+  protected void doSet(Metre newValue) {
 
     this.value = newValue;
   }
 
   @Override
-  protected Metre parseValue(String valueAsString) {
+  public Metre parse(String valueAsString) {
 
     return MetreMapperMusicDoc.INSTANCE.read(valueAsString);
   }

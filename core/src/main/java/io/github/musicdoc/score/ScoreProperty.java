@@ -1,12 +1,12 @@
 package io.github.musicdoc.score;
 
-import io.github.musicdoc.property.AbstractProperty;
-import io.github.musicdoc.property.Property;
+import io.github.mmm.property.PropertyMetadata;
+import io.github.mmm.property.object.SimpleProperty;
 
 /**
- * Implementation of {@link Property} with {@link #getValue() value} of type {@link Score}.
+ * {@link SimpleProperty} with {@link #get() value} of {@link #getValueClass() type} {@link Score}.
  */
-public class ScoreProperty extends AbstractProperty<Score> {
+public final class ScoreProperty extends SimpleProperty<Score> {
 
   private Score value;
 
@@ -14,17 +14,7 @@ public class ScoreProperty extends AbstractProperty<Score> {
    * The constructor.
    *
    * @param name the {@link #getName() property name}.
-   */
-  public ScoreProperty(String name) {
-
-    this(name, null);
-  }
-
-  /**
-   * The constructor.
-   *
-   * @param name the {@link #getName() property name}.
-   * @param value the {@link #getValue() property value}.
+   * @param value the {@link #get() property value}.
    */
   public ScoreProperty(String name, Score value) {
 
@@ -32,27 +22,55 @@ public class ScoreProperty extends AbstractProperty<Score> {
     this.value = value;
   }
 
+  /**
+   * The constructor.
+   *
+   * @param name the {@link #getName() property name}.
+   * @param metadata the {@link #getMetadata() metadata}.
+   */
+  public ScoreProperty(String name, PropertyMetadata<Score> metadata) {
+
+    super(name, metadata);
+  }
+
   @Override
-  public Class<Score> getType() {
+  public Class<Score> getValueClass() {
 
     return Score.class;
   }
 
   @Override
-  public Score getValue() {
+  public Score doGet() {
 
     return this.value;
   }
 
   @Override
-  protected void doSetValue(Score newValue) {
+  protected void doSet(Score newValue) {
 
     this.value = newValue;
   }
 
   @Override
-  protected Score parseValue(String valueAsString) {
+  public Score parse(String valueAsString) {
 
-    return ScoreMapperMusicDoc.INSTANCE.read(valueAsString);
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public Score getFallbackSafeValue() {
+
+    return new Score();
+  }
+
+  @Override
+  public Score getSafe() {
+
+    Score score = get();
+    if (score == null) {
+      score = new Score();
+      set(score);
+    }
+    return score;
   }
 }

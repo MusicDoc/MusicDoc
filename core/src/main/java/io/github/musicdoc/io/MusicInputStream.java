@@ -6,7 +6,7 @@ import io.github.mmm.scanner.CharStreamScanner;
  * A {@link MusicStream} to read data from. Mainly designed as a stream of characters with methods to consume and of the
  * underlying text. Data may come from any source like a {@link String} or {@link java.io.Reader}.
  */
-public interface MusicInputStream extends MusicStream /* , CharStreamScanner */ {
+public interface MusicInputStream extends MusicStream {
 
   /**
    * @return the underlying {@link CharStreamScanner}.
@@ -18,34 +18,13 @@ public interface MusicInputStream extends MusicStream /* , CharStreamScanner */ 
    *        ({@code -2147483648}).
    * @param acceptSign {@code true} to accept a leading signum ('+' or '-'), {@code false} otherwise (will prevent
    *        negative numbers).
-   * @return an {@link Integer} from all {@link #next() next} consumed characters that belong to an {@link Integer}
-   *         number or {@code null} if no integer was found and this stream remains unchanged.
+   * @return an {@link Integer} from all {@link CharStreamScanner#next() next} consumed characters that belong to an
+   *         {@link Integer} number or {@code null} if no integer was found and this stream remains unchanged.
    */
   Integer readInteger(int maxLen, boolean acceptSign);
 
   /**
-   * @return {@code true} if a single newline ('\r\n' or '\n') has been consumed (skipped). Otherwise {@code false} is
-   *         returned and this stream remains unchanged.
-   */
-  default boolean skipNewline() {
-
-    CharStreamScanner scanner = getScanner();
-    char c = scanner.peek();
-    if (c == '\n') {
-      scanner.next();
-      return true;
-    } else if (c == '\r') {
-      c = scanner.peek(1);
-      if (c == '\n') {
-        scanner.skip(2);
-        return true;
-      }
-    }
-    return false;
-  }
-
-  /**
-   * @param expected the character to expect as {@link #next() next} in this stream.
+   * @param expected the character to expect as {@link CharStreamScanner#next() next} in this stream.
    * @param warning {@code true} if a warning is collected in case the expected character was not present.
    * @return {@code true} if the expected character was found and consumer, {@code false} otherwise (and this stream
    *         remains unchanged).
@@ -78,35 +57,9 @@ public interface MusicInputStream extends MusicStream /* , CharStreamScanner */ 
   String readPropertyStart();
 
   /**
-   * @return the (rest) of the property value {@link #next() consumed} from this stream till the end of the
-   *         {@link #readPropertyStart() current property}.
+   * @return the (rest) of the property value {@link CharStreamScanner#next() consumed} from this stream till the end of
+   *         the {@link #readPropertyStart() current property}.
    */
   String readPropertyValue();
-
-  @Override
-  default int getColumn() {
-
-    return getColumn(false);
-  }
-
-  /**
-   * @param relative - {@code true} for the relative position in current text (e.g. inside property), {@code false}
-   *        otherwise (absolute position).
-   * @return the relative or absolute {@link #getColumn() column number}
-   */
-  int getColumn(boolean relative);
-
-  @Override
-  default int getLine() {
-
-    return getLine(false);
-  }
-
-  /**
-   * @param relative - {@code true} for the relative position in current text (e.g. inside property), {@code false}
-   *        otherwise (absolute position).
-   * @return the relative or absolute {@link #getLine() line number}.
-   */
-  int getLine(boolean relative);
 
 }

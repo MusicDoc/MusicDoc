@@ -11,7 +11,7 @@ import java.util.Objects;
 /**
  * {@link MusicOutputStream} for simple text based formats such as MusicDoc or ABC.
  */
-public class TextMusicOutputStream extends AbstractMusicStream implements MusicOutputStream {
+public class TextMusicOutputStream extends AbstractMusicOutputStream {
 
   private Appendable buffer;
 

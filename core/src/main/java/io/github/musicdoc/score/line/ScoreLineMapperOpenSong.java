@@ -53,7 +53,7 @@ public class ScoreLineMapperOpenSong extends ScoreLineMapper {
     if (scanner.expectOne(BEGIN_COMMENT)) {
       String comment = scanner.readLine();
       return new ScoreCommentLine(comment);
-    } else if (in.skipNewline()) {
+    } else if (scanner.skipNewLine() > 0) {
       return ScoreEmptyLine.INSTANCE;
     }
     ChordNode chordStart = new ChordNode();
@@ -61,7 +61,7 @@ public class ScoreLineMapperOpenSong extends ScoreLineMapper {
     char c = scanner.peek();
     if (c == BEGIN_CHORDS) {
       scanner.next();
-      while (scanner.hasNext() && !in.skipNewline()) {
+      while (scanner.hasNext() && (scanner.skipNewLine() == 0)) {
         scanner.skipWhile(' ');
         int column = scanner.getColumn();
         ChordContainer chordContainer = getChordContainerMapper().read(in, context);
@@ -84,7 +84,7 @@ public class ScoreLineMapperOpenSong extends ScoreLineMapper {
       scanner.next();
     }
     chordNode = chordStart.next;
-    while (scanner.hasNext() && !in.skipNewline()) {
+    while (scanner.hasNext() && (scanner.skipNewLine() == 0)) {
       int delta = 1000;
       if (chordNode != null) {
         int column = scanner.getColumn();
@@ -98,7 +98,7 @@ public class ScoreLineMapperOpenSong extends ScoreLineMapper {
       }
       // TODO simplify on next mmm update:
       // scanner.readUntil(this.lyricStopFilter, delta);
-      String lyric = scanner.readWhile(this.lyricStopFilter.negate(), delta);
+      String lyric = scanner.readWhile(this.lyricStopFilter.negate(), 0, delta);
       BarLine bar = barLineMapper.read(in, context);
       if ((chordNode != null) && (scanner.getColumn() > chordNode.column)) {
         line.add(chordNode.chordContainer, lyric, bar);

@@ -1,6 +1,9 @@
 package io.github.musicdoc.io;
 
+import java.util.List;
+
 import io.github.mmm.base.filter.CharFilter;
+import io.github.mmm.base.text.TextFormatMessage;
 import io.github.mmm.scanner.CharSequenceScanner;
 import io.github.mmm.scanner.CharStreamScanner;
 
@@ -15,15 +18,23 @@ public abstract class AbstractTextMusicInputStream extends AbstractMusicStream i
   /**
    * The constructor.
    *
-   * @param string the {@link String} to parse.
-   * @param index the offset where to start parsing. Typically {@code 0} to start from the beginning.
-   * @param end the end position where to stop parsing. Typically the index of the last character in the {@link String}
-   *        to parse.
+   * @param string the data to parse as {@link String}.
    */
-  public AbstractTextMusicInputStream(String string, int index, int end) {
+  public AbstractTextMusicInputStream(String string) {
 
     super();
-    setString(string, index, end);
+    setString(string);
+  }
+
+  /**
+   * The constructor.
+   *
+   * @param scanner the {@link CharStreamScanner} with the data to parse.
+   */
+  public AbstractTextMusicInputStream(CharStreamScanner scanner) {
+
+    super();
+    this.scanner = scanner;
   }
 
   @Override
@@ -32,33 +43,34 @@ public abstract class AbstractTextMusicInputStream extends AbstractMusicStream i
     return this.scanner;
   }
 
+  @Override
+  public void addMessage(TextFormatMessage message) {
+
+    this.scanner.addMessage(message);
+  }
+
+  @Override
+  public List<TextFormatMessage> getMessages() {
+
+    return this.scanner.getMessages();
+  }
+
   /**
    * @param string the {@link String} to parse.
    */
   protected void setString(String string) {
 
-    setString(string, 0, string.length() - 1);
-  }
-
-  /**
-   * @param string the {@link String} to parse.
-   * @param index the current start index with the {@link String}.
-   * @param end the maximum index where to read from {@link String}.
-   */
-  protected void setString(String string, int index, int end) {
-
-    assert (end < string.length());
     this.scanner = new CharSequenceScanner(string);
   }
 
   @Override
-  public int getLine(boolean relative) {
+  public int getLine() {
 
     return this.scanner.getLine();
   }
 
   @Override
-  public int getColumn(boolean relative) {
+  public int getColumn() {
 
     return this.scanner.getColumn();
   }

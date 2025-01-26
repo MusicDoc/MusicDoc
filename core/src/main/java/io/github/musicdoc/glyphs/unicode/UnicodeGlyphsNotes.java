@@ -3,7 +3,7 @@ package io.github.musicdoc.glyphs.unicode;
 import io.github.musicdoc.rhythm.fraction.Fraction;
 
 /**
- * {@link UnicodeGlyphs} for {@link android.provider.ContactsContract.CommonDataKinds.Note}s.
+ * {@link UnicodeGlyphs} for {@link io.github.musicdoc.note.Note}s.
  */
 public interface UnicodeGlyphsNotes extends UnicodeGlyphs {
 

@@ -2,10 +2,15 @@ package io.github.musicdoc.io;
 
 import java.io.InputStream;
 
+import javax.xml.stream.Location;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+
+import io.github.mmm.base.text.TextFormatMessageHandler;
+import io.github.mmm.scanner.CharSequenceScanner;
+import io.github.mmm.scanner.SimpleTextFormatMessageHandler;
 
 /**
  * {@link MusicInputStream} for XML based formats such as MusicXML.
@@ -14,6 +19,8 @@ public class XmlMusicInputStream extends AbstractTextMusicInputStream {
 
   private XMLStreamReader xmlReader;
 
+  private final TextFormatMessageHandler messageHandler;
+
   /**
    * The constructor.
    *
@@ -21,8 +28,20 @@ public class XmlMusicInputStream extends AbstractTextMusicInputStream {
    */
   public XmlMusicInputStream(XMLStreamReader xmlReader) {
 
-    super("", 0, -1);
+    this(xmlReader, SimpleTextFormatMessageHandler.get());
+  }
+
+  /**
+   * The constructor.
+   *
+   * @param xmlReader the {@link #getXmlReader() XML reader} to read from.
+   * @param messageHandler the {@link TextFormatMessageHandler}.
+   */
+  public XmlMusicInputStream(XMLStreamReader xmlReader, TextFormatMessageHandler messageHandler) {
+
+    super("");
     this.xmlReader = xmlReader;
+    this.messageHandler = messageHandler;
     try {
       int event = xmlReader.nextTag();
       assert (event == XMLStreamConstants.START_ELEMENT);
@@ -35,23 +54,9 @@ public class XmlMusicInputStream extends AbstractTextMusicInputStream {
   }
 
   @Override
-  public int getLine(boolean relative) {
+  protected void setString(String string) {
 
-    int result = this.scanner.getLine();
-    if (!relative) {
-      result += this.xmlReader.getLocation().getLineNumber() - 1;
-    }
-    return result;
-  }
-
-  @Override
-  public int getColumn(boolean relative) {
-
-    int result = this.scanner.getColumn();
-    if (!relative && (this.scanner.getLine() == 1)) {
-      result += this.xmlReader.getLocation().getColumnNumber() - 1;
-    }
-    return result;
+    this.scanner = new CharSequenceScanner(string);
   }
 
   /**
@@ -83,7 +88,11 @@ public class XmlMusicInputStream extends AbstractTextMusicInputStream {
         return null;
       }
       String property = this.xmlReader.getLocalName();
-      setString(this.xmlReader.getElementText().trim());
+      String data = this.xmlReader.getElementText().trim();
+      Location location = this.xmlReader.getLocation();
+      int line = location.getLineNumber();
+      int column = location.getColumnNumber();
+      this.scanner = new CharSequenceScanner(data, this.messageHandler, line, column);
       return property;
     } catch (XMLStreamException e) {
       throw new IllegalStateException(e);

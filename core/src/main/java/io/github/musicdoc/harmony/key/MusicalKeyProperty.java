@@ -1,11 +1,12 @@
 package io.github.musicdoc.harmony.key;
 
-import io.github.musicdoc.property.AbstractProperty;
+import io.github.mmm.property.PropertyMetadata;
+import io.github.mmm.property.object.SimpleProperty;
 
 /**
- * Implementation of {@link AbstractProperty} with {@link #getValue() value} of type {@link MusicalKey}.
+ * {@link SimpleProperty} with {@link #get() value} of {@link #getValueClass() type} {@link MusicalKey}.
  */
-public class MusicalKeyProperty extends AbstractProperty<MusicalKey> {
+public final class MusicalKeyProperty extends SimpleProperty<MusicalKey> {
 
   private MusicalKey value;
 
@@ -13,17 +14,7 @@ public class MusicalKeyProperty extends AbstractProperty<MusicalKey> {
    * The constructor.
    *
    * @param name the {@link #getName() property name}.
-   */
-  public MusicalKeyProperty(String name) {
-
-    this(name, null);
-  }
-
-  /**
-   * The constructor.
-   *
-   * @param name the {@link #getName() property name}.
-   * @param value the {@link #getValue() property value}.
+   * @param value the (initial) {@link #get() value}.
    */
   public MusicalKeyProperty(String name, MusicalKey value) {
 
@@ -31,27 +22,44 @@ public class MusicalKeyProperty extends AbstractProperty<MusicalKey> {
     this.value = value;
   }
 
+  /**
+   * The constructor.
+   *
+   * @param name the {@link #getName() property name}.
+   * @param metadata the {@link #getMetadata() metadata}.
+   */
+  public MusicalKeyProperty(String name, PropertyMetadata<MusicalKey> metadata) {
+
+    super(name, metadata);
+  }
+
   @Override
-  public Class<MusicalKey> getType() {
+  public Class<MusicalKey> getValueClass() {
 
     return MusicalKey.class;
   }
 
   @Override
-  public MusicalKey getValue() {
+  public MusicalKey doGet() {
 
     return this.value;
   }
 
   @Override
-  protected void doSetValue(MusicalKey newValue) {
+  protected void doSet(MusicalKey newValue) {
 
     this.value = newValue;
   }
 
   @Override
-  protected MusicalKey parseValue(String valueAsString) {
+  public MusicalKey parse(String valueAsString) {
 
     return MusicalKey.fromName(valueAsString);
+  }
+
+  @Override
+  public MusicalKey getFallbackSafeValue() {
+
+    return MusicalKey.C_MAJOR;
   }
 }

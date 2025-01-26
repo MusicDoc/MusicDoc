@@ -1,10 +1,16 @@
 package io.github.musicdoc.song;
 
-import io.github.musicdoc.bean.Bean;
+import io.github.mmm.bean.Bean;
+import io.github.mmm.bean.BeanFactory;
+import io.github.mmm.entity.property.link.LinkProperty;
+import io.github.mmm.property.number.integers.IntegerProperty;
+import io.github.mmm.property.string.StringProperty;
+import io.github.mmm.property.string.StringSetProperty;
+import io.github.musicdoc.album.Album;
+import io.github.musicdoc.artist.Artist;
+import io.github.musicdoc.entity.MusicalEntity;
+import io.github.musicdoc.genre.Genre;
 import io.github.musicdoc.harmony.key.MusicalKeyProperty;
-import io.github.musicdoc.property.IntProperty;
-import io.github.musicdoc.property.StringProperty;
-import io.github.musicdoc.property.TagsProperty;
 import io.github.musicdoc.rhythm.fraction.PlainFractionProperty;
 import io.github.musicdoc.rhythm.metre.Metre;
 import io.github.musicdoc.rhythm.metre.MetreProperty;
@@ -14,88 +20,73 @@ import io.github.musicdoc.score.ScoreProperty;
 /**
  * Representation of a song as a simple {@link Bean}.
  */
-public class Song extends Bean {
-
-  /** The display title of the song (e.g. "The winner takes it all"). */
-  public final StringProperty title;
-
-  /** The artist or performer of the song. Typically used for the band (e.g. "Abba"). */
-  public final StringProperty artist;
-
-  /** The optional origin of the song (e.g. "England; Yorkshire; Bradford and Bingley."). */
-  public final StringProperty origin;
-
-  /** The album of the song. Typically used for the CD or LP (e.g. "More Abba Gold"). */
-  public final StringProperty album;
+public interface Song extends MusicalEntity {
 
   /**
-   * The additional copyright information. Textual information about the copyright holder, song composer, lyricist,
-   * transcriber, etc.
+   * @return the {@link Artist} who performed the song. Typically used for the band (e.g. "Abba").
    */
-  public final StringProperty copyright;
+  LinkProperty<Artist> Artist();
 
-  /** The optional {@link io.github.musicdoc.harmony.key.MusicalKey}. */
-  public final MusicalKeyProperty key;
+  /** @return the optional origin of the song (e.g. "England; Yorkshire; Bradford and Bingley."). */
+  StringProperty Origin();
 
-  /** The optional {@link io.github.musicdoc.rhythm.tempo.Tempo}. */
-  public final TempoProperty tempo;
+  /** @return the {@link Album} of the song. Typically used for the CD or LP (e.g. "More Abba Gold"). */
+  LinkProperty<Album> Album();
 
-  /** The optional {@link Metre}. */
-  public final MetreProperty metre;
+  /** @return the composer of the music from the song. */
+  StringProperty Composer();
 
-  /** The optional <a href="https://abcnotation.com/wiki/abc:standard:v2.1#lunit_note_length">unit note length</a>. */
-  public final PlainFractionProperty unitNoteLength;
+  /** @return the author of the lyrics from the song. */
+  StringProperty Lyricist();
 
-  /** The pre delay in seconds before the song starts scrolling. */
-  public final IntProperty preDelay;
+  /** @return the additional copyright information with e.g. copyright holder, transcriber, etc. */
+  StringProperty Copyright();
 
-  /** The duration of the song in seconds for scrolling. */
-  public final IntProperty duration;
+  /** @return the optional {@link io.github.musicdoc.harmony.key.MusicalKey}. */
+  MusicalKeyProperty Key();
 
-  /** The fret where to place the capo (to play in original or preferred key). */
-  public final IntProperty capo;
+  /** @return the optional {@link io.github.musicdoc.rhythm.tempo.Tempo}. */
+  TempoProperty Tempo();
 
-  /** The {@link io.github.musicdoc.score.Score} of the song with the lyrics. */
-  public final ScoreProperty score;
+  /** @return the optional {@link Metre}. */
+  MetreProperty Metre();
 
   /**
-   * The optional <a href="https://abcnotation.com/wiki/abc:standard:v2.1#xreference_number">reference number</a>3750.
+   * @return the optional <a href="https://abcnotation.com/wiki/abc:standard:v2.1#lunit_note_length">unit note
+   *         length</a>.
    */
-  public final IntProperty referenceNumber;
+  PlainFractionProperty UnitNoteLength();
 
-  /** The tags that classify this song. */
-  public final TagsProperty tags;
+  /** @return the pre delay in seconds before the song starts scrolling. */
+  IntegerProperty PreDelay();
+
+  /** @return the duration of the song in seconds for scrolling. */
+  IntegerProperty Duration();
+
+  /** @return the fret where to place the capo (to play in original or preferred key). */
+  IntegerProperty Capo();
+
+  /** @return the {@link io.github.musicdoc.score.Score} of the song with the lyrics. */
+  ScoreProperty Score();
 
   /**
-   * The constructor.
+   * @return the optional <a href="https://abcnotation.com/wiki/abc:standard:v2.1#xreference_number">reference
+   *         number</a>3750.
    */
-  public Song() {
+  IntegerProperty ReferenceNumber();
 
-    super();
-    this.title = register(new StringProperty("title"));
-    this.artist = register(new StringProperty("artist"));
-    this.album = register(new StringProperty("album"));
-    this.origin = register(new StringProperty("origin"));
-    this.copyright = register(new StringProperty("copyright"));
-    this.score = register(new ScoreProperty("score"));
-    this.key = register(new MusicalKeyProperty("key"));
-    this.metre = register(new MetreProperty("beat"));
-    this.tempo = register(new TempoProperty("tempo"));
-    this.unitNoteLength = register(new PlainFractionProperty("unitNoteLength"));
-    this.preDelay = register(new IntProperty("preDelay"));
-    this.duration = register(new IntProperty("duration"));
-    this.capo = register(new IntProperty("capo"));
-    this.referenceNumber = register(new IntProperty("referenceNumber"));
-    this.tags = register(new TagsProperty("tags"));
-  }
+  /** @return the tags that classify this song. */
+  StringSetProperty Tags();
+
+  /** @return the musical {@link Genre} of this song. */
+  LinkProperty<Genre> Genre();
 
   /**
-   * @param song the {@link Song} to copy.
+   * @return a new instance of {@link Song}.
    */
-  public Song(Song song) {
+  static Song of() {
 
-    this();
-    copy(song);
+    return BeanFactory.get().create(Song.class);
   }
 
 }

@@ -62,7 +62,7 @@ public abstract class ScoreLineMapperBase extends ScoreLineMapper {
     if (scanner.expect(this.commentPrefix, false)) {
       String comment = scanner.readLine();
       return new ScoreCommentLine(comment);
-    } else if (in.skipNewline()) {
+    } else if (scanner.skipNewLine() > 0) {
       return ScoreEmptyLine.INSTANCE;
     }
     ScoreVoiceLine line = new ScoreVoiceLine();
@@ -70,7 +70,9 @@ public abstract class ScoreLineMapperBase extends ScoreLineMapper {
     if ((this.voiceStart != null) && scanner.expect(this.voiceStart, false)) {
       scanner.skipWhile(' '); // be tolerant
       voiceId = scanner.readWhile(CharFilter.LATIN_LETTER_OR_DIGIT);
-      scanner.skipWhile(' '); // be tolerant
+      if (!this.voiceEnd.equals(" ")) {
+        scanner.skipWhile(' '); // be tolerant
+      }
       if (!scanner.expect(this.voiceEnd, false)) {
         in.addError("Missing voice end marker (" + this.voiceEnd + ").");
       }
@@ -95,7 +97,7 @@ public abstract class ScoreLineMapperBase extends ScoreLineMapper {
   protected void readCells(ScoreVoiceLine line, MusicInputStream in, SongFormatContext context) {
 
     CharStreamScanner scanner = in.getScanner();
-    while (scanner.hasNext() && !in.skipNewline()) {
+    while (scanner.hasNext() && (scanner.skipNewLine() == 0)) {
       ScoreCell cell = readCell(line, in, context);
       if (cell != null) {
         line.add(cell);

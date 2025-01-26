@@ -16,7 +16,7 @@ import io.github.musicdoc.transpose.TransposeContext;
  * Represents the entire score of a {@link io.github.musicdoc.song.Song} with potential lyrics, chords, scales,
  * tabs, etc. in a structured way. It contains out of multiple {@link #getSections() sections}.
  *
- * @see io.github.musicdoc.song.Song#score
+ * @see io.github.musicdoc.song.Song#Score
  */
 public class Score extends AbstractTransposable<Score> implements StaveSystemContainer, MutableObject<Score> {
 

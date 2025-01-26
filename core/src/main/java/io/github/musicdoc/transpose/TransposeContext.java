@@ -1,6 +1,5 @@
 package io.github.musicdoc.transpose;
 
-import android.app.ActionBar.Tab;
 import io.github.musicdoc.harmony.EnharmonicStyle;
 import io.github.musicdoc.harmony.TonalSystem;
 import io.github.musicdoc.harmony.key.MusicalKey;
@@ -122,7 +121,7 @@ public class TransposeContext {
   }
 
   /**
-   * @return {@code true} if a potential {@link Tab}s should be transposed so that its
+   * @return {@code true} if a potential {@link io.github.musicdoc.tab.TabTone}s should be transposed so that its
    *         {@link io.github.musicdoc.clef.Clef#getTuning() tuning} actually changes.
    */
   public boolean isChangeTab() {

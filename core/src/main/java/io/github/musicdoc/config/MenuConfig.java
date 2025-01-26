@@ -1,5 +1,8 @@
 package io.github.musicdoc.config;
 
+/**
+ * {@link Config} for the menu-bar.
+ */
 public class MenuConfig extends Config {
 
   private BatteryConfig battery;

@@ -16,7 +16,7 @@ import io.github.musicdoc.transpose.TransposeContext;
 public class ToneTest extends Assertions {
 
   /**
-   * Test of {@link Tone#getName(ToneNameStyle)}, {@link ToneMapper#usic(String)}, etc.
+   * Test of {@link Tone#getName(ToneNameStyle)}, {@link ToneMapper#read(String)}, etc.
    */
   @Test
   public void testName() {

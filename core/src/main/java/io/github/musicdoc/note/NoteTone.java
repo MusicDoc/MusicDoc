@@ -156,7 +156,7 @@ public class NoteTone extends AbstractTransposable<NoteTone> implements Decorate
    * @param context the {@link MusicalGlyphsContext}.
    * @param stemDirection the already computed {@link StemDirection} or {@link StemDirection#isAuto(StemDirection) auto}
    *        to compute.
-   * @return
+   * @return the glyphs for this {@link NoteTone} with the given {@link StemDirection}.
    */
   public String getGlyphs(MusicalGlyphsContext context, StemDirection stemDirection) {
 

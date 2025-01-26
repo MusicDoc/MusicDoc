@@ -28,27 +28,27 @@ public class SongMapperMusicDoc extends SongMapper {
   @Override
   protected String getPropertyKey(String propertyName) {
 
-    if (TEMPLATE.referenceNumber.getName().equals(propertyName)) {
+    if (TEMPLATE.ReferenceNumber().getName().equals(propertyName)) {
       return PROPERTY_REFERENCE_NUMBER;
-    } else if (TEMPLATE.key.getName().equals(propertyName)) {
+    } else if (TEMPLATE.Key().getName().equals(propertyName)) {
       return PROPERTY_KEY;
-    } else if (TEMPLATE.metre.getName().equals(propertyName)) {
+    } else if (TEMPLATE.Metre().getName().equals(propertyName)) {
       return PROPERTY_METRE;
-    } else if (TEMPLATE.tempo.getName().equals(propertyName)) {
+    } else if (TEMPLATE.Tempo().getName().equals(propertyName)) {
       return PROPERTY_TEMPO;
-    } else if (TEMPLATE.unitNoteLength.getName().equals(propertyName)) {
+    } else if (TEMPLATE.UnitNoteLength().getName().equals(propertyName)) {
       return PROPERTY_UNIT_NOTE_LENGTH;
-    } else if (TEMPLATE.title.getName().equals(propertyName)) {
+    } else if (TEMPLATE.Title().getName().equals(propertyName)) {
       return PROPERTY_TITLE;
-    } else if (TEMPLATE.artist.getName().equals(propertyName)) {
+    } else if (TEMPLATE.Artist().getName().equals(propertyName)) {
       return PROPERTY_COMPOSER;
-    } else if (TEMPLATE.album.getName().equals(propertyName)) {
+    } else if (TEMPLATE.Album().getName().equals(propertyName)) {
       return PROPERTY_DISCOGRAPHY;
-    } else if (TEMPLATE.origin.getName().equals(propertyName)) {
+    } else if (TEMPLATE.Origin().getName().equals(propertyName)) {
       return PROPERTY_ORIGIN;
-    } else if (TEMPLATE.capo.getName().equals(propertyName)) {
+    } else if (TEMPLATE.Capo().getName().equals(propertyName)) {
       return "Capo"; // "|"
-    } else if (TEMPLATE.tags.getName().equals(propertyName)) {
+    } else if (TEMPLATE.Tags().getName().equals(propertyName)) {
       return "Tags"; // "#"
     }
     return null;

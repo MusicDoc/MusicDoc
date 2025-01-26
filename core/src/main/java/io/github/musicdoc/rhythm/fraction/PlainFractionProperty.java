@@ -1,12 +1,12 @@
 package io.github.musicdoc.rhythm.fraction;
 
-import io.github.musicdoc.property.AbstractProperty;
+import io.github.mmm.property.PropertyMetadata;
+import io.github.mmm.property.object.SimpleProperty;
 
 /**
- * {@link io.github.musicdoc.property.Property} with {@link #getValue() value} {@link #getType() type}
- * {@link PlainFraction}.
+ * {@link SimpleProperty} with {@link #get() value} {@link #getValueClass() type} {@link PlainFraction}.
  */
-public class PlainFractionProperty extends AbstractProperty<PlainFraction> {
+public final class PlainFractionProperty extends SimpleProperty<PlainFraction> {
 
   private PlainFraction value;
 
@@ -14,44 +14,39 @@ public class PlainFractionProperty extends AbstractProperty<PlainFraction> {
    * The constructor.
    *
    * @param name the {@link #getName() property name}.
+   * @param metadata the {@link #getMetadata() metadata}.
    */
-  public PlainFractionProperty(String name) {
+  public PlainFractionProperty(String name, PropertyMetadata<PlainFraction> metadata) {
 
-    this(name, null);
-  }
-
-  /**
-   * The constructor.
-   *
-   * @param name the {@link #getName() property name}.
-   * @param value the {@link #getValue() property value}.
-   */
-  public PlainFractionProperty(String name, PlainFraction value) {
-
-    super(name);
-    this.value = value;
+    super(name, metadata);
   }
 
   @Override
-  public Class<PlainFraction> getType() {
+  public Class<PlainFraction> getValueClass() {
 
     return PlainFraction.class;
   }
 
   @Override
-  public PlainFraction getValue() {
+  public PlainFraction getFallbackSafeValue() {
+
+    return PlainFraction._1_1;
+  }
+
+  @Override
+  public PlainFraction doGet() {
 
     return this.value;
   }
 
   @Override
-  protected void doSetValue(PlainFraction newValue) {
+  protected void doSet(PlainFraction newValue) {
 
     this.value = newValue;
   }
 
   @Override
-  protected PlainFraction parseValue(String valueAsString) {
+  public PlainFraction parse(String valueAsString) {
 
     return PlainFractionMapperMusicDoc.INSTANCE.read(valueAsString);
   }

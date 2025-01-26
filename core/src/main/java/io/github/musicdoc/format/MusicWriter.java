@@ -12,7 +12,7 @@ public interface MusicWriter<T> {
 
   /**
    * @param object the musical object to format.
-   * @param out the {@link MusicOutputStream} where to {@link MusicOutputStream#append(Object) write} to.
+   * @param out the {@link MusicOutputStream} where to {@link MusicOutputStream#write(Object) write} to.
    * @param context the {@link SongFormatContext}.
    */
   void write(T object, MusicOutputStream out, SongFormatContext context);
